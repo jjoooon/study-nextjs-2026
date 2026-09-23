@@ -525,14 +525,22 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
                 <TableFoldHead title="피보험자/계약자"></TableFoldHead>
                 <TableFoldBody className="gap-2">
                   {/* 피보험자 인적 정보 및 알림 할인 사항 */}
-                  <FormTable caption={'피보험자'} cols={['w-[9rem]', 'w-auto', 'w-[9rem]', 'w-auto']}>
+                  <FormTable caption={'피보험자'} cols={['w-[9rem]', 'w-auto', 'w-[9rem]', 'w-auto', 'w-[20rem]']}>
                     <FormRow>
-                      <FormCell title={'피보험자'}>
-                        <Input aria-label="" width={70} value={'김한화화'} readOnly />
-                        <Input aria-label="" width={114} value={'000000-0******'} readOnly />
+                      <FormCell
+                        title={'피보험자'}
+                        colSpan={isSimplified ? 4 : undefined}
+                        tdStyle={isSimplified ? { borderRight: 'none' } : undefined}
+                      >
+                        <Grow placement={'bwc'}>
+                          <Grow>
+                            <Input aria-label="" width={70} value={'김한화화'} readOnly />
+                            <Input aria-label="" width={114} value={'000000-0******'} readOnly />
+                          </Grow>
+                        </Grow>
                       </FormCell>
                       {!isSimplified && (
-                        <FormCell title={'알릴사항'}>
+                        <FormCell title={'알릴사항'} tdStyle={{ borderRight: 'none' }}>
                           <Grow placement={'bwc'}>
                             <Grow>
                               <Input aria-label="" width={32} align="center" value={'무'} readOnly />
@@ -540,10 +548,12 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
                                 입력
                               </Button>
                             </Grow>
-                            <Checkbox onCheckedChange={() => {}}>의료급여수급권자할인</Checkbox>
                           </Grow>
                         </FormCell>
                       )}
+                      <FormCell tdClassName="justify-end" thNone>
+                        <Checkbox onCheckedChange={() => {}}>의료급여수급권자할인</Checkbox>
+                      </FormCell>
                     </FormRow>
                     {/* 계약자 인적 정보 및 관계성 지정 */}
                     <FormRow>
@@ -551,7 +561,7 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
                         <Input aria-label="" width={70} value={'김한화'} readOnly />
                         <Input aria-label="" width={114} value={'910101-1******'} readOnly />
                       </FormCell>
-                      <FormCell title={'주피와관계'}>
+                      <FormCell title={'주피와관계'} colSpan={3}>
                         주피보험자(김한화)는 계약자(김한화)의
                         <NativeSelect
                           aria-label="주피와관계 선택"

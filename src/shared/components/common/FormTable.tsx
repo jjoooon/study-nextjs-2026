@@ -64,6 +64,8 @@ interface FormCellProps extends VariantProps<typeof FormCellVariants> {
   tdClassName?: string;
   /** true일 경우 내용 셀(td)을 렌더링하지 않음 (제목 셀만 렌더링할 때 사용) */
   tdNone?: boolean;
+  /** true일 경우 제목 셀(th)을 렌더링하지 않음 (내용 셀만 렌더링할 때 사용) */
+  thNone?: boolean;
   /** 제목 셀(th)에 적용할 인라인 스타일 */
   style?: React.CSSProperties;
   /** 내용 셀(td)에 적용할 인라인 스타일 */
@@ -200,6 +202,7 @@ export const FormCell = ({
   tdClassName,
   tdStyle,
   tdNone = false,
+  thNone = false,
 }: FormCellProps) => {
   /** 상위 Row의 vertical 여부 */
   const contextVertical = useContext(VerticalContext);
@@ -225,7 +228,7 @@ export const FormCell = ({
   if (contextVariant === 'head' || usedVariant === 'head') {
     return (
       <div className="flex items-center gap-2 items-center">
-        {title !== null && (
+        {!thNone && title !== null && (
           <dt className={cn('font-bold', className)}>
             <Typo
               variant={'body-md'}
@@ -248,7 +251,7 @@ export const FormCell = ({
 
   return (
     <>
-      {title !== null && (
+      {!thNone && title !== null && (
         <TableHead
           data-variant={usedVariant}
           className={cn(FormCellVariants({ variant: usedVariant }), 'text-left py-[0.4rem]', className)}
@@ -268,7 +271,7 @@ export const FormCell = ({
       )}
       {!tdNone && (
         <TableCell
-          className="border-b border-[#E5E5E5] px-[1rem] pt-[0.4rem] pb-[0.5rem] h-[3.8rem]"
+          className={cn('border-b border-[#E5E5E5] px-[1rem] pt-[0.4rem] pb-[0.5rem] h-[3.8rem]', tdClassName)}
           {...(colSpan && { colSpan })}
           {...(rowSpan && { rowSpan })}
           style={tdStyle}
