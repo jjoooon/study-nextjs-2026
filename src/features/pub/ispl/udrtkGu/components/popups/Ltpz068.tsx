@@ -9,7 +9,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo, Gcol, Grid } from '@atoms';
-import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
+import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 import { Ai2Icon } from '@icons';

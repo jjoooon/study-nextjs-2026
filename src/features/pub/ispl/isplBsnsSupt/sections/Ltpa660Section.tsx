@@ -39,8 +39,8 @@ const DummyData1: DummyData1Type[] = [
     code: 'CLA02822',
     productName: '나눔의행복(상해사망)',
     recommendStatus: '추천',
-    startDate: '2026-09-09',
-    endDate: '2026-09-30',
+    startDate: '',
+    endDate: '',
     channel: 'GA',
   },
   {

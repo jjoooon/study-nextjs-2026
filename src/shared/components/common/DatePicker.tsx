@@ -182,6 +182,8 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   max?: string | Date;
   /** 이전/다음 달 날짜 표시 여부 @default false */
   showOutsideDays?: boolean;
+  /** 진입 시 캘린더 팝오버 자동 오픈 여부 */
+  autoOpen?: boolean;
 }
 
 /**
@@ -209,6 +211,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
     min,
     max,
     showOutsideDays,
+    autoOpen = false,
     isFocused,
     onFocus: onFocusProp,
     onBlur: onBlurProp,
@@ -244,7 +247,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
     onBlurProp?.(e);
   };
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(autoOpen);
   const [isSelectingEnd, setIsSelectingEnd] = React.useState(false);
   const [selected, setSelected] = React.useState<CalendarSelection>(() => {
     if (mode === 'range' && rangeValue) {
@@ -452,6 +455,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
         setRangeInput({ from: formatDate(nextFrom), to: '' });
         setNumericValue(formatDate(nextFrom).replace(/\D/g, ''));
         setIsSelectingEnd(true); // 종료일 선택 대기 상태로 전환
+        setOpen(true); // 시작일 선택 시 팝오버 닫히지 않도록 확실하게 유지
         onChange?.(nextFrom, formatDate(nextFrom));
         setInvalidDate(false);
         return;
@@ -765,7 +769,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
   const multiSelected = Array.isArray(selected) ? selected : undefined;
 
   return (
-    <div className="cp-datepicker relative flex gap-1 items-center justify-center">
+    <div className="cp-datepicker relative flex gap-1 items-center justify-center ag-custom-component-popup">
       {mode === 'range' ? (
         <>
           <input
@@ -874,10 +878,11 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="z-[1100] w-auto overflow-hidden p-0 border-(--color-border-gray-light)"
+          className="z-[1100] w-auto overflow-hidden p-0 border-(--color-border-gray-light) ag-custom-component-popup"
           align={'end'}
           alignOffset={-8}
           sideOffset={10}
+          onOpenAutoFocus={(e) => e.preventDefault()}
         >
           {monthOnly ? (
             <Calendar

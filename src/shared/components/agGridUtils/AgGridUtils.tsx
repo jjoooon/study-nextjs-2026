@@ -1481,8 +1481,18 @@ export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams
       setRangeValue(nextRangeValue);
       setValue(formatted);
 
-      if (props.node && props.column) {
-        props.node.setDataValue(props.column.getColId(), formatted);
+      // 시작일과 종료일이 모두 완결되었을 때 또는 완전히 지워졌을 때만 AG Grid 셀 값 반영 및 편집 종료
+      if (from && to) {
+        if (props.node && props.column) {
+          props.node.setDataValue(props.column.getColId(), formatted);
+        }
+        if (props.stopEditing) {
+          setTimeout(() => props.stopEditing(), 0);
+        }
+      } else if (!from && !to) {
+        if (props.node && props.column) {
+          props.node.setDataValue(props.column.getColId(), '');
+        }
       }
       return;
     }
@@ -1515,6 +1525,7 @@ export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams
       value={mode === 'single' ? value : undefined}
       rangeValue={mode === 'range' ? rangeValue : undefined}
       onChange={handleChange}
+      autoOpen={true}
       size="md"
       width="full"
     />
