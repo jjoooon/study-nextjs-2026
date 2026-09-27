@@ -1,12 +1,12 @@
 /* Chrome 109 전용 AlertDialog 레거시 호환 스타일 */
 .v109 .cp-alertdialog-overlay,
 .v109 [data-slot='alert-dialog-overlay'] {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .v109 .cp-dialog-overlay,
 .v109 [data-slot='dialog-overlay'] {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 /* DialogFooterArea 부분 */
@@ -663,14 +663,14 @@
  * LTPA020 부모 (.ltpa020-tab-group) 기준 탭 호환 스타일
  * ---------------------------------------------------- */
 
-.v109 .ltpa020-tab-group [role='radiogroup'] {
+.v109 .ltpa020-tab-group .ltpa020-tab-item[role='radiogroup'] {
   background-color: #ffffff;
   gap: 0.2rem;
   border-radius: 0.8rem;
   position: relative;
 }
 
-.v109 .ltpa020-tab-group [role='radiogroup']::after {
+.v109 .ltpa020-tab-group .ltpa020-tab-item[role='radiogroup']::after {
   content: '';
   position: absolute;
   display: block;
@@ -681,8 +681,8 @@
   z-index: 0;
 }
 
-.v109 .ltpa020-tab-group button[role='radio'],
-.v109 .ltpa020-tab-group [data-slot='radio-group-item'] {
+.v109 .ltpa020-tab-group .ltpa020-tab-item button[role='radio'],
+.v109 .ltpa020-tab-group .ltpa020-tab-item [data-slot='radio-group-item'] {
   position: relative;
   z-index: 1;
   width: 18rem;
@@ -705,19 +705,19 @@
   font-weight: bold;
 }
 
-.v109 .ltpa020-tab-group button[role='radio'] > div,
-.v109 .ltpa020-tab-group [data-slot='radio-group-item'] > div {
+.v109 .ltpa020-tab-group .ltpa020-tab-item button[role='radio'] > div,
+.v109 .ltpa020-tab-group .ltpa020-tab-item [data-slot='radio-group-item'] > div {
   display: none;
 }
 
-.v109 .ltpa020-tab-group button[role='radio'][data-state='checked'],
-.v109 .ltpa020-tab-group [data-slot='radio-group-item'][data-state='checked'] {
+.v109 .ltpa020-tab-group .ltpa020-tab-item button[role='radio'][data-state='checked'],
+.v109 .ltpa020-tab-group .ltpa020-tab-item [data-slot='radio-group-item'][data-state='checked'] {
   background-image: linear-gradient(328deg, #ff5c2e 9.4%, #ff8d02 97.24%);
   color: #ffffff !important;
 }
 
-.v109 .ltpa020-tab-group button[role='radio'][data-state='checked'] *,
-.v109 .ltpa020-tab-group [data-slot='radio-group-item'][data-state='checked'] * {
+.v109 .ltpa020-tab-group .ltpa020-tab-item button[role='radio'][data-state='checked'] *,
+.v109 .ltpa020-tab-group .ltpa020-tab-item [data-slot='radio-group-item'][data-state='checked'] * {
   color: #ffffff !important;
 }
 

@@ -32,7 +32,7 @@ export default function Ltpa020Section() {
   // 추천설계 하위 컴포넌트(Ltpa02002) 데이터 유무 제어 상태
   // 화면 분기/Empty 상태 표현에 사용
   const [dataNone, setDataNone] = useState<boolean>(false);
-  const [userAdmin, setUserAdmin] = useState<boolean>(false);
+  const [userAdmin, setUserAdmin] = useState<boolean>(true);
 
   // 고지유형찾기(Ltpz034) 팝업 표시/최소화 상태
   // open 시 minimized를 false로 초기화해 항상 정상 크기로 시작하도록 보정
@@ -118,7 +118,7 @@ export default function Ltpa020Section() {
               <RadioGroup
                 value={tabSelectValue}
                 onValueChange={(value) => setTabSelectValue(value)}
-                className="bg-[#fff] gap-[0.2rem] rounded-2 relative after:content-[''] after:absolute after:block after:w-full after:h-full after:border after:border-[var(--color-secondary-15)] after:rounded-[0.8rem] after:z-0"
+                className="ltpa020-tab-item bg-[#fff] gap-[0.2rem] rounded-2 relative after:content-[''] after:absolute after:block after:w-full after:h-full after:border after:border-[var(--color-secondary-15)] after:rounded-[0.8rem] after:z-0"
               >
                 <RadioGroupItem
                   variant={'button'}
@@ -170,6 +170,7 @@ export default function Ltpa020Section() {
               )}
               <EmpInput empNo={'3999999'} empName={'김한손'} readOnly />
             </Grow>
+
             {/* 검색/고객정보 영역
                 - 등록/미등록 모드에 따라 입력 UI가 완전히 분기됨
                 - 고지유형찾기 팝업 호출 버튼 포함 */}

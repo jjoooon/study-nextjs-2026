@@ -23,29 +23,51 @@ ModuleRegistry.registerModules([
   // 필요시 엔터프라이즈 모듈 추가
 ]);
 
-// [전역 AG-Grid 설정] 애니메이션 비활성화 및 데이터/폰트 렌더링 후 셀 높이 전역 자동 재계산 (딜레이 없이 즉시 반영)
+// [전역 AG-Grid 설정] 애니메이션 비활성화 및 데이터/폰트/두줄 이상 셀병합 높이 전역 자동 재계산
 provideGlobalGridOptions({
   animateRows: false,
   suppressAnimationFrame: true,
   suppressColumnMoveAnimation: true,
+  // 셀 병합(spanRows/enableCellSpan) + autoHeight 시 Transform 계산 오차 방지
+  suppressRowTransform: true,
   onFirstDataRendered: (params) => {
     if (!params.api || typeof window === 'undefined') return;
-    try {
-      if (!params.api.isDestroyed?.()) {
-        params.api.resetRowHeights();
+    const run = () => {
+      try {
+        if (!params.api.isDestroyed?.()) {
+          params.api.resetRowHeights();
+          params.api.redrawRows();
+        }
+      } catch {
+        // ignore
       }
-    } catch {
-      // ignore
+    };
+    if (typeof requestAnimationFrame !== 'undefined') {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(run);
+      });
+    } else {
+      setTimeout(run, 50);
     }
   },
   onRowDataUpdated: (params) => {
     if (!params.api || typeof window === 'undefined') return;
-    try {
-      if (!params.api.isDestroyed?.()) {
-        params.api.resetRowHeights();
+    const run = () => {
+      try {
+        if (!params.api.isDestroyed?.()) {
+          params.api.resetRowHeights();
+          params.api.redrawRows();
+        }
+      } catch {
+        // ignore
       }
-    } catch {
-      // ignore
+    };
+    if (typeof requestAnimationFrame !== 'undefined') {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(run);
+      });
+    } else {
+      setTimeout(run, 50);
     }
   },
 });
