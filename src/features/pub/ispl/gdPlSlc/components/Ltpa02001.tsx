@@ -664,10 +664,6 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
   };
   const selectedPlanRowData = planRowDataMap[active] ?? tabData3;
 
-  const tab3EmptyMessage = React.useMemo(() => {
-    return isPossibleProductsOnly ? '가능한 상품이 없습니다.' : '';
-  }, [isPossibleProductsOnly]);
-
   return (
     <Grid className="w-full h-full min-h-0 grid-rows-[auto_1fr_auto] px-[1rem] overflow-hidden" gap={3}>
       <Grow variant={'box-round'} className="w-full" placement="bwe">

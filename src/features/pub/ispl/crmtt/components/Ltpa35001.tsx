@@ -1327,11 +1327,7 @@ export const Ltpa35001 = ({
                                 </FormCell>
                               </FormRow>
                               <FormRow>
-                                <FormCell
-                                  title="요율적용업종"
-                                  tdClassName="grid grid-cols-[auto_1fr]"
-                                  colSpan={_simpleMode ? 3 : 1}
-                                >
+                                <FormCell title="요율적용업종" colSpan={_simpleMode ? 3 : 1}>
                                   <Input aria-label="요율적용업종코드" width={76} value={'12345'} readOnly />
                                   <Input
                                     aria-label="요율적용업종명"
