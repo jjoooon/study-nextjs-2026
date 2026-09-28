@@ -551,13 +551,13 @@ const Ltpz001 = () => {
                         <Typo tag={'h3'} variant={'heading-sm'}>
                           제목
                         </Typo>
-                        <Textarea placeholder="제목을 입력해주세요." maxLength={1000} resize={false} />
+                        <Textarea placeholder="제목을 입력해주세요." maxLength={100} resize={false} />
                       </Gcol>
                       <Gcol placement={'ss'} gap={2}>
                         <Typo tag={'h3'} variant={'heading-sm'}>
                           내용
                         </Typo>
-                        <Textarea placeholder="내용을 입력해주세요." maxLength={1000} resize={false} />
+                        <Textarea placeholder="내용을 입력해주세요." maxLength={100} resize={false} />
                       </Gcol>
                       <Gcol placement={'ss'} gap={2}>
                         <Typo tag={'h3'} variant={'heading-sm'}>

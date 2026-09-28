@@ -62,7 +62,7 @@ import { Textarea } from '@uiux/Textarea';
               <Grow gap={8} className="flex-wrap">
                 <Gcol gap={1} className="w-[30rem]">
                   <p className="text-[1.2rem] font-bold text-[var(--color-text-sub)]">
-                    세로 방향 리사이즈만 허용 & 글자수 제한(50B)
+                    세로 방향 리사이즈만 허용 & 글자수 제한(50자)
                   </p>
                   <Textarea resize="y" maxLength={50} placeholder="resize='y' maxLength={50}" />
                 </Gcol>
@@ -125,6 +125,10 @@ import { Textarea } from '@uiux/Textarea';
     },
     maxLength: {
       control: { type: 'number' },
+      table: { category: '설정 props' },
+    },
+    countUnit: {
+      control: { type: 'text' },
       table: { category: '설정 props' },
     },
     restrictChars: {

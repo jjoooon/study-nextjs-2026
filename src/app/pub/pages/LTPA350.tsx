@@ -9,16 +9,10 @@ export interface LTPA350PageProps {
   showContractConversion?: boolean;
 }
 
-export default function Page({
-  showRenewalCycle = true,
-  showContractConversion = false,
-}: LTPA350PageProps = {}) {
+export default function Page({ showRenewalCycle = true, showContractConversion = false }: LTPA350PageProps = {}) {
   return (
     <Suspense fallback={null}>
-      <Ltpa350Section
-        showRenewalCycle={showRenewalCycle}
-        showContractConversion={showContractConversion}
-      />
+      <Ltpa350Section showRenewalCycle={showRenewalCycle} showContractConversion={showContractConversion} />
     </Suspense>
   );
 }

@@ -6,39 +6,9 @@
 import type { FirstDataRenderedEvent, RowDataUpdatedEvent } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 
-import '@/shared/lib/agGridPub';
+import { autoAdjustAgGridRowHeights } from '@/shared/lib/agGridPub';
 
-/**
- * [내부망 셀 병합 / 다중행 높이 계산 시점 자동 보정 유틸]
- * 데이터 바인딩 직후 및 폰트/DOM 렌더링 완료 후 브라우저 Paint 사이클(2중 requestAnimationFrame)을
- * 거쳐 AG Grid의 resetRowHeights() 및 redrawRows()를 호출하여 높이를 자동 재계산합니다.
- */
-export const autoAdjustAgGridRowHeights = (
-  api: FirstDataRenderedEvent['api'] | RowDataUpdatedEvent['api'] | null | undefined
-) => {
-  if (!api || typeof window === 'undefined') return;
-
-  const runCalculation = () => {
-    try {
-      if (!api.isDestroyed?.()) {
-        api.resetRowHeights();
-        api.redrawRows();
-      }
-    } catch {
-      // 그리드가 이미 파기된 상태면 무시
-    }
-  };
-
-  if (typeof requestAnimationFrame !== 'undefined') {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        runCalculation();
-      });
-    });
-  } else {
-    setTimeout(runCalculation, 50);
-  }
-};
+export { autoAdjustAgGridRowHeights };
 
 /**
  * AG-Grid 전역 기본 설정

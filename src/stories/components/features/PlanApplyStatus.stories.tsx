@@ -46,9 +46,7 @@ export const LiveSimulation: Story = {
     // 실시간 진행 시뮬레이션
     const handleStart = () => {
       // 1. 알릴사항 반영중 시작
-      setItems((prev) =>
-        prev.map((item) => (item.id === 'notice' ? { ...item, status: 'processing' } : item))
-      );
+      setItems((prev) => prev.map((item) => (item.id === 'notice' ? { ...item, status: 'processing' } : item)));
 
       // 2. 1.5초 후 알릴사항 완료 및 담보감액 반영중 시작
       setTimeout(() => {
@@ -57,17 +55,15 @@ export const LiveSimulation: Story = {
             item.id === 'notice'
               ? { ...item, status: 'success' }
               : item.id === 'reduction'
-              ? { ...item, status: 'processing' }
-              : item
+                ? { ...item, status: 'processing' }
+                : item
           )
         );
       }, 1500);
 
       // 3. 3초 후 담보감액 완료 (전체 완료)
       setTimeout(() => {
-        setItems((prev) =>
-          prev.map((item) => (item.id === 'reduction' ? { ...item, status: 'success' } : item))
-        );
+        setItems((prev) => prev.map((item) => (item.id === 'reduction' ? { ...item, status: 'success' } : item)));
       }, 3000);
     };
 
@@ -132,15 +128,11 @@ export const ErrorOccurred: Story = {
 
     const handleStart = () => {
       // 알릴사항 반영중
-      setItems((prev) =>
-        prev.map((item) => (item.id === 'notice' ? { ...item, status: 'processing' } : item))
-      );
+      setItems((prev) => prev.map((item) => (item.id === 'notice' ? { ...item, status: 'processing' } : item)));
 
       // 1.5초 후 알릴사항에 오류 발생
       setTimeout(() => {
-        setItems((prev) =>
-          prev.map((item) => (item.id === 'notice' ? { ...item, status: 'error' } : item))
-        );
+        setItems((prev) => prev.map((item) => (item.id === 'notice' ? { ...item, status: 'error' } : item)));
       }, 1500);
     };
 

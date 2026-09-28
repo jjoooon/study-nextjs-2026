@@ -288,5 +288,3 @@ export const DynamicFlashEffect: Story = {
     return <FlashDemo />;
   },
 };
-
-

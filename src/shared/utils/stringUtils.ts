@@ -183,6 +183,22 @@ export function isKorean(str: StringInput, only: boolean = false): boolean {
   return new RegExp(`[${p}]`).test(str!);
 }
 
+/**
+ * 문자열의 글자 수를 카운트합니다. (한글, 영문, 특수문자, 이모지 등 구분 없이 한 글자당 1로 계산)
+ *
+ * @param str - 글자 수를 계산할 문자열
+ * @returns 글자 수 (null 또는 undefined 시 0)
+ *
+ * @example
+ * getCharCount('안녕하세요'); // 5
+ * getCharCount('hello'); // 5
+ * getCharCount('👍'); // 1
+ */
+export function getCharCount(str: StringInput): number {
+  if (isEmpty(str)) return 0;
+  return [...str!].length;
+}
+
 // ============================================================================
 // TRANSFORMATION
 // ============================================================================

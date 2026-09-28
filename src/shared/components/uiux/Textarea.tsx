@@ -4,6 +4,7 @@
 import * as React from 'react';
 import { INPUT_RESTRICTED_CHARS } from '@/shared/constants/restrictedChars';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { getCharCount } from '@/shared/utils/stringUtils';
 import { Grow } from '@atoms';
 import { ErrorMsg } from '@common/ErrorMsg';
 import { ReSizeIcon } from '@icons';
@@ -40,6 +41,8 @@ interface UITextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaEleme
   resize?: boolean | 'y' | '';
   /** 입력 가능한 최대 글자 수 (0 지정 시 표시하지 않음) */
   maxLength?: number;
+  /** 글자 수 표기 단위 @default '자' */
+  countUnit?: string;
   /** 입력 차단 특수문자 정제 필터링 기능 적용 여부 */
   restrictChars?: boolean;
 }
@@ -51,7 +54,7 @@ function applyRestrictedCharsFilter(value: string): string {
 
 /**
  * Textarea 컴포넌트는 사용자가 여러 줄의 텍스트를 입력할 수 있도록 지원하는 멀티라인 텍스트 입력 UI입니다.
- * 에러 상태 대응, 메시지 위치 제어, 리사이즈 제한, 최대/최소 글자 수 바이트 카운터 렌더링 기능을 제공합니다.
+ * 에러 상태 대응, 메시지 위치 제어, 리사이즈 제한, 최대/최소 글자 수 카운터 렌더링 기능을 제공합니다.
  */
 function Textarea({
   className,
@@ -61,6 +64,7 @@ function Textarea({
   errorPs = 'bl',
   resize = true,
   maxLength = 0,
+  countUnit = '자',
   restrictChars = true,
   value: valueProp,
   defaultValue,
@@ -76,7 +80,10 @@ function Textarea({
   const value = isControlled ? valueProp : internalValue;
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const val = restrictChars ? applyRestrictedCharsFilter(e.target.value) : e.target.value;
+    let val = restrictChars ? applyRestrictedCharsFilter(e.target.value) : e.target.value;
+    if (maxLength > 0 && getCharCount(val) > maxLength) {
+      val = [...val].slice(0, maxLength).join('');
+    }
     if (!isControlled) {
       setInternalValue(val);
     }
@@ -88,7 +95,8 @@ function Textarea({
   };
 
   // minLength 조건을 만족하면 에러 해제 (0이하는 1로 처리)
-  const currentLength = String(value ?? '').length;
+  const stringifiedValue = value == null ? '' : String(value);
+  const currentLength = getCharCount(stringifiedValue);
   const effectiveMinLength = props.minLength !== undefined ? Math.max(props.minLength, 1) : undefined;
   const minLengthSatisfied = effectiveMinLength !== undefined ? currentLength >= effectiveMinLength : true;
   const showError = (error || isInvalid) && !minLengthSatisfied;
@@ -115,6 +123,7 @@ function Textarea({
     >
       <textarea
         data-slot="textarea"
+        maxLength={maxLength > 0 ? maxLength : undefined}
         aria-invalid={showError || undefined}
         aria-describedby={showError ? errorId : undefined}
         className={cn(
@@ -138,7 +147,8 @@ function Textarea({
 
       {maxLength !== 0 && (
         <Grow placement={'ec'} className={cn('text-right text-[1.3rem] text-[var(--color-gray-30)] min-h-[2.8rem] ')}>
-          <span className="text-[var(--color-gray-100)]">{currentLength}</span> / {maxLength}byte
+          <span className="text-[var(--color-gray-100)] text-[1.2rem]">{currentLength}</span> / {maxLength}
+          {countUnit}
         </Grow>
       )}
 

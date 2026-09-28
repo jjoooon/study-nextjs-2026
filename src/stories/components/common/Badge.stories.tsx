@@ -106,7 +106,10 @@ import { Badge } from '@uiux/Badge';
             </table>
 
             <h2>Status (UW 상태 알약 뱃지)</h2>
-            <p>variant="status"를 사용하면 심사 결과 상태에 맞춰 아이콘과 배경색이 자동 매핑되는 알약형 뱃지로 표시됩니다.</p>
+            <p>
+              variant="status"를 사용하면 심사 결과 상태에 맞춰 아이콘과 배경색이 자동 매핑되는 알약형 뱃지로
+              표시됩니다.
+            </p>
             <Unstyled>
               <Gcol gap={3} variant="box-line" className="p-16 w-[30rem]">
                 <Grow gap={2} placement="ec">

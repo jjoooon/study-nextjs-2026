@@ -6,8 +6,9 @@
 /* Noto Sans KR 숫자 전용 폰트 정의 (unicode-range: 숫자 및 관련 기호) */
 @font-face {
   font-family: 'NotoSansKRNumber';
-  src: url('./NotoSansKR-Variable.woff2') format('woff2-variations'),
-       url('./NotoSansKR-Variable.woff2') format('woff2');
+  src:
+    url('./NotoSansKR-Variable.woff2') format('woff2-variations'),
+    url('./NotoSansKR-Variable.woff2') format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -163,9 +164,12 @@
   --ag-row-height: 3rem;
   --ag-group-header-height: 3rem;
   --ag-list-item-height: 3rem;
-  --ag-font-family: 'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
-  --ag-cell-font-family: 'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
-  --ag-header-font-family: 'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
+  --ag-font-family:
+    'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
+  --ag-cell-font-family:
+    'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
+  --ag-header-font-family:
+    'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
 
   /* ===== 1. Base Unit ===== */
   --base-unit: 0.4rem;
@@ -554,7 +558,19 @@
   /* 1. 기본 루트/바디에 숫자 폰트 + 기본 폰트 스택 정의 */
   body {
     background-color: #fff;
-    font-family: 'NotoSansKRNumber', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    font-family:
+      'NotoSansKRNumber',
+      'Pretendard',
+      -apple-system,
+      BlinkMacSystemFont,
+      system-ui,
+      Roboto,
+      'Helvetica Neue',
+      'Segoe UI',
+      'Apple SD Gothic Neo',
+      'Noto Sans KR',
+      'Malgun Gothic',
+      sans-serif;
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -667,7 +683,9 @@
   }
 
   input::placeholder {
-    font-family: 'NotoSansKRNumber', 'Pretendard', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
+    font-family:
+      'NotoSansKRNumber', 'Pretendard', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial,
+      sans-serif;
     font-size: 1.3rem;
     color: #000;
     opacity: 0.2;
@@ -754,7 +772,8 @@
     align-items: center;
     justify-content: center;
     height: 100% !important;
-    font-family: 'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif !important;
+    font-family:
+      'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif !important;
   }
 
   .filepond--list-scroller {
@@ -1368,26 +1387,36 @@
   margin-top: 2.4rem;
 }
 
-.has-r-border + td{
+.has-r-border + td {
   position: relative;
 }
 .has-r-border + td::after {
-  content:"";
+  content: '';
   display: block;
   position: absolute;
-  right:0;
-  top:0;
+  right: 0;
+  top: 0;
   height: 100%;
-  border-right: 0.1rem solid #E5E5E5 !important;
+  border-right: 0.1rem solid #e5e5e5 !important;
 }
 
 /* Button & Interactive Element Animation Effects */
 @keyframes button-flash {
-  0% { opacity: 1; }
-  25% { opacity: 0.2; }
-  50% { opacity: 1; }
-  75% { opacity: 0.2; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 @keyframes button-process {
   0% {
