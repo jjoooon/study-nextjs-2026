@@ -2,7 +2,7 @@
 @import './agGridRe.css';
 @import './shardcnRe.css';
 @import './v109.css';
-
+@import './v109Font.css';
 /* Noto Sans KR 숫자 전용 폰트 정의 (unicode-range: 숫자 및 관련 기호) */
 @font-face {
   font-family: 'NotoSansKRNumber';
