@@ -54,6 +54,15 @@ const ScaleUnitCellEditor = (props: WonUnitCellEditorProps) => {
   const rawValue = props.value == null ? '' : String(props.value);
   const editorValue = formatNumberWithComma(rawValue.replace(/[^0-9.-]/g, '').trim());
 
+  if (isSpanMode) {
+    return (
+      <Grow placement="cc" className="h-full w-full gap-1 px-1 bg-white">
+        <span className="w-full text-right px-1 text-xs font-normal text-gray-800">{editorValue || '0'}</span>
+        <span className="shrink-0 text-xs">{unitText}</span>
+      </Grow>
+    );
+  }
+
   return (
     <Grow placement="cc" className="h-full w-full gap-1 px-1 bg-white">
       <input
@@ -172,7 +181,7 @@ const columnDefs: (ColDef<DataType> | ColGroupDef<DataType>)[] = [
         headerName: '대인(1인당)',
         field: 'field04',
         flex: 1,
-        cellClass: 'text-center editable-cell border',
+        cellClass: 'text-center editable-cell',
         editable: true,
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: { values: ['1,000만원', '10,000만원'] },
