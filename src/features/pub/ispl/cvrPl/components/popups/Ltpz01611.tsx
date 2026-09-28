@@ -198,7 +198,7 @@ const Ltpz01611 = () => {
               {form.type05 === 'selection3' && (
                 <NativeSelect
                   aria-label="선택"
-                  width={360}
+                  width={380}
                   value={form.type06}
                   required
                   onChange={(e) => setFormField('type06', e.target.value)}
