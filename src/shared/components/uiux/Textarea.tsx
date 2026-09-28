@@ -127,7 +127,7 @@ function Textarea({
         aria-invalid={showError || undefined}
         aria-describedby={showError ? errorId : undefined}
         className={cn(
-          'border-none shadow-0 placeholder:text-[var(--color-gray-30)] focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 flex field-sizing-content h-[6.4rem] w-full bg-transparent p-0 text-[1.3rem] transition-[color,box-shadow] outline-none focus-visible:ring-[0.3rem] disabled:cursor-not-allowed disabled:opacity-50',
+          'border-none shadow-0 placeholder:text-[var(--color-gray-30)] focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 flex h-[6.4rem] w-full max-w-full break-all whitespace-pre-wrap bg-transparent p-0 text-[1.3rem] transition-[color,box-shadow] outline-none focus-visible:ring-[0.3rem] disabled:cursor-not-allowed disabled:opacity-50',
           variantStyles[variant],
           errorStyle,
           className,
