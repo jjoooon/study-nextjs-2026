@@ -1061,13 +1061,11 @@ function DialogContent({
 
   if (open !== prevOpen) {
     setPrevOpen(open);
-    if (!open) {
-      setPosition(defaultPosition ?? { x: 0, y: 0 });
-      setIsInitialized(false);
-      setResizedSize({ width: 0, height: 0 });
-      prevPositionBeforeMinimizeRef.current = null;
-      prevIsInitializedBeforeMinimizeRef.current = false;
-    }
+    setPosition(defaultPosition ?? { x: 0, y: 0 });
+    setIsInitialized(false);
+    setResizedSize({ width: 0, height: 0 });
+    prevPositionBeforeMinimizeRef.current = null;
+    prevIsInitializedBeforeMinimizeRef.current = false;
   }
 
   const [prevDefaultPosition, setPrevDefaultPosition] = React.useState<typeof defaultPosition>(defaultPosition);
