@@ -1041,7 +1041,7 @@ function DialogContent({
             const y = window.innerHeight - minimizedHeight - 8;
             setPosition({ x, y });
           } else {
-            const x = -minimizedWidth / 2;
+            const x = 0;
             const y = window.innerHeight / 2 - minimizedHeight - 8;
             setPosition({ x, y });
           }
@@ -1118,9 +1118,12 @@ function DialogContent({
       transformValue = `translate(-100%, -50%)`;
     }
 
-    if (isInitialized || isMinimized) {
+    if (isInitialized) {
       initialLeft = '0px';
       transformValue = `translate(${position.x}px, ${position.y}px)`;
+    } else if (isMinimized) {
+      initialLeft = '50%';
+      transformValue = `translate(calc(-50% + ${position.x}px), ${position.y}px)`;
     } else if (defaultPosition) {
       transformValue = `${transformValue} translate(${position.x}px, ${position.y}px)`;
     }
