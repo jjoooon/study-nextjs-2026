@@ -199,6 +199,49 @@ export function getCharCount(str: StringInput): number {
   return [...str!].length;
 }
 
+/**
+ * 문자열의 바이트 수를 카운트합니다. (한글 2바이트, 영문/숫자/기호 등 나머지 1바이트)
+ *
+ * @param str - 계산할 문자열
+ * @returns 바이트 수 (null 또는 undefined 시 0)
+ *
+ * @example
+ * getByteLength('안녕'); // 4
+ * getByteLength('hello'); // 5
+ * getByteLength('안녕 hello'); // 10
+ */
+export function getByteLength(str: StringInput): number {
+  if (isEmpty(str)) return 0;
+  let bytes = 0;
+  for (const char of str!) {
+    bytes += /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(char) ? 2 : 1;
+  }
+  return bytes;
+}
+
+/**
+ * 지정된 최대 바이트 수에 맞게 문자열을 자릅니다. (한글 2바이트, 영문/숫자/기호 등 나머지 1바이트)
+ *
+ * @param str - 자를 문자열
+ * @param maxBytes - 최대 바이트 수
+ * @returns 자른 문자열
+ */
+export function sliceByByte(str: StringInput, maxBytes: number): string {
+  if (isEmpty(str) || maxBytes <= 0) return '';
+  let bytes = 0;
+  let result = '';
+
+  for (const char of str!) {
+    const charBytes = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(char) ? 2 : 1;
+    if (bytes + charBytes > maxBytes) {
+      break;
+    }
+    bytes += charBytes;
+    result += char;
+  }
+  return result;
+}
+
 // ============================================================================
 // TRANSFORMATION
 // ============================================================================

@@ -4,7 +4,7 @@
 import * as React from 'react';
 import { INPUT_RESTRICTED_CHARS } from '@/shared/constants/restrictedChars';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { getCharCount } from '@/shared/utils/stringUtils';
+import { getCharCount, getByteLength, sliceByByte } from '@/shared/utils/stringUtils';
 import { Grow } from '@atoms';
 import { ErrorMsg } from '@common/ErrorMsg';
 import { ReSizeIcon } from '@icons';
@@ -41,7 +41,14 @@ interface UITextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaEleme
   resize?: boolean | 'y' | '';
   /** 입력 가능한 최대 글자 수 (0 지정 시 표시하지 않음) */
   maxLength?: number;
-  /** 글자 수 표기 단위 @default '자' */
+  /**
+   * 글자 수 카운트 모드
+   * - `byte`: 한글 2byte, 영문/숫자 1byte 처리 (단위 기본값: 'byte')
+   * - `char`: 모든 글자 1글자 처리 (단위 기본값: '자')
+   * @default 'byte'
+   */
+  countMode?: 'byte' | 'char';
+  /** 글자 수 표기 단위 (지정하지 않으면 countMode에 따라 'byte' 또는 '자' 자동 설정) */
   countUnit?: string;
   /** 입력 차단 특수문자 정제 필터링 기능 적용 여부 */
   restrictChars?: boolean;
@@ -64,7 +71,8 @@ function Textarea({
   errorPs = 'bl',
   resize = true,
   maxLength = 0,
-  countUnit = '자',
+  countMode = 'byte',
+  countUnit: countUnitProp,
   restrictChars = true,
   value: valueProp,
   defaultValue,
@@ -79,10 +87,18 @@ function Textarea({
   const [internalValue, setInternalValue] = React.useState<string>(String(defaultValue ?? ''));
   const value = isControlled ? valueProp : internalValue;
 
+  // countUnit이 직접 전달되었으면 사용하고, 없으면 countMode에 따라 'byte' 또는 '자' 자동 설정
+  const countUnit = countUnitProp ?? (countMode === 'char' ? '자' : 'byte');
+  const isByteMode = countMode === 'byte' || (countUnitProp !== undefined && countUnitProp.toLowerCase() === 'byte');
+
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     let val = restrictChars ? applyRestrictedCharsFilter(e.target.value) : e.target.value;
-    if (maxLength > 0 && getCharCount(val) > maxLength) {
-      val = [...val].slice(0, maxLength).join('');
+    if (maxLength > 0) {
+      if (isByteMode) {
+        val = sliceByByte(val, maxLength);
+      } else if (getCharCount(val) > maxLength) {
+        val = [...val].slice(0, maxLength).join('');
+      }
     }
     if (!isControlled) {
       setInternalValue(val);
@@ -96,7 +112,7 @@ function Textarea({
 
   // minLength 조건을 만족하면 에러 해제 (0이하는 1로 처리)
   const stringifiedValue = value == null ? '' : String(value);
-  const currentLength = getCharCount(stringifiedValue);
+  const currentLength = isByteMode ? getByteLength(stringifiedValue) : getCharCount(stringifiedValue);
   const effectiveMinLength = props.minLength !== undefined ? Math.max(props.minLength, 1) : undefined;
   const minLengthSatisfied = effectiveMinLength !== undefined ? currentLength >= effectiveMinLength : true;
   const showError = (error || isInvalid) && !minLengthSatisfied;
@@ -123,7 +139,7 @@ function Textarea({
     >
       <textarea
         data-slot="textarea"
-        maxLength={maxLength > 0 ? maxLength : undefined}
+        maxLength={!isByteMode && maxLength > 0 ? maxLength : undefined}
         aria-invalid={showError || undefined}
         aria-describedby={showError ? errorId : undefined}
         className={cn(
@@ -146,8 +162,8 @@ function Textarea({
       )}
 
       {maxLength !== 0 && (
-        <Grow placement={'ec'} className={cn('text-right text-[1.3rem] text-[var(--color-gray-30)] min-h-[2.8rem] ')}>
-          <span className="text-[var(--color-gray-100)] text-[1.2rem]">{currentLength}</span> / {maxLength}
+        <Grow placement={'ec'} className={cn('text-right text-[1.3rem]! text-[var(--color-gray-30)] min-h-[2.8rem] ')}>
+          <span className="text-[var(--color-gray-100)] text-[1.3rem]!">{currentLength}</span> / {maxLength}
           {countUnit}
         </Grow>
       )}
