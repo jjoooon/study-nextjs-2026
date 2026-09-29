@@ -291,8 +291,11 @@ const Ltpz061 = () => {
             editable: (params: EditableCallbackParams<DummyDataType1>) => {
               return params.data?.isRowSelected === true;
             },
-            cellEditor: 'agSelectCellEditor',
-            cellEditorParams: { values: ['0년', '1년', '2년', '3년', '4년', '5년', '전기간'] },
+            cellEditor: 'agRichSelectCellEditor',
+            cellEditorParams: {
+              values: ['0년', '1년', '2년', '3년', '4년', '5년', '전기간'],
+              valueListMaxHeight: 120,
+            },
             cellRenderer: getExpiryRenderer('center'),
             autoHeight: true,
           },
@@ -304,7 +307,7 @@ const Ltpz061 = () => {
             singleClickEdit: false,
             headerName: '',
             cellRenderer: getExpiryRenderer('center'),
-            cellEditor: 'agSelectCellEditor',
+            cellEditor: 'agRichSelectCellEditor',
             cellEditorParams: {
               values: [
                 '0개월',
@@ -321,6 +324,7 @@ const Ltpz061 = () => {
                 '11개월',
                 '12개월',
               ],
+              valueListMaxHeight: 120,
             },
             cellClass: (params: CellClassParams<DummyDataType1>) => {
               const base = 'text-center flex [&>div>span]:h-auto! !px-0 editable-cell';
@@ -395,8 +399,11 @@ const Ltpz061 = () => {
             singleClickEdit: false,
             headerName: '',
             // cellRenderer: selectCellRenderer,
-            cellEditor: 'agSelectCellEditor',
-            cellEditorParams: { values: ['0년', '1년', '2년', '3년', '4년', '5년', '전기간'] },
+            cellEditor: 'agRichSelectCellEditor',
+            cellEditorParams: {
+              values: ['0년', '1년', '2년', '3년', '4년', '5년', '전기간'],
+              valueListMaxHeight: 120,
+            },
             cellClass: (params: CellClassParams<DummyDataType2>) => {
               const base = 'text-center flex [&>div>span]:h-auto! !px-0 editable-cell';
               return params.data?.isRowSelected === true ? base : `${base} no-edited`;
@@ -412,7 +419,7 @@ const Ltpz061 = () => {
             singleClickEdit: false,
             headerName: '',
             cellRenderer: getExpiryRenderer2('center'),
-            cellEditor: 'agSelectCellEditor',
+            cellEditor: 'agRichSelectCellEditor',
             cellEditorParams: {
               values: [
                 '0개월',
@@ -429,6 +436,7 @@ const Ltpz061 = () => {
                 '11개월',
                 '12개월',
               ],
+              maxHeight: 160,
             },
             cellClass: (params: CellClassParams<DummyDataType2>) => {
               const base = 'text-center flex [&>div>span]:h-auto! !px-0 editable-cell';

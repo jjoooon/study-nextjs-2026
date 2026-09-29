@@ -131,7 +131,7 @@ const Ltpz004 = () => {
           </Gcol>
           <TableFold>
             <TableFoldHead title="1형(355간편고지형)(프리미엄올인원플랜)(1.7.8.9형)(15~80세)"></TableFoldHead>
-            <TableFoldBody className="gap-2">
+            <TableFoldBody className="gap-2 grid-rows-[1fr_auto]">
               <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}

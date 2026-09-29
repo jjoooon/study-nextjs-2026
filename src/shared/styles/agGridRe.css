@@ -1049,7 +1049,6 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 .ag-rich-select-popup,
 .v109 .ag-select-list,
 .v109 .ag-rich-select-popup {
-  max-height: 200px !important; /* 원하시는 높이로 조절 */
   overflow-y: auto !important; /* 항목이 많으면 스크롤 생성 */
   letter-spacing: 0 !important;
   min-width: max-content !important; /* 셀이 좁아도 옵션창 텍스트 크기에 맞춰 자동으로 최소 너비 확장 */
@@ -1095,7 +1094,8 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 .ag-list-item {
   white-space: nowrap !important;
   width: auto !important;
-  padding-left: 0.8rem !important;
+  font-size: 1.2rem !important;
+  padding-left: 0.4rem !important;
   padding-right: 0.8rem !important; /* 우측 텍스트 여유 패딩 확보 */
 }
 .ltpz012-final-grid .ag-cell b {
@@ -1630,6 +1630,8 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   outline-offset: -0.2rem !important;
 } */
 
+.ag-rich-select-popup,
+.ag-select-list,
 .v109 .ag-rich-select-popup,
 .v109 .ag-select-list {
   background-color: #ffffff !important;
@@ -1637,6 +1639,8 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.16) !important;
   border: 0.1rem solid #cbd5e1 !important;
   z-index: 99999 !important;
+  max-height: 18rem !important; /* 드롭다운 팝업 최대 높이 제한 */
+  overflow-y: auto !important;  /* 항목이 넘칠 경우 내부 스크롤 생성 */
 }
 
 .v109 .ag-rich-select-row:hover,

@@ -148,12 +148,14 @@ const Ltpz060 = () => {
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'bwe'}>
-            <FormTable variant="head" cols={['w-1', 'w-auto', 'w-[16rem]', 'w-auto']}>
+            <FormTable variant="head" cols={['w-1', 'w-auto']}>
               <FormRow>
                 <FormCell title={'설계번호'}>
                   <Input aria-label="" value={'LA123456789012'} readOnly variant="info" />
                   <Input aria-label="" value={'한화 더 건강한 한아름종합보험 2601'} readOnly variant="info" />
                 </FormCell>
+              </FormRow>
+              <FormRow>
                 <FormCell title={'준공연도(사용승인연도)'}>
                   <Input aria-label="" width={84} value={'1999-12-12'} required />
                 </FormCell>
