@@ -90,7 +90,7 @@ export function Ltpa35002cSkeleton() {
                           <div className="w-[2.5rem] flex justify-center shrink-0">
                             <Skeleton className="h-[1.8rem] w-[2rem]" color="dark" />
                           </div>
-                          <div className="flex-1 flex justify-start items-center overflow-hidden min-w-0">
+                          <div className="flex-1 flex justify-center items-center overflow-hidden min-w-0">
                             <Skeleton className="h-[2rem] w-[8rem]" color="dark" />
                           </div>
                         </Grow>
@@ -105,46 +105,49 @@ export function Ltpa35002cSkeleton() {
                         </Grid>
                       </Grow>
 
-                      {/* 화재기본담보 데이터 행 (1개) */}
-                      <Grow
-                        placement="ss"
-                        className="w-full h-[20.2rem] px-2 items-start justify-between border-b border-[var(--color-gray-10)]"
-                      >
-                        <Grow className="gap-2 items-center flex-1 min-w-0">
-                          <div className="w-[2.4rem] flex justify-center shrink-0">
-                            <Skeleton className="h-[1.8rem] w-[1.8rem]" />
-                          </div>
-                          <div className="w-[2.5rem] flex justify-center shrink-0">
-                            <Skeleton className="h-[1.8rem] w-[2rem]" />
-                          </div>
-                          <div className="flex-1 flex justify-start items-center overflow-hidden min-w-0">
-                            <Skeleton className="h-[1.8rem] w-[12rem]" />
-                          </div>
+                      {/* 화재기본담보 데이터 행 스켈레톤 (10개) */}
+                      {Array.from({ length: 6 }).map((_, idx) => (
+                        <Grow
+                          key={idx}
+                          placement="ss"
+                          className="w-full px-2 py-1 items-start justify-between border-b border-[var(--color-gray-10)]"
+                        >
+                          <Grow className="gap-2 items-center flex-1 min-w-0">
+                            <div className="w-[2.4rem] flex justify-center shrink-0">
+                              <Skeleton className="h-[1.8rem] w-[1.8rem]" />
+                            </div>
+                            <div className="w-[2.5rem] flex justify-center shrink-0">
+                              <Skeleton className="h-[1.8rem] w-[2rem]" />
+                            </div>
+                            <div className="flex-1 flex justify-start items-center overflow-hidden min-w-0">
+                              <Skeleton className="h-[1.8rem] w-[12rem]" />
+                            </div>
+                          </Grow>
+                          <Grid className="grid-cols-[6.5rem_5.5rem_6rem_6rem_6rem_5rem_5.5rem] gap-2 shrink-0">
+                            <div className="flex justify-end">
+                              <Skeleton className="h-[1.8rem] w-[4.5rem]" />
+                            </div>
+                            <div className="flex justify-end">
+                              <Skeleton className="h-[1.8rem] w-[4rem]" />
+                            </div>
+                            <div className="flex justify-center">
+                              <Skeleton className="h-[1.8rem] w-[3.5rem]" />
+                            </div>
+                            <div className="flex justify-center">
+                              <Skeleton className="h-[1.8rem] w-[3.5rem]" />
+                            </div>
+                            <div className="flex justify-center">
+                              <Skeleton className="h-[2.2rem] w-[5rem]" />
+                            </div>
+                            <div className="flex justify-center">
+                              <Skeleton className="h-[2.2rem] w-[4.5rem]" />
+                            </div>
+                            <div className="flex justify-center">
+                              <Skeleton className="h-[2.2rem] w-[5rem]" />
+                            </div>
+                          </Grid>
                         </Grow>
-                        <Grid className="grid-cols-[6.5rem_5.5rem_6rem_6rem_6rem_5rem_5.5rem] gap-2 items-center shrink-0">
-                          <div className="flex justify-end">
-                            <Skeleton className="h-[1.8rem] w-[4.5rem]" />
-                          </div>
-                          <div className="flex justify-end">
-                            <Skeleton className="h-[1.8rem] w-[4rem]" />
-                          </div>
-                          <div className="flex justify-center">
-                            <Skeleton className="h-[1.8rem] w-[3.5rem]" />
-                          </div>
-                          <div className="flex justify-center">
-                            <Skeleton className="h-[1.8rem] w-[3.5rem]" />
-                          </div>
-                          <div className="flex justify-center">
-                            <Skeleton className="h-[2.2rem] w-[5rem]" />
-                          </div>
-                          <div className="flex justify-center">
-                            <Skeleton className="h-[2.2rem] w-[4.5rem]" />
-                          </div>
-                          <div className="flex justify-center">
-                            <Skeleton className="h-[2.2rem] w-[5rem]" />
-                          </div>
-                        </Grid>
-                      </Grow>
+                      ))}
                     </Gcol>
 
                     {/* 2. 화재특약담보 영역 */}
