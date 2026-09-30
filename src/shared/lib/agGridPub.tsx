@@ -23,35 +23,11 @@ ModuleRegistry.registerModules([
   // 필요시 엔터프라이즈 모듈 추가
 ]);
 
-import type { FirstDataRenderedEvent, RowDataUpdatedEvent } from 'ag-grid-enterprise';
-
-/**
- * [AG-Grid 행 높이 자동 보정 유틸]
- */
-export const autoAdjustAgGridRowHeights = (
-  api: FirstDataRenderedEvent['api'] | RowDataUpdatedEvent['api'] | null | undefined
-) => {
-  if (!api || typeof window === 'undefined') return;
-  try {
-    if (!api.isDestroyed?.()) {
-      api.resetRowHeights();
-    }
-  } catch {
-    // 예외 무시
-  }
-};
-
-// [전역 AG-Grid 설정] 애니메이션 비활성화 및 최초/데이터 갱신 렌더링 시 높이 자동 재계산
+// [전역 AG-Grid 설정] 애니메이션 비활성화
 provideGlobalGridOptions({
   animateRows: false,
   suppressAnimationFrame: true,
   suppressColumnMoveAnimation: true,
-  onFirstDataRendered: (params) => {
-    autoAdjustAgGridRowHeights(params.api);
-  },
-  onRowDataUpdated: (params) => {
-    autoAdjustAgGridRowHeights(params.api);
-  },
 });
 // 이 파일을 import하는 것만으로 모듈 등록 및 전역 설정이 보장됨
 

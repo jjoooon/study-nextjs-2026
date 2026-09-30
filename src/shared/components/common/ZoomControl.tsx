@@ -3,20 +3,40 @@
  */
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import useMounted from '@/shared/hooks/useMounted';
 import { selectZoomPercent } from '@/shared/store/uiSelectors';
 import { resetZoom, zoomIn, zoomOut, ZOOM_MIN, ZOOM_MAX } from '@/shared/store/uiSlice';
 import { setScale } from '@/shared/utils/scale';
 import { Grow, Typo } from '@atoms';
 import { ZoomOutIcon, ZoomInIcon } from '@icons';
+import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 
 export const ZoomControl = () => {
   const dispatch = useAppDispatch();
   const zoomPercent = useAppSelector(selectZoomPercent);
   const scale = zoomPercent / 100;
+  const [envLabel, setEnvLabel] = useState<string | null>(null);
+
+  useMounted(() => {
+    const href = window.location.href;
+    const hostname = window.location.hostname;
+
+    if (href.includes('ltp-dev.hwgitest.com')) {
+      setEnvLabel('개발');
+    } else if (href.includes('prd-ltp.hwgitest.com')) {
+      setEnvLabel('운영-임시');
+    } else if (href.includes('ltp.hwgitest.com')) {
+      setEnvLabel('테스트');
+    } else if (href.includes('ltp.hwgeneralins.com')) {
+      setEnvLabel('운영');
+    } else if (hostname.includes('localhost') || hostname.includes('127.0.0.1')) {
+      setEnvLabel('로컬');
+    }
+  });
 
   // 모든 iframe을 CSS transform으로 직접 확대/축소
   const broadcastZoomToIframes = (scale: number) => {
@@ -55,6 +75,7 @@ export const ZoomControl = () => {
 
   return (
     <Grow className="items-center">
+      {envLabel && <Badge>{envLabel}</Badge>}
       <Button
         variant={'none'}
         only={'icon'}
