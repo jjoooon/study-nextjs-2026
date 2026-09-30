@@ -33,8 +33,8 @@ const TableFoldContext = createContext<TableFoldContextValue | undefined>(undefi
 const useTableFoldContext = () => useContext(TableFoldContext);
 
 interface TableFoldHeadProps {
-  /** 헤더 영역 왼쪽에 표시할 제목 텍스트 */
-  title?: string;
+  /** 헤더 영역 왼쪽에 표시할 제목 텍스트 또는 컴포넌트(스켈레톤 등) */
+  title?: React.ReactNode;
   /** 헤더 컨테이너에 적용할 추가 CSS 클래스명 */
   className?: string;
   /** 헤더 우측 영역에 렌더링할 추가 컨텐츠 (버튼, 아이콘 등) */
@@ -63,6 +63,7 @@ export const TableFoldHead = ({ children, title, className, variant }: TableFold
   return (
     <Grow data-table-fold="head" placement={'bwc'} className={cn('w-full min-h-[2.5rem]', className)}>
       <div
+        className="w-full"
         role={v === 'accordion' ? 'button' : undefined}
         tabIndex={v === 'accordion' ? 0 : -1}
         onClick={handleClick}
