@@ -391,6 +391,13 @@ const Ltpz059 = () => {
   // 건축물대장 그리드에서 현재 편집(활성화) 중인 필드의 이름 저장 ('동명' 또는 '호명칭')
   const [editableFieldName, setEditableFieldName] = React.useState<string | null>(null);
 
+  // 한번 활성화(조회/선택)된 필드 목록 저장 ('동명', '호명칭')
+  const [activeFields, setActiveFields] = React.useState<string[]>([]);
+
+  // 건축물대장 그리드에서 동명 및 호명칭 선택값 상태 관리
+  const [selectedDongValue, setSelectedDongValue] = React.useState<string | null>(null);
+  const [selectedHoValue, setSelectedHoValue] = React.useState<string | null>(null);
+
   // 보험가입층수 선택 상태 관리 ('전체' | '일부')
   const [insuredFloorType, setInsuredFloorType] = React.useState<InsuredFloorType>(null);
 
@@ -457,7 +464,8 @@ const Ltpz059 = () => {
       return false;
     }
 
-    return String(data.field01) === editableFieldName;
+    const fieldName = String(data.field01);
+    return fieldName === editableFieldName || activeFields.includes(fieldName);
   };
 
   /**
@@ -617,10 +625,14 @@ const Ltpz059 = () => {
           // title 행(표제부/전유부 헤더)일 경우 버튼들을 위해 1칸만 할당, 그 외에는 2칸을 합쳐 넓게 씀
           colSpan: ({ data }) => (data?.rowType === 'title' ? 1 : 2),
           cellClassRules: {
-            'editable-cell': ({ data }) => isEditableRow(data),
+            'editable-cell': ({ data }) => (data?.rowType === 'title' ? true : isEditableRow(data)),
           },
           cellClass: ({ data }) => {
-            const base = 'text-center px-[0.2rem]! tracking-tighter';
+            const base = 'text-center px-[0.2rem]! tracking-tighter editable-cell';
+
+            if (data?.rowType === 'title') {
+              return base;
+            }
 
             if (!isValueRow(data)) {
               return base;
@@ -651,6 +663,16 @@ const Ltpz059 = () => {
           onCellValueChanged: (params) => {
             if (params.newValue) {
               console.log(`${params.data?.field01} 선택한 값: `, params.newValue);
+              const fieldName = String(params.data?.field01 ?? '');
+              if (fieldName === '동명') {
+                setSelectedDongValue(String(params.newValue));
+              } else if (fieldName === '호명칭') {
+                setSelectedHoValue(String(params.newValue));
+              }
+              if (fieldName) {
+                setActiveFields((prev) => (prev.includes(fieldName) ? prev : [...prev, fieldName]));
+              }
+              params.api.refreshCells({ force: true });
             }
           },
           cellRenderer: (params: ICellRendererParams<DummyDataType4>) =>
@@ -666,6 +688,9 @@ const Ltpz059 = () => {
 
                   // 조회 버튼 클릭 시 해당 필드('동명' 또는 '호명칭')의 agSelectCellEditor 및 editable-cell 활성화
                   setEditableFieldName(targetFieldName);
+                  if (targetFieldName) {
+                    setActiveFields((prev) => (prev.includes(targetFieldName) ? prev : [...prev, targetFieldName]));
+                  }
 
                   params.api.forEachNode((node) => {
                     if (node.data?.field01 === targetFieldName) {
@@ -680,6 +705,7 @@ const Ltpz059 = () => {
                       }
                     }
                   });
+                  params.api.refreshCells({ force: true });
                 }}
               >
                 조회
@@ -691,7 +717,36 @@ const Ltpz059 = () => {
         },
         {
           flex: 1,
-          cellClass: 'text-center',
+          cellClassRules: {
+            'editable-cell': ({ data }) => {
+              // 표제부/전유부 타이틀 행(발급 버튼 셀)에 동명 또는 호명칭 선택/활성화 시 editable-cell 추가
+              if (data?.rowType === 'title') {
+                if (data?.field01 === '표제부') {
+                  return editableFieldName === '동명' || Boolean(selectedDongValue);
+                }
+                if (data?.field01 === '전유부') {
+                  return editableFieldName === '호명칭' || Boolean(selectedHoValue);
+                }
+              }
+              return isEditableRow(data);
+            },
+          },
+          cellClass: ({ data }) => {
+            const isDongActive = editableFieldName === '동명' || Boolean(selectedDongValue);
+            const isHoActive = editableFieldName === '호명칭' || Boolean(selectedHoValue);
+
+            if (data?.rowType === 'title') {
+              if (data?.field01 === '표제부' && isDongActive) {
+                return 'text-center editable-cell';
+              }
+              if (data?.field01 === '전유부' && isHoActive) {
+                return 'text-center editable-cell';
+              }
+              return 'text-center';
+            }
+
+            return isEditableRow(data) ? 'text-center editable-cell' : 'text-center';
+          },
           cellRenderer: ({ data }: { data?: DummyDataType4 }) =>
             data?.rowType === 'title' ? (
               // 표제부/전유부 헤더의 우측 두 번째 발급 버튼
@@ -759,7 +814,7 @@ const Ltpz059 = () => {
 
               {/* [분기 1] 텍스트 목록 그리드로 선택할 경우 */}
               {buildingSelectType === '건물구조선택' && (
-                <Grid className="w-full h-full grid-cols-[2fr_2fr_2fr_4fr] gap-3">
+                <Grid className="w-full h-full grid-cols-[1fr_1fr_1fr_1fr] gap-3">
                   {/* 기둥 그리드 */}
                   <div className="ag-theme-alpine radio-mode">
                     <AgGridReact<DummyDataType>
