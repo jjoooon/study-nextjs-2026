@@ -3,7 +3,7 @@
  */
 'use client';
 
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import type { ColDef, ColGroupDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useMemo } from 'react';
@@ -14,6 +14,9 @@ import {
   useDynamicColumnWidths,
   createTooltipValueGetter,
   createFieldRenderer,
+  GridHeaderCheckbox,
+  createHeaderCheckboxParams,
+  createHeaderCheckboxOnCellValueChanged,
 } from '@aggrid';
 import { Grow, Grid, Gcol, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
@@ -319,65 +322,46 @@ const DummyData2: DummyData2Type[] = [
 
 export default function Ltpa600Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
+  const gridRef1 = React.useRef<GridApi<DummyData1Type> | null>(null);
 
   // 담보분류 -------------
   const [rowData, setRowData] = React.useState<DummyData1Type[]>(DummyData1);
 
-  // 라디오 및 체크박스 선택 토글 처리 (부모-자식 동적 연동)
+  // 체크박스 선택 토글 처리 (다중 선택 지원 & 부모-자식 동적 연동)
   const handleSelectRow = React.useCallback((selectedId: number) => {
     setRowData((prev) => {
       const targetRow = prev.find((r) => r.id === selectedId);
       if (!targetRow) return prev;
 
       const isSubRow = targetRow.depth2 !== undefined && targetRow.depth2 !== null;
+      const nextIsCheck = !targetRow.isCheck;
 
       if (isSubRow) {
-        // 1. 클릭한 항목이 자식 체크박스 항목 (depth2가 존재하는 경우)
+        // 자식 항목 토글
         const targetParentDepth1 = targetRow.depth1;
-        const nextIsCheck = !targetRow.isCheck;
+        const updatedRows = prev.map((row) => (row.id === selectedId ? { ...row, isCheck: nextIsCheck } : row));
 
-        return prev.map((row) => {
-          const rowIsSub = row.depth2 !== undefined && row.depth2 !== null;
+        // 하위 자식 중 1개라도 체크되었는지 확인
+        const hasCheckedChild = updatedRows.some(
+          (row) => row.depth1 === targetParentDepth1 && row.depth2 !== undefined && row.depth2 !== null && row.isCheck
+        );
 
-          if (row.id === selectedId) {
-            return { ...row, isCheck: nextIsCheck };
-          }
-
-          if (nextIsCheck) {
-            // 자식 항목을 체크하는 경우:
-            // A. 자기 부모 행은 isCheck: true
-            if (!rowIsSub && row.depth1 === targetParentDepth1) {
-              return { ...row, isCheck: true };
-            }
-            // B. 타 부모 행은 isCheck: false
-            if (!rowIsSub && row.depth1 !== targetParentDepth1) {
-              return { ...row, isCheck: false };
-            }
-            // C. 타 부모 그룹의 자식 행은 isCheck: false
-            if (rowIsSub && row.depth1 !== targetParentDepth1) {
-              return { ...row, isCheck: false };
-            }
+        // 하위가 체크되면 상위 그룹도 자동 체크 (자식이 모두 해제되면 상위 그룹 해제)
+        return updatedRows.map((row) => {
+          const isParentRow = row.depth1 === targetParentDepth1 && (row.depth2 === undefined || row.depth2 === null);
+          if (isParentRow) {
+            return { ...row, isCheck: hasCheckedChild };
           }
           return row;
         });
       } else {
-        // 2. 클릭한 항목이 부모 라디오 항목 (depth2가 undefined/null인 경우)
+        // 부모 항목 토글: 하위 자식 항목들도 함께 상태 동기화
         const targetParentDepth1 = targetRow.depth1;
-
         return prev.map((row) => {
-          const rowIsSub = row.depth2 !== undefined && row.depth2 !== null;
-
-          if (rowIsSub) {
-            // 선택한 부모의 자식 행들은 모두 true, 다른 부모의 자식 행들은 false
-            if (row.depth1 === targetParentDepth1) {
-              return { ...row, isCheck: true };
-            } else {
-              return { ...row, isCheck: false };
-            }
-          } else {
-            // 부모 라디오 중 클릭한 행만 isCheck: true
-            return { ...row, isCheck: row.id === selectedId };
+          if (row.depth1 === targetParentDepth1) {
+            return { ...row, isCheck: nextIsCheck };
           }
+          return row;
         });
       }
     });
@@ -404,7 +388,8 @@ export default function Ltpa600Section() {
   const columnDefs1: ColDef<DummyData1Type>[] = useMemo(
     () => [
       {
-        headerName: '선택',
+        headerComponent: GridHeaderCheckbox,
+        headerComponentParams: createHeaderCheckboxParams(gridRef1, 'isCheck'),
         field: 'isCheck',
         width: attributeColumnWidth(40),
         cellClass: 'text-center',
@@ -413,29 +398,13 @@ export default function Ltpa600Section() {
           const data = params.data;
           if (!data) return null;
 
-          const isSubRow = data.depth2 !== undefined && data.depth2 !== null;
-
-          if (isSubRow) {
-            return (
-              <div className="flex items-center justify-center h-full ">
-                <Checkbox
-                  size="sm"
-                  variant="noneText"
-                  checked={data.isCheck}
-                  onCheckedChange={() => handleSelectRow(data.id)}
-                />
-              </div>
-            );
-          }
-
           return (
             <div className="flex items-center justify-center h-full">
-              <input
-                type="radio"
-                name="dummy1-radio-group"
-                checked={data.isCheck}
-                onChange={() => handleSelectRow(data.id)}
-                className="cp-radio shrink-0 size-[1.4rem] cursor-pointer accent-[var(--color-primary-50)]"
+              <Checkbox
+                size="md"
+                variant="noneText"
+                checked={Boolean(data.isCheck)}
+                onCheckedChange={() => handleSelectRow(data.id)}
               />
             </div>
           );
@@ -676,8 +645,12 @@ export default function Ltpa600Section() {
                     </Grow>
                   </Grow>
 
-                  <div className="ag-theme-alpine radio-selection group-style">
+                  <div className="ag-theme-alpine group-style">
                     <AgGridReact<DummyData1Type>
+                      onGridReady={(params) => {
+                        gridRef1.current = params.api;
+                      }}
+                      onCellValueChanged={createHeaderCheckboxOnCellValueChanged('isCheck')}
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       getRowId={(params) => String(params.data.id)}
                       getRowClass={(params) => {
@@ -755,7 +728,7 @@ export default function Ltpa600Section() {
                   </Grow>
 
                   <Gcol gap={1} className="overflow-hidden min-h-[21.3rem]" placement="ss">
-                    <div className="ag-theme-alpine radio-selection">
+                    <div className="ag-theme-alpine ">
                       <AgGridReact<DummyData2Type>
                         ref={gridRef}
                         noRowsOverlayComponent={AgGridEmptyComponent}

@@ -4,6 +4,7 @@
 'use client';
 
 import { Gcol, Grow, Typo } from '@atoms';
+import { ArrowIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import type { AsideFootDataTotal, AsideFootProps } from './AsideFoot';
@@ -50,7 +51,7 @@ export function AsideFootSummary({ dataTotal, viewKey }: AsideFootProps) {
         <>
           <Gcol
             placement={'bwc'}
-            className="rounded-[0.8rem] border border-[var(--color-gray-15)] px-[1rem] py-[0.8rem] min-h-[4.1rem] shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)] absolute bottom-[calc(100%+0.4rem)] left-0 bg-[var(--color-gray-0)]"
+            className="rounded-[0.8rem] h-auto border border-[var(--color-gray-15)] px-[1rem] py-[0.8rem] min-h-[4.1rem] shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)] absolute bottom-[calc(100%+0.4rem)] left-0 bg-[var(--color-gray-0)]"
           >
             <Grow className="w-full" placement="bwc">
               <Checkbox variant={'button'}>실손의료보험</Checkbox>
@@ -75,6 +76,7 @@ export function AsideFootSummary({ dataTotal, viewKey }: AsideFootProps) {
             <Grow className="w-full" placement="bwc">
               <Button variant={'none'} className="px-0">
                 변경연계설정(실손전환)
+                <ArrowIcon color="var(--color-gray-60)" size={12} className="translate-y-[0.1rem] rotate-180" />
               </Button>
             </Grow>
           </Gcol>

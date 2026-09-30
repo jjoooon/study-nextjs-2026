@@ -75,6 +75,16 @@
   background-color: transparent;
 }
 
+.ag-overlay-loading-center {
+  box-shadow: none;
+  border:0;
+}
+.ag-overlay-loading-center .ag-loading-icon {
+  display: none;
+}
+.ag-overlay-loading-center .ag-loading-text {
+  display: none;
+}
 /* .ag-row-odd {
   background-color: transparent;
 } */
