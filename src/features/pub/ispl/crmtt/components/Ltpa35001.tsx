@@ -1340,9 +1340,9 @@ export const Ltpa35001 = ({
                                     지상{' '}
                                     <Input aria-label="건물 지상층" width={40} align="right" value={'2'} readOnly /> 층
                                     / 지하
-                                    <Input aria-label="건물 지하층" width={26} align="center" value={'1'} readOnly /> 층
+                                    <Input aria-label="건물 지하층" width={40} align="right" value={'1'} readOnly /> 층
                                     /
-                                    <Input aria-label="건물 폭" width={40} align="right" value={'100'} readOnly /> ㎡
+                                    <Input aria-label="건물 폭" width={80} align="right" value={'100'} readOnly /> ㎡
                                   </FormCell>
                                 )}
                               </FormRow>

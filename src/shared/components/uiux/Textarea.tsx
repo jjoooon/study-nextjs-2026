@@ -36,7 +36,7 @@ interface UITextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaEleme
    * - `true`: 가로/세로 모두 크기 조절 가능
    * - `y`: 세로 방향으로만 크기 조절 가능
    * - `false`, `""`: 크기 조절 불가
-   * @default true
+   * @default 'y'
    */
   resize?: boolean | 'y' | '';
   /** 입력 가능한 최대 글자 수 (0 지정 시 표시하지 않음) */
@@ -69,7 +69,7 @@ function Textarea({
   error = false,
   errorMsg = '입력은 필수입니다.',
   errorPs = 'bl',
-  resize = true,
+  resize = 'y',
   maxLength = 0,
   countMode = 'byte',
   countUnit: countUnitProp,

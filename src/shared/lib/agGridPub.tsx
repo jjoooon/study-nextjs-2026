@@ -25,86 +25,20 @@ ModuleRegistry.registerModules([
 
 import type { FirstDataRenderedEvent, RowDataUpdatedEvent } from 'ag-grid-enterprise';
 
-// 이미 보정 처리된 그리드 API 인스턴스를 추적하여 중복 실행 방지
-const processedApis = new WeakSet<object>();
-
 /**
- * [내부망 셀 병합 / 다중행 높이 계산 시점 전역 자동 보정 유틸]
- * 시간 추측(setTimeout) 대신 ResizeObserver를 통해 AG Grid가 실제 행과 셀 텍스트를
- * DOM에 모두 불러와 그려낸 진짜 시점(Drawn Phase)을 정밀 감지하여
- * 셀 병합(spanRows) 크기와 autoHeight를 100% 완벽하게 재산정합니다.
+ * [AG-Grid 행 높이 자동 보정 유틸]
  */
 export const autoAdjustAgGridRowHeights = (
   api: FirstDataRenderedEvent['api'] | RowDataUpdatedEvent['api'] | null | undefined
 ) => {
   if (!api || typeof window === 'undefined') return;
-
-  const apiObj = api as unknown as object;
-  if (processedApis.has(apiObj)) return;
-
-  const apiAny = api as unknown as { getGui?: () => HTMLElement };
-  const gui =
-    typeof apiAny.getGui === 'function'
-      ? apiAny.getGui()
-      : (document.querySelector('.ag-root-wrapper') as HTMLElement | null);
-  const viewportEl =
-    gui?.querySelector('.ag-body-viewport') || gui || (typeof document !== 'undefined' ? document.body : null);
-  if (!viewportEl) return;
-
-  // 브라우저가 AG Grid 셀과 텍스트를 DOM에 모두 그려내는 시점(Drawn Phase)을 정밀 관찰
-  const observer = new ResizeObserver(() => {
-    try {
-      if (api.isDestroyed?.()) {
-        observer.disconnect();
-        return;
-      }
-
-      const rowCount = api.getDisplayedRowCount?.() ?? 0;
-      if (rowCount === 0) return;
-
-      const renderedNodes = api.getRenderedNodes?.() ?? [];
-      if (renderedNodes.length === 0) return;
-
-      // AG Grid가 다 불러와서 그려진 진짜 시점 포착! -> 1회 실행 후 관찰 종료
-      processedApis.add(apiObj);
-      observer.disconnect();
-
-      const savedColumnState = api.getColumnState();
-      const allColumns = api.getColumns();
-      const targetColId = allColumns && allColumns.length > 0 ? allColumns[0].getColId() : null;
-
-      if (targetColId) {
-        // 그려진 직후 1차 정렬 트리거 (두 줄 이상 높이 반영)
-        api.applyColumnState({
-          state: [{ colId: targetColId, sort: 'asc' }],
-          defaultState: { sort: null },
-        });
-
-        // 렌더링 한 틱 뒤 원래 정렬 상태로 100% 원복
-        requestAnimationFrame(() => {
-          try {
-            if (!api.isDestroyed?.()) {
-              api.applyColumnState({
-                state: savedColumnState,
-                applyOrder: true,
-              });
-              api.resetRowHeights();
-              api.refreshCells({ force: true, suppressFlash: true });
-            }
-          } catch {
-            // 무시
-          }
-        });
-      } else {
-        api.resetRowHeights();
-        api.redrawRows();
-      }
-    } catch {
-      observer.disconnect();
+  try {
+    if (!api.isDestroyed?.()) {
+      api.resetRowHeights();
     }
-  });
-
-  observer.observe(viewportEl);
+  } catch {
+    // 예외 무시
+  }
 };
 
 // [전역 AG-Grid 설정] 애니메이션 비활성화 및 최초/데이터 갱신 렌더링 시 높이 자동 재계산

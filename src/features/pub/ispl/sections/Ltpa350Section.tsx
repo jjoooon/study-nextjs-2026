@@ -214,7 +214,7 @@ export default function Ltpa350Section({
   const hideAside = isWidthExpanded ? true : asideToggleState;
 
   // 퍼블 확인용 viewKey 상태 (섹션에서 통합 관리)
-  const [currentViewKey] = useState<ViewKey>('view3');
+  const [currentViewKey] = useState<ViewKey>('view1');
 
   // 신호등(TaskStatusBoard) 항목별 상태 관리
   type TaskStatusItem = { id: number; status: '정상' | '경고' | '중지' | '없음'; label: string; sum: number };

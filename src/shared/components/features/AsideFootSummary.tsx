@@ -47,18 +47,38 @@ export function AsideFootSummary({ dataTotal, viewKey }: AsideFootProps) {
         - 하단 요약 카드 상단에 absolute 배치
       */}
       {viewKey !== 'view3' && viewKey !== 'view4' && viewKey !== 'view5' && (
-        <Grow
-          placement={'bwc'}
-          className="rounded-[0.8rem] border border-[var(--color-gray-15)] px-[1rem] min-h-[4.1rem] shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)] absolute bottom-[calc(100%+0.4rem)] left-0 bg-[var(--color-gray-0)]"
-        >
-          <Checkbox variant={'button'}>4세대</Checkbox>
-          <Grow>
-            <Button variant={'none'} className="px-0">
-              <Typo variant={'amount-md'}>{insGenText}</Typo>
-              <Typo variant={'heading-md'}>원</Typo>
-            </Button>
-          </Grow>
-        </Grow>
+        <>
+          <Gcol
+            placement={'bwc'}
+            className="rounded-[0.8rem] border border-[var(--color-gray-15)] px-[1rem] py-[0.8rem] min-h-[4.1rem] shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)] absolute bottom-[calc(100%+0.4rem)] left-0 bg-[var(--color-gray-0)]"
+          >
+            <Grow className="w-full" placement="bwc">
+              <Checkbox variant={'button'}>실손의료보험</Checkbox>
+              <Grow>
+                <Button variant={'none'} className="px-0">
+                  <Typo variant={'amount-md'}>{insGenText}</Typo>
+                  <Typo variant={'heading-md'}>원</Typo>
+                </Button>
+              </Grow>
+            </Grow>
+
+            <Grow className="w-full" placement="bwc">
+              <Checkbox variant={'button'}>간편실손</Checkbox>
+              <Grow>
+                <Button variant={'none'} className="px-0">
+                  <Typo variant={'amount-md'}>{insGenText}</Typo>
+                  <Typo variant={'heading-md'}>원</Typo>
+                </Button>
+              </Grow>
+            </Grow>
+
+            <Grow className="w-full" placement="bwc">
+              <Button variant={'none'} className="px-0">
+                변경연계설정(실손전환)
+              </Button>
+            </Grow>
+          </Gcol>
+        </>
       )}
 
       {/* 납입보험료 + 청약포인트 요약 카드 */}

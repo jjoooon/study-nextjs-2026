@@ -40,66 +40,66 @@ type DummyDataType = {
   field06: string | number;
 };
 const DummyData: DummyDataType[] = [
-  {
-    id: 1,
-    isCheck: true,
-    field01: '123456',
-    field02: '한화생명1',
-    field03: '123',
-    field04: '서울',
-    field05: '123',
-    field06: '김한화',
-  },
-  {
-    id: 2,
-    isCheck: false,
-    field01: '123456',
-    field02: '한화생명1',
-    field03: '124',
-    field04: '서울',
-    field05: '123',
-    field06: '김한화',
-  },
-  {
-    id: 3,
-    isCheck: false,
-    field01: '123456',
-    field02: '한화생명1',
-    field03: '125',
-    field04: '서울',
-    field05: '123',
-    field06: '김한화',
-  },
-  {
-    id: 4,
-    isCheck: false,
-    field01: '123456',
-    field02: '한화생명1',
-    field03: '126',
-    field04: '서울',
-    field05: '123',
-    field06: '김한화',
-  },
-  {
-    id: 5,
-    isCheck: false,
-    field01: '123456',
-    field02: '한화생명1',
-    field03: '127',
-    field04: '서울',
-    field05: '123',
-    field06: '김한화',
-  },
-  {
-    id: 6,
-    isCheck: false,
-    field01: '123456',
-    field02: '한화생명1',
-    field03: '128',
-    field04: '서울',
-    field05: '123',
-    field06: '김한화',
-  },
+  // {
+  //   id: 1,
+  //   isCheck: true,
+  //   field01: '123456',
+  //   field02: '한화생명1',
+  //   field03: '123',
+  //   field04: '서울',
+  //   field05: '123',
+  //   field06: '김한화',
+  // },
+  // {
+  //   id: 2,
+  //   isCheck: false,
+  //   field01: '123456',
+  //   field02: '한화생명1',
+  //   field03: '124',
+  //   field04: '서울',
+  //   field05: '123',
+  //   field06: '김한화',
+  // },
+  // {
+  //   id: 3,
+  //   isCheck: false,
+  //   field01: '123456',
+  //   field02: '한화생명1',
+  //   field03: '125',
+  //   field04: '서울',
+  //   field05: '123',
+  //   field06: '김한화',
+  // },
+  // {
+  //   id: 4,
+  //   isCheck: false,
+  //   field01: '123456',
+  //   field02: '한화생명1',
+  //   field03: '126',
+  //   field04: '서울',
+  //   field05: '123',
+  //   field06: '김한화',
+  // },
+  // {
+  //   id: 5,
+  //   isCheck: false,
+  //   field01: '123456',
+  //   field02: '한화생명1',
+  //   field03: '127',
+  //   field04: '서울',
+  //   field05: '123',
+  //   field06: '김한화',
+  // },
+  // {
+  //   id: 6,
+  //   isCheck: false,
+  //   field01: '123456',
+  //   field02: '한화생명1',
+  //   field03: '128',
+  //   field04: '서울',
+  //   field05: '123',
+  //   field06: '김한화',
+  // },
 ];
 // Grid2 dummy data (직원번호)
 type DummyDataType2 = {
@@ -332,6 +332,7 @@ const Ltpz042 = () => {
                 key="ltpz042-grid-qualified"
                 getRowId={(params) => `qualified-${params.data.id}`}
                 noRowsOverlayComponent={AgGridEmptyComponent}
+                noRowsOverlayComponentParams={{ message: ' ' }}
                 rowData={rowData}
                 columnDefs={columnDefs}
                 defaultColDef={{ sortable: true, resizable: true }}
