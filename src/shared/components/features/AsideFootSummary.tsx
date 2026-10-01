@@ -5,6 +5,7 @@
 
 import { Gcol, Grow, Typo } from '@atoms';
 import { ArrowIcon } from '@icons';
+import { cn } from '@/shared/lib/shadcn/utils';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
@@ -23,6 +24,36 @@ const DEFAULT_DATA_TOTAL: AsideFootDataTotal = {
 export function AsideFootSummary({ dataTotal, viewKey }: AsideFootProps) {
   // 상위에서 집계 데이터가 내려오지 않더라도 UI가 깨지지 않도록 기본값으로 정규화한다.
   const resolvedDataTotal = dataTotal ?? DEFAULT_DATA_TOTAL;
+
+  // 이름 변수 정의 (5글자 미만: 툴팁 미생성 / 5글자 이상: 툴팁 생성)
+  const silsonName = '김박한화'; // 4글자 -> 툴팁 미생성
+  const easySilsonName = '김박한화김박한화김박한화'; // 12글자 -> 툴팁 생성
+
+  // 이름이 5글자 이상일 때만 툴팁 및 말줄임(truncate) 적용
+  const renderNameCheckbox = (label: string, name: string) => {
+    const isTooltipEnabled = name.length >= 5;
+    const fullText = `${label}(${name})`;
+
+    const checkboxEl = (
+      <Checkbox variant={'button'} size="sm">
+        <b>{label}</b>(
+        <span className={cn('text-[1.1rem]', isTooltipEnabled && 'truncate max-w-[4.8rem]')}>{name}</span>)
+      </Checkbox>
+    );
+
+    if (isTooltipEnabled) {
+      return (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span className="inline-flex">{checkboxEl}</span>
+          </TooltipTrigger>
+          <TooltipContent side="top">{fullText}</TooltipContent>
+        </Tooltip>
+      );
+    }
+
+    return checkboxEl;
+  };
 
   // 납입보험료는 한국 로케일 기준 천 단위 구분기호를 적용해 가독성을 높인다.
   const paymentAmountText = resolvedDataTotal.paymentAmount.toLocaleString('ko-KR');
@@ -55,16 +86,7 @@ export function AsideFootSummary({ dataTotal, viewKey }: AsideFootProps) {
             className="rounded-[0.8rem] h-auto border border-[var(--color-gray-15)] px-[1rem] py-[0.8rem] min-h-[4.1rem] shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)] absolute bottom-[calc(100%+0.4rem)] left-0 bg-[var(--color-gray-0)]"
           >
             <Grow className="w-full" placement="bwc">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span className="inline-flex">
-                    <Checkbox variant={'button'} size="sm">
-                      <b>실손</b>(<span className="text-[1.1rem] truncate max-w-[4.8rem]">김박한화</span>)
-                    </Checkbox>
-                  </span>
-                </TooltipTrigger>
-                <TooltipContent side="top">실손(김박한화)</TooltipContent>
-              </Tooltip>
+              {renderNameCheckbox('실손', silsonName)}
               <Grow>
                 <Button variant={'none'} className="px-0">
                   <Typo variant={'amount-sm'}>{insGenText}</Typo>
@@ -74,17 +96,7 @@ export function AsideFootSummary({ dataTotal, viewKey }: AsideFootProps) {
             </Grow>
 
             <Grow className="text-[1.1rem]" placement="bwc">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span className="inline-flex">
-                    <Checkbox variant={'button'} size="sm">
-                      <b>간편실손</b>(
-                      <span className="text-[1.1rem] truncate max-w-[4.8rem]">김박한화김박한화김박한화</span>)
-                    </Checkbox>
-                  </span>
-                </TooltipTrigger>
-                <TooltipContent side="top">간편실손(김박한화김박한화김박한화)</TooltipContent>
-              </Tooltip>
+              {renderNameCheckbox('간편실손', easySilsonName)}
               <Grow>
                 <Button variant={'none'} className="px-0">
                   <Typo variant={'amount-sm'}>{insGenText}</Typo>
