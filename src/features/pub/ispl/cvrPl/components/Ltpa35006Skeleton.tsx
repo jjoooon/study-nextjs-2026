@@ -79,57 +79,57 @@ export function Ltpa35006Skeleton() {
                       >
                         <FormRow>
                           <FormCell title={<Skeleton className="w-[6rem]" type="text" color="dark" />}>
-                            <Skeleton className="h-[2.8rem] w-full max-w-[24rem]" type="text" />
+                            <Skeleton className="w-full max-w-[34rem]" type="text" />
                           </FormCell>
                           <FormCell title={<Skeleton className="w-[6rem]" type="text" color="dark" />}>
                             <Grow className="gap-1 items-center">
-                              <Skeleton className="h-[2.8rem] w-[20rem]" type="text" />
+                              <Skeleton className="w-[28rem]" type="text" />
                             </Grow>
                           </FormCell>
                           <FormCell title={<Skeleton className="w-[6rem]" type="text" color="dark" />}>
-                            <Skeleton className="h-[2.8rem] w-[20rem]" type="text" />
+                            <Skeleton className="w-[26rem]" type="text" />
                           </FormCell>
                         </FormRow>
 
                         <FormRow>
                           <FormCell title={<Skeleton className="w-[5rem]" type="text" color="dark" />}>
                             <Grow className="gap-1 items-center">
-                              <Skeleton className="h-[2.8rem] w-[20rem]" type="text" />
+                              <Skeleton className="w-[20rem]" type="text" />
                             </Grow>
                           </FormCell>
                           <FormCell title={<Skeleton className="w-[5rem]" type="text" color="dark" />}>
-                            <Skeleton className="h-[2.8rem] w-[20rem]" type="text" />
+                            <Skeleton className="w-[14rem]" type="text" />
                           </FormCell>
                           <FormCell title={<Skeleton className="w-[6rem]" type="text" color="dark" />}>
-                            <Skeleton className="h-[2.8rem] w-[20rem]" type="text" />
+                            <Skeleton className="w-[29rem]" type="text" />
                           </FormCell>
                         </FormRow>
 
                         <FormRow>
                           <FormCell title={<Skeleton className="w-[7rem]" type="text" color="dark" />}>
                             <Grow className="gap-1 items-center">
-                              <Skeleton className="h-[2.8rem] w-[20rem]" type="text" />
+                              <Skeleton className="w-[14rem]" type="text" />
                             </Grow>
                           </FormCell>
                           <FormCell title={<Skeleton className="w-[6rem]" type="text" color="dark" />}>
                             <Grow className="gap-1 items-center">
-                              <Skeleton className="h-[2.8rem] w-[20rem]" type="text" />
+                              <Skeleton className="w-[21rem]" type="text" />
                             </Grow>
                           </FormCell>
                           <FormCell title={<Skeleton className="w-[6rem]" type="text" color="dark" />}>
-                            <Skeleton className="h-[2.8rem] w-[20rem]" type="text" />
+                            <Skeleton className="w-[18rem]" type="text" />
                           </FormCell>
                         </FormRow>
 
                         <FormRow>
                           <FormCell title={<Skeleton className="w-[6rem]" type="text" color="dark" />}>
                             <Grow className="gap-1 items-center">
-                              <Skeleton className="h-[2.8rem] w-[20rem]" type="text" />
+                              <Skeleton className="w-[24rem]" type="text" />
                             </Grow>
                           </FormCell>
                           <FormCell title={<Skeleton className="w-[6rem]" type="text" color="dark" />} colSpan={3}>
                             <Grow className="gap-3 items-center">
-                              <Skeleton className="h-[2.8rem] w-[20rem]" type="text" />
+                              <Skeleton className="w-[36rem]" type="text" />
                             </Grow>
                           </FormCell>
                         </FormRow>
@@ -176,32 +176,33 @@ export function Ltpa35006Skeleton() {
                             </TableRow>
                           </TableHeader>
                           <TableBody>
-                            {[1, 2].map((idx) => (
+                            {[
+                              { c2: 'w-[12rem]', c3: 'w-[22rem]', c4: 'w-[14rem]', c5: 'w-[32rem]', c6: 'w-[18rem]' },
+                              { c2: 'w-[9rem]', c3: 'w-[30rem]', c4: 'w-[18rem]', c5: 'w-[32rem]', c6: 'w-[24rem]' },
+                            ].map((w, idx) => (
                               <TableRow key={idx}>
                                 <TableCell className="text-center">
                                   <Skeleton className="w-[2.4rem] mx-auto" type="text" />
                                 </TableCell>
                                 <TableCell>
-                                  <Skeleton className="h-[2.8rem] w-full" type="text" />
+                                  <Skeleton className={`${w.c2}`} type="text" />
                                 </TableCell>
                                 <TableCell>
-                                  <Skeleton className="h-[2.8rem] w-full" type="text" />
+                                  <Skeleton className={`${w.c3}`} type="text" />
+                                </TableCell>
+                                <TableCell>
+                                  <Skeleton className={`${w.c4}`} type="text" />
                                 </TableCell>
                                 <TableCell>
                                   <Grow className="gap-1 items-center">
-                                    <Skeleton className="h-[2.8rem] w-full" type="text" />
+                                    <Skeleton className={`${w.c5}`} type="text" />
                                   </Grow>
                                 </TableCell>
                                 <TableCell>
-                                  <Grow className="gap-1 items-center">
-                                    <Skeleton className="h-[2.8rem] w-[40rem]" type="text" />
-                                  </Grow>
-                                </TableCell>
-                                <TableCell>
-                                  <Skeleton className="h-[2.8rem] w-full" type="text" />
+                                  <Skeleton className={`${w.c6}`} type="text" />
                                 </TableCell>
                                 <TableCell className="text-center">
-                                  <Skeleton className="h-[2.8rem] w-[4.5rem] mx-auto" type="text" />
+                                  <Skeleton className="w-[4.5rem] mx-auto" type="text" />
                                 </TableCell>
                               </TableRow>
                             ))}
@@ -409,16 +410,13 @@ export function Ltpa35006Skeleton() {
               </Grow>
             </Gcol>
             {/* 계약정보 카드 상세 스켈레톤 */}
-            <Gcol className="w-full rounded-[0.8rem] p-2 bg-[var(--color-gray-5)] gap-1.5 overflow-hidden">
-              {/* 보험시기 선택 바 */}
-              <Skeleton className="h-[2.8rem] w-full" color="dark" />
-
+            <Grow className="gap-2 px-1 w-full mt-[1.2rem]" placement="bwc">
+              <Skeleton className="w-[6rem]" type="text" />
+              <Skeleton className="h-[2.5rem] w-[3.5rem]" />
+            </Grow>
+            <Gcol className="w-full rounded-[0.8rem] gap-1.5 overflow-hidden">
               {/* 계약자 / 피보험자 */}
-              <Gcol gap={1} className="w-full pt-0.5" placement="ss">
-                <Grow className="gap-1.5 items-center w-full">
-                  <Skeleton className="h-[28rem] w-full" color="dark" />
-                </Grow>
-              </Gcol>
+              <Skeleton className="h-[12rem] w-full" />
             </Gcol>
           </Gcol>
         }

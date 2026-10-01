@@ -372,16 +372,13 @@ export function Ltpa35005Skeleton() {
               </Grow>
             </Gcol>
             {/* 계약정보 카드 상세 스켈레톤 */}
-            <Gcol className="w-full rounded-[0.8rem] p-2 bg-[var(--color-gray-5)] gap-1.5 overflow-hidden">
-              {/* 보험시기 선택 바 */}
-              <Skeleton className="h-[2.8rem] w-full" color="dark" />
-
+            <Grow className="gap-2 px-1 w-full mt-[1.2rem]" placement="bwc">
+              <Skeleton className="w-[6rem]" type="text" />
+              <Skeleton className="h-[2.5rem] w-[3.5rem]" />
+            </Grow>
+            <Gcol className="w-full rounded-[0.8rem] gap-1.5 overflow-hidden">
               {/* 계약자 / 피보험자 */}
-              <Gcol gap={1} className="w-full pt-0.5" placement="ss">
-                <Grow className="gap-1.5 items-center w-full">
-                  <Skeleton className="h-[28rem] w-full" color="dark" />
-                </Grow>
-              </Gcol>
+              <Skeleton className="h-[12rem] w-full" />
             </Gcol>
           </Gcol>
         }

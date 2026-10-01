@@ -278,7 +278,6 @@ export function Ltpa35004Skeleton() {
             <Gcol placement="ss" className="w-full gap-1">
               <Grow placement="bwc" className="w-full">
                 <Skeleton className="w-[10rem]" type="text" />
-                <Skeleton className="h-[1.8rem] w-[1.8rem]" />
               </Grow>
               <Skeleton className="h-[7.5rem] w-full" />
             </Gcol>

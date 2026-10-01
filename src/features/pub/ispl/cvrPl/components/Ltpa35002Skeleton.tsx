@@ -82,7 +82,7 @@ export function Ltpa35002Skeleton() {
                       <Skeleton className="h-[2.2rem] w-[40rem]" color="dark" />
                     </Grow>
                   </Grow>
-                  <Gcol className="w-full gap-2 mt-2">
+                  <Gcol className="w-full mt-2">
                     {/* 그리드 툴바 / 검색 바 스켈레톤 */}
                     <Grow
                       placement="bwc"
@@ -94,7 +94,7 @@ export function Ltpa35002Skeleton() {
                         </Grow>
                         <Grow className="w-full">
                           <div className="w-[36rem] shrink-0">
-                            <Skeleton className="h-[2.4rem] w-full" color="dark" type="text" />
+                            <Skeleton className="h-[2rem] w-full" color="dark" type="text" />
                           </div>
                         </Grow>
                       </Grow>
@@ -103,25 +103,50 @@ export function Ltpa35002Skeleton() {
                       </Grid>
                     </Grow>
 
-                    <Gcol className="w-full gap-1 pt-1">
-                      {Array.from({ length: 15 }).map((_, idx) => (
-                        <Grow
-                          key={idx}
-                          className="w-full h-[3.2rem] px-2 items-center border-b border-[var(--color-gray-10)]"
-                        >
-                          <Grow className="gap-2 justify-between items-center flex-1 min-w-0 w-full">
-                            <div className="w-[7rem] flex shrink-0">
-                              <Skeleton className="h-[1.8rem] w-full" type="text" />
-                            </div>
-                            <div className="w-full flex ">
-                              <Skeleton className="h-[1.8rem] w-full" type="text" />
-                            </div>
-                            <div className="w-[7rem] flex shrink-0">
-                              <Skeleton className="h-[1.8rem] w-full" type="text" />
-                            </div>
+                    <Gcol className="w-full gap-1">
+                      {Array.from({ length: 15 }).map((_, idx) => {
+                        const widths = [
+                          'w-[30rem]',
+                          'w-[54rem]',
+                          'w-[28rem]',
+                          'w-[38rem]',
+                          'w-[24rem]',
+                          'w-[16rem]',
+                          'w-[32rem]',
+                          'w-[26rem]',
+                          'w-[35rem]',
+                          'w-[67rem]',
+                          'w-[25rem]',
+                          'w-[17rem]',
+                          'w-[23rem]',
+                          'w-[19rem]',
+                          'w-[21rem]',
+                        ];
+                        const skeletonWidth = widths[idx % widths.length];
+
+                        return (
+                          <Grow
+                            key={idx}
+                            className="w-full h-[3.2rem] px-2 items-center border-b border-[var(--color-gray-10)]"
+                          >
+                            <Grow className="gap-2 justify-between items-center flex-1 min-w-0 w-full">
+                              <div className="w-[7rem] flex shrink-0">
+                                <Skeleton className="h-[1.8rem] w-full" type="text" />
+                              </div>
+                              <div className="w-full flex ">
+                                <Skeleton className={`h-[1.8rem] ${skeletonWidth}`} type="text" />
+                              </div>
+                              <div className="w-[30rem] flex shrink-0">
+                                <Skeleton className="h-[1.8rem] w-full" type="text" />
+                              </div>
+                              <div className="w-[7rem] flex shrink-0 gap-1 items-center">
+                                <Skeleton className="h-[1.6rem] w-[1.6rem]" type="text" />
+                                <Skeleton className="h-[1.8rem] w-[5rem]" type="text" />
+                              </div>
+                            </Grow>
                           </Grow>
-                        </Grow>
-                      ))}
+                        );
+                      })}
                     </Gcol>
                   </Gcol>
                 </LayoutScrollItem>
@@ -157,16 +182,13 @@ export function Ltpa35002Skeleton() {
               </Grow>
             </Gcol>
             {/* 계약정보 카드 상세 스켈레톤 */}
-            <Gcol className="w-full rounded-[0.8rem] p-2 bg-[var(--color-gray-5)] gap-1.5 overflow-hidden">
-              {/* 보험시기 선택 바 */}
-              <Skeleton className="h-[2.8rem] w-full" color="dark" />
-
+            <Grow className="gap-2 px-1 w-full mt-[1.2rem]" placement="bwc">
+              <Skeleton className="w-[6rem]" type="text" />
+              <Skeleton className="h-[2.5rem] w-[3.5rem]" />
+            </Grow>
+            <Gcol className="w-full rounded-[0.8rem] gap-1.5 overflow-hidden">
               {/* 계약자 / 피보험자 */}
-              <Gcol gap={1} className="w-full pt-0.5" placement="ss">
-                <Grow className="gap-1.5 items-center w-full">
-                  <Skeleton className="h-[28rem] w-full" color="dark" />
-                </Grow>
-              </Gcol>
+              <Skeleton className="h-[12rem] w-full" />
             </Gcol>
           </Gcol>
         }
