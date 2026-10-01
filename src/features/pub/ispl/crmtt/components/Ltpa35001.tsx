@@ -140,6 +140,25 @@ export const Ltpa35001 = ({
   // 현재 활성화된 탭 정보
   const currentTab = tabs.find((t) => t.value === active);
 
+  // 오늘 날짜 문자열 (YYYY-MM-DD) 생성 함수
+  const getTodayString = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  // 보험시기 날짜 상태 관리 (기본값: 오늘 날짜)
+  const [startDate, setStartDate] = useState<string>(getTodayString());
+
+  // useEffect를 활용하여 startDate 값이 유효하지 않거나 변경될 때 오늘 날짜 값으로 강제 동기화
+  useEffect(() => {
+    if (!startDate) {
+      setStartDate(getTodayString());
+    }
+  }, [startDate]);
+
   // 태아 '가입' 체크박스 상태 관리 (체크 시 다태아, 다태아연계, 수수료선지급 표시)
   const [isFetusSubscribed, setIsFetusSubscribed] = useState<boolean>(false);
 
@@ -170,8 +189,18 @@ export const Ltpa35001 = ({
                       {/* 공통: 보험시기, 보험기간 */}
                       <FormRow>
                         <FormCell title={'보험시기'}>
-                          <DatePickerInput mode={'single'} />
-                          <Button color={'secondary'} only={'default'} size={'lg'} variant={'outlined'}>
+                          <DatePickerInput
+                            mode={'single'}
+                            value={startDate}
+                            onChange={(_date, formattedValue) => setStartDate(formattedValue)}
+                          />
+                          <Button
+                            color={'secondary'}
+                            only={'default'}
+                            size={'lg'}
+                            variant={'outlined'}
+                            onClick={() => setStartDate(getTodayString())}
+                          >
                             오늘
                           </Button>
                         </FormCell>
