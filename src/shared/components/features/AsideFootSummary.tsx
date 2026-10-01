@@ -54,21 +54,25 @@ export function AsideFootSummary({ dataTotal, viewKey }: AsideFootProps) {
             className="rounded-[0.8rem] h-auto border border-[var(--color-gray-15)] px-[1rem] py-[0.8rem] min-h-[4.1rem] shadow-[0_0.1rem_0.2rem_0_rgba(0,0,0,0.01)] absolute bottom-[calc(100%+0.4rem)] left-0 bg-[var(--color-gray-0)]"
           >
             <Grow className="w-full" placement="bwc">
-              <Checkbox variant={'button'}>실손의료보험</Checkbox>
+              <Checkbox variant={'button'} size="sm">
+                <b>실손</b>(<span className="text-[1.1rem] truncate max-w-[4.8rem]">김박한화</span>)
+              </Checkbox>
               <Grow>
                 <Button variant={'none'} className="px-0">
-                  <Typo variant={'amount-md'}>{insGenText}</Typo>
-                  <Typo variant={'heading-md'}>원</Typo>
+                  <Typo variant={'amount-sm'}>900,000</Typo>
+                  <Typo variant={'body-xs'}>원</Typo>
                 </Button>
               </Grow>
             </Grow>
 
-            <Grow className="w-full" placement="bwc">
-              <Checkbox variant={'button'}>간편실손</Checkbox>
+            <Grow className="text-[1.1rem]" placement="bwc">
+              <Checkbox variant={'button'} size="sm">
+                <b>간편실손</b>(<span className="text-[1.1rem] truncate max-w-[4.8rem]">김박한화김박한화김박한화</span>)
+              </Checkbox>
               <Grow>
                 <Button variant={'none'} className="px-0">
-                  <Typo variant={'amount-md'}>{insGenText}</Typo>
-                  <Typo variant={'heading-md'}>원</Typo>
+                  <Typo variant={'amount-sm'}>900,000</Typo>
+                  <Typo variant={'body-xs'}>원</Typo>
                 </Button>
               </Grow>
             </Grow>

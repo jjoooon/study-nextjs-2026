@@ -38,8 +38,12 @@ const typoVariants = cva('', {
       'button-xs': 'button-xs text-[1.1rem] leading-[normal] tracking-[-0.13rem]',
 
       /** 금액 강조 계열 */
+      'amount-lg':
+        'block text-[1.5rem] font-bold leading-[normal] tracking-[-0.08rem] underline underline-offset-[0.3rem]',
       'amount-md':
-        'block text-[1.4rem] font-bold leading-[normal] tracking-[-0.08rem] underline underline-offset-[0.3rem]',
+        'block text-[1.3rem] font-bold leading-[normal] tracking-[-0.08rem] underline underline-offset-[0.3rem]',
+      'amount-sm':
+        'block text-[1.2rem] font-bold leading-[normal] tracking-[-0.08rem] underline underline-offset-[0.3rem]',
       'amount-xs':
         'block text-[1.1rem] font-bold leading-[normal] tracking-[-0.08rem] underline underline-offset-[0.3rem]',
     },

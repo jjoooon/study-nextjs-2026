@@ -102,9 +102,9 @@ function Checkbox({
   };
   const buttonSizeStyles = {
     xl: 'h-[3rem] pr-[1.2rem] pl-[0.2rem]',
-    lg: 'h-[2.8rem]',
-    md: 'h-[2.5rem]',
-    sm: 'h-[2.2rem]',
+    lg: 'text-[1.3rem] h-[2.8rem]',
+    md: 'text-[1.3rem] h-[2.5rem]',
+    sm: 'gap-0! text-[1.1rem] h-[2.2rem] leading-[1.1rem]',
   };
 
   const colorStyles = {
@@ -261,13 +261,13 @@ function Checkbox({
           isFavorite && favoriteSizeStyles[size],
 
           isButton &&
-            'px-1.5 text-[1.3rem] tracking-[-0.042rem] w-auto rounded-[0.4rem] border border-[var(--color-gray-20)] bg-[var(--color-gray-0)] font-normal leading-normal text-[var(--color-gray-100)] whitespace-nowrap disabled:data-[state=checked]:text-[var(--color-primary-50)] disabled:text-[var(--color-gray-50)]',
+            'px-1.5 text-[1.3rem] tracking-[-0.042rem] w-auto rounded-[0.4rem] border border-[var(--color-gray-20)] bg-(--color-gray-0) font-normal leading-normal text-[var(--color-gray-100)] whitespace-nowrap disabled:data-[state=checked]:text-[var(--color-primary-50)] disabled:text-[var(--color-gray-50)]',
 
           isButton && buttonSizeStyles[size],
           isButton && buttonColorStyles[color],
 
           isChipBox &&
-            'px-2 text-[1.3rem] tracking-[-0.042rem] w-auto rounded-full border border-[var(--color-gray-20)] bg-[var(--color-gray-0)] font-normal leading-normal text-[var(--color-gray-100)] whitespace-nowrap',
+            'px-2 text-[1.3rem] tracking-[-0.042rem] w-auto rounded-full border border-[var(--color-gray-20)] bg-(--color-gray-0) font-normal leading-normal text-[var(--color-gray-100)] whitespace-nowrap',
           isChipBox && chipBoxSizeStyles[size],
           isChipBox && chipBoxColorStyles[color],
 
@@ -287,9 +287,9 @@ function Checkbox({
         {isFavorite ? (
           <Favorite color={checkedState ? checkedColorStyles[color] : 'var(--color-gray-30)'} />
         ) : isButton || isChipBox ? (
-          <Grow className="gap-[0.2rem] tracking-[-0.13rem]" placement="sc">
+          <Grow className={cn('tracking-[-0.13rem]', size === 'sm' ? 'gap-0' : 'gap-[0.2rem]')} placement="sc">
             {icon && variant !== 'noCheckButton' && isButton && (
-              <CheckIcon color={checkedState ? checkedColorStyles[color] : 'var(--color-gray-30)'} />
+              <CheckIcon size={iconSize} color={checkedState ? checkedColorStyles[color] : 'var(--color-gray-30)'} />
             )}
             {children}
           </Grow>

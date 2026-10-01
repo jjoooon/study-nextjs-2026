@@ -395,7 +395,7 @@ export const Ltpa35005 = () => {
                       </FormCell>
                     </FormRow>
                     <FormRow>
-                      <FormCell title={'약관유형'}>
+                      <FormCell title={'약관유형'} className="has-r-border">
                         <Grow gap={2}>
                           <RadioGroup defaultValue="모바일" required>
                             {[
