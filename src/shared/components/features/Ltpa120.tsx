@@ -64,12 +64,17 @@ export const Ltpa120 = ({
   const open = openProp !== undefined ? openProp : internalOpen;
   const setOpen = setOpenProp !== undefined ? setOpenProp : setInternalOpen;
 
-  const handleOpen = () => {
-    if (buttonRef.current) {
-      const rect = buttonRef.current.getBoundingClientRect();
-      setDefaultPosition(getInitialDialogPosition(rect));
+  const handleToggle = () => {
+    if (open) {
+      chatbotUtils.setRef(null);
+      setOpen(false);
+    } else {
+      if (buttonRef.current) {
+        const rect = buttonRef.current.getBoundingClientRect();
+        setDefaultPosition(getInitialDialogPosition(rect));
+      }
+      setOpen(true);
     }
-    setOpen(true);
   };
 
   useMounted(
@@ -97,7 +102,7 @@ export const Ltpa120 = ({
           type="button"
           aria-label={'AI 설계비서'}
           className="max-w-[4rem] w-[4rem] h-[2.8rem] min-w-0 h-[2.8rem] relative shrink-0 flex justify-center"
-          onClick={handleOpen}
+          onClick={handleToggle}
         >
           <span
             className={cn(
