@@ -187,6 +187,7 @@ export function TabPager<T>({
                   key={getValue(tab)}
                   value={getValue(tab)}
                   removable={tabIsRemovable}
+                  data-tab-trigger="true"
                   data-tab-error={error && tabHasError ? 'true' : 'false'}
                   disabled={tabIsDisabled}
                 >
