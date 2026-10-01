@@ -4,6 +4,7 @@
 'use client';
 
 import type { CellClickedEvent, ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import type { CustomCellEditorProps } from 'ag-grid-react';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { withPublicUrl } from '@/shared/utils/url/publicUrl';
@@ -379,6 +380,59 @@ const DummyData4: DummyDataType4[] = [
 ];
 
 /**
+ * 건축물대장 동명 / 호명칭 선택을 위한 셀 에디터 컴포넌트
+ */
+const NewSelectCellEditor = (props: CustomCellEditorProps<DummyDataType4>) => {
+  const newSel = props.data?.field01 === '호명칭';
+  const options = newSel ? ['호명칭1', '호명칭2'] : ['동명1', '동명2'];
+  const [selectedValue, setSelectedValue] = React.useState<string>(String(props.value ?? ''));
+  const selectRef = React.useRef<HTMLSelectElement>(null);
+
+  React.useEffect(() => {
+    if (selectRef.current) {
+      selectRef.current.focus();
+      const timer = setTimeout(() => {
+        try {
+          if ('showPicker' in HTMLSelectElement.prototype) {
+            selectRef.current?.showPicker();
+          }
+        } catch {
+          // ignore
+        }
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newValue = e.target.value;
+    setSelectedValue(newValue);
+    props.onValueChange(newValue);
+    props.stopEditing();
+  };
+
+  return (
+    <div className="w-full h-full flex items-center justify-center">
+      <NativeSelect
+        ref={selectRef}
+        value={selectedValue}
+        onChange={handleChange}
+        size="md"
+        width="full"
+        className="w-full h-full"
+      >
+        <NativeSelectOption value="" disabled hidden></NativeSelectOption>
+        {options.map((opt) => (
+          <NativeSelectOption key={opt} value={opt}>
+            {opt}
+          </NativeSelectOption>
+        ))}
+      </NativeSelect>
+    </div>
+  );
+};
+
+/**
  * 건물구조입력 다이얼로그 (Ltpz059)
  * - 기둥, 지붕, 외벽의 자재 방식을 AG Grid 테이블 혹은 이미지 썸네일을 통해 선택할 수 있는 입력 폼 제공
  * - 조회 결과 매칭을 위한 건축물대장 표시 영역 포함
@@ -625,12 +679,28 @@ const Ltpz059 = () => {
           // title 행(표제부/전유부 헤더)일 경우 버튼들을 위해 1칸만 할당, 그 외에는 2칸을 합쳐 넓게 씀
           colSpan: ({ data }) => (data?.rowType === 'title' ? 1 : 2),
           cellClassRules: {
-            'editable-cell': ({ data }) => (data?.rowType === 'title' ? true : isEditableRow(data)),
+            'editable-cell': ({ data }) => {
+              if (data?.rowType === 'title') {
+                if (data?.field01 === '표제부') {
+                  return true;
+                }
+                if (data?.field01 === '전유부') {
+                  return Boolean(selectedDongValue);
+                }
+              }
+              return isEditableRow(data);
+            },
           },
           cellClass: ({ data }) => {
-            const base = 'text-center px-[0.2rem]! tracking-tighter editable-cell';
+            const base = 'text-center px-[0.2rem]! tracking-tighter';
 
             if (data?.rowType === 'title') {
+              if (data?.field01 === '표제부') {
+                return `${base} editable-cell`;
+              }
+              if (data?.field01 === '전유부') {
+                return selectedDongValue ? `${base} editable-cell` : base;
+              }
               return base;
             }
 
@@ -648,18 +718,7 @@ const Ltpz059 = () => {
 
             return isEditableRow(data);
           },
-          cellEditor: 'agSelectCellEditor',
-          cellEditorParams: (params: { data?: DummyDataType4 }) => {
-            if (params.data?.field01 === '호명칭') {
-              return {
-                values: ['호명칭1', '호명칭2'],
-              };
-            }
-
-            return {
-              values: ['동명1', '동명2'],
-            };
-          },
+          cellEditor: NewSelectCellEditor,
           onCellValueChanged: (params) => {
             if (params.newValue) {
               console.log(`${params.data?.field01} 선택한 값: `, params.newValue);
@@ -683,6 +742,7 @@ const Ltpz059 = () => {
                 only="default"
                 size="sm"
                 variant="contained"
+                disabled={params.data?.field01 === '전유부' && !selectedDongValue}
                 onClick={() => {
                   const targetFieldName = getEditableFieldNameByTitle(params.data?.field01);
 
@@ -750,7 +810,16 @@ const Ltpz059 = () => {
           cellRenderer: ({ data }: { data?: DummyDataType4 }) =>
             data?.rowType === 'title' ? (
               // 표제부/전유부 헤더의 우측 두 번째 발급 버튼
-              <Button color="gray" onClick={() => {}} only="default" size="sm" variant="contained">
+              <Button
+                color="gray"
+                onClick={() => {}}
+                only="default"
+                size="sm"
+                variant="contained"
+                disabled={
+                  data?.field01 === '표제부' ? !selectedDongValue : data?.field01 === '전유부' ? !selectedHoValue : true
+                }
+              >
                 발급
               </Button>
             ) : null,
