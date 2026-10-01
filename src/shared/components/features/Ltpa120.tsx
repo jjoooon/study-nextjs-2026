@@ -14,7 +14,7 @@ import { Grow } from '@atoms';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@uiux/Dialog';
 import { AiBotIcon } from './AiBotIcon';
 
-const CHATBOT_DIALOG_WIDTH = 400;
+const CHATBOT_DIALOG_WIDTH = 640;
 const CHATBOT_DIALOG_HEIGHT = 600;
 const VIEWPORT_MARGIN = 12;
 
@@ -38,6 +38,8 @@ function getInitialDialogPosition(buttonRect: DOMRect): { x: number; y: number }
     y: top + CHATBOT_DIALOG_HEIGHT / 2 - centerY,
   };
 }
+
+const styleClass = `ai-chatbot w-[${CHATBOT_DIALOG_WIDTH / 10}rem] h-[${CHATBOT_DIALOG_HEIGHT / 10}rem] min-w-[19.8rem] min-h-[30rem] max-w-[calc(100vw-2.4rem)] max-h-[calc(100vh-2.4rem)] p-0 gap-0 overflow-hidden grid-rows-[auto_1fr] bg-transparent border-0`;
 
 export interface Ltpa120Props {
   isButton?: boolean;
@@ -120,10 +122,7 @@ export const Ltpa120 = ({
         onEscapeKeyDown={(event) => event.preventDefault()}
         closeButtonClassName="absolute right-[1.2rem] top-[1.8rem] z-10 flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] transition-colors hover:bg-[var(--color-primary-60)] [&>svg]:w-[1.4rem] [&>svg]:h-[1.4rem] [&>svg_path]:fill-white"
         minimizeButtonClassName="absolute right-[4rem] top-[1.8rem] z-10 flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] transition-colors hover:bg-[var(--color-primary-60)] [&>span]:!bg-[var(--color-gray-0)] [&>span]:!border-[var(--color-gray-0)]"
-        className={cn(
-          `ai-chatbot w-[${CHATBOT_DIALOG_WIDTH / 10}rem] h-[60rem] min-w-[19.8rem] min-h-[30rem] max-w-[calc(100vw-2.4rem)] max-h-[calc(100vh-2.4rem)] p-0 gap-0 overflow-hidden grid-rows-[auto_1fr] bg-transparent border-0`,
-          className
-        )}
+        className={cn(styleClass, className)}
       >
         <DialogHeader className="!max-h-[4.9rem] h-[4.9rem] min-h-0 !p-0 items-end">
           <Grow

@@ -1225,7 +1225,19 @@ function DialogContent({
   React.useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (isDragging && !isResizing) {
-        setPosition({ x: e.clientX - dragStart.x, y: e.clientY - dragStart.y });
+        let newX = e.clientX - dragStart.x;
+        let newY = e.clientY - dragStart.y;
+
+        if (contentRef.current) {
+          const rect = contentRef.current.getBoundingClientRect();
+          const maxX = Math.max(0, window.innerWidth - rect.width);
+          const maxY = Math.max(0, window.innerHeight - rect.height);
+
+          newX = Math.min(Math.max(0, newX), maxX);
+          newY = Math.min(Math.max(0, newY), maxY);
+        }
+
+        setPosition({ x: newX, y: newY });
       }
 
       if (isResizing && initialCapture) {
