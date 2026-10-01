@@ -3,9 +3,9 @@
  */
 'use client';
 
+import { cn } from '@/shared/lib/shadcn/utils';
 import { Gcol, Grow, Typo } from '@atoms';
 import { ArrowIcon } from '@icons';
-import { cn } from '@/shared/lib/shadcn/utils';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
