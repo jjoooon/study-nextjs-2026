@@ -77,14 +77,12 @@ export function Ltpa35003Skeleton() {
                         <Grow placement="bwc" className="w-full">
                           <Skeleton className="h-[2.2rem] w-[26rem] rounded-[1rem]" color="dark" />
                           <Grow className="gap-2">
-                            <Skeleton className="h-[2.6rem] w-[11rem] rounded-[0.8rem]" color="dark" />
-                            <Skeleton className="h-[2.6rem] w-[8.5rem] rounded-[0.8rem]" color="dark" />
+                            <Skeleton className="h-[2.6rem] w-[20rem] rounded-[0.8rem]" color="dark" />
                           </Grow>
                         </Grow>
                       </Gcol>
-                      <Grow className="w-full py-2.5 rounded-[0.8rem] bg-[var(--color-gray-5)] gap-1">
-                        <Skeleton className="h-[2rem] w-[2rem] rounded-[0.4rem]" color="dark" />
-                        <Skeleton className="h-[1.6rem] w-[95%] rounded-[1rem]" color="dark" />
+                      <Grow className="w-full p-2.5 rounded-[0.8rem] bg-[var(--color-gray-5)] gap-1">
+                        <Skeleton className="h-[1.6rem] w-full rounded-[1rem]" color="dark" />
                       </Grow>
                     </Gcol>
 
@@ -94,27 +92,20 @@ export function Ltpa35003Skeleton() {
                       <Gcol className="w-full p-3 border rounded-[0.8rem] border-[var(--color-gray-10)] bg-white gap-2.5 ">
                         <Grow className="w-full">
                           <Grow className="gap-2 items-center flex-1 justify-start">
-                            <Skeleton className="h-[2rem] w-[2rem] rounded-[0.4rem]" color="dark" />
-                            <Skeleton className="h-[2rem] w-[80%] rounded-[1rem]" color="dark" />
+                            <Skeleton className="h-[2rem] w-full rounded-[1rem]" color="dark" />
                           </Grow>
                           <Grow placement="ec" className="gap-3 shrink-0">
                             <Grow className="gap-1 items-center">
-                              <Skeleton className="h-[1.8rem] w-[1.8rem] rounded-full" />
-                              <Skeleton className="h-[1.8rem] w-[2.2rem] rounded-[1rem]" />
-                            </Grow>
-                            <Grow className="gap-1 items-center">
-                              <Skeleton className="h-[1.8rem] w-[1.8rem] rounded-full" />
-                              <Skeleton className="h-[1.8rem] w-[3.5rem] rounded-[1rem]" />
+                              <Skeleton className="h-[1.8rem] w-[10rem] rounded-full" />
                             </Grow>
                           </Grow>
                         </Grow>
 
                         {/* 세부 항목 체크박스 목록 */}
-                        <Grid className="grid-cols-[repeat(auto-fill,minmax(14rem,1fr))] w-full gap-2 py-1">
-                          {['w-[7rem]', 'w-[7rem]', 'w-[5rem]', 'w-[5rem]', 'w-[10rem]', 'w-[5rem]'].map(
+                        <Grid className="grid-cols-[repeat(auto-fill,minmax(8rem,1fr))] w-full gap-2 py-1">
+                          {['w-[7rem]', 'w-[7rem]', 'w-[7rem]', 'w-[7rem]', 'w-[10rem]', 'w-[5rem]'].map(
                             (wClass, idx) => (
                               <Grow key={idx} className="gap-1.5 items-center justify-start">
-                                <Skeleton className="h-[1.8rem] w-[1.8rem] rounded-[0.4rem]" />
                                 <Skeleton className={`h-[1.8rem] ${wClass} rounded-[1rem]`} />
                               </Grow>
                             )
@@ -132,17 +123,11 @@ export function Ltpa35003Skeleton() {
                       <Gcol className="w-full p-3 border rounded-[0.8rem] border-[var(--color-gray-10)] bg-white gap-2.5">
                         <Grow className="w-full">
                           <Grow className="gap-2 items-center flex-1 justify-start">
-                            <Skeleton className="h-[2rem] w-[2rem] rounded-[0.4rem]" color="dark" />
                             <Skeleton className="h-[2rem] w-[85%] rounded-[1rem]" color="dark" />
                           </Grow>
                           <Grow placement="ec" className="gap-3 shrink-0">
                             <Grow className="gap-1 items-center">
-                              <Skeleton className="h-[1.8rem] w-[1.8rem] rounded-full" />
-                              <Skeleton className="h-[1.8rem] w-[2.2rem] rounded-[1rem]" />
-                            </Grow>
-                            <Grow className="gap-1 items-center">
-                              <Skeleton className="h-[1.8rem] w-[1.8rem] rounded-full" />
-                              <Skeleton className="h-[1.8rem] w-[3.5rem] rounded-[1rem]" />
+                              <Skeleton className="h-[1.8rem] w-[10rem] rounded-full" />
                             </Grow>
                           </Grow>
                         </Grow>
@@ -157,17 +142,11 @@ export function Ltpa35003Skeleton() {
                       <Gcol className="w-full p-3 border rounded-[0.8rem] border-[var(--color-gray-10)] bg-white gap-2.5">
                         <Grow className="w-full">
                           <Grow className="gap-2 items-center flex-1 justify-start">
-                            <Skeleton className="h-[2rem] w-[2rem] rounded-[0.4rem]" color="dark" />
-                            <Skeleton className="h-[2rem] w-[75%] rounded-[1rem]" color="dark" />
+                            <Skeleton className="h-[2rem] w-[85%] rounded-[1rem]" color="dark" />
                           </Grow>
                           <Grow placement="ec" className="gap-3 shrink-0">
                             <Grow className="gap-1 items-center">
-                              <Skeleton className="h-[1.8rem] w-[1.8rem] rounded-full" />
-                              <Skeleton className="h-[1.8rem] w-[2.2rem] rounded-[1rem]" />
-                            </Grow>
-                            <Grow className="gap-1 items-center">
-                              <Skeleton className="h-[1.8rem] w-[1.8rem] rounded-full" />
-                              <Skeleton className="h-[1.8rem] w-[3.5rem] rounded-[1rem]" />
+                              <Skeleton className="h-[1.8rem] w-[10rem] rounded-full" />
                             </Grow>
                           </Grow>
                         </Grow>
@@ -182,26 +161,19 @@ export function Ltpa35003Skeleton() {
                       <Gcol className="w-full p-3 border rounded-[0.8rem] border-[var(--color-gray-10)] bg-white gap-2.5">
                         <Grow className="w-full">
                           <Grow className="gap-2 items-center flex-1 justify-start">
-                            <Skeleton className="h-[2rem] w-[2rem] rounded-[0.4rem]" color="dark" />
                             <Skeleton className="h-[2rem] w-[78%] rounded-[1rem]" color="dark" />
                           </Grow>
                           <Grow placement="ec" className="gap-3 shrink-0">
                             <Grow className="gap-1 items-center">
-                              <Skeleton className="h-[1.8rem] w-[1.8rem] rounded-full" />
-                              <Skeleton className="h-[1.8rem] w-[2.2rem] rounded-[1rem]" />
-                            </Grow>
-                            <Grow className="gap-1 items-center">
-                              <Skeleton className="h-[1.8rem] w-[1.8rem] rounded-full" />
-                              <Skeleton className="h-[1.8rem] w-[3.5rem] rounded-[1rem]" />
+                              <Skeleton className="h-[1.8rem] w-[10rem] rounded-full" />
                             </Grow>
                           </Grow>
                         </Grow>
 
                         {/* 세부 항목 체크박스 목록 */}
-                        <Grid className="grid-cols-[repeat(auto-fill,minmax(14rem,1fr))] w-full gap-2 py-1">
-                          {['w-[5rem]', 'w-[10rem]', 'w-[11rem]', 'w-[12rem]'].map((wClass, idx) => (
+                        <Grid className="grid-cols-[repeat(auto-fill,minmax(13rem,1fr))] w-full gap-2 py-1">
+                          {['w-[10rem]', 'w-[12rem]', 'w-[13rem]', 'w-[14rem]'].map((wClass, idx) => (
                             <Grow key={idx} className="gap-1.5 items-center justify-start">
-                              <Skeleton className="h-[1.8rem] w-[1.8rem] rounded-[0.4rem]" />
                               <Skeleton className={`h-[1.8rem] ${wClass} rounded-[1rem]`} />
                             </Grow>
                           ))}
@@ -217,17 +189,11 @@ export function Ltpa35003Skeleton() {
                       <Gcol className="w-full p-3 border rounded-[0.8rem] border-[var(--color-gray-10)] bg-white gap-2.5">
                         <Grow className="w-full">
                           <Grow className="gap-2 items-center flex-1 justify-start">
-                            <Skeleton className="h-[2rem] w-[2rem] rounded-[0.4rem]" color="dark" />
                             <Skeleton className="h-[2rem] w-[82%] rounded-[1rem]" color="dark" />
                           </Grow>
                           <Grow placement="ec" className="gap-3 shrink-0">
                             <Grow className="gap-1 items-center">
-                              <Skeleton className="h-[1.8rem] w-[1.8rem] rounded-full" />
-                              <Skeleton className="h-[1.8rem] w-[2.2rem] rounded-[1rem]" />
-                            </Grow>
-                            <Grow className="gap-1 items-center">
-                              <Skeleton className="h-[1.8rem] w-[1.8rem] rounded-full" />
-                              <Skeleton className="h-[1.8rem] w-[3.5rem] rounded-[1rem]" />
+                              <Skeleton className="h-[1.8rem] w-[10rem] rounded-full" />
                             </Grow>
                           </Grow>
                         </Grow>
@@ -235,19 +201,18 @@ export function Ltpa35003Skeleton() {
                         {/* 세부 항목 체크박스 목록 */}
                         <Grid className="grid-cols-[repeat(auto-fill,minmax(14rem,1fr))] w-full gap-2 py-1">
                           {[
-                            'w-[4rem]',
-                            'w-[5rem]',
-                            'w-[5rem]',
                             'w-[5rem]',
                             'w-[6rem]',
                             'w-[6rem]',
                             'w-[6rem]',
-                            'w-[12rem]',
-                            'w-[5rem]',
-                            'w-[13rem]',
+                            'w-[7rem]',
+                            'w-[7rem]',
+                            'w-[7rem]',
+                            'w-[14rem]',
+                            'w-[6rem]',
+                            'w-[14rem]',
                           ].map((wClass, idx) => (
                             <Grow key={idx} className="gap-1.5 items-center justify-start">
-                              <Skeleton className="h-[1.8rem] w-[1.8rem] rounded-[0.4rem]" />
                               <Skeleton className={`h-[1.8rem] ${wClass} rounded-[1rem]`} />
                             </Grow>
                           ))}
@@ -272,11 +237,9 @@ export function Ltpa35003Skeleton() {
                       <Skeleton className="h-[1.5rem] w-[3.5rem] rounded-[0.4rem]" color="dark" />
                     </Gcol>
                     <Gcol className="w-full mb-2 px-1 items-center" gap={1}>
-                      {Array.from({ length: 16 }).map((_, idx) => (
-                        <Grow key={idx} className="w-full justify-center" gap={1}>
-                          <Skeleton className="h-[1.8rem] w-[3.6rem] rounded-[0.4rem]" />
-                        </Grow>
-                      ))}
+                      <Grow className="w-full justify-center" gap={1}>
+                        <Skeleton className="h-[36rem] w-[3.6rem] rounded-[0.4rem]" />
+                      </Grow>
                     </Gcol>
                   </Gcol>
 
@@ -287,18 +250,13 @@ export function Ltpa35003Skeleton() {
                   >
                     <Gcol className="bg-[#F4F4F4] rounded-t-[0.6rem] py-1 gap-1 items-center">
                       <Gcol gap={0} className="items-center gap-1">
-                        <Skeleton className="h-[1.5rem] w-[3.5rem] rounded-[0.4rem]" color="dark" />
-                        <Skeleton className="h-[1.5rem] w-[3.5rem] rounded-[0.4rem]" color="dark" />
-                        <Skeleton className="h-[2.5rem] w-[3.5rem] rounded-[0.4rem]" color="dark" />
+                        <Skeleton className="h-[5.5rem] w-[3.5rem] rounded-[0.4rem]" color="dark" />
                       </Gcol>
-                      <Skeleton className="h-[1.5rem] w-[3.5rem] rounded-[0.4rem]" color="dark" />
                     </Gcol>
                     <Gcol className="w-full mb-2 px-1 items-center" gap={1}>
-                      {Array.from({ length: 5 }).map((_, idx) => (
-                        <Grow key={idx} className="w-full justify-center" gap={1}>
-                          <Skeleton className="h-[1.5rem] w-[3.6rem] rounded-[0.4rem]" />
-                        </Grow>
-                      ))}
+                      <Grow className="w-full justify-center" gap={1}>
+                        <Skeleton className="h-[6.5rem] w-[3.6rem] rounded-[0.4rem]" />
+                      </Grow>
                     </Gcol>
                   </Gcol>
                 </LayoutScrollItem>
