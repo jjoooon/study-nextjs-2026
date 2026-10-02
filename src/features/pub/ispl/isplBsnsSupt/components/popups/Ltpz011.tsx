@@ -233,7 +233,7 @@ const Ltpz011 = () => {
           </Grow>
           <TableFold variant={'default'}>
             <TableFoldHead title="">
-              <Grow>
+              <Grow className="shrink-0">
                 <Typo variant="body-md">(단위: 원)</Typo>
               </Grow>
             </TableFoldHead>
