@@ -3,8 +3,6 @@
  */
 
 'use client';
-import React from 'react';
-import { useState } from 'react';
 import { SearchIcon } from '@/shared/components/icons';
 import { Gcol, Typo, Grow } from '@atoms';
 import { BulletList } from '@common/BulletList';
@@ -24,8 +22,6 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-
-const [caseType, setCaseType] = React.useState('case1');
 
 const Ltpz056 = () => {
   return (
