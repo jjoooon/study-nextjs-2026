@@ -3,7 +3,8 @@
  */
 
 'use client';
-
+import React from 'react';
+import { useState } from 'react';
 import { SearchIcon } from '@/shared/components/icons';
 import { Gcol, Typo, Grow } from '@atoms';
 import { BulletList } from '@common/BulletList';
@@ -23,6 +24,8 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+
+const [caseType, setCaseType] = React.useState('case1');
 
 const Ltpz056 = () => {
   return (
@@ -77,8 +80,15 @@ const Ltpz056 = () => {
               <BulletListItem size="sm">
                 본 서비스는 아래 발송버튼 클릭 시 상기 취급자로 카카오 알림톡(URL주소포함) 발송
               </BulletListItem>
+
+              {/* 케이스1 노출 */}
               <BulletListItem size="sm">
                 발송된 URL을 접속하여 장기보험관련 사진(서류)첨부 시 본 설계번호로 이미지 저장
+              </BulletListItem>
+
+              {/* 케이스2 노출 */}
+              <BulletListItem size="sm">
+                발송된 URL을 접속하여 체크리스트 입력시 설계번호로 해당 내용(설문 + 이미지)이 저장
               </BulletListItem>
             </BulletList>
           </Gcol>
@@ -87,8 +97,10 @@ const Ltpz056 = () => {
               카카오 알림톡 전송 시 주의사항
             </Typo>
             <BulletList>
+              {/* 케이스1 노출 */}
               <BulletListItem size="sm">1회 최대 50매까지 발송(중복발송가능)</BulletListItem>
-              <BulletListItem size="sm">접속환경에 따라 데이터사용료가 부과 가능</BulletListItem>
+
+              <BulletListItem size="sm">접속환경에 따라 데이터사용료가 부과될 수 있음</BulletListItem>
               <BulletListItem size="sm">발송불가시 상기 URL주소 복사하여 사용가능</BulletListItem>
               <BulletListItem size="sm">
                 카카오 알림톡 수신불가시(수신거절, 미설치 등) 문자로 발송
