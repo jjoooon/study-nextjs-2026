@@ -302,9 +302,9 @@ const Ltpz00504 = ({ onClose, recommendData: propRecommendData }: Ltpz00504Props
                   <TableFold>
                     <TableFoldHead
                       title="제한담보"
-                      className="w-full gap-1 flex [&>[role='button']]:shrink-0! *:data-[group='row']:w-full!"
+                      className="w-full gap-1 [&>[role='button']]:shrink-0! grid grid-cols-[1fr_auto]"
                     >
-                      <Grow placement="bwc" className="w-full">
+                      <Grow placement="bwc">
                         <Badge color="primary">15개</Badge>
                         {/* <ConfirmDialog
                           defaultOpen={false}

@@ -6,10 +6,12 @@
 import '@/shared/lib/agGridPub';
 import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Typo, Grow } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
 import { Button } from '@uiux/Button';
 
 // 직업
@@ -46,45 +48,27 @@ const JobDummyData: JobDataType[] = [
     afterInjuryGrade: '2',
     afterJobName: '회사 사무직 종사자',
   },
+];
+
+const DATA_TABS = [
   {
-    id: 3,
-    targetStatus: '변경대상',
-    policyNumber: 'LA12345678901',
-    changedDesignNumber: '계약변경설계이동',
-    beforeInjuryGrade: '1',
-    beforeJobName: '회사 사무직 종사자',
-    afterInjuryGrade: '1',
-    afterJobName: '-',
+    name: '직업정보(상해급수)변경대상',
+    sum: '6',
   },
+];
+
+type GroupTabItem = {
+  id: number;
+  name: string;
+  sum?: number;
+  value: string;
+};
+const groupTabs: GroupTabItem[] = [
   {
-    id: 4,
-    targetStatus: '변경대상',
-    policyNumber: 'LA12345678901',
-    changedDesignNumber: '계약변경설계이동',
-    beforeInjuryGrade: '2',
-    beforeJobName: '회사 사무직 종사자',
-    afterInjuryGrade: '2',
-    afterJobName: '-',
-  },
-  {
-    id: 5,
-    targetStatus: '변경대상',
-    policyNumber: 'LA12345678901',
-    changedDesignNumber: '계약변경설계이동',
-    beforeInjuryGrade: '1',
-    beforeJobName: '회사 사무직 종사자',
-    afterInjuryGrade: '1',
-    afterJobName: '-',
-  },
-  {
-    id: 6,
-    targetStatus: '변경대상',
-    policyNumber: 'LA12345678901',
-    changedDesignNumber: '계약변경설계이동',
-    beforeInjuryGrade: '2',
-    beforeJobName: '회사 사무직 종사자',
-    afterInjuryGrade: '2',
-    afterJobName: '-',
+    id: 1,
+    name: '직업정보(상해급수)변경대상',
+    sum: 6,
+    value: 'tab1',
   },
 ];
 
@@ -93,6 +77,11 @@ interface Ltpz00503Props {
 }
 
 const Ltpz00503 = ({ onClose }: Ltpz00503Props) => {
+  const { tabs, active, setActive } = useTabs<{
+    name?: string;
+    sum?: number;
+    value: string;
+  }>(groupTabs);
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const jobColumnDefs: (ColDef<JobDataType> | ColGroupDef<JobDataType>)[] = [
     {
@@ -193,44 +182,85 @@ const Ltpz00503 = ({ onClose }: Ltpz00503Props) => {
                 <b>신계약 청약서 발행 이전에 기계약의 직업변경 배서(청약중 이후)를 진행</b>바랍니다.
               </Typo>
             </Gcol>
-            <Grid className="grid-rows-[auto_1fr] h-full" gap={2}>
-              <FormTable caption="고객정보 테이블" cols={['w-[12rem]', 'flex-1', 'w-[14.9rem]', 'flex-1']}>
-                <FormRow>
-                  <FormCell title={'고객명'}>김한화</FormCell>
-                  <FormCell
-                    title={
-                      <>
-                        직업정보<b className="text-[#E43939]">(현재 설계)</b>
-                      </>
-                    }
-                  >
-                    2급/제품 및 광고영업원
-                  </FormCell>
-                </FormRow>
-              </FormTable>
 
-              <Gcol className="gap-1 relative">
-                <div className="ag-theme-alpine">
-                  <AgGridReact<JobDataType>
-                    getRowId={(params) => String(params.data.id)}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={JobDummyData}
-                    columnDefs={jobColumnDefs}
-                    defaultColDef={{
-                      sortable: true,
-                      resizable: true,
-                      suppressMovable: true,
-                    }}
-                    headerHeight={30}
-                    rowHeight={30}
-                    domLayout="normal"
-                    tooltipShowMode="whenTruncated"
-                    tooltipShowDelay={0}
-                    animateRows={false}
-                  />
-                </div>
+            <TabPager
+              data={tabs}
+              active={active}
+              setActive={setActive}
+              visibleCount={5}
+              getValue={(tab) => String(tab.value)}
+              renderButtons={false}
+              renderTab={(tab) => (
+                <span className="flex items-center">
+                  <span>{tab.name}</span>
+                  <span>{`(${tab.sum})`}</span>
+                </span>
+              )}
+              renderDropdownItem={false}
+              contentClass="relative overflow-y-auto"
+            >
+              <Gcol gap={6} className="absolute w-full h-full py-3" placement="ss">
+                <Gcol gap={2} placement="ss">
+                  <Gcol gap={1} placement="ss">
+                    <Typo>
+                      <b>김한화</b> 고객님 직업정보(현재 설계 기준): <b>2급/제품 및 광고영업원</b>
+                    </Typo>
+                    <Typo>
+                      직업정보(상해급수): <b>상이 계약 2건</b>
+                    </Typo>
+                  </Gcol>
+                  <div className="ag-theme-alpine">
+                    <AgGridReact<JobDataType>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={JobDummyData}
+                      columnDefs={jobColumnDefs}
+                      defaultColDef={{
+                        sortable: true,
+                        resizable: true,
+                        suppressMovable: true,
+                      }}
+                      headerHeight={30}
+                      rowHeight={30}
+                      domLayout="autoHeight"
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                      animateRows={false}
+                    />
+                  </div>
+                </Gcol>
+
+                <Gcol gap={2} placement="ss">
+                  <Gcol gap={1} placement="ss">
+                    <Typo>
+                      <b>김한화</b> 고객님 직업정보(현재 설계 기준): <b>2급/제품 및 광고영업원</b>
+                    </Typo>
+                    <Typo>
+                      직업정보(상해급수): <b>상이 계약 2건</b>
+                    </Typo>
+                  </Gcol>
+                  <div className="ag-theme-alpine">
+                    <AgGridReact<JobDataType>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={JobDummyData}
+                      columnDefs={jobColumnDefs}
+                      defaultColDef={{
+                        sortable: true,
+                        resizable: true,
+                        suppressMovable: true,
+                      }}
+                      headerHeight={30}
+                      rowHeight={30}
+                      domLayout="autoHeight"
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                      animateRows={false}
+                    />
+                  </div>
+                </Gcol>
               </Gcol>
-            </Grid>
+            </TabPager>
 
             <Gcol variant={'box-detail'} placement={'ss'} className="w-full">
               <Typo variant={'body-sm'} icon={'detail'} color={'gray'}>
