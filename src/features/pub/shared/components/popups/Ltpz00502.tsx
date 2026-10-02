@@ -505,19 +505,35 @@ const Ltpz00502 = ({ onClose }: Ltpz00502Props) => {
                   {[
                     {
                       value: 'option1',
-                      label: '인수기준(3)',
+                      label: '인수기준',
+                      count: '3',
                     },
                     {
                       value: 'option2',
-                      label: '청약완료불가(당수누적)(4)',
+                      label: '청약완료불가',
+                      subLabel: '(당사누적)',
+                      count: '0',
                     },
                     {
                       value: 'option3',
-                      label: '청약완료불가(업계누적)(1)',
+                      label: '청약완료불가',
+                      subLabel: '(업계누적)',
+                      count: '2',
                     },
                   ].map((option) => (
-                    <RadioGroupItem key={option.value} size="lg" value={option.value} variant="tab" width="auto">
-                      {option.label}
+                    <RadioGroupItem
+                      key={option.value}
+                      size="lg"
+                      value={option.value}
+                      variant="tab"
+                      width="auto"
+                      className="gap-2"
+                    >
+                      <Grow className="gap-1">
+                        <span className="text-bold">{option.label}</span>
+                        {option.subLabel && <span className="sub-label">{option.subLabel}</span>}
+                      </Grow>
+                      <span className="count-badge ">{option.count}</span>
                     </RadioGroupItem>
                   ))}
                 </RadioGroup>
