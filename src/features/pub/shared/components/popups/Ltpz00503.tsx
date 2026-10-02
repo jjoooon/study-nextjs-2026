@@ -290,7 +290,7 @@ const Ltpz00503 = ({ onClose }: Ltpz00503Props) => {
                 <BulletListItem size={'sm'} type="dash">
                   상해급수가 동일하더라도 고객님의 정확한 직업정보의 관리를 위하려 재확인 바랍니다.
                 </BulletListItem>
-                <BulletListItem className="mt-2" size={'sm'} type="symbols" before="▶">
+                <BulletListItem className="mt-2" size={'sm'} type="dot">
                   관련문서: [대내-1507-1552]직업정보(상해급수) 일치 관련 신계약 프로세스 변경통보, 장기계약관리파트
                 </BulletListItem>
               </BulletList>
