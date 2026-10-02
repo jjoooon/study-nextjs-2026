@@ -55,8 +55,12 @@ const radioGroupItemVariants = cva(
           'rounded-[0.4rem] border border-[var(--color-border-gray-light)] bg-white font-normal leading-normal text-black data-[required=true]:bg-[var(--color-input-surface-highlight)] data-[required=true]:border-[var(--color-input-border-highlight)] data-[invalid]:text-[var(--color-text-danger)] data-[invalid]:bg-[var(--color-input-surface-error)] data-[invalid]:border-[var(--color-input-border-error)] disabled:data-[state=checked]:text-[var(--color-gray-30)] disabled:data-[state=checked]:shadow-none',
         chipBox:
           'rounded-full border border-[var(--color-gray-20)] bg-[var(--color-gray-0)] font-normal leading-normal text-[var(--color-gray-100)] whitespace-nowrap px-2 text-[1.3rem] tracking-[-0.042rem] w-auto data-[state=checked]:bg-[var(--color-primary-50)] data-[state=checked]:text-[#FFF] data-[state=checked]:border-[#ff6135] ',
-        tab: `h-[3rem] rounded-full border-transparent bg-[var(--color-gray-10)] px-[0.8rem] py-[0.4rem] text-[1.2rem] font-bold leading-normal tracking-[-0.13rem] text-[var(--color-gray-70)] 
-        data-[state=checked]:border-transparent! data-[state=checked]:bg-[var(--color-gray-70)]! data-[state=checked]:text-white! data-[state=checked]:shadow-none!`,
+        tab: `h-[2.6rem] rounded-full border-transparent bg-[#F4F4F4] px-[1rem] py-[0.4rem] text-[1.2rem] font-bold leading-normal tracking-[-0.13rem] text-[#000] inline-flex items-center gap-1 transition-all select-none
+        data-[state=checked]:border-transparent! data-[state=checked]:bg-[#1f2429]! data-[state=checked]:text-white! [&_.count-badge]:shadow-[0px_2px_4px_0px_rgba(0,0,0,0.1)]!
+        [&_.count-badge]:inline-flex [&_.count-badge]:px-[0.4rem] [&_.count-badge]:items-center [&_.count-badge]:justify-center [&_.count-badge]:min-w-[1.6rem] [&_.count-badge]:h-[1.6rem] [&_.count-badge]:rounded-full [&_.count-badge]:text-[1.2rem] [&_.count-badge]:font-bold [&_.count-badge]:leading-none [&_.count-badge]:tracking-normal [&_.count-badge]:pb-[0.25rem] [&_.count-badge]:text-center [&_.count-badge]:bg-white [&_.count-badge]:text-gray-100
+        data-[state=checked]:[&_.count-badge]:bg-[#fbc02d]! data-[state=checked]:[&_.count-badge]:text-gray-100!
+        
+        [&_.sub-label]:text-[#e53935] data-[state=checked]:[&_.sub-label]:text-[#E43939]!`,
         none: '',
       },
       size: {

@@ -10,9 +10,10 @@ import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Typo, Grow } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
+import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
 
 // 직업
 type JobDataType = {
@@ -172,15 +173,17 @@ const Ltpz00503 = ({ onClose }: Ltpz00503Props) => {
       >
         <div className="overflow-x-hidden overflow-y-auto w-full h-full">
           <Grid className="w-full grid-rows-[auto_1fr_auto] h-full" gap={3}>
-            <Gcol variant={'box-info'} placement={'ss'} className="w-full">
-              <Typo variant={'body-sm'} icon={'info'}>
-                고객 직업정보(상해급수)가 불일치 할 경우 <b>신계약 체결이 불가능</b>합니다. 해당 신계약 청약완료 이전에
-                기계약의 작업변경을 완료하시기 바랍니다.
-              </Typo>
+            <Gcol gap={1}>
+              <Gcol variant={'box-info'} placement={'ss'} className="w-full">
+                <Typo variant={'body-sm'} icon={'info'}>
+                  고객 직업정보(상해급수)가 불일치 할 경우 <b>신계약 체결이 불가능</b>합니다. 해당 신계약 청약완료
+                  이전에 기계약의 작업변경을 완료하시기 바랍니다.
+                </Typo>
 
-              <Typo variant={'body-sm'} icon={'info'}>
-                <b>신계약 청약서 발행 이전에 기계약의 직업변경 배서(청약중 이후)를 진행</b>바랍니다.
-              </Typo>
+                <Typo variant={'body-sm'} icon={'info'}>
+                  <b>신계약 청약서 발행 이전에 기계약의 직업변경 배서(청약중 이후)를 진행</b>바랍니다.
+                </Typo>
+              </Gcol>
             </Gcol>
 
             <TabPager
@@ -191,10 +194,14 @@ const Ltpz00503 = ({ onClose }: Ltpz00503Props) => {
               getValue={(tab) => String(tab.value)}
               renderButtons={false}
               renderTab={(tab) => (
-                <span className="flex items-center">
+                <Grow className="items-center" gap={1}>
                   <span>{tab.name}</span>
-                  <span>{`(${tab.sum})`}</span>
-                </span>
+                  <Badge
+                    variant={'rounded'}
+                    color={'primary'}
+                    className="font-bold min-w-[1.8rem]"
+                  >{`${tab.sum}`}</Badge>
+                </Grow>
               )}
               renderDropdownItem={false}
               contentClass="relative overflow-y-auto"

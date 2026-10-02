@@ -11,7 +11,6 @@ import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
-import { ConfirmDialog } from '@common/ConfirmDialog';
 import { RecommendCard } from '@common/RecommendCard';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Badge } from '@uiux/Badge';
@@ -300,11 +299,8 @@ const Ltpz00504 = ({ onClose, recommendData: propRecommendData }: Ltpz00504Props
               <Gcol className="w-full" placement="ss" gap={2}>
                 <Grow className="w-full" gap={5} placement="ss">
                   <TableFold>
-                    <TableFoldHead
-                      title="제한담보"
-                      className="w-full gap-1 [&>[role='button']]:shrink-0! grid grid-cols-[1fr_auto]"
-                    >
-                      <Grow placement="bwc">
+                    <TableFoldHead title="제한담보" className="w-full gap-1 flex">
+                      <Grow placement="bwc" className="w-full">
                         <Badge color="primary">15개</Badge>
                         {/* <ConfirmDialog
                           defaultOpen={false}
