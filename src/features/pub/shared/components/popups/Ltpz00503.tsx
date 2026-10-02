@@ -13,7 +13,6 @@ import { BulletList, BulletListItem } from '@common/BulletList';
 import { TabPager } from '@common/TabPager';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
 
 // 직업
 type JobDataType = {
@@ -48,13 +47,6 @@ const JobDummyData: JobDataType[] = [
     beforeJobName: '회사 사무직 종사자',
     afterInjuryGrade: '2',
     afterJobName: '회사 사무직 종사자',
-  },
-];
-
-const DATA_TABS = [
-  {
-    name: '직업정보(상해급수)변경대상',
-    sum: '6',
   },
 ];
 
