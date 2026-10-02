@@ -63,7 +63,6 @@ export const TableFoldHead = ({ children, title, className, variant }: TableFold
   return (
     <Grow data-table-fold="head" placement={'bwc'} className={cn('w-full min-h-[2.5rem]', className)}>
       <div
-        className="w-full"
         role={v === 'accordion' ? 'button' : undefined}
         tabIndex={v === 'accordion' ? 0 : -1}
         onClick={handleClick}
