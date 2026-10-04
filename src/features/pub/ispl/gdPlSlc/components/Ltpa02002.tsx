@@ -4,12 +4,6 @@
 
 'use client';
 
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import Image from 'next/image';
-import { useState } from 'react';
-import * as React from 'react';
-import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
 import { BulletItem } from '@common/BulletList';
@@ -31,6 +25,12 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import Image from 'next/image';
+import * as React from 'react';
+import { useState } from 'react';
+import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 
 import '@/shared/lib/agGridPub';
 
@@ -253,9 +253,8 @@ export function Ltpa02002({ userType }: { userType: string }) {
   const customerType = userType;
 
   const analysisOptionList = [
-    { value: '기계약 유지(부족자금)', label: '기계약 유지(부족자금)' },
-    { value: '일부 리모델링', label: '일부 리모델링' },
-    { value: '기계약 전체 누적해소', label: '기계약 전체 누적해소' },
+    { value: '1', label: '기계약 유지하고, 부족한 담보를 중심으로 한 설계' },
+    { value: '2', label: '기계약과의 누적을 체크하지 않은 설계' },
   ] as const;
 
   const columnDefs4: ColDef<DummyDataListDetailType>[] = [
@@ -519,7 +518,6 @@ export function Ltpa02002({ userType }: { userType: string }) {
             <Grow>
               <Button
                 variant="contained"
-                color="coolgray"
                 size={'lg'}
                 onClick={() => {
                   setDataNone(false);
@@ -527,7 +525,8 @@ export function Ltpa02002({ userType }: { userType: string }) {
                   setLoadingAI(true);
                 }}
               >
-                설계추천
+                <AiIcon size={18} color={'#FFF'} color2={'#FFF'} />
+                설계 추천
               </Button>
               <Button
                 variant="outlined"
@@ -562,19 +561,19 @@ export function Ltpa02002({ userType }: { userType: string }) {
           {isFilterOptionOpen && (
             <Grid
               variant="box-round-b"
-              className="absolute top-[calc(100%-.6rem)] left-0 w-full bg-[var(--color-blue-gray-10)] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] pt-2.5 pb-[2.5rem] grid-cols-[1fr_1fr_1fr] gap-[2.4rem] z-10 pl-[6.7rem]! pr-[13.4rem]! justify-stretch! "
+              className="absolute top-[calc(100%-.6rem)] left-0 w-full bg-[var(--color-blue-gray-10)] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] pt-2.5 pb-[2.5rem] grid-cols-[1fr_1fr_1fr] gap-[2.4rem] z-10 pl-[6.7rem]! pr-[16.4rem]! justify-stretch! "
               placement="ss"
             >
               {/* 상품특징 */}
               <Gcol gap={2} placement="ss">
                 <Gcol placement="ss" gap={1}>
                   <Typo tag="h4" variant={'heading-sm'} color={'blueGray'}>
-                    상품관련
+                    상품유형
                   </Typo>
                   <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3" gap={2}>
                     <RadioGroup
+                      variant="tab"
                       width={'full'}
-                      className="gap-[0.4rem] w-full grid grid-cols-[1fr_1fr] items-start"
                       defaultValue={isProductOptionOpen}
                       onValueChange={(value) => setIsProductOptionOpen(value)}
                     >
@@ -582,18 +581,12 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         { value: '상품옵션', label: '상품옵션' },
                         { value: '상품선택', label: '상품선택' },
                       ].map((opt, idx) => (
-                        <RadioGroupItem
-                          key={'po' + idx}
-                          value={opt.value}
-                          variant="noCheckButton"
-                          size={'lg'}
-                          className="w-full text-left"
-                        >
+                        <RadioGroupItem key={'po' + idx} value={opt.value} size={'lg'}>
                           {opt.label}
                         </RadioGroupItem>
                       ))}
                     </RadioGroup>
-                    <Gcol className="bg-[var(--color-gray-5)] rounded-[0.4rem] p-2 w-full" placement="ss">
+                    <Gcol className="px-1 w-full" placement="ss">
                       {isProductOptionOpen === '상품옵션' ? (
                         <>
                           {/* 간편고지/일반고지 */}
@@ -601,19 +594,13 @@ export function Ltpa02002({ userType }: { userType: string }) {
                             width={'full'}
                             value={simpleType}
                             onValueChange={handleOnChangeNcMttTpcd}
-                            className="gap-[0.4rem] w-full grid grid-cols-[1fr_1fr] items-start"
+                            className="bg-[var(--color-blue-gray-10)] gap-[0.4rem] px-[0.8rem] py-[0.4rem] w-full grid grid-cols-[1fr_1fr]"
                           >
                             {[
                               { value: '간편고지형', label: '간편고지형' },
                               { value: '일반고지형', label: '일반고지형' },
                             ].map((opt) => (
-                              <RadioGroupItem
-                                key={opt.value}
-                                value={opt.value}
-                                variant="button"
-                                size={'lg'}
-                                className="w-full text-left"
-                              >
+                              <RadioGroupItem key={opt.value} value={opt.value} size={'md'}>
                                 {opt.label}
                               </RadioGroupItem>
                             ))}
@@ -623,19 +610,13 @@ export function Ltpa02002({ userType }: { userType: string }) {
                             width={'full'}
                             value={noRefundValue}
                             onValueChange={handleOnChangeNcnYn}
-                            className="gap-[0.4rem] w-full grid grid-cols-[1fr_1fr] items-start"
+                            className="bg-[var(--color-blue-gray-10)] gap-[0.4rem] px-[0.8rem] py-[0.4rem] w-full grid grid-cols-[1fr_1fr]"
                           >
                             {[
                               { value: '무해지형', label: '무해지형' },
                               { value: '기본형', label: '기본형' },
                             ].map((opt) => (
-                              <RadioGroupItem
-                                key={opt.value}
-                                value={opt.value}
-                                variant="button"
-                                size={'lg'}
-                                className="w-full text-left"
-                              >
+                              <RadioGroupItem key={opt.value} value={opt.value} size={'md'}>
                                 {opt.label}
                               </RadioGroupItem>
                             ))}
@@ -645,19 +626,13 @@ export function Ltpa02002({ userType }: { userType: string }) {
                             width={'full'}
                             value={premiumWaiverValue}
                             onValueChange={handleOnChangePymXmpYn}
-                            className="gap-[0.4rem] w-full grid grid-cols-[1fr_1fr] items-start"
+                            className="bg-[var(--color-blue-gray-10)] gap-[0.4rem] px-[0.8rem] py-[0.4rem] w-full grid grid-cols-[1fr_1fr]"
                           >
                             {[
                               { value: '납입면제형', label: '납입면제형' },
                               { value: '납입면제미운영형', label: '납입면제미운영형' },
                             ].map((opt) => (
-                              <RadioGroupItem
-                                key={opt.value}
-                                value={opt.value}
-                                variant="button"
-                                size={'lg'}
-                                className="w-full text-left"
-                              >
+                              <RadioGroupItem key={opt.value} value={opt.value} size={'md'}>
                                 {opt.label}
                               </RadioGroupItem>
                             ))}
@@ -667,19 +642,13 @@ export function Ltpa02002({ userType }: { userType: string }) {
                             width={'full'}
                             value={maturityValue}
                             onValueChange={handleOnChangeNdFlgcd}
-                            className="gap-[0.4rem] w-full grid grid-cols-[1fr_1fr] items-start"
+                            className="bg-[var(--color-blue-gray-10)] gap-[0.4rem] px-[0.8rem] py-[0.4rem] w-full grid grid-cols-[1fr_1fr]"
                           >
                             {[
                               { value: '세만기', label: '세만기' },
                               { value: '연만기', label: '연만기' },
                             ].map((opt) => (
-                              <RadioGroupItem
-                                key={opt.value}
-                                value={opt.value}
-                                variant="button"
-                                size={'lg'}
-                                className="w-full text-left"
-                              >
+                              <RadioGroupItem key={opt.value} value={opt.value} size={'md'}>
                                 {opt.label}
                               </RadioGroupItem>
                             ))}
@@ -687,7 +656,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         </>
                       ) : (
                         <>
-                          <Gcol placement="ss" gap={1}>
+                          <Gcol variant="box-round" placement="ss" gap={1}>
                             <Grid className="grid-cols-[1fr_auto] gap-1 items-center w-full">
                               <Input
                                 size={'sm'}
@@ -744,6 +713,194 @@ export function Ltpa02002({ userType }: { userType: string }) {
                 </Gcol>
               </Gcol>
 
+              {/* 담보군 */}
+              <Gcol placement="ss" gap={1}>
+                <Typo tag="h4" variant={'heading-sm'} color={'blueGray'}>
+                  담보군
+                </Typo>
+                <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3 w-full" gap={2}>
+                  <Grow placement="ss" className="w-full">
+                    <Typo
+                      variant="heading-sm"
+                      color="blueGray"
+                      className="flex w-[5rem] pt-[0.3rem] h-[2.8rem] items-center shrink-1"
+                    >
+                      담보군
+                    </Typo>
+                    <Gcol className="gap-1" placement="ss">
+                      <Checkbox
+                        value="사망/후유"
+                        variant="button"
+                        className="w-[9.2rem]"
+                        checked={selectedCoverageValues.includes('사망/후유')}
+                        onCheckedChange={(checked) => {
+                          setSelectedCoverageValues((prev) => {
+                            const nextChecked = checked === true;
+                            if (nextChecked) {
+                              return prev.includes('사망/후유') ? prev : [...prev, '사망/후유'];
+                            }
+                            return prev.filter((value) => value !== '사망/후유');
+                          });
+                        }}
+                      >
+                        사망/후유
+                      </Checkbox>
+                      <Grow className="w-full" placement="sc">
+                        <Checkbox
+                          value="진단비"
+                          variant="button"
+                          className="w-[9.2rem]"
+                          checked={selectedCoverageValues.includes('진단비')}
+                          onCheckedChange={handleDiagnosisToggle}
+                        >
+                          진단비
+                        </Checkbox>
+                        <Grow
+                          variant="box"
+                          className="h-[2.8rem] py-0 px-2 rounded-[0.4rem] gap-3 w-full"
+                          placement="sc"
+                        >
+                          <Checkbox
+                            size="sm"
+                            checked={coverageSubValues.includes('진단비-암')}
+                            onCheckedChange={(checked) => handleSubCoverageToggle('진단비-암', checked)}
+                          >
+                            암
+                          </Checkbox>
+                          <Checkbox
+                            size="sm"
+                            checked={coverageSubValues.includes('진단비-뇌')}
+                            onCheckedChange={(checked) => handleSubCoverageToggle('진단비-뇌', checked)}
+                          >
+                            뇌
+                          </Checkbox>
+                          <Checkbox
+                            size="sm"
+                            checked={coverageSubValues.includes('진단비-심')}
+                            onCheckedChange={(checked) => handleSubCoverageToggle('진단비-심', checked)}
+                          >
+                            심장
+                          </Checkbox>
+                        </Grow>
+                      </Grow>
+                      <Checkbox
+                        value="입원/통원"
+                        variant="button"
+                        className="w-[9.2rem]"
+                        checked={selectedCoverageValues.includes('입원/통원')}
+                        onCheckedChange={(checked) => {
+                          setSelectedCoverageValues((prev) => {
+                            const nextChecked = checked === true;
+                            if (nextChecked) {
+                              return prev.includes('입원/통원') ? prev : [...prev, '입원/통원'];
+                            }
+                            return prev.filter((value) => value !== '입원/통원');
+                          });
+                        }}
+                      >
+                        입원/통원
+                      </Checkbox>
+                      <Grow className="w-full" placement="sc">
+                        <Checkbox
+                          value="수술/치료"
+                          variant="button"
+                          className="w-[9.2rem]"
+                          checked={selectedCoverageValues.includes('수술/치료')}
+                          onCheckedChange={handleSurgeryToggle}
+                        >
+                          수술/치료
+                        </Checkbox>
+                        <Grow
+                          variant="box"
+                          className="h-[2.8rem] py-0 px-2 rounded-[0.4rem] gap-3 w-full"
+                          placement="sc"
+                        >
+                          <Checkbox
+                            size="sm"
+                            checked={coverageSubValues.includes('수술치료-암')}
+                            onCheckedChange={(checked) => handleSubCoverageToggle('수술치료-암', checked)}
+                          >
+                            암
+                          </Checkbox>
+                          <Checkbox
+                            size="sm"
+                            checked={coverageSubValues.includes('수술치료-뇌')}
+                            onCheckedChange={(checked) => handleSubCoverageToggle('수술치료-뇌', checked)}
+                          >
+                            뇌
+                          </Checkbox>
+                          <Checkbox
+                            size="sm"
+                            checked={coverageSubValues.includes('수술치료-심')}
+                            onCheckedChange={(checked) => handleSubCoverageToggle('수술치료-심', checked)}
+                          >
+                            심장
+                          </Checkbox>
+                        </Grow>
+                      </Grow>
+                      <Checkbox
+                        value="골절/화상"
+                        variant="button"
+                        className="w-[9.2rem]"
+                        checked={selectedCoverageValues.includes('골절/화상')}
+                        onCheckedChange={(checked) => {
+                          setSelectedCoverageValues((prev) => {
+                            const nextChecked = checked === true;
+                            if (nextChecked) {
+                              return prev.includes('골절/화상') ? prev : [...prev, '골절/화상'];
+                            }
+                            return prev.filter((value) => value !== '골절/화상');
+                          });
+                        }}
+                      >
+                        골절/화상
+                      </Checkbox>
+                      <Checkbox
+                        value="검사/지원"
+                        variant="button"
+                        className="w-[9.2rem]"
+                        checked={selectedCoverageValues.includes('검사/지원')}
+                        onCheckedChange={(checked) => {
+                          setSelectedCoverageValues((prev) => {
+                            const nextChecked = checked === true;
+                            if (nextChecked) {
+                              return prev.includes('검사/지원') ? prev : [...prev, '검사/지원'];
+                            }
+                            return prev.filter((value) => value !== '검사/지원');
+                          });
+                        }}
+                      >
+                        검사/지원
+                      </Checkbox>
+                    </Gcol>
+                  </Grow>
+                  <Divider dir="row" color="gray-light" className="w-full" />
+
+                  <Grow placement="ss" className="w-full">
+                    <Typo
+                      variant="heading-sm"
+                      color="blueGray"
+                      className="flex w-[5rem] pt-[0.3rem] h-[2.8rem] items-center shrink-1"
+                    >
+                      패키지
+                    </Typo>
+                    <Grow className="w-full">
+                      <Button
+                        variant={'contained'}
+                        color={isCoveragePackage ? 'primary' : 'coolgray-light'}
+                        size={'lg'}
+                        className="w-full justify-start!"
+                        onClick={() => setIsCoveragePackage((prev) => !prev)}
+                      >
+                        <PaperIcon />
+                        보장패키지
+                      </Button>
+                    </Grow>
+                  </Grow>
+                  <Typo icon="info">선택 시, 담보군이 포함된 설계안을 찾습니다.</Typo>
+                </Gcol>
+              </Gcol>
+
               {/* 보장분석 or 고지유형 */}
               {customerType === 'recent' ? (
                 // 20260810 - 구조 수정
@@ -790,6 +947,26 @@ export function Ltpa02002({ userType }: { userType: string }) {
                     </Tooltip>
                   </Grow>
                   <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3" gap={2}>
+                    <RadioGroup
+                      width={'full'}
+                      className="gap-[0.4rem] [&>div]:w-full"
+                      value={selectedAnalysisValue}
+                      onValueChange={handleOnChangeLackAmtCcFlgcd}
+                    >
+                      {analysisOptionList.map((opt) => (
+                        <RadioGroupItem
+                          key={opt.value}
+                          value={opt.value}
+                          variant="button"
+                          size={'lg'}
+                          disabled={!lastInquiryDate}
+                          className="!w-full !text-left"
+                        >
+                          {opt.label}
+                        </RadioGroupItem>
+                      ))}
+                    </RadioGroup>
+
                     <Grow gap={2}>
                       {lastInquiryDate && (
                         <Typo tag="b" variant={'heading-sm'}>
@@ -822,26 +999,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         </>
                       )}
                     </Grow>
-
-                    <RadioGroup
-                      width={'full'}
-                      className="gap-[0.4rem] [&>div]:w-full"
-                      value={selectedAnalysisValue}
-                      onValueChange={handleOnChangeLackAmtCcFlgcd}
-                    >
-                      {analysisOptionList.map((opt) => (
-                        <RadioGroupItem
-                          key={opt.value}
-                          value={opt.value}
-                          variant="button"
-                          size={'lg'}
-                          disabled={!lastInquiryDate}
-                          className="!w-full !text-left"
-                        >
-                          {opt.label}
-                        </RadioGroupItem>
-                      ))}
-                    </RadioGroup>
+                    <Typo icon="info">타이틀: 보장분석 진행하면 기계약을 확인할 수 있습니다.</Typo>
                   </Gcol>
                 </Gcol>
               ) : (
@@ -922,180 +1080,6 @@ export function Ltpa02002({ userType }: { userType: string }) {
                   </Gcol>
                 </Gcol>
               )}
-
-              {/* 담보군 */}
-              <Gcol placement="ss" gap={1}>
-                <Typo tag="h4" variant={'heading-sm'} color={'blueGray'}>
-                  담보군
-                </Typo>
-                <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3 w-full" gap={2}>
-                  <Grow className="w-full">
-                    <Button
-                      variant={'contained'}
-                      color={isCoveragePackage ? 'primary' : 'coolgray-light'}
-                      size={'lg'}
-                      className="w-full"
-                      onClick={() => setIsCoveragePackage((prev) => !prev)}
-                    >
-                      <PaperIcon />
-                      보장패키지
-                    </Button>
-                  </Grow>
-                  <Divider dir="row" color="gray-light" className="w-full" />
-                  <Gcol className="gap-1 w-full" placement="ss">
-                    <Checkbox
-                      value="사망/후유"
-                      variant="button"
-                      className="w-[9.2rem]"
-                      checked={selectedCoverageValues.includes('사망/후유')}
-                      onCheckedChange={(checked) => {
-                        setSelectedCoverageValues((prev) => {
-                          const nextChecked = checked === true;
-                          if (nextChecked) {
-                            return prev.includes('사망/후유') ? prev : [...prev, '사망/후유'];
-                          }
-                          return prev.filter((value) => value !== '사망/후유');
-                        });
-                      }}
-                    >
-                      사망/후유
-                    </Checkbox>
-                    <Grow className="w-full" placement="sc">
-                      <Checkbox
-                        value="진단비"
-                        variant="button"
-                        className="w-[9.2rem]"
-                        checked={selectedCoverageValues.includes('진단비')}
-                        onCheckedChange={handleDiagnosisToggle}
-                      >
-                        진단비
-                      </Checkbox>
-                      <Grow variant="box" className="h-[2.8rem] py-0 px-2 rounded-[0.4rem] gap-3 w-full" placement="sc">
-                        <Checkbox
-                          size="sm"
-                          checked={coverageSubValues.includes('진단비-암')}
-                          onCheckedChange={(checked) => handleSubCoverageToggle('진단비-암', checked)}
-                        >
-                          암
-                        </Checkbox>
-                        <Checkbox
-                          size="sm"
-                          checked={coverageSubValues.includes('진단비-뇌')}
-                          onCheckedChange={(checked) => handleSubCoverageToggle('진단비-뇌', checked)}
-                        >
-                          뇌
-                        </Checkbox>
-                        <Checkbox
-                          size="sm"
-                          checked={coverageSubValues.includes('진단비-심')}
-                          onCheckedChange={(checked) => handleSubCoverageToggle('진단비-심', checked)}
-                        >
-                          심장
-                        </Checkbox>
-                        <Checkbox
-                          size="sm"
-                          checked={coverageSubValues.includes('진단비-기타')}
-                          onCheckedChange={(checked) => handleSubCoverageToggle('진단비-기타', checked)}
-                        >
-                          기타
-                        </Checkbox>
-                      </Grow>
-                    </Grow>
-                    <Checkbox
-                      value="입원/통원"
-                      variant="button"
-                      className="w-[9.2rem]"
-                      checked={selectedCoverageValues.includes('입원/통원')}
-                      onCheckedChange={(checked) => {
-                        setSelectedCoverageValues((prev) => {
-                          const nextChecked = checked === true;
-                          if (nextChecked) {
-                            return prev.includes('입원/통원') ? prev : [...prev, '입원/통원'];
-                          }
-                          return prev.filter((value) => value !== '입원/통원');
-                        });
-                      }}
-                    >
-                      입원/통원
-                    </Checkbox>
-                    <Grow className="w-full" placement="sc">
-                      <Checkbox
-                        value="수술/치료"
-                        variant="button"
-                        className="w-[9.2rem]"
-                        checked={selectedCoverageValues.includes('수술/치료')}
-                        onCheckedChange={handleSurgeryToggle}
-                      >
-                        수술/치료
-                      </Checkbox>
-                      <Grow variant="box" className="h-[2.8rem] py-0 px-2 rounded-[0.4rem] gap-3 w-full" placement="sc">
-                        <Checkbox
-                          size="sm"
-                          checked={coverageSubValues.includes('수술치료-암')}
-                          onCheckedChange={(checked) => handleSubCoverageToggle('수술치료-암', checked)}
-                        >
-                          암
-                        </Checkbox>
-                        <Checkbox
-                          size="sm"
-                          checked={coverageSubValues.includes('수술치료-뇌')}
-                          onCheckedChange={(checked) => handleSubCoverageToggle('수술치료-뇌', checked)}
-                        >
-                          뇌
-                        </Checkbox>
-                        <Checkbox
-                          size="sm"
-                          checked={coverageSubValues.includes('수술치료-심')}
-                          onCheckedChange={(checked) => handleSubCoverageToggle('수술치료-심', checked)}
-                        >
-                          심장
-                        </Checkbox>
-                        <Checkbox
-                          size="sm"
-                          checked={coverageSubValues.includes('수술치료-기타')}
-                          onCheckedChange={(checked) => handleSubCoverageToggle('수술치료-기타', checked)}
-                        >
-                          기타
-                        </Checkbox>
-                      </Grow>
-                    </Grow>
-                    <Checkbox
-                      value="골절/화상"
-                      variant="button"
-                      className="w-[9.2rem]"
-                      checked={selectedCoverageValues.includes('골절/화상')}
-                      onCheckedChange={(checked) => {
-                        setSelectedCoverageValues((prev) => {
-                          const nextChecked = checked === true;
-                          if (nextChecked) {
-                            return prev.includes('골절/화상') ? prev : [...prev, '골절/화상'];
-                          }
-                          return prev.filter((value) => value !== '골절/화상');
-                        });
-                      }}
-                    >
-                      골절/화상
-                    </Checkbox>
-                    <Checkbox
-                      value="검사/지원"
-                      variant="button"
-                      className="w-[9.2rem]"
-                      checked={selectedCoverageValues.includes('검사/지원')}
-                      onCheckedChange={(checked) => {
-                        setSelectedCoverageValues((prev) => {
-                          const nextChecked = checked === true;
-                          if (nextChecked) {
-                            return prev.includes('검사/지원') ? prev : [...prev, '검사/지원'];
-                          }
-                          return prev.filter((value) => value !== '검사/지원');
-                        });
-                      }}
-                    >
-                      검사/지원
-                    </Checkbox>
-                  </Gcol>
-                </Gcol>
-              </Gcol>
             </Grid>
           )}
         </Grow>

@@ -3,11 +3,11 @@
  */
 'use client';
 
+import { ErrorMsg } from '@common/ErrorMsg';
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { ErrorMsg } from '@common/ErrorMsg';
 
 /**
  * RadioGroup 내부 아이템들에 에러 및 필수 상태를 전파하기 위한 컨텍스트입니다.
@@ -25,6 +25,12 @@ const RadioGroupContext = React.createContext<{
   allowDeselect?: boolean;
   /** 값 변경 핸들러 */
   handleValueChange?: (value: string) => void;
+  /** 라디오 그룹 변형 */
+  variant?: 'default' | 'button' | 'noCheckButton' | 'chipBox' | 'tab' | 'folderTab' | 'tabBadge' | 'none';
+  /** 아이템 크기 */
+  size?: 'lg' | 'md' | 'sm';
+  /** 아이템 색상 */
+  color?: 'primary' | 'info';
 }>({
   error: false,
   required: false,
@@ -32,6 +38,9 @@ const RadioGroupContext = React.createContext<{
   selectedValue: undefined,
   allowDeselect: true,
   handleValueChange: undefined,
+  variant: undefined,
+  size: undefined,
+  color: undefined,
 });
 
 const radioGroupItemVariants = cva(
@@ -55,11 +64,34 @@ const radioGroupItemVariants = cva(
           'rounded-[0.4rem] border border-[var(--color-border-gray-light)] bg-white font-normal leading-normal text-black data-[required=true]:bg-[var(--color-input-surface-highlight)] data-[required=true]:border-[var(--color-input-border-highlight)] data-[invalid]:text-[var(--color-text-danger)] data-[invalid]:bg-[var(--color-input-surface-error)] data-[invalid]:border-[var(--color-input-border-error)] disabled:data-[state=checked]:text-[var(--color-gray-30)] disabled:data-[state=checked]:shadow-none',
         chipBox:
           'rounded-full border border-[var(--color-gray-20)] bg-[var(--color-gray-0)] font-normal leading-normal text-[var(--color-gray-100)] whitespace-nowrap px-2 text-[1.3rem] tracking-[-0.042rem] w-auto data-[state=checked]:bg-[var(--color-primary-50)] data-[state=checked]:text-[#FFF] data-[state=checked]:border-[#ff6135] ',
-        tab: `h-[2.6rem] rounded-full border-transparent bg-[#F4F4F4] px-[1rem] py-[0.4rem] text-[1.2rem] font-bold leading-normal tracking-[-0.13rem] text-[#000] inline-flex items-center gap-1 transition-all select-none
+        folderTab: `h-[3.2rem] px-[1.6rem] text-[1.3rem] font-bold leading-normal tracking-[-0.04rem] inline-flex items-center justify-center select-none transition-all
+        rounded-t-[0.4rem] rounded-b-none -mr-px relative z-0
+        bg-white text-[var(--color-gray-90,#222)]
+        border-t border-l border-r border-[var(--color-border-gray-light,#d8d8d8)]
+        border-b-[0.1rem] border-b-[var(--color-primary-50,#ff5c2e)]
+        hover:text-[var(--color-primary-50,#ff5c2e)] hover:bg-[var(--color-gray-5,#f9f9f9)]
+        data-[state=checked]:bg-white! data-[state=checked]:text-black!
+        data-[state=checked]:border-t-[0.3rem]! data-[state=checked]:border-t-[var(--color-primary-50,#ff5c2e)]!
+        data-[state=checked]:border-l-[0.1rem]! data-[state=checked]:border-l-[var(--color-primary-50,#ff5c2e)]!
+        data-[state=checked]:border-r-[0.1rem]! data-[state=checked]:border-r-[var(--color-primary-50,#ff5c2e)]!
+        data-[state=checked]:border-b-[0.1rem]! data-[state=checked]:border-b-white!
+        data-[state=checked]:-mb-[0.1rem]! data-[state=checked]:z-10!`,
+        tab: `h-[3.2rem] px-[1.6rem] text-[1.3rem] font-bold leading-normal tracking-[-0.04rem] inline-flex items-center justify-center select-none transition-all
+        rounded-t-[0.4rem] rounded-b-none -mr-px relative z-0
+        bg-white text-[var(--color-gray-90,#222)]
+        border-t border-l border-r border-[var(--color-border-gray-light,#d8d8d8)]
+        border-b-[0.1rem] border-b-[var(--color-primary-50,#ff5c2e)]
+        hover:text-[var(--color-primary-50,#ff5c2e)] hover:bg-[var(--color-gray-5,#f9f9f9)]
+        data-[state=checked]:bg-white! data-[state=checked]:text-black!
+        data-[state=checked]:border-t-[0.3rem]! data-[state=checked]:border-t-[var(--color-primary-50,#ff5c2e)]!
+        data-[state=checked]:border-l-[0.1rem]! data-[state=checked]:border-l-[var(--color-primary-50,#ff5c2e)]!
+        data-[state=checked]:border-r-[0.1rem]! data-[state=checked]:border-r-[var(--color-primary-50,#ff5c2e)]!
+        data-[state=checked]:border-b-[0.1rem]! data-[state=checked]:border-b-white!
+        data-[state=checked]:-mb-[0.1rem]! data-[state=checked]:z-10!`,
+        tabBadge: `h-[2.6rem] rounded-full border-transparent bg-[#F4F4F4] px-[1rem] py-[0.4rem] text-[1.2rem] font-bold leading-normal tracking-[-0.13rem] text-[#000] inline-flex items-center gap-1 transition-all select-none
         data-[state=checked]:border-transparent! data-[state=checked]:bg-[#1f2429]! data-[state=checked]:text-white! [&_.count-badge]:shadow-[0px_2px_4px_0px_rgba(0,0,0,0.1)]!
         [&_.count-badge]:inline-flex [&_.count-badge]:px-[0.4rem] [&_.count-badge]:items-center [&_.count-badge]:justify-center [&_.count-badge]:min-w-[1.6rem] [&_.count-badge]:h-[1.6rem] [&_.count-badge]:rounded-full [&_.count-badge]:text-[1.2rem] [&_.count-badge]:font-bold [&_.count-badge]:leading-none [&_.count-badge]:tracking-normal [&_.count-badge]:pb-[0.25rem] [&_.count-badge]:text-center [&_.count-badge]:bg-white [&_.count-badge]:text-gray-100
         data-[state=checked]:[&_.count-badge]:bg-[#fbc02d]! data-[state=checked]:[&_.count-badge]:text-gray-100!
-        
         [&_.sub-label]:text-[#e53935] data-[state=checked]:[&_.sub-label]:text-[#E43939]!`,
         none: '',
       },
@@ -158,6 +190,48 @@ const radioGroupItemVariants = cva(
         className:
           'data-[state=checked]:bg-[#006ff2] data-[state=checked]:text-[#FFF] data-[state=checked]:border-[#006ff2] data-[state=checked]:shadow-none',
       },
+      {
+        variant: 'tab',
+        size: 'lg',
+        className: 'h-[3.2rem] px-[1.6rem] text-[1.3rem]',
+      },
+      {
+        variant: 'tab',
+        size: 'md',
+        className: 'h-[2.8rem] px-[1.2rem] text-[1.2rem]',
+      },
+      {
+        variant: 'tab',
+        size: 'sm',
+        className: 'h-[2.4rem] px-[0.9rem] text-[1.1rem]',
+      },
+      {
+        variant: 'tab',
+        color: 'info',
+        className:
+          'border-b-[#006ff2] hover:text-[#006ff2] data-[state=checked]:border-t-[#006ff2]! data-[state=checked]:border-l-[#006ff2]! data-[state=checked]:border-r-[#006ff2]!',
+      },
+      {
+        variant: 'folderTab',
+        size: 'lg',
+        className: 'h-[3.2rem] px-[1.6rem] text-[1.3rem]',
+      },
+      {
+        variant: 'folderTab',
+        size: 'md',
+        className: 'h-[2.8rem] px-[1.2rem] text-[1.2rem]',
+      },
+      {
+        variant: 'folderTab',
+        size: 'sm',
+        className: 'h-[2.4rem] px-[0.9rem] text-[1.1rem]',
+      },
+      {
+        variant: 'folderTab',
+        color: 'info',
+        className:
+          'border-b-[#006ff2] hover:text-[#006ff2] data-[state=checked]:border-t-[#006ff2]! data-[state=checked]:border-l-[#006ff2]! data-[state=checked]:border-r-[#006ff2]!',
+      },
     ],
     defaultVariants: {
       variant: 'default',
@@ -210,6 +284,20 @@ interface RadioGroupExtraProps {
    */
   errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
   /**
+   * 라디오 그룹의 기본 변형 스타일
+   */
+  variant?: 'default' | 'button' | 'noCheckButton' | 'chipBox' | 'tab' | 'folderTab' | 'tabBadge' | 'none';
+  /**
+   * 라디오 그룹 아이템의 기본 크기
+   * @default 'lg'
+   */
+  size?: 'lg' | 'md' | 'sm';
+  /**
+   * 라디오 그룹 아이템의 기본 색상
+   * @default 'primary'
+   */
+  color?: 'primary' | 'info';
+  /**
    * 라디오 그룹 컨테이너의 너비
    * - `full`: 100% 너비 적용
    * - `auto`: 콘텐츠 크기에 맞춤
@@ -241,6 +329,9 @@ const RadioGroup = React.forwardRef<
       className,
       error,
       errorMsg,
+      variant,
+      size,
+      color,
       width = 'auto',
       errorPs = 'bl',
       value,
@@ -258,6 +349,7 @@ const RadioGroup = React.forwardRef<
     const groupRequired = Boolean(required);
     const groupDisabled = Boolean(disabled);
     const canDeselect = clearable ?? allowDeselect;
+    const isTabGroup = variant === 'tab' || variant === 'folderTab';
 
     const [internalValue, setInternalValue] = React.useState<string | undefined>(defaultValue);
     const isControlled = value !== undefined;
@@ -284,11 +376,19 @@ const RadioGroup = React.forwardRef<
           selectedValue: selectedValue ?? undefined,
           allowDeselect: canDeselect,
           handleValueChange,
+          variant,
+          size,
+          color,
         }}
       >
         <div className={cn('relative', width === 'full' ? 'w-full' : 'w-auto')}>
           <RadioGroupPrimitive.Root
-            className={cn('cp-radio flex items-center justify-start flex-wrap gap-x-2 gap-y-1', className)}
+            className={cn(
+              isTabGroup
+                ? 'cp-radio-tabs flex items-end justify-start relative w-full border-b-[0.1rem] border-b-[var(--color-primary-50,#ff5c2e)]'
+                : 'cp-radio flex items-center justify-start flex-wrap gap-x-2 gap-y-1',
+              className
+            )}
             value={selectedValue ?? undefined}
             defaultValue={defaultValue}
             onValueChange={handleValueChange}
@@ -345,8 +445,9 @@ const RadioGroupItem = React.forwardRef<
     {
       className,
       variant,
-      size = 'lg',
-      color = 'primary',
+      size,
+      color,
+      width,
       children,
       error = false,
       errorMsg: _errorMsg = '선택은 필수입니다.',
@@ -355,12 +456,6 @@ const RadioGroupItem = React.forwardRef<
     },
     ref
   ) => {
-    const isButton = variant === 'button';
-    const isNoCheckButton = variant === 'noCheckButton';
-    const isChipBox = variant === 'chipBox';
-    const isTab = variant === 'tab';
-    const generatedId = React.useId();
-    const radioId = props.id || generatedId;
     const {
       error: groupError,
       required: groupRequired,
@@ -368,11 +463,26 @@ const RadioGroupItem = React.forwardRef<
       selectedValue,
       allowDeselect,
       handleValueChange,
+      variant: groupVariant,
+      size: groupSize,
+      color: groupColor,
     } = React.useContext(RadioGroupContext);
+
+    const resolvedVariant = variant ?? groupVariant ?? 'default';
+    const resolvedSize = size ?? groupSize ?? 'lg';
+    const resolvedColor = color ?? groupColor ?? 'primary';
+
+    const isButton = resolvedVariant === 'button';
+    const isNoCheckButton = resolvedVariant === 'noCheckButton';
+    const isChipBox = resolvedVariant === 'chipBox';
+    const isTab = resolvedVariant === 'tab' || resolvedVariant === 'folderTab';
+    const isTabBadge = resolvedVariant === 'tabBadge';
+    const generatedId = React.useId();
+    const radioId = props.id || generatedId;
     const isError = error || groupError;
     const isRequired = Boolean(props.required || groupRequired);
     const isDisabled = Boolean(props.disabled || groupDisabled);
-    const indicatorSize = size === 'sm' ? 'md' : size;
+    const indicatorSize = resolvedSize === 'sm' ? 'md' : resolvedSize;
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       props.onClick?.(e);
@@ -384,13 +494,20 @@ const RadioGroupItem = React.forwardRef<
     };
 
     return (
-      <div className="relative flex items-center gap-1">
+      <div
+        className={cn(
+          'relative',
+          !isTab && 'flex items-center gap-1',
+          isTab && 'inline-flex items-end -mr-px',
+          (width === 'full' || className?.includes('w-full')) && 'w-full flex-1'
+        )}
+      >
         <RadioGroupPrimitive.Item
           ref={ref}
           id={radioId}
           onClick={handleClick}
           className={cn(
-            radioGroupItemVariants({ variant, size, color }),
+            radioGroupItemVariants({ variant: resolvedVariant, size: resolvedSize, color: resolvedColor, width }),
             'relative whitespace-nowrap',
             isError &&
               'bg-[var(--color-input-surface-error)]! border-[var(--color-input-border-error)]! border-[0.2rem]!',
@@ -398,20 +515,20 @@ const RadioGroupItem = React.forwardRef<
             isButton && 'pl-[2.2rem]',
             className
           )}
-          data-variant={variant || undefined}
+          data-variant={resolvedVariant || undefined}
           data-required={isRequired}
           data-invalid={isError ? '' : undefined}
           aria-invalid={isError ? true : undefined}
           {...props}
-          {...(isChipBox || isTab || variant === 'none' ? {} : { size: undefined })}
+          {...(isChipBox || isTab || isTabBadge || resolvedVariant === 'none' ? {} : { size: undefined })}
         >
           {isButton ? (
             <div
               className={cn(
-                'border border-[var(--color-gray-15)]! absolute left-[0.6rem] rounded-full flex items-center justify-center bg-white  focus:!outline-none tracking-[-0.13rem]',
-                size === 'sm'
+                'border border-[var(--color-gray-15)]! absolute left-[0.6rem] rounded-full flex items-center justify-center bg-white focus:!outline-none tracking-[-0.13rem]',
+                resolvedSize === 'sm'
                   ? 'top-[0.35rem] h-[1.2rem] w-[1.2rem]'
-                  : size === 'md'
+                  : resolvedSize === 'md'
                     ? 'top-[0.45rem] h-[1.4rem] w-[1.4rem]'
                     : 'top-[0.55rem] h-[1.4rem] w-[1.4rem]'
               )}
@@ -419,27 +536,27 @@ const RadioGroupItem = React.forwardRef<
               <RadioGroupPrimitive.Indicator className="flex items-center justify-center whitespace-nowrap focus:!outline-none">
                 <div
                   className={cn(
-                    radioIndicatorVariants({ size: 'lg', color, disabled: isDisabled }),
-                    size === 'sm' ? 'h-[0.7rem] w-[0.7rem]' : 'h-[0.8rem] w-[0.8rem]'
+                    radioIndicatorVariants({ size: 'lg', color: resolvedColor, disabled: isDisabled }),
+                    resolvedSize === 'sm' ? 'h-[0.7rem] w-[0.7rem]' : 'h-[0.8rem] w-[0.8rem]'
                   )}
                 />
               </RadioGroupPrimitive.Indicator>
             </div>
-          ) : !(isNoCheckButton || isChipBox || isTab) ? (
+          ) : !(isNoCheckButton || isChipBox || isTab || isTabBadge) ? (
             <RadioGroupPrimitive.Indicator className="flex items-center justify-center whitespace-nowrap">
               <div
                 className={cn(
-                  radioIndicatorVariants({ size: indicatorSize, color, disabled: isDisabled }),
-                  size === 'lg' && 'h-[1rem] w-[1rem]',
-                  size === 'md' && 'h-[0.6rem] w-[0.6rem]'
+                  radioIndicatorVariants({ size: indicatorSize, color: resolvedColor, disabled: isDisabled }),
+                  resolvedSize === 'lg' && 'h-[1rem] w-[1rem]',
+                  resolvedSize === 'md' && 'h-[0.6rem] w-[0.6rem]'
                 )}
               />
             </RadioGroupPrimitive.Indicator>
           ) : null}
-          {children && (isButton || isNoCheckButton || isChipBox || isTab) && children}
+          {children && (isButton || isNoCheckButton || isChipBox || isTab || isTabBadge) && children}
         </RadioGroupPrimitive.Item>
 
-        {children && !isButton && !isNoCheckButton && !isChipBox && !isTab && (
+        {children && !isButton && !isNoCheckButton && !isChipBox && !isTab && !isTabBadge && (
           <label
             htmlFor={radioId}
             className={cn(

@@ -90,6 +90,17 @@ const [value, setValue] = useState('option1');
                     </RadioGroupItem>
                   </RadioGroup>
                 </Gcol>
+                <Gcol gap={1} className="w-full">
+                  <p className="text-[1.2rem] font-bold text-[var(--color-text-sub)]">Tab (폴더 탭 타입)</p>
+                  <RadioGroup defaultValue="1" variant="tab" width="full">
+                    <RadioGroupItem value="1" id="doc-tab-1">
+                      상품옵션
+                    </RadioGroupItem>
+                    <RadioGroupItem value="2" id="doc-tab-2">
+                      상품선택
+                    </RadioGroupItem>
+                  </RadioGroup>
+                </Gcol>
               </Grow>
             </Gcol>
 
