@@ -156,7 +156,7 @@ const meta: Meta<StoryProps> = {
     loading: { table: { disable: true } },
   },
   args: {
-    dataType: 'over',
+    dataType: 'under',
     delayTime: 3000,
   },
 };
