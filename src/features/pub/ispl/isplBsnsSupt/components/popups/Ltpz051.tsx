@@ -446,159 +446,191 @@ const Ltpz051 = ({ data, loading }: Ltpz051Props) => {
               <Grid className="w-full gap-4 py-2">
                 {/* '직업정보(상해급수)변경대상' 탭 내용 */}
                 {active === 'tab1' || active === 'basic' ? (
-                  <Gcol gap={6} className="w-full" placement="ss">
-                    <Gcol gap={2} placement="ss" className="w-full">
-                      <Gcol gap={1} placement="ss">
-                        <Typo>
-                          <b>김한화</b>이륜차부담보 정보(현재 설계기준): <b>1급, 회사 사무직 종사자</b>
-                        </Typo>
-                        <Typo>
-                          직업정보(상해급수): <b>상이 계약 2건</b>
-                        </Typo>
+                  <Gcol gap={3} className="w-full" placement="ss">
+                    <Gcol gap={6} className="w-full" placement="ss">
+                      <Gcol gap={2} placement="ss" className="w-full">
+                        <Gcol gap={1} placement="ss">
+                          <Typo>
+                            <b>김한화</b> 고객님 직업정보(현재 설계 기준): <b>1급, 회사 사무직 종사자</b>
+                          </Typo>
+                          <Typo>
+                            직업정보(상해급수): <b>상이 계약 2건</b>
+                          </Typo>
+                        </Gcol>
+                        <div className="ag-theme-alpine w-full">
+                          <AgGridReact<JobDataType>
+                            loading={loading || isLocalLoading}
+                            getRowId={(params) => String(params.data.id)}
+                            noRowsOverlayComponent={AgGridEmptyComponent}
+                            rowData={rowData1}
+                            columnDefs={jobColumnDefs}
+                            defaultColDef={{
+                              sortable: true,
+                              resizable: true,
+                              suppressMovable: true,
+                            }}
+                            headerHeight={30}
+                            rowHeight={30}
+                            domLayout="autoHeight"
+                            tooltipShowMode="whenTruncated"
+                            tooltipShowDelay={0}
+                            animateRows={false}
+                          />
+                        </div>
                       </Gcol>
-                      <div className="ag-theme-alpine w-full">
-                        <AgGridReact<JobDataType>
-                          loading={loading || isLocalLoading}
-                          getRowId={(params) => String(params.data.id)}
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          rowData={rowData1}
-                          columnDefs={jobColumnDefs}
-                          defaultColDef={{
-                            sortable: true,
-                            resizable: true,
-                            suppressMovable: true,
-                          }}
-                          headerHeight={30}
-                          rowHeight={30}
-                          domLayout="autoHeight"
-                          tooltipShowMode="whenTruncated"
-                          tooltipShowDelay={0}
-                          animateRows={false}
-                        />
-                      </div>
-                    </Gcol>
 
-                    <Gcol gap={2} placement="ss" className="w-full">
-                      <Gcol gap={1} placement="ss">
-                        <Typo>
-                          <b>김한화</b> 고객님 직업정보(현재 설계 기준): <b>1급, 회사 사무직 종사자</b>
-                        </Typo>
-                        <Typo>
-                          직업정보(상해급수): <b>상이 계약 2건</b>
-                        </Typo>
+                      <Gcol gap={2} placement="ss" className="w-full">
+                        <Gcol gap={1} placement="ss">
+                          <Typo>
+                            <b>김한화</b> 고객님 직업정보(현재 설계 기준): <b>1급, 회사 사무직 종사자</b>
+                          </Typo>
+                          <Typo>
+                            직업정보(상해급수): <b>상이 계약 2건</b>
+                          </Typo>
+                        </Gcol>
+                        <div className="ag-theme-alpine w-full">
+                          <AgGridReact<JobDataType>
+                            loading={loading || isLocalLoading}
+                            getRowId={(params) => String(params.data.id)}
+                            noRowsOverlayComponent={AgGridEmptyComponent}
+                            rowData={rowData1}
+                            columnDefs={jobColumnDefs}
+                            defaultColDef={{
+                              sortable: true,
+                              resizable: true,
+                              suppressMovable: true,
+                            }}
+                            headerHeight={30}
+                            rowHeight={30}
+                            domLayout="autoHeight"
+                            tooltipShowMode="whenTruncated"
+                            tooltipShowDelay={0}
+                            animateRows={false}
+                          />
+                        </div>
                       </Gcol>
-                      <div className="ag-theme-alpine w-full">
-                        <AgGridReact<JobDataType>
-                          loading={loading || isLocalLoading}
-                          getRowId={(params) => String(params.data.id)}
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          rowData={rowData1}
-                          columnDefs={jobColumnDefs}
-                          defaultColDef={{
-                            sortable: true,
-                            resizable: true,
-                            suppressMovable: true,
-                          }}
-                          headerHeight={30}
-                          rowHeight={30}
-                          domLayout="autoHeight"
-                          tooltipShowMode="whenTruncated"
-                          tooltipShowDelay={0}
-                          animateRows={false}
-                        />
-                      </div>
+                    </Gcol>
+                    {/* 직업정보(상해급수)변경대상 */}
+                    <Gcol variant={'box-detail'} placement={'ss'} className="w-full">
+                      <Typo variant={'body-sm'} icon={'detail'} color={'gray'}>
+                        신규설계의 직업정보가 정확할 경우: 기계약 직업 변경배서 진행(변경설계가 청약중 이후이고 변경후
+                        직업정보(상해급수)가 일치하여야 신계약 청약서 발행가능함)
+                      </Typo>
+                      <Typo variant={'body-sm'} icon={'detail'} color={'gray'}>
+                        기계약의 직업정보가 정확할 경우: 고객정보화면의 직업정보 변경 후 피보험자를 다시 불러온 후
+                        신계약 설계 진행
+                      </Typo>
+                      <BulletList>
+                        <BulletListItem size={'sm'} type="dash">
+                          직업정보는 현재기분[2026.01.01] 기준으로 표기되고 있습니다. (구 직업코드의 경우 현재 기준으로
+                          매핑한 결과로 비교함)
+                        </BulletListItem>
+                        <BulletListItem size={'sm'} type="dash">
+                          변경대상의 경우 계약변경설계화면으로 이동하여 진행바랍니다.(계약변경설계이동 클릭시
+                          변경설계화면으로 이동)
+                        </BulletListItem>
+                        <BulletListItem size={'sm'} type="dash">
+                          상해급수가 동일하더라도 고객님의 정확한 직업정보의 관리를 위하려 재확인 바랍니다.
+                        </BulletListItem>
+                        <BulletListItem className="mt-2" size={'sm'} type="dot">
+                          관련문서: [대내-1507-1552]직업정보(상해급수) 일치 관련 신계약 프로세스 변경통보,
+                          장기계약관리파트
+                        </BulletListItem>
+                      </BulletList>
                     </Gcol>
                   </Gcol>
                 ) : (
                   // '이륜차부담보 변경대상' 탭 내용
-                  <Gcol gap={6} className="w-full" placement="ss">
-                    <Gcol gap={2} placement="ss" className="w-full">
-                      <Gcol gap={1} placement="ss">
-                        <Typo>
-                          <b>김한화</b> 고객님 이륜차부담보 정보(현재 설계기준): <b>가입여부</b>
-                        </Typo>
-                        <Typo>
-                          이륜차부담보 가입: <b>상이 계약 2건</b>
-                        </Typo>
+                  <Gcol gap={3} className="w-full" placement="ss">
+                    <Gcol gap={6} className="w-full" placement="ss">
+                      <Gcol gap={2} placement="ss" className="w-full">
+                        <Gcol gap={1} placement="ss">
+                          <Typo>
+                            <b>김한화</b> 고객님 이륜차부담보 정보(현재 설계기준): <b>가입여부</b>
+                          </Typo>
+                          <Typo>
+                            이륜차부담보 가입: <b>상이 계약 2건</b>
+                          </Typo>
+                        </Gcol>
+                        <div className="ag-theme-alpine w-full">
+                          <AgGridReact<DummyData2Type>
+                            loading={loading || isLocalLoading}
+                            getRowId={(params) => String(params.data.id)}
+                            rowData={rowData2}
+                            columnDefs={columnDefs1}
+                            noRowsOverlayComponent={AgGridEmptyComponent}
+                            defaultColDef={{
+                              sortable: true,
+                              resizable: true,
+                            }}
+                            headerHeight={30}
+                            rowHeight={30}
+                            domLayout="autoHeight"
+                            loadingOverlayComponent={CustomGridLoadingOverlay}
+                            loadingOverlayComponentParams={{ loadingMessage: '조회 중입니다...' }}
+                          />
+                        </div>
                       </Gcol>
-                      <div className="ag-theme-alpine w-full">
-                        <AgGridReact<DummyData2Type>
-                          loading={loading || isLocalLoading}
-                          getRowId={(params) => String(params.data.id)}
-                          rowData={rowData2}
-                          columnDefs={columnDefs1}
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          defaultColDef={{
-                            sortable: true,
-                            resizable: true,
-                          }}
-                          headerHeight={30}
-                          rowHeight={30}
-                          domLayout="autoHeight"
-                          loadingOverlayComponent={CustomGridLoadingOverlay}
-                          loadingOverlayComponentParams={{ loadingMessage: '조회 중입니다...' }}
-                        />
-                      </div>
-                    </Gcol>
 
-                    <Gcol gap={2} placement="ss" className="w-full">
-                      <Gcol gap={1} placement="ss">
-                        <Typo>
-                          <b>김한화</b> 고객님 이륜차부담보 정보(현재 설계기준): <b>가입여부</b>
-                        </Typo>
-                        <Typo>
-                          이륜차부담보 가입: <b>상이 계약 2건</b>
-                        </Typo>
+                      <Gcol gap={2} placement="ss" className="w-full">
+                        <Gcol gap={1} placement="ss">
+                          <Typo>
+                            <b>김한화</b> 고객님 이륜차부담보 정보(현재 설계기준): <b>가입여부</b>
+                          </Typo>
+                          <Typo>
+                            이륜차부담보 가입: <b>상이 계약 2건</b>
+                          </Typo>
+                        </Gcol>
+                        <div className="ag-theme-alpine w-full">
+                          <AgGridReact<DummyData2Type>
+                            loading={loading || isLocalLoading}
+                            getRowId={(params) => String(params.data.id)}
+                            rowData={rowData2}
+                            columnDefs={columnDefs1}
+                            noRowsOverlayComponent={AgGridEmptyComponent}
+                            defaultColDef={{
+                              sortable: true,
+                              resizable: true,
+                            }}
+                            headerHeight={30}
+                            rowHeight={30}
+                            domLayout="autoHeight"
+                            loadingOverlayComponent={CustomGridLoadingOverlay}
+                            loadingOverlayComponentParams={{ loadingMessage: '조회 중입니다...' }}
+                          />
+                        </div>
                       </Gcol>
-                      <div className="ag-theme-alpine w-full">
-                        <AgGridReact<DummyData2Type>
-                          loading={loading || isLocalLoading}
-                          getRowId={(params) => String(params.data.id)}
-                          rowData={rowData2}
-                          columnDefs={columnDefs1}
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          defaultColDef={{
-                            sortable: true,
-                            resizable: true,
-                          }}
-                          headerHeight={30}
-                          rowHeight={30}
-                          domLayout="autoHeight"
-                          loadingOverlayComponent={CustomGridLoadingOverlay}
-                          loadingOverlayComponentParams={{ loadingMessage: '조회 중입니다...' }}
-                        />
-                      </div>
+                    </Gcol>
+                    {/* 이륜차부담보 변경대상 */}
+                    <Gcol variant={'box-detail'} placement={'ss'} className="w-full">
+                      <Typo variant={'body-sm'} icon={'detail'} color={'gray'}>
+                        &apos;이륜자동차운전중상해부담보특별약관&apos;이란?
+                      </Typo>
+                      <BulletList>
+                        <BulletListItem size={'sm'} type="dash">
+                          보험계약을 체결할 때 계약자의 청약과 회사의 승낙으로 보험계약에 부가하여 이루어지는 약관으로
+                          피보험자가 이륜자동차를 소유, 사용, 관리하는 경우에 한합니다.
+                        </BulletListItem>
+                        <BulletListItem size={'sm'} type="dash">
+                          회사는 피보험자가 보험기간 중 이륜자동차를 운전(탑승 포함)하는 중에 발생한 급격하고도 우연한
+                          외래의 상해사고를 직접적인 원인으로 보험계약에서 정한 보험금 지급사유가 발생한 경우에는
+                          보험금을 지급하지 않습니다.
+                        </BulletListItem>
+                        <BulletListItem className="mt-2" size={'sm'} type="dot">
+                          이륜차 운전자는 이륜자동차운전중상해부담보특약을 반드시 가입해야 합니다.
+                        </BulletListItem>
+                        <BulletListItem size={'sm'} type="dot">
+                          가입하신 계약 간 &apos;이륜차 운전여부 및 이륜차부담보 가입여부&apos;가 상이할 경우, 보험금
+                          지급이 제한될 수 있습니다.
+                        </BulletListItem>
+                        <BulletListItem size={'sm'} type="dot">
+                          변경대상의 경우 계약변경설계화면으로 이동하여 진행바랍니다. (계약변경설계이동 클릭시
+                          변경설계화면으로 이동)
+                        </BulletListItem>
+                      </BulletList>
                     </Gcol>
                   </Gcol>
                 )}
-                {/* M1. 수정 */}
-                <Gcol variant={'box-detail'} placement={'ss'} className="w-full">
-                  <Typo variant={'body-sm'} icon={'detail'} color={'gray'}>
-                    &apos;이륜자동차운전중상해부담보특별약관&apos;이란?
-                  </Typo>
-                  <BulletList>
-                    <BulletListItem size={'sm'} type="dash">
-                      보험계약을 체결할 때 계약자의 청약과 회사의 승낙으로 보험계약에 부가하여 이루어지는 약관으로
-                      피보험자가 이륜자동차를 소유, 사용, 관리하는 경우에 한합니다.
-                    </BulletListItem>
-                    <BulletListItem size={'sm'} type="dash">
-                      회사는 피보험자가 보험기간 중 이륜자동차를 운전(탑승 포함)하는 중에 발생한 급격하고도 우연한
-                      외래의 상해사고를 직접적인 원인으로 보험계약에서 정한 보험금 지급사유가 발생한 경우에는 보험금을
-                      지급하지 않습니다.
-                    </BulletListItem>
-                    <BulletListItem className="mt-2" size={'sm'} type="dot">
-                      이륜차 운전자는 이륜자동차운전중상해부담보특약을 반드시 가입해야 합니다.
-                    </BulletListItem>
-                    <BulletListItem size={'sm'} type="dot">
-                      가입하신 계약 간 &apos;이륜차 운전여부 및 이륜차부담보 가입여부&apos;가 상이할 경우, 보험금 지급이
-                      제한될 수 있습니다.
-                    </BulletListItem>
-                    <BulletListItem size={'sm'} type="dot">
-                      변경대상의 경우 계약변경설계화면으로 이동하여 진행바랍니다. (계약변경설계이동 클릭시
-                      변경설계화면으로 이동)
-                    </BulletListItem>
-                  </BulletList>
-                </Gcol>
               </Grid>
             </TabPager>
             {/* 팝업 푸터 영역 */}

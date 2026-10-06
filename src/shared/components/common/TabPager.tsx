@@ -156,6 +156,21 @@ export function TabPager<T>({
     className: cn('w-full h-full grid grid-rows-[auto_minmax(0,1fr)] content-start', className),
     ...(removable && onRemove ? { onRemove } : {}),
   };
+  const contentRef = React.useRef<HTMLDivElement>(null);
+
+  // active 탭 변경 시 탭 패널 스크롤을 최상단(top 0)으로 이동
+  React.useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.scrollTop = 0;
+      const scrollableElements = contentRef.current.querySelectorAll<HTMLElement>('*');
+      scrollableElements.forEach((el) => {
+        if (el.scrollTop > 0) {
+          el.scrollTop = 0;
+        }
+      });
+    }
+  }, [active]);
+
   return (
     <>
       <Tabs {...tabsProps}>
@@ -268,7 +283,7 @@ export function TabPager<T>({
           </Grow>
         </TabsLine>
         {children && (
-          <TabsContent value={active ?? ''} className={contentClass}>
+          <TabsContent ref={contentRef} value={active ?? ''} className={contentClass}>
             {children}
           </TabsContent>
         )}
