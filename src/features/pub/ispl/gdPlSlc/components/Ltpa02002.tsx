@@ -4,9 +4,15 @@
 
 'use client';
 
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import Image from 'next/image';
+import * as React from 'react';
+import { useState } from 'react';
+import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
-import { BulletItem } from '@common/BulletList';
+import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
 import { AiSpinner, PuzzleSpinner } from '@common/SpinnerRoot';
 import {
   Ai2Icon,
@@ -25,12 +31,6 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import Image from 'next/image';
-import * as React from 'react';
-import { useState } from 'react';
-import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 
 import '@/shared/lib/agGridPub';
 
@@ -364,13 +364,16 @@ export function Ltpa02002({ userType }: { userType: string }) {
       tags.push(noticeItems.join(', '));
     }
 
-    // 3) 보장분석 / 병력사항
-    if (selectedAnalysisValue) {
-      tags.push(selectedAnalysisValue);
-    }
-    const hasMedicalHistory = medicalHistoryList.some((item) => item.disease.trim() !== '');
-    if (hasMedicalHistory) {
-      tags.push('병력사항');
+    // 3) 보장분석 / 병력사항 (등록/미등록 상황에 따라 분기)
+    if (customerType === 'recent') {
+      if (selectedAnalysisValue) {
+        tags.push('보장분석');
+      }
+    } else {
+      const hasMedicalHistory = medicalHistoryList.some((item) => item.disease.trim() !== '');
+      if (hasMedicalHistory) {
+        tags.push('병력사항');
+      }
     }
 
     // 4) 담보군
@@ -483,7 +486,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
             variant={'heading-sm'}
             className="shrink-0 text-[var(--color-text-blue-gray)] h-[3rem] flex items-center"
           >
-            {selectedTags.length > 0 ? '상품특징' : '검색정보'}
+            선택항목
           </Typo>
           <Grow placement="bwc" gap={6}>
             <Grow className="w-full">
@@ -561,7 +564,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
           {isFilterOptionOpen && (
             <Grid
               variant="box-round-b"
-              className="absolute top-[calc(100%-.6rem)] left-0 w-full bg-[var(--color-blue-gray-10)] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] pt-2.5 pb-[2.5rem] grid-cols-[1fr_1fr_1fr] gap-[2.4rem] z-10 pl-[6.7rem]! pr-[16.4rem]! justify-stretch! "
+              className="absolute top-[calc(100%-.6rem)] left-0 w-full bg-[var(--color-blue-gray-10)] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] pt-2.5 pb-[2.5rem] grid-cols-[minmax(29rem,2fr)_minmax(30rem,2fr)_3fr] gap-[2.4rem] z-10 pl-[6.7rem]! pr-[14rem]! justify-stretch! "
               placement="ss"
             >
               {/* 상품특징 */}
@@ -659,7 +662,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                           <Gcol variant="box-round" placement="ss" gap={1}>
                             <Grid className="grid-cols-[1fr_auto] gap-1 items-center w-full">
                               <Input
-                                size={'sm'}
+                                size={'lg'}
                                 placeholder="상품명 검색"
                                 value={productSearchName}
                                 onChange={(e) => setProductSearchName(e.target.value)}
@@ -667,14 +670,14 @@ export function Ltpa02002({ userType }: { userType: string }) {
                               <Button
                                 variant={'outlined'}
                                 color={'gray-light'}
-                                size={'md'}
+                                size={'lg'}
                                 only={'icon'}
                                 aria-label="상품 검색"
                               >
                                 <SearchIcon color="var(--color-primary-50)" />
                               </Button>
                             </Grid>
-                            <Typo tag="p" variant={'body-xs'} className="text-[var(--color-gray-70)]">
+                            <Typo tag="p" variant={'body-xs'} className="text-[var(--color-gray-70)] max-w-[24.8rem]">
                               납입중50%해약환급금지급형, 납입면제 운영형, 3N52간편고지형Ⅲ
                             </Typo>
                           </Gcol>
@@ -716,7 +719,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
               {/* 담보군 */}
               <Gcol placement="ss" gap={1}>
                 <Typo tag="h4" variant={'heading-sm'} color={'blueGray'}>
-                  담보군
+                  담보선택
                 </Typo>
                 <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3 w-full" gap={2}>
                   <Grow placement="ss" className="w-full">
@@ -731,7 +734,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                       <Checkbox
                         value="사망/후유"
                         variant="button"
-                        className="w-[9.2rem]"
+                        className="w-[8.2rem]"
                         checked={selectedCoverageValues.includes('사망/후유')}
                         onCheckedChange={(checked) => {
                           setSelectedCoverageValues((prev) => {
@@ -749,7 +752,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         <Checkbox
                           value="진단비"
                           variant="button"
-                          className="w-[9.2rem]"
+                          className="w-[8.2rem]"
                           checked={selectedCoverageValues.includes('진단비')}
                           onCheckedChange={handleDiagnosisToggle}
                         >
@@ -786,7 +789,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                       <Checkbox
                         value="입원/통원"
                         variant="button"
-                        className="w-[9.2rem]"
+                        className="w-[8.2rem]"
                         checked={selectedCoverageValues.includes('입원/통원')}
                         onCheckedChange={(checked) => {
                           setSelectedCoverageValues((prev) => {
@@ -804,7 +807,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         <Checkbox
                           value="수술/치료"
                           variant="button"
-                          className="w-[9.2rem]"
+                          className="w-[8.2rem]"
                           checked={selectedCoverageValues.includes('수술/치료')}
                           onCheckedChange={handleSurgeryToggle}
                         >
@@ -841,7 +844,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                       <Checkbox
                         value="골절/화상"
                         variant="button"
-                        className="w-[9.2rem]"
+                        className="w-[8.2rem]"
                         checked={selectedCoverageValues.includes('골절/화상')}
                         onCheckedChange={(checked) => {
                           setSelectedCoverageValues((prev) => {
@@ -858,7 +861,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                       <Checkbox
                         value="검사/지원"
                         variant="button"
-                        className="w-[9.2rem]"
+                        className="w-[8.2rem]"
                         checked={selectedCoverageValues.includes('검사/지원')}
                         onCheckedChange={(checked) => {
                           setSelectedCoverageValues((prev) => {
@@ -901,14 +904,14 @@ export function Ltpa02002({ userType }: { userType: string }) {
                 </Gcol>
               </Gcol>
 
-              {/* 보장분석 or 고지유형 */}
+              {/* 설계유형 or 고지유형 */}
               {customerType === 'recent' ? (
                 // 20260810 - 구조 수정
                 // 등록고객
                 <Gcol placement="ss" gap={1}>
                   <Grow gap={0}>
                     <Typo tag="h4" variant={'heading-sm'} color={'blueGray'}>
-                      보장분석
+                      설계유형
                     </Typo>
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -949,7 +952,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                   <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3" gap={2}>
                     <RadioGroup
                       width={'full'}
-                      className="gap-[0.4rem] [&>div]:w-full"
+                      className="gap-[0.4rem] [&>div]:w-full flex-col"
                       value={selectedAnalysisValue}
                       onValueChange={handleOnChangeLackAmtCcFlgcd}
                     >
@@ -960,7 +963,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                           variant="button"
                           size={'lg'}
                           disabled={!lastInquiryDate}
-                          className="!w-full !text-left"
+                          className="!w-full !text-left whitespace-normal h-auto min-h-[2.8rem] leading-[1.2] items-center py-1.5 break-keep"
                         >
                           {opt.label}
                         </RadioGroupItem>
@@ -999,7 +1002,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         </>
                       )}
                     </Grow>
-                    <Typo icon="info">타이틀: 보장분석 진행하면 기계약을 확인할 수 있습니다.</Typo>
+                    <Typo icon="info">보장분석 진행하면 기계약을 확인할 수 있습니다.</Typo>
                   </Gcol>
                 </Gcol>
               ) : (
@@ -1014,7 +1017,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                       {medicalHistoryList.map((item, idx) => (
                         <React.Fragment key={idx}>
                           <Input
-                            size={'sm'}
+                            size={'lg'}
                             value={item.disease}
                             readOnly={true}
                             onChange={(e) => {
@@ -1027,7 +1030,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                             }}
                           />
                           <Input
-                            size={'sm'}
+                            size={'lg'}
                             value={item.period}
                             readOnly={true}
                             onChange={(e) => {
@@ -1045,7 +1048,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                     <Grow gap={1} placement="ec" className="w-full">
                       <Grow gap={1} placement="ec">
                         <Button
-                          size={'md'}
+                          size={'lg'}
                           className="w-full font-[700]!"
                           onClick={() =>
                             setMedicalHistoryList([
@@ -1061,7 +1064,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         <Button
                           variant={'outlined'}
                           color={'gray-light'}
-                          size={'md'}
+                          size={'lg'}
                           className="w-full font-normal"
                           onClick={() =>
                             setMedicalHistoryList([
@@ -1077,6 +1080,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         </Button>
                       </Grow>
                     </Grow>
+                    <Typo icon="info">입력한 질병정보를 이용해 예상고지유형을 확인합니다.</Typo>
                   </Gcol>
                 </Gcol>
               )}
@@ -1086,7 +1090,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
       </div>
 
       {dataNone ? (
-        <Grow className="h-full gap-2.5 pt-[37rem]" placement="cs">
+        <Grow className="h-full gap-2.5 pt-[35rem] pb-[2rem]" placement="cs">
           <Grow className="gap-0" placement="cc">
             <div className="w-[19.6rem]">
               <Image
@@ -1100,11 +1104,23 @@ export function Ltpa02002({ userType }: { userType: string }) {
                 className="relative!"
               />
             </div>
-            <p className="text-left text-[1.3rem] font-bold text-[var(--color-secondary-70)]">
-              상품을 추천할 고객과 조건을 선택하고
-              <br />
-              <b className="text-[var(--color-primary-50)]">최적의 상품 플랜</b>을 확인하세요!
-            </p>
+            <Gcol placement="ss">
+              <Typo variant={'heading-md'} icon={'warning'}>
+                유의사항
+              </Typo>
+              <BulletList>
+                <BulletListItem>
+                  <b className="text-[var(--color-primary-50)]">편리한 설계의 출발점</b>으로 추천설계를 활용해 보세요.
+                </BulletListItem>
+                <BulletListItem>
+                  추천설계는 입력하신 사항과 AI 학습데이터를 종합 분석하여,{' '}
+                  <b className="text-[var(--color-primary-50)]">설계의 방향을 찾아드리는 참고안</b> 입니다.
+                </BulletListItem>
+                <BulletListItem>
+                  다양한 조건, 이용 시점 등 여러 요인에 따라 추천설계 결과는 달라질 수 있습니다.
+                </BulletListItem>
+              </BulletList>
+            </Gcol>
           </Grow>
         </Grow>
       ) : (

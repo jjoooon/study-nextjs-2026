@@ -260,8 +260,8 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
         }}
         noValidate
       >
-        <LayoutMain className="grid grid-rows-[1fr] h-full">
-          <LayoutMainBody className="grid grid-rows-[auto_1fr] h-full">
+        <LayoutMain className="grid grid-rows-[minmax(0,1fr)] h-full">
+          <LayoutMainBody className="grid grid-rows-[auto_minmax(0,1fr)] h-full">
             <TabPager
               className="grid-rows-[auto_auto] h-auto sticky top-0 z-20 bg-[#fff] w-[calc(100%-8.3rem)]"
               data={Tabs}

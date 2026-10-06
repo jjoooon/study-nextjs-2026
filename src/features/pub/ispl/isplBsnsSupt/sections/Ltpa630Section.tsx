@@ -400,7 +400,7 @@ export default function Ltpa630Section() {
                   패키지관리
                 </Button>
                 <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  상품별 시뮬레이션
+                  보장패키지 상품시뮬
                 </Button>
               </Grow>
               <Grow gap={1} placement={'ec'}>

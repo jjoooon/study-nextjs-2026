@@ -347,7 +347,9 @@ export const Ltpa3500301 = ({
   }, [loadedCount, totalCount]);
 
   return (
-    <LayoutScrollWrap className={`${sampleMode ? 'grid-cols-[1fr]' : 'grid-cols-[1fr_auto]'} gap-3 h-full`}>
+    <LayoutScrollWrap
+      className={`${sampleMode ? 'grid-cols-[1fr]' : 'grid-cols-[1fr_auto]'} gap-3 h-full overflow-visible`}
+    >
       <LayoutScrollItem
         className="w-full h-full grid grid-rows-[auto_1fr] scroll-smooth overflow-y-auto gap-[1.2rem]"
         data-layout="scroll-item"
@@ -385,7 +387,7 @@ export const Ltpa3500301 = ({
             </Grow>
           </Grow>
         )}
-        <Gcol gap={2}>
+        <Gcol gap={2} placement="ss">
           {!sampleMode && (
             <Gcol
               variant={'box-line'}
