@@ -147,7 +147,7 @@ const DummyData: DummyDataType[] = [
   })),
 ];
 
-const QuestionDataList: Array<'Y' | 'N' | ''> = [];
+const QuestionDataList: Array<'Y' | 'N' | ''> = ['Y', 'N'];
 
 interface Ltpa3500301Props {
   simpleMode?: boolean;
@@ -1799,11 +1799,8 @@ export const Ltpa3500301 = ({
                   const answer = getAnswerByBadgeId(badgeNum);
                   return (
                     <Grow className="w-full" gap={1} key={String(badgeNum)}>
-                      <Badge color={'secondary'} size={'md'} variant={'contained'} className="w-[1.8rem]">
-                        {badgeNum}
-                      </Badge>
                       <Button
-                        className="w-[1.8rem] h-[1.8rem] text-center"
+                        className="group w-[1.8rem] h-[1.8rem] text-center gap-1 w-full flex items-center justify-between"
                         onClick={() => {
                           setHighlightBadgeNum(badgeNum);
                           scrollToCard(badgeNum);
@@ -1811,7 +1808,20 @@ export const Ltpa3500301 = ({
                         only="default"
                         variant="none"
                       >
-                        <Typo variant={'body-sm'} weight={'bold'} color={answer === 'Y' ? 'danger' : 'green'}>
+                        <Badge
+                          color={'secondary'}
+                          size={'md'}
+                          variant={'contained'}
+                          className="w-[1.8rem] transition-colors group-hover:bg-[var(--color-primary-50)]"
+                        >
+                          {badgeNum}
+                        </Badge>
+                        <Typo
+                          variant={'body-sm'}
+                          weight={'bold'}
+                          color={answer === 'Y' ? 'danger' : 'green'}
+                          className="flex flex-1 justify-center items-center"
+                        >
                           {answer}
                         </Typo>
                       </Button>

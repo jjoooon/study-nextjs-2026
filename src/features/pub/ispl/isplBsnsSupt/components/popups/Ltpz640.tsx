@@ -285,16 +285,19 @@ const Ltpz640 = () => {
   });
 
   const handleAddRow = React.useCallback(() => {
+    gridApiRef.current?.stopEditing();
     pendingRowHeightRefreshRef.current = true;
     handleAddRowRaw();
   }, [handleAddRowRaw]);
 
   const handleOpenAddPackageDialog = React.useCallback(() => {
+    gridApiRef.current?.stopEditing();
     setMergePackageName('');
     setOpenCellMerge(true);
   }, []);
 
   const handleDeleteRow = React.useCallback(() => {
+    gridApiRef.current?.stopEditing();
     pendingRowHeightRefreshRef.current = true;
     setRowData((prev) => prev.filter((row) => !row.checked));
   }, [setRowData]);
@@ -490,6 +493,7 @@ const Ltpz640 = () => {
 
   const moveCheckedRowsWithinGroup = React.useCallback(
     (direction: 'up' | 'down') => {
+      gridApiRef.current?.stopEditing();
       pendingRowHeightRefreshRef.current = true;
       setRowData((prev) => {
         const nextRows = [...prev];
@@ -579,6 +583,10 @@ const Ltpz640 = () => {
       });
     });
   }, [mergePackageName, setRowData, setMergePackageName, setOpenCellMerge]);
+
+  const handleSave = React.useCallback(() => {
+    gridApiRef.current?.stopEditing();
+  }, []);
 
   // 2026-06-01 width, flex 수정, sortable 추가
   const columnDefs1: (ColDef<DummyData1Type> | ColGroupDef<DummyData1Type>)[] = useMemo(
@@ -736,6 +744,7 @@ const Ltpz640 = () => {
                   resizable: true,
                 }}
                 singleClickEdit={true}
+                stopEditingWhenCellsLoseFocus={true}
                 rowDragManaged={false}
                 onRowDragEnter={handleRowDragEnter}
                 onRowDragEnd={handleRowDragEnd}
@@ -751,7 +760,9 @@ const Ltpz640 = () => {
           <DialogFooter>
             <DialogFooterArea>
               <Grow>
-                <Button size={'xl'}>저장</Button>
+                <Button size={'xl'} onClick={handleSave}>
+                  저장
+                </Button>
                 <DialogClose asChild>
                   <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                     닫기
