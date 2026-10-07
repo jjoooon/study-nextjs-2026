@@ -3,11 +3,11 @@
  */
 'use client';
 
-import { ErrorMsg } from '@common/ErrorMsg';
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { ErrorMsg } from '@common/ErrorMsg';
 
 /**
  * RadioGroup 내부 아이템들에 에러 및 필수 상태를 전파하기 위한 컨텍스트입니다.
@@ -88,7 +88,7 @@ const radioGroupItemVariants = cva(
         data-[state=checked]:border-r-[0.1rem]! data-[state=checked]:border-r-[var(--color-primary-50,#ff5c2e)]!
         data-[state=checked]:border-b-[0.1rem]! data-[state=checked]:border-b-white!
         data-[state=checked]:-mb-[0.1rem]! data-[state=checked]:z-10!`,
-        tabBadge: `h-[2.6rem] rounded-full border-transparent bg-[#F4F4F4] px-[1rem] py-[0.4rem] text-[1.2rem] font-bold leading-normal tracking-[-0.13rem] text-[#000] inline-flex items-center gap-1 transition-all select-none
+        tabBadge: `h-[2.6rem] rounded-full border-transparent bg-[var(--color-gray-10)] px-[1rem] py-[0.4rem] text-[1.2rem] font-bold leading-normal tracking-[-0.13rem] text-[#000] inline-flex items-center gap-1 transition-all select-none
         data-[state=checked]:border-transparent! data-[state=checked]:bg-[#1f2429]! data-[state=checked]:text-white! [&_.count-badge]:shadow-[0px_2px_4px_0px_rgba(0,0,0,0.1)]!
         [&_.count-badge]:inline-flex [&_.count-badge]:px-[0.4rem] [&_.count-badge]:items-center [&_.count-badge]:justify-center [&_.count-badge]:min-w-[1.6rem] [&_.count-badge]:h-[1.6rem] [&_.count-badge]:rounded-full [&_.count-badge]:text-[1.2rem] [&_.count-badge]:font-bold [&_.count-badge]:leading-none [&_.count-badge]:tracking-normal [&_.count-badge]:pb-[0.25rem] [&_.count-badge]:text-center [&_.count-badge]:bg-white [&_.count-badge]:text-gray-100
         data-[state=checked]:[&_.count-badge]:bg-[#fbc02d]! data-[state=checked]:[&_.count-badge]:text-gray-100!

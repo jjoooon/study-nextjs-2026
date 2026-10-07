@@ -527,7 +527,7 @@ const Ltpz00502 = ({ onClose }: Ltpz00502Props) => {
                       value={option.value}
                       variant="tabBadge"
                       width="auto"
-                      className="gap-2 bg-[#fff]"
+                      className="gap-2"
                     >
                       <Grow className="gap-1">
                         <span className="text-bold">{option.label}</span>
