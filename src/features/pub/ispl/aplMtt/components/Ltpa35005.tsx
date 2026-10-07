@@ -351,7 +351,7 @@ export const Ltpa35005 = () => {
                           ))}
                         </RadioGroup>
                       </FormCell>
-                      <FormCell
+                      {/* <FormCell
                         title={
                           <div className="leading-[1.2]">
                             승환계약여부
@@ -378,7 +378,6 @@ export const Ltpa35005 = () => {
                                   )건)
                                 </Grow>
                               </Grow>
-                              {/* //M1. 정렬관련 수정 */}
                               <Grow placement="bwc" className="w-full">
                                 <RadioGroupItem value="아니요">
                                   아니요
@@ -392,6 +391,18 @@ export const Ltpa35005 = () => {
                             </Gcol>
                           </RadioGroup>
                         </Grow>
+                      </FormCell> */}
+
+                      <FormCell title={'유사계약현황'} rowSpan={2} titleRowSpan={2}>
+                        <Gcol placement="ss" className="w-full">
+                          <Grow placement="bwc" className="w-full">
+                            <Checkbox color="primary">입력완료</Checkbox>
+                            <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+                              유사계약현황
+                            </Button>
+                          </Grow>
+                          <Typo icon="ref">청약서 발행 전 입력필수 & 발행 후 수정 불가합니다.</Typo>
+                        </Gcol>
                       </FormCell>
                     </FormRow>
                     <FormRow>
