@@ -16,6 +16,7 @@ export interface BaseTab {
   value: string;
   label?: string;
   removable?: boolean;
+  type?: string;
 }
 
 /**
@@ -136,15 +137,13 @@ export function useTabsPagination<T>(
 
   const [visibleStart, setVisibleStart] = useState(() => getStartByActive(active));
   const [prevActive, setPrevActive] = useState<string>(active);
-  const [prevDataKeys, setPrevDataKeys] = useState<string>(() => safeData.map(getValue).join('|'));
+  const [prevData, setPrevData] = useState<T[] | null | undefined>(data);
   const [prevVisibleCount, setPrevVisibleCount] = useState<number>(visibleCount);
 
-  const currentDataKeys = safeData.map(getValue).join('|');
-
   // active, data, visibleCount 변경 시 보이는 탭 시작 위치 동기화 (렌더 단계에서 동기화)
-  if (active !== prevActive || currentDataKeys !== prevDataKeys || visibleCount !== prevVisibleCount) {
+  if (active !== prevActive || data !== prevData || visibleCount !== prevVisibleCount) {
     setPrevActive(active);
-    setPrevDataKeys(currentDataKeys);
+    setPrevData(data);
     setPrevVisibleCount(visibleCount);
 
     const newStart = getStartByActive(active);
