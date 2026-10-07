@@ -77,11 +77,6 @@ function parseLocalDate(dateStr: string | undefined): Date | undefined {
   return undefined;
 }
 
-function isSameDay(d1: Date | undefined, d2: Date | undefined) {
-  if (!d1 || !d2) return false;
-  return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
-}
-
 function formatInputDigits(digits: string) {
   if (digits.length === 0) return '';
   if (digits.length <= 4) return digits;
@@ -220,7 +215,6 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
   ref
 ) {
   const autoClose = true;
-  const autoRangeFix = false;
   const generatedId = React.useId();
   const finalId = id || generatedId;
   const errorId = React.useId();
@@ -336,29 +330,13 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
   const [prevMode, setPrevMode] = React.useState<string>(mode);
   const [prevRangeValue, setPrevRangeValue] = React.useState<DatePickerRangeValue | undefined>(undefined);
 
-  // 🛡️ 동일한 값으로 변경 시 onChange 호출 및 Redux dispatch 전파를 방지하여 무한 루프 차단
-  const notifyChange = React.useCallback(
-    (date: Date | undefined, formattedValue: string) => {
-      if (initialValue !== undefined && initialValue === formattedValue) {
-        return;
-      }
-      onChange?.(date, formattedValue);
-    },
-    [initialValue, onChange]
-  );
-
   // disabled 또는 readOnly가 활성화되면 팝업을 닫음 (렌더 단계에서 동기화)
   if ((disabled || readOnly) && open) {
     setOpen(false);
   }
 
-  const isSinglePropChanged = initialValue !== prevInitialValue;
-  const isModeChanged = mode !== prevMode;
-  const isRangePropChanged =
-    mode === 'range' && (rangeValue?.from !== prevRangeValue?.from || rangeValue?.to !== prevRangeValue?.to);
-
   // initialValue, mode, rangeValue 변경 시 최신 상태로 동기화 (렌더 단계에서 동기화)
-  if (isSinglePropChanged || isModeChanged || isRangePropChanged) {
+  if (initialValue !== prevInitialValue || mode !== prevMode || rangeValue !== prevRangeValue) {
     setPrevInitialValue(initialValue);
     setPrevMode(mode);
     setPrevRangeValue(rangeValue);
@@ -440,7 +418,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
               setRangeInput({ from: formatDate(nextFrom), to: '' });
               setNumericValue(formatDate(nextFrom).replace(/\D/g, ''));
               setIsSelectingEnd(true);
-              notifyChange(nextFrom, formatDate(nextFrom));
+              onChange?.(nextFrom, formatDate(nextFrom));
               setInvalidDate(false);
               return;
             }
@@ -458,7 +436,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
           setRangeInput({ from: formatDate(nextFrom), to: formatDate(nextTo) });
           setNumericValue(`${formatDate(nextFrom).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
           setIsSelectingEnd(false); // 기간 선택 완료
-          notifyChange(nextTo, `${formatDate(nextFrom)} ~ ${formatDate(nextTo)}`);
+          onChange?.(nextTo, `${formatDate(nextFrom)} ~ ${formatDate(nextTo)}`);
           setOpen(false);
           setInvalidDate(false);
           return;
@@ -472,7 +450,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
         setNumericValue(formatDate(nextFrom).replace(/\D/g, ''));
         setIsSelectingEnd(true); // 종료일 선택 대기 상태로 전환
         setOpen(true); // 시작일 선택 시 팝오버 닫히지 않도록 확실하게 유지
-        notifyChange(nextFrom, formatDate(nextFrom));
+        onChange?.(nextFrom, formatDate(nextFrom));
         setInvalidDate(false);
         return;
       }
@@ -484,7 +462,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
       const formattedValue = formatDate(selectedValue);
       setNumericValue(formattedValue.replace(/\D/g, ''));
       setInvalidDate(false);
-      notifyChange(selectedValue, formattedValue);
+      onChange?.(selectedValue, formattedValue);
       setOpen(false);
       return;
     }
@@ -502,7 +480,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
 
       setNumericValue('');
       setInvalidDate(false);
-      notifyChange(last, formattedValue);
+      onChange?.(last, formattedValue);
       return;
     }
 
@@ -514,18 +492,18 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
       setNumericValue(numericOnly);
       setRangeInput({ from: formatDate(selectedValue.from), to: formatDate(selectedValue.to) });
       setInvalidRange({ from: false, to: false });
-      notifyChange(last, rangeFormatted);
+      onChange?.(last, rangeFormatted);
     } else if (selectedValue.from) {
       const fromFormatted = formatDate(selectedValue.from);
       setNumericValue(fromFormatted.replace(/\D/g, ''));
       setRangeInput({ from: fromFormatted, to: '' });
       setInvalidRange({ from: false, to: false });
-      notifyChange(selectedValue.from, fromFormatted);
+      onChange?.(selectedValue.from, fromFormatted);
     } else {
       setNumericValue('');
       setRangeInput({ from: '', to: '' });
       setInvalidRange({ from: false, to: false });
-      notifyChange(undefined, '');
+      onChange?.(undefined, '');
     }
     setInvalidDate(false);
   };
@@ -567,7 +545,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
         setNumericValue(`${digits}${existingToFormatted.replace(/\D/g, '')}`);
         setInvalidRange({ from: false, to: false });
         setInvalidDate(false);
-        notifyChange(existingToDate, `${formatted} ~ ${existingToFormatted}`);
+        onChange?.(existingToDate, `${formatted} ~ ${existingToFormatted}`);
         toInputRef.current?.focus();
         return;
       }
@@ -578,7 +556,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
       setNumericValue(digits);
       setInvalidRange({ from: false, to: false });
       setInvalidDate(false);
-      notifyChange(parsedDate, formatted);
+      onChange?.(parsedDate, formatted);
       toInputRef.current?.focus();
       return;
     }
@@ -595,7 +573,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
     if (nextRange.from && nextRange.to) {
       const rangeFormatted = `${formatDate(nextRange.from)} ~ ${formatDate(nextRange.to)}`;
       setNumericValue(`${formatDate(nextRange.from).replace(/\D/g, '')}${formatDate(nextRange.to).replace(/\D/g, '')}`);
-      notifyChange(nextRange.to ?? nextRange.from, rangeFormatted);
+      onChange?.(nextRange.to ?? nextRange.from, rangeFormatted);
       setInvalidDate(false);
       return;
     }
@@ -603,7 +581,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
     if (parsedDate) {
       const formattedValue = formatDate(parsedDate);
       setNumericValue(formattedValue.replace(/\D/g, ''));
-      notifyChange(parsedDate, formattedValue);
+      onChange?.(parsedDate, formattedValue);
       return;
     }
 
@@ -632,14 +610,14 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
           setMonth(dateObj);
           setSelected(dateObj);
           setInvalidDate(false);
-          notifyChange(dateObj, formatted);
+          onChange?.(dateObj, formatted);
         } else {
           setInvalidDate(true);
-          notifyChange(undefined, '');
+          onChange?.(undefined, '');
         }
       } else {
         setInvalidDate(false);
-        notifyChange(undefined, '');
+        onChange?.(undefined, '');
       }
       return;
     }
@@ -667,22 +645,22 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
             setMonth(dateObj);
             setSelected(dateObj);
             setInvalidDate(false);
-            notifyChange(dateObj, formatted);
+            onChange?.(dateObj, formatted);
           } else {
             setInvalidDate(true);
-            notifyChange(undefined, '');
+            onChange?.(undefined, '');
           }
         } else {
           setInvalidDate(true);
-          notifyChange(undefined, '');
+          onChange?.(undefined, '');
         }
       } else {
         setInvalidDate(true);
-        notifyChange(undefined, '');
+        onChange?.(undefined, '');
       }
     } else {
       setInvalidDate(false);
-      notifyChange(undefined, '');
+      onChange?.(undefined, '');
     }
   };
 
@@ -748,7 +726,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
     setNumericValue(`${fromStr.replace(/\D/g, '')}${toStr.replace(/\D/g, '')}`);
     setInvalidRange({ from: false, to: false });
     setIsSelectingEnd(false);
-    notifyChange(to, `${fromStr} ~ ${toStr}`);
+    onChange?.(to, `${fromStr} ~ ${toStr}`);
     if (autoClose) setOpen(false);
   };
 
@@ -918,7 +896,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
                   setMonth(dateObj);
                   setNumericValue(`${val.year}${String(val.month).padStart(2, '0')}`);
                   setInvalidDate(false);
-                  notifyChange(dateObj, formatted);
+                  if (onChange) onChange(dateObj, formatted);
                 }
               }}
               onClose={() => setOpen(false)}
@@ -931,7 +909,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
                 setMonth(new Date());
                 setNumericValue('');
                 setInvalidDate(false);
-                notifyChange(undefined, '');
+                if (onChange) onChange(undefined, '');
               }}
             />
           ) : mode === 'range' ? (
@@ -958,7 +936,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
                 setInvalidRange({ from: false, to: false });
                 setInvalidDate(false);
                 setIsSelectingEnd(false);
-                notifyChange(undefined, '');
+                if (onChange) onChange(undefined, '');
               }}
             />
           ) : mode === 'multiple' ? (
@@ -980,7 +958,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
                 setMonth(new Date());
                 setNumericValue('');
                 setInvalidDate(false);
-                notifyChange(undefined, '');
+                if (onChange) onChange(undefined, '');
               }}
             />
           ) : (
@@ -1002,7 +980,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
                 setMonth(new Date());
                 setNumericValue('');
                 setInvalidDate(false);
-                notifyChange(undefined, '');
+                if (onChange) onChange(undefined, '');
               }}
             />
           )}
