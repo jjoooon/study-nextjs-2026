@@ -77,7 +77,7 @@
 
 .ag-overlay-loading-center {
   box-shadow: none;
-  border:0;
+  border: 0;
 }
 .ag-overlay-loading-center .ag-loading-icon {
   display: none;
@@ -1650,7 +1650,7 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   border: 0.1rem solid #cbd5e1 !important;
   z-index: 99999 !important;
   max-height: 18rem !important; /* 드롭다운 팝업 최대 높이 제한 */
-  overflow-y: auto !important;  /* 항목이 넘칠 경우 내부 스크롤 생성 */
+  overflow-y: auto !important; /* 항목이 넘칠 경우 내부 스크롤 생성 */
 }
 
 .v109 .ag-rich-select-row:hover,

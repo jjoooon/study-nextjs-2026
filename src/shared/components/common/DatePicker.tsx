@@ -352,22 +352,13 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
     setOpen(false);
   }
 
-  // 외부 initialValue/rangeValue와 내부 상태간의 불일치(예: 외부에서 유효성 검사 실패로 값 원복 시) 여부 판단
-  const currentFormattedNumeric = initialValue ? initialValue.replace(/\D/g, '') : '';
-  const isSingleOutOfSync = mode !== 'range' && initialValue !== undefined && numericValue !== currentFormattedNumeric;
-  const isRangeOutOfSync =
-    mode === 'range' &&
-    rangeValue !== undefined &&
-    (rangeInput.from !== (rangeValue.from ?? '') || rangeInput.to !== (rangeValue.to ?? ''));
+  const isSinglePropChanged = initialValue !== prevInitialValue;
+  const isModeChanged = mode !== prevMode;
+  const isRangePropChanged =
+    mode === 'range' && (rangeValue?.from !== prevRangeValue?.from || rangeValue?.to !== prevRangeValue?.to);
 
-  // initialValue, mode, rangeValue 변경 시 또는 외부 제어 값과 내부 상태가 불일치할 때 최신 상태로 동기화 (렌더 단계에서 동기화)
-  if (
-    initialValue !== prevInitialValue ||
-    mode !== prevMode ||
-    rangeValue !== prevRangeValue ||
-    isSingleOutOfSync ||
-    isRangeOutOfSync
-  ) {
+  // initialValue, mode, rangeValue 변경 시 최신 상태로 동기화 (렌더 단계에서 동기화)
+  if (isSinglePropChanged || isModeChanged || isRangePropChanged) {
     setPrevInitialValue(initialValue);
     setPrevMode(mode);
     setPrevRangeValue(rangeValue);

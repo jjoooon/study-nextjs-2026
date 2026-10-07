@@ -283,6 +283,30 @@ const DummyData4: DummyDataType4[] = [
   },
 ];
 
+const GROUP_TABS: GroupTabItem[] = [
+  {
+    id: 1,
+    age: '32',
+    gender: '여',
+    name: '홍길준',
+    value: 'tab1',
+  },
+  {
+    id: 2,
+    age: '27',
+    gender: '남',
+    name: '홍길동',
+    value: 'tab2',
+  },
+  {
+    id: 3,
+    age: '3',
+    gender: '여',
+    name: '빛나리',
+    value: 'tab3',
+  },
+];
+
 interface Ltpz00502Props {
   onClose?: () => void;
 }
@@ -436,29 +460,6 @@ const Ltpz00502 = ({ onClose }: Ltpz00502Props) => {
 
   const selectedAccumRowData: DummyDataType2[] =
     accumOptionValue === 'option2' ? DummyData3 : accumOptionValue === 'option3' ? DummyData4 : DummyData2;
-  const groupTabs: GroupTabItem[] = [
-    {
-      id: 1,
-      age: '32',
-      gender: '여',
-      name: '홍길준',
-      value: 'tab1',
-    },
-    {
-      id: 2,
-      age: '27',
-      gender: '남',
-      name: '홍길동',
-      value: 'tab2',
-    },
-    {
-      id: 3,
-      age: '3',
-      gender: '여',
-      name: '빛나리',
-      value: 'tab3',
-    },
-  ];
 
   // 누적
   return (
@@ -477,7 +478,7 @@ const Ltpz00502 = ({ onClose }: Ltpz00502Props) => {
             </Gcol>
             <TabPager
               active={groupTabValue}
-              data={groupTabs}
+              data={GROUP_TABS}
               setActive={setGroupTabValue}
               visibleCount={5}
               getValue={(tab) => String(tab.value)}

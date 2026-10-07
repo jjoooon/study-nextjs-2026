@@ -136,13 +136,15 @@ export function useTabsPagination<T>(
 
   const [visibleStart, setVisibleStart] = useState(() => getStartByActive(active));
   const [prevActive, setPrevActive] = useState<string>(active);
-  const [prevData, setPrevData] = useState<T[] | null | undefined>(data);
+  const [prevDataKeys, setPrevDataKeys] = useState<string>(() => safeData.map(getValue).join('|'));
   const [prevVisibleCount, setPrevVisibleCount] = useState<number>(visibleCount);
 
+  const currentDataKeys = safeData.map(getValue).join('|');
+
   // active, data, visibleCount 변경 시 보이는 탭 시작 위치 동기화 (렌더 단계에서 동기화)
-  if (active !== prevActive || data !== prevData || visibleCount !== prevVisibleCount) {
+  if (active !== prevActive || currentDataKeys !== prevDataKeys || visibleCount !== prevVisibleCount) {
     setPrevActive(active);
-    setPrevData(data);
+    setPrevDataKeys(currentDataKeys);
     setPrevVisibleCount(visibleCount);
 
     const newStart = getStartByActive(active);

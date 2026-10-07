@@ -23,7 +23,8 @@ const FontTestComponent = () => {
       </h2>
       <p style={{ color: '#666', marginBottom: '24px', fontSize: '14px' }}>
         크롬 109 등 구형 브라우저 환경에서 <strong>1. WOFF2 (가변 Variable)</strong>,{' '}
-        <strong>2. WOFF (가변 Variable)</strong>, <strong>3. WOFF (정적 Static 1세대 9개 굵기)</strong>의 렌더링 차이를 비교 검증합니다.
+        <strong>2. WOFF (가변 Variable)</strong>, <strong>3. WOFF (정적 Static 1세대 9개 굵기)</strong>의 렌더링 차이를
+        비교 검증합니다.
       </p>
 
       {/* 3열 비교 레이아웃 */}
@@ -31,18 +32,29 @@ const FontTestComponent = () => {
         {/* 1. WOFF2 (가변 Variable) 테스트 박스 */}
         <div style={{ border: '2px solid #3b82f6', borderRadius: '12px', padding: '16px', backgroundColor: '#eff6ff' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-            <h3 style={{ fontSize: '16px', fontWeight: 'bold', color: '#1d4ed8' }}>
-              1. WOFF2 (가변 Variable)
-            </h3>
-            <span style={{ fontSize: '11px', background: '#3b82f6', color: '#fff', padding: '2px 6px', borderRadius: '4px' }}>
+            <h3 style={{ fontSize: '16px', fontWeight: 'bold', color: '#1d4ed8' }}>1. WOFF2 (가변 Variable)</h3>
+            <span
+              style={{
+                fontSize: '11px',
+                background: '#3b82f6',
+                color: '#fff',
+                padding: '2px 6px',
+                borderRadius: '4px',
+              }}
+            >
               NotoSansKRNumber-WOFF2
             </span>
           </div>
 
           <div className="use-font-woff2" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {weights.map((w) => (
-              <div key={`woff2-${w.value}`} style={{ background: '#fff', padding: '10px 12px', borderRadius: '8px', border: '1px solid #bfdbfe' }}>
-                <span style={{ fontSize: '11px', color: '#6b7280', display: 'block', marginBottom: '2px' }}>{w.label}</span>
+              <div
+                key={`woff2-${w.value}`}
+                style={{ background: '#fff', padding: '10px 12px', borderRadius: '8px', border: '1px solid #bfdbfe' }}
+              >
+                <span style={{ fontSize: '11px', color: '#6b7280', display: 'block', marginBottom: '2px' }}>
+                  {w.label}
+                </span>
                 <div style={{ fontSize: '17px', fontWeight: w.value, color: '#2563eb', wordBreak: 'break-all' }}>
                   {sampleText}
                 </div>
@@ -54,18 +66,29 @@ const FontTestComponent = () => {
         {/* 2. WOFF (가변 Variable) 테스트 박스 */}
         <div style={{ border: '2px solid #8b5cf6', borderRadius: '12px', padding: '16px', backgroundColor: '#f5f3ff' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-            <h3 style={{ fontSize: '16px', fontWeight: 'bold', color: '#6d28d9' }}>
-              2. WOFF (가변 Variable)
-            </h3>
-            <span style={{ fontSize: '11px', background: '#8b5cf6', color: '#fff', padding: '2px 6px', borderRadius: '4px' }}>
+            <h3 style={{ fontSize: '16px', fontWeight: 'bold', color: '#6d28d9' }}>2. WOFF (가변 Variable)</h3>
+            <span
+              style={{
+                fontSize: '11px',
+                background: '#8b5cf6',
+                color: '#fff',
+                padding: '2px 6px',
+                borderRadius: '4px',
+              }}
+            >
               NotoSansKRNumber-WOFF-Var
             </span>
           </div>
 
           <div className="use-font-woff-var" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {weights.map((w) => (
-              <div key={`woff-var-${w.value}`} style={{ background: '#fff', padding: '10px 12px', borderRadius: '8px', border: '1px solid #ddd6fe' }}>
-                <span style={{ fontSize: '11px', color: '#6b7280', display: 'block', marginBottom: '2px' }}>{w.label}</span>
+              <div
+                key={`woff-var-${w.value}`}
+                style={{ background: '#fff', padding: '10px 12px', borderRadius: '8px', border: '1px solid #ddd6fe' }}
+              >
+                <span style={{ fontSize: '11px', color: '#6b7280', display: 'block', marginBottom: '2px' }}>
+                  {w.label}
+                </span>
                 <div style={{ fontSize: '17px', fontWeight: w.value, color: '#7c3aed', wordBreak: 'break-all' }}>
                   {sampleText}
                 </div>
@@ -77,18 +100,29 @@ const FontTestComponent = () => {
         {/* 3. WOFF (정적 Static 1세대) 테스트 박스 */}
         <div style={{ border: '2px solid #10b981', borderRadius: '12px', padding: '16px', backgroundColor: '#ecfdf5' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-            <h3 style={{ fontSize: '16px', fontWeight: 'bold', color: '#047857' }}>
-              3. WOFF (정적 Static 1세대)
-            </h3>
-            <span style={{ fontSize: '11px', background: '#10b981', color: '#fff', padding: '2px 6px', borderRadius: '4px' }}>
+            <h3 style={{ fontSize: '16px', fontWeight: 'bold', color: '#047857' }}>3. WOFF (정적 Static 1세대)</h3>
+            <span
+              style={{
+                fontSize: '11px',
+                background: '#10b981',
+                color: '#fff',
+                padding: '2px 6px',
+                borderRadius: '4px',
+              }}
+            >
               NotoSansKRNumber-WOFF-Static
             </span>
           </div>
 
           <div className="use-font-woff-static" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {weights.map((w) => (
-              <div key={`woff-static-${w.value}`} style={{ background: '#fff', padding: '10px 12px', borderRadius: '8px', border: '1px solid #a7f3d0' }}>
-                <span style={{ fontSize: '11px', color: '#6b7280', display: 'block', marginBottom: '2px' }}>{w.label}</span>
+              <div
+                key={`woff-static-${w.value}`}
+                style={{ background: '#fff', padding: '10px 12px', borderRadius: '8px', border: '1px solid #a7f3d0' }}
+              >
+                <span style={{ fontSize: '11px', color: '#6b7280', display: 'block', marginBottom: '2px' }}>
+                  {w.label}
+                </span>
                 <div style={{ fontSize: '17px', fontWeight: w.value, color: '#059669', wordBreak: 'break-all' }}>
                   {sampleText}
                 </div>

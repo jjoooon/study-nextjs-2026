@@ -532,158 +532,161 @@ const Ltpa04001 = () => {
     setLoadedCount(res.items.length);
   }, [loadedCount, totalCount, fetchMockData, isLoading]);
 
-  const columnDefs: (ColDef<Ltpa040DummyDataRow> | ColGroupDef<Ltpa040DummyDataRow>)[] = [
-    {
-      headerName: '추천설계정보',
-      headerGroupComponent: () => (
-        <Grow placement="cc" className="w-full">
-          <span className="font-bold">추천설계정보</span>
-        </Grow>
-      ),
-      children: [
-        {
-          headerName: '추천일시',
-          field: 'field01',
-          flex: 1,
-          minWidth: attributeColumnWidth(110),
-          cellClass: 'text-center',
-          unSortIcon: true,
-        },
-        {
-          headerName: '채널',
-          field: 'field02',
-          flex: 1,
-          minWidth: attributeColumnWidth(50),
-          cellClass: 'text-center',
-          unSortIcon: true,
-        },
-        {
-          headerName: '취급자',
-          field: 'field03',
-          flex: 1,
-          minWidth: attributeColumnWidth(110),
-          cellClass: 'text-center',
-          unSortIcon: true,
-        },
-        {
-          headerName: '사용인',
-          field: 'field04',
-          flex: 1,
-          minWidth: attributeColumnWidth(115),
-          cellClass: 'text-center',
-          unSortIcon: true,
-        },
-        {
-          headerName: '고객구분',
-          field: 'field05',
-          flex: 1,
-          minWidth: attributeColumnWidth(60),
-          cellClass: 'text-center',
-        },
-        {
-          headerName: '고객명',
-          field: 'field06',
-          flex: 1,
-          minWidth: attributeColumnWidth(70),
-          cellClass: 'text-center',
-        },
-        {
-          headerName: '입력조건',
-          field: 'field07',
-          flex: 20,
-          minWidth: attributeColumnWidth(150),
-          cellClass: 'text-left',
-          tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRow>({ field: 'field07' }),
-        },
-        {
-          headerName: '추천 설계번호',
-          field: 'field08',
-          flex: 1,
-          minWidth: attributeColumnWidth(95),
-          cellClass: 'text-center',
-          unSortIcon: true,
-        },
-        {
-          headerName: '추천상품',
-          field: 'field09',
-          flex: 1,
-          minWidth: attributeColumnWidth(150),
-          cellClass: 'text-left',
-          tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRow>({ field: 'field09' }),
-        },
-        {
-          headerName: '담보수',
-          field: 'field10',
-          flex: 1,
-          minWidth: attributeColumnWidth(50),
-          cellClass: 'text-center',
-        },
-        {
-          headerName: '보장보험료',
-          field: 'field11',
-          flex: 1,
-          minWidth: attributeColumnWidth(85),
-          cellClass: 'text-right',
-          valueFormatter: (params) => {
-            if (params.value === null || params.value === undefined || params.value === '') return '';
-            const raw = String(params.value).replace(/원/g, '').replace(/,/g, '');
-            const num = Number(raw);
-            return Number.isNaN(num) ? String(params.value) : `${num.toLocaleString()}원`;
+  const columnDefs: (ColDef<Ltpa040DummyDataRow> | ColGroupDef<Ltpa040DummyDataRow>)[] = React.useMemo(
+    () => [
+      {
+        headerName: '추천설계정보',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold">추천설계정보</span>
+          </Grow>
+        ),
+        children: [
+          {
+            headerName: '추천일시',
+            field: 'field01',
+            flex: 1,
+            minWidth: attributeColumnWidth(110),
+            cellClass: 'text-center',
+            unSortIcon: true,
           },
-        },
-      ],
-    },
-    {
-      headerName: '설계 생성정보',
-      headerGroupComponent: () => (
-        <Grow placement="cc" className="w-full">
-          <span className="font-bold">설계 생성정보</span>
-        </Grow>
-      ),
-      headerClass: 'ag-header-color',
-      cellClass: 'text-center',
-      children: [
-        {
-          headerName: '설계번호',
-          field: 'field12',
-          flex: 1,
-          minWidth: attributeColumnWidth(120),
-          headerClass: 'ag-header-color',
-          cellClass: 'text-center',
-        },
-        {
-          headerName: '설계상태',
-          field: 'field13',
-          flex: 1,
-          minWidth: attributeColumnWidth(70),
-          headerClass: 'ag-header-color',
-          cellClass: 'text-center',
-        },
-        {
-          headerName: '설계담보수',
-          field: 'field14',
-          flex: 1,
-          minWidth: attributeColumnWidth(70),
-          headerClass: 'ag-header-color',
-          cellClass: 'text-center',
-        },
-        {
-          headerName: '보장보험료',
-          field: 'field15',
-          flex: 1,
-          minWidth: attributeColumnWidth(85),
-          headerClass: 'ag-header-color',
-          cellClass: 'text-right',
-          valueFormatter: (params) => {
-            if (params.value === null || params.value === undefined || params.value === '') return '';
-            const raw = String(params.value).replace(/원/g, '').replace(/,/g, '');
-            const num = Number(raw);
-            return Number.isNaN(num) ? String(params.value) : `${num.toLocaleString()}원`;
+          {
+            headerName: '채널',
+            field: 'field02',
+            flex: 1,
+            minWidth: attributeColumnWidth(50),
+            cellClass: 'text-center',
+            unSortIcon: true,
           },
-        },
-      ],
-    },
-  ];
+          {
+            headerName: '취급자',
+            field: 'field03',
+            flex: 1,
+            minWidth: attributeColumnWidth(110),
+            cellClass: 'text-center',
+            unSortIcon: true,
+          },
+          {
+            headerName: '사용인',
+            field: 'field04',
+            flex: 1,
+            minWidth: attributeColumnWidth(115),
+            cellClass: 'text-center',
+            unSortIcon: true,
+          },
+          {
+            headerName: '고객구분',
+            field: 'field05',
+            flex: 1,
+            minWidth: attributeColumnWidth(60),
+            cellClass: 'text-center',
+          },
+          {
+            headerName: '고객명',
+            field: 'field06',
+            flex: 1,
+            minWidth: attributeColumnWidth(70),
+            cellClass: 'text-center',
+          },
+          {
+            headerName: '입력조건',
+            field: 'field07',
+            flex: 20,
+            minWidth: attributeColumnWidth(150),
+            cellClass: 'text-left',
+            tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRow>({ field: 'field07' }),
+          },
+          {
+            headerName: '추천 설계번호',
+            field: 'field08',
+            flex: 1,
+            minWidth: attributeColumnWidth(95),
+            cellClass: 'text-center',
+            unSortIcon: true,
+          },
+          {
+            headerName: '추천상품',
+            field: 'field09',
+            flex: 1,
+            minWidth: attributeColumnWidth(150),
+            cellClass: 'text-left',
+            tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRow>({ field: 'field09' }),
+          },
+          {
+            headerName: '담보수',
+            field: 'field10',
+            flex: 1,
+            minWidth: attributeColumnWidth(50),
+            cellClass: 'text-center',
+          },
+          {
+            headerName: '보장보험료',
+            field: 'field11',
+            flex: 1,
+            minWidth: attributeColumnWidth(85),
+            cellClass: 'text-right',
+            valueFormatter: (params) => {
+              if (params.value === null || params.value === undefined || params.value === '') return '';
+              const raw = String(params.value).replace(/원/g, '').replace(/,/g, '');
+              const num = Number(raw);
+              return Number.isNaN(num) ? String(params.value) : `${num.toLocaleString()}원`;
+            },
+          },
+        ],
+      },
+      {
+        headerName: '설계 생성정보',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold">설계 생성정보</span>
+          </Grow>
+        ),
+        headerClass: 'ag-header-color',
+        cellClass: 'text-center',
+        children: [
+          {
+            headerName: '설계번호',
+            field: 'field12',
+            flex: 1,
+            minWidth: attributeColumnWidth(120),
+            headerClass: 'ag-header-color',
+            cellClass: 'text-center',
+          },
+          {
+            headerName: '설계상태',
+            field: 'field13',
+            flex: 1,
+            minWidth: attributeColumnWidth(70),
+            headerClass: 'ag-header-color',
+            cellClass: 'text-center',
+          },
+          {
+            headerName: '설계담보수',
+            field: 'field14',
+            flex: 1,
+            minWidth: attributeColumnWidth(70),
+            headerClass: 'ag-header-color',
+            cellClass: 'text-center',
+          },
+          {
+            headerName: '보장보험료',
+            field: 'field15',
+            flex: 1,
+            minWidth: attributeColumnWidth(85),
+            headerClass: 'ag-header-color',
+            cellClass: 'text-right',
+            valueFormatter: (params) => {
+              if (params.value === null || params.value === undefined || params.value === '') return '';
+              const raw = String(params.value).replace(/원/g, '').replace(/,/g, '');
+              const num = Number(raw);
+              return Number.isNaN(num) ? String(params.value) : `${num.toLocaleString()}원`;
+            },
+          },
+        ],
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   return (
     <Grid className="w-full grid-rows-[auto_minmax(0,1fr)] gap-3 h-full">
