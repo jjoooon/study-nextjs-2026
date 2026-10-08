@@ -2,7 +2,6 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 
-// 2026-05-21 import 수정
 'use client';
 import '@/shared/lib/agGridPub';
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
@@ -10,7 +9,6 @@ import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
-
 import { BulletListItem } from '@common/BulletList';
 import { BulletList } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';

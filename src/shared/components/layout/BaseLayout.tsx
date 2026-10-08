@@ -41,6 +41,14 @@ interface LayoutProps {
   state?: boolean;
   isFlowExpanded?: boolean;
   isPopup?: boolean;
+  /**
+   * 팝업/페이지 타이틀 (지정 시 dialogSizes.json / pageSizes.json 의 title 보다 우선 적용됩니다)
+   */
+  title?: string;
+  /**
+   * 화면 ID / 팝업 ID (지정 시 URL 및 dialogSizes.json / pageSizes.json 보다 우선 적용됩니다)
+   */
+  scrid?: string;
 }
 
 // 팝업 여부 판별 훅 (URL 파라미터 isPopup=true / popup=true / popup=y / popup=1 또는 prop 기준)
@@ -79,14 +87,21 @@ export const useIsPopup = (propIsPopup?: boolean) => {
 };
 
 // 문서 전체 래퍼: 상단(head) + 본문(body) 2행 구조 (팝업 모드일 경우 본문 1행 구조)
-export const LayoutDoc = ({ children, className, size, isPopup: propIsPopup }: LayoutProps) => {
+export const LayoutDoc = ({
+  children,
+  className,
+  size,
+  isPopup: propIsPopup,
+  title: propTitle,
+  scrid: propScrid,
+}: LayoutProps) => {
   const isPopup = useIsPopup(propIsPopup);
 
   useEffect(() => {
     if (typeof window === 'undefined' || !isPopup) return;
 
     const timer = setTimeout(() => {
-      const currentId = getCurrentPopupIdFromUrl();
+      const currentId = propScrid ?? getCurrentPopupIdFromUrl();
       const predefined = getPredefinedSize(currentId);
 
       const parsePx = (val?: string | number) => {
@@ -102,7 +117,7 @@ export const LayoutDoc = ({ children, className, size, isPopup: propIsPopup }: L
 
       const targetWidthPx = parsePx(predefined?.width) ?? 1204;
       const targetHeightPx = parsePx(predefined?.height) ?? 700;
-      const popupTitle = predefined?.title || '';
+      const popupTitle = propTitle ?? predefined?.title ?? '';
 
       try {
         window.parent.postMessage(
@@ -127,7 +142,7 @@ export const LayoutDoc = ({ children, className, size, isPopup: propIsPopup }: L
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [isPopup, size]);
+  }, [isPopup, size, propTitle, propScrid]);
 
   return (
     <div

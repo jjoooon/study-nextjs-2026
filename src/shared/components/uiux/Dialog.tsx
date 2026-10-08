@@ -16,7 +16,7 @@ import {
   subscribeOverlay,
 } from '@/shared/utils/popup/dialogOverlayRegistry';
 import { changeTitle, resizeWindow } from '@/shared/utils/screenUtils';
-import { Grid } from '@atoms';
+import { Grid, Typo } from '@atoms';
 import { CloseIcon, FullscreenIcon, FullscreenExitIcon, SplitScreenIcon, SplitScreenExitIcon } from '@icons';
 import { Button } from '@uiux/Button';
 
@@ -446,6 +446,8 @@ export const isExternalOrCustomIframe = (popupId?: string): boolean => {
 type DialogContextValue = {
   depth: number;
   dialogId: string | null;
+  title?: string;
+  scrid?: string;
   isMinimized: boolean;
   setMinimized: React.Dispatch<React.SetStateAction<boolean>>;
   isFullscreen: boolean;
@@ -463,6 +465,8 @@ type DialogContextValue = {
 const DialogDepthContext = React.createContext<DialogContextValue>({
   depth: 0,
   dialogId: null,
+  title: undefined,
+  scrid: undefined,
   isMinimized: false,
   setMinimized: () => {},
   isFullscreen: false,
@@ -493,6 +497,14 @@ const DialogSizeContext = React.createContext<DialogSizeContextValue>({
 });
 
 interface DialogProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root> {
+  /**
+   * 다이얼로그 타이틀 (지정 시 dialogSizes.json의 title 보다 우선 적용됩니다)
+   */
+  title?: string;
+  /**
+   * 화면 ID / 팝업 ID (지정 시 URL 및 dialogSizes.json 보다 우선 적용됩니다)
+   */
+  scrid?: string;
   /**
    * 다이얼로그의 열림 상태 (Controlled)
    */
@@ -568,6 +580,8 @@ interface DialogProps extends React.ComponentPropsWithoutRef<typeof DialogPrimit
  * - 팝업/모달의 라이프사이클과 중첩(Depth) 깊이에 따른 레이어 포커스를 관리합니다.
  */
 function Dialog({
+  title: titleProp,
+  scrid: scridProp,
   open: openProp,
   defaultOpen,
   onOpenChange,
@@ -698,6 +712,8 @@ function Dialog({
       value={{
         depth: newDepth,
         dialogId,
+        title: titleProp,
+        scrid: scridProp,
         isMinimized,
         setMinimized: handleMinimizeChange,
         isFullscreen,
@@ -884,6 +900,14 @@ function DialogOverlay({ className, style, disableMotion = false, dim = 'dark', 
 
 interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> {
   /**
+   * 다이얼로그 타이틀 (지정 시 dialogSizes.json의 title 보다 우선 적용됩니다)
+   */
+  title?: string;
+  /**
+   * 화면 ID / 팝업 ID (지정 시 URL 및 dialogSizes.json 보다 우선 적용됩니다)
+   */
+  scrid?: string;
+  /**
    * 우측 상단에 기본 닫기(X) 버튼을 노출할지 여부
    * @default true
    */
@@ -1014,6 +1038,8 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
  * - 실제 다이얼로그 팝업 창 영역입니다. 드래그 이동 및 크기 조절(Resizable) 기능을 내장하고 있습니다.
  */
 function DialogContent({
+  title: titleProp,
+  scrid: scridProp,
   className,
   children,
   showCloseButton = true,
@@ -1050,6 +1076,8 @@ function DialogContent({
 }: DialogContentProps) {
   const {
     dialogId,
+    title: contextTitle,
+    scrid: contextScrid,
     isMinimized,
     setMinimized,
     isFullscreen: contextIsFullscreen,
@@ -1161,7 +1189,8 @@ function DialogContent({
 
     const timer = setTimeout(() => {
       // dialogSizes.json 에서 현재 팝업의 사전 정의 정보 조회
-      const currentId = popupId || getCurrentPopupIdFromUrl() || getPopupIdFromElement(contentRef.current);
+      const currentId =
+        scridProp ?? popupId ?? contextScrid ?? getCurrentPopupIdFromUrl() ?? getPopupIdFromElement(contentRef.current);
       const predefined = getDialogPredefinedSize(currentId);
 
       // explicitIframe이 명시되었으면 최우선 적용, 없으면 predefined?.isIframe, 둘 다 없으면 isIframeState 사용
@@ -1197,7 +1226,7 @@ function DialogContent({
       const contentHeight = parsedIframeHeight ?? getTargetHeightPx(size, className) ?? 650;
       const finalIframeHeight = Math.max(0, contentHeight);
 
-      const popupTitle = predefined?.title || '';
+      const popupTitle = titleProp ?? contextTitle ?? predefined?.title ?? '';
 
       try {
         window.parent.postMessage(
@@ -1222,7 +1251,7 @@ function DialogContent({
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [isIframeState, size, className, iframeHeight, popupId]);
+  }, [isIframeState, size, className, iframeHeight, popupId, titleProp, contextTitle, scridProp, contextScrid]);
 
   const resolvedShowCloseButton = showCloseButton;
   const resolvedResizable = resizable;
@@ -1809,11 +1838,123 @@ function DialogFooterArea({ className, ...props }: React.ComponentProps<'div'>) 
   );
 }
 
+function replaceTitleAndScridInChildren(
+  children: React.ReactNode,
+  newTitle?: string,
+  newScrid?: string
+): React.ReactNode {
+  let titleReplaced = false;
+  let scridReplaced = false;
+
+  const formattedScrid = newScrid
+    ? newScrid.startsWith('(') && newScrid.endsWith(')')
+      ? newScrid
+      : `(${newScrid})`
+    : undefined;
+
+  const replaceRec = (nodes: React.ReactNode): React.ReactNode => {
+    return React.Children.map(nodes, (child) => {
+      if (!React.isValidElement(child)) return child;
+
+      const element = child as React.ReactElement<any>;
+      const props = element.props || {};
+
+      // 1. Title 교체
+      if (newTitle && (props.tag === 'strong' || element.type === 'strong')) {
+        titleReplaced = true;
+        return React.cloneElement(element, { ...props, children: newTitle });
+      }
+
+      // 2. Scrid (화면 ID) 교체: <Typo tag="p"> 또는 <p> 태그 또는 텍스트가 (LTP...) 이거나 () 이거나 빈 문자열인 경우
+      if (
+        formattedScrid &&
+        (props.tag === 'p' ||
+          element.type === 'p' ||
+          (typeof props.children === 'string' && /^\(?([A-Z0-9_-]*)\)?$/i.test(props.children.trim())))
+      ) {
+        scridReplaced = true;
+        return React.cloneElement(element, { ...props, children: formattedScrid });
+      }
+
+      if (props.children && typeof props.children !== 'string') {
+        const newChildNodes = replaceRec(props.children);
+        return React.cloneElement(element, { ...props, children: newChildNodes });
+      }
+
+      return child;
+    });
+  };
+
+  let result = replaceRec(children);
+
+  if (newTitle && !titleReplaced) {
+    if (typeof children === 'string' || typeof children === 'number') {
+      result = newTitle;
+    } else {
+      result = React.Children.map(result, (child, index) => {
+        if (index === 0 && React.isValidElement(child)) {
+          const element = child as React.ReactElement<any>;
+          const props = element.props || {};
+          return React.cloneElement(element, { ...props, children: newTitle });
+        }
+        return child;
+      });
+    }
+  }
+
+  return result;
+}
+
+interface DialogTitleProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title> {
+  /**
+   * 다이얼로그 타이틀 (지정 시 dialogSizes.json 의 title 및 하위 제목 텍스트보다 우선 적용됩니다)
+   */
+  title?: string;
+  /**
+   * 화면 ID / 팝업 ID (지정 시 하위 ID 텍스트보다 우선 적용됩니다)
+   */
+  scrid?: string;
+}
+
 /**
  * 다이얼로그 타이틀 (DialogTitle)
  * - 팝업 상단 굵은 텍스트 제목 영역입니다.
+ * - title/scrid prop 또는 Dialog/DialogContent 의 title/scrid 가 전달되면 하위 텍스트(Typo strong/p 등)를 자동 교체합니다.
  */
-function DialogTitle({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Title>) {
+function DialogTitle({ className, children, title: titleProp, scrid: scridProp, ...props }: DialogTitleProps) {
+  const { title: contextTitle, scrid: contextScrid } = React.useContext(DialogDepthContext);
+  const effectiveTitle = titleProp ?? contextTitle;
+  const effectiveScrid = scridProp ?? contextScrid;
+
+  let renderedChildren = children;
+
+  if (effectiveTitle || effectiveScrid) {
+    if (children) {
+      renderedChildren = replaceTitleAndScridInChildren(children, effectiveTitle, effectiveScrid);
+    } else {
+      const formattedScrid = effectiveScrid
+        ? effectiveScrid.startsWith('(') && effectiveScrid.endsWith(')')
+          ? effectiveScrid
+          : `(${effectiveScrid})`
+        : undefined;
+
+      renderedChildren = (
+        <>
+          {effectiveTitle && (
+            <Typo tag={'strong'} variant={'heading-lg'}>
+              {effectiveTitle}
+            </Typo>
+          )}
+          {formattedScrid && (
+            <Typo tag={'p'} variant={'body-xl'}>
+              {formattedScrid}
+            </Typo>
+          )}
+        </>
+      );
+    }
+  }
+
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
@@ -1822,7 +1963,9 @@ function DialogTitle({ className, ...props }: React.ComponentProps<typeof Dialog
         className
       )}
       {...props}
-    />
+    >
+      {renderedChildren}
+    </DialogPrimitive.Title>
   );
 }
 

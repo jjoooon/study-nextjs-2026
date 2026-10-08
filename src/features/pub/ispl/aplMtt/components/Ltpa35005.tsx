@@ -991,6 +991,7 @@ export const Ltpa35005 = () => {
                                   </NativeSelectOption>
                                 ))}
                               </NativeSelect>
+                              <Input width={100} aria-label="제3자 녹취" value={''} placeholder={'제3자 녹취'} />
                             </FormCell>
                           )}
                           {morePay === '카드이체' && (
