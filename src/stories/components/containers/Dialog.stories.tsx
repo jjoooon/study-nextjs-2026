@@ -20,6 +20,17 @@ import {
 } from '@uiux/Dialog';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from '@uiux/AlertDialog';
+
 type DialogContentProps = React.ComponentProps<typeof DialogContent>;
 
 const meta: Meta<DialogContentProps> = {
@@ -264,6 +275,131 @@ export const Default: Story = {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+    );
+  },
+};
+
+export const SharedZIndexOverlayTest: Story = {
+  name: 'z-index 교차 중첩 테스트 (Alert -> Dialog -> Alert -> Dialog)',
+  render: () => {
+    const [alert1Open, setAlert1Open] = React.useState(false);
+    const [dialog1Open, setDialog1Open] = React.useState(false);
+    const [alert2Open, setAlert2Open] = React.useState(false);
+    const [dialog2Open, setDialog2Open] = React.useState(false);
+
+    return (
+      <div className="flex flex-col gap-4 items-center justify-center p-10">
+        <Typo tag="h3" variant="heading-lg">
+          z-index 공유 레지스트리 교차 순서 테스트
+        </Typo>
+        <p className="text-sm text-gray-600 max-w-lg text-center">
+          Alert(100) ➔ Dialog(101) ➔ Alert(102) ➔ Dialog(103) 순서대로 교차하여 열릴 때 z-index가 1씩 증가하며
+          상위 레이어에 순차적으로 떠서 클릭이 정상 조작되는지 검증합니다.
+        </p>
+
+        <Button variant="contained" size="xl" onClick={() => setAlert1Open(true)}>
+          1단계: Alert 1 열기 (예상 z-index: 100)
+        </Button>
+
+        {/* 1단계: Alert 1 */}
+        <AlertDialog open={alert1Open} onOpenChange={setAlert1Open}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>1단계: Alert 1 (z-index: 100)</AlertDialogTitle>
+              <AlertDialogDescription>
+                첫 번째 Alert 창입니다. (닫히지 않고 열린 채로 유지됩니다)
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={() => setAlert1Open(false)}>Alert 1 닫기</AlertDialogCancel>
+              <Button variant="contained" size="xl" onClick={() => setDialog1Open(true)}>
+                2단계: Dialog 1 열기 (Alert 1 열린 채 z-index: 101)
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        {/* 2단계: Dialog 1 */}
+        <Dialog open={dialog1Open} onOpenChange={setDialog1Open}>
+          <DialogContent title="2단계: Dialog 1" scrid="DLG01" size="sm">
+            <DialogHeader>
+              <DialogTitle>2단계: Dialog 1 (z-index: 101)</DialogTitle>
+            </DialogHeader>
+            <DialogSection className="py-4">
+              <p>두 번째로 열린 Dialog 1 팝업입니다.</p>
+              <p className="text-xs text-gray-500 mt-2">
+                Alert 1(100) 위에 Dialog 1(101)이 정상적으로 겹쳐서 표시되고 있습니다.
+              </p>
+            </DialogSection>
+            <DialogFooter>
+              <DialogFooterArea>
+                <Grow>
+                  <Button variant="outlined" color="gray-light" onClick={() => setDialog1Open(false)}>
+                    Dialog 1 닫기
+                  </Button>
+                </Grow>
+                <Grow>
+                  <Button variant="contained" color="primary" onClick={() => setAlert2Open(true)}>
+                    3단계: Alert 2 열기 (Dialog 1 열린 채 z-index: 102)
+                  </Button>
+                </Grow>
+              </DialogFooterArea>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* 3단계: Alert 2 */}
+        <AlertDialog open={alert2Open} onOpenChange={setAlert2Open}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>3단계: Alert 2 (z-index: 102)</AlertDialogTitle>
+              <AlertDialogDescription>
+                세 번째로 열린 Alert 2 창입니다. (Dialog 1과 Alert 1 위로 중첩되어 열린 채 유지됩니다)
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={() => setAlert2Open(false)}>Alert 2 닫기</AlertDialogCancel>
+              <Button variant="contained" size="xl" onClick={() => setDialog2Open(true)}>
+                4단계: Dialog 2 열기 (Alert 2 열린 채 z-index: 103)
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        {/* 4단계: Dialog 2 */}
+        <Dialog open={dialog2Open} onOpenChange={setDialog2Open}>
+          <DialogContent title="4단계: Dialog 2" scrid="DLG02" size="sm">
+            <DialogHeader>
+              <DialogTitle>4단계: Dialog 2 (z-index: 103)</DialogTitle>
+            </DialogHeader>
+            <DialogSection className="py-4">
+              <p className="font-bold text-green-600">최상위 4단계 Dialog 2 팝업입니다.</p>
+              <p className="text-xs text-gray-500 mt-2">
+                Alert 1(100) ➔ Dialog 1(101) ➔ Alert 2(102) ➔ Dialog 2(103) 모두 닫히지 않고 차곡차곡 중첩되어
+                성공적으로 유지되고 있습니다!
+              </p>
+            </DialogSection>
+            <DialogFooter>
+              <DialogFooterArea>
+                <Grow>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      setDialog2Open(false);
+                      setAlert2Open(false);
+                      setDialog1Open(false);
+                      setAlert1Open(false);
+                    }}
+                  >
+                    모든 창 한번에 닫기
+                  </Button>
+                </Grow>
+              </DialogFooterArea>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
     );
   },
 };

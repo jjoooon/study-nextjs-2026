@@ -36,8 +36,8 @@ type DialogSizeConfig = {
 /** 다이얼로그 가로/세로 크기 타입 */
 type DialogSize = DialogSizePreset | DialogSizeConfig;
 
-const DEFAULT_DIALOG_CONTENT_Z_INDEX = 51;
-const DIALOG_Z_INDEX_STEP = 2;
+const DEFAULT_DIALOG_CONTENT_Z_INDEX = 100;
+const DIALOG_Z_INDEX_STEP = 1;
 const DIALOG_VIEWPORT_GAP = '2.4rem';
 const DIALOG_DEFAULT_MAX_HEIGHT = `calc(100vh - ${DIALOG_VIEWPORT_GAP})`;
 const DIALOG_FULL_WIDTH = `calc(100vw - 2rem)`;
@@ -498,14 +498,6 @@ const DialogSizeContext = React.createContext<DialogSizeContextValue>({
 
 interface DialogProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root> {
   /**
-   * 다이얼로그 타이틀 (지정 시 dialogSizes.json의 title 보다 우선 적용됩니다)
-   */
-  title?: string;
-  /**
-   * 화면 ID / 팝업 ID (지정 시 URL 및 dialogSizes.json 보다 우선 적용됩니다)
-   */
-  scrid?: string;
-  /**
    * 다이얼로그의 열림 상태 (Controlled)
    */
   open?: boolean;
@@ -580,8 +572,6 @@ interface DialogProps extends React.ComponentPropsWithoutRef<typeof DialogPrimit
  * - 팝업/모달의 라이프사이클과 중첩(Depth) 깊이에 따른 레이어 포커스를 관리합니다.
  */
 function Dialog({
-  title: titleProp,
-  scrid: scridProp,
   open: openProp,
   defaultOpen,
   onOpenChange,
@@ -712,8 +702,6 @@ function Dialog({
       value={{
         depth: newDepth,
         dialogId,
-        title: titleProp,
-        scrid: scridProp,
         isMinimized,
         setMinimized: handleMinimizeChange,
         isFullscreen,
@@ -1074,10 +1062,9 @@ function DialogContent({
   isIframe: isIframeProp,
   ...props
 }: DialogContentProps) {
+  const parentDialogContext = React.useContext(DialogDepthContext);
   const {
     dialogId,
-    title: contextTitle,
-    scrid: contextScrid,
     isMinimized,
     setMinimized,
     isFullscreen: contextIsFullscreen,
@@ -1190,7 +1177,7 @@ function DialogContent({
     const timer = setTimeout(() => {
       // dialogSizes.json 에서 현재 팝업의 사전 정의 정보 조회
       const currentId =
-        scridProp ?? popupId ?? contextScrid ?? getCurrentPopupIdFromUrl() ?? getPopupIdFromElement(contentRef.current);
+        scridProp ?? popupId ?? getCurrentPopupIdFromUrl() ?? getPopupIdFromElement(contentRef.current);
       const predefined = getDialogPredefinedSize(currentId);
 
       // explicitIframe이 명시되었으면 최우선 적용, 없으면 predefined?.isIframe, 둘 다 없으면 isIframeState 사용
@@ -1226,7 +1213,7 @@ function DialogContent({
       const contentHeight = parsedIframeHeight ?? getTargetHeightPx(size, className) ?? 650;
       const finalIframeHeight = Math.max(0, contentHeight);
 
-      const popupTitle = titleProp ?? contextTitle ?? predefined?.title ?? '';
+      const popupTitle = titleProp ?? predefined?.title ?? '';
 
       try {
         window.parent.postMessage(
@@ -1251,7 +1238,7 @@ function DialogContent({
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [isIframeState, size, className, iframeHeight, popupId, titleProp, contextTitle, scridProp, contextScrid]);
+  }, [isIframeState, size, className, iframeHeight, popupId, titleProp, scridProp]);
 
   const resolvedShowCloseButton = showCloseButton;
   const resolvedResizable = resizable;
@@ -1272,7 +1259,7 @@ function DialogContent({
     [dialogId]
   );
 
-  // 레이어 기반 z-index: 열린 순서대로 51, 53, 55 ...
+  // 레이어 기반 z-index: 열린 순서대로 100, 101, 102 ...
   const autoContentZIndex = DEFAULT_DIALOG_CONTENT_Z_INDEX + (Math.max(dialogLayerIndex, 1) - 1) * DIALOG_Z_INDEX_STEP;
 
   // 각 다이얼로그는 자신의 레이어 순서만으로 z-index를 결정
@@ -1659,7 +1646,14 @@ function DialogContent({
   }, [isDragging, isResizing, dragStart, resizedSize, initialCapture]);
 
   return (
-    <DialogSizeContext.Provider value={{ size, initialSectionWidth, isFullSize, isAutoFullWidth }}>
+    <DialogDepthContext.Provider
+      value={{
+        ...parentDialogContext,
+        title: titleProp,
+        scrid: scridProp,
+      }}
+    >
+      <DialogSizeContext.Provider value={{ size, initialSectionWidth, isFullSize, isAutoFullWidth }}>
       <DialogPortal data-slot="dialog-portal">
         {resolvedShowOverlay && dim !== 'none' && !isIframeState && (
           <DialogOverlay
@@ -1717,10 +1711,14 @@ function DialogContent({
             )}
           >
             {resolvedShowSplitButton && (isSplit || (!isMinimized && !isFullscreen)) && (
-              <DialogSplit isSplit={isSplit} className={splitButtonClassName} />
+              <DialogSplit isSplit={isSplit} onClick={() => setIsSplit(!isSplit)} className={splitButtonClassName} />
             )}
             {resolvedShowFullscreenButton && (isFullscreen || (!isMinimized && !isSplit)) && (
-              <DialogFullscreen isFullscreen={isFullscreen} className={fullscreenButtonClassName} />
+              <DialogFullscreen
+                isFullscreen={isFullscreen}
+                onClick={() => setIsFullscreen(!isFullscreen)}
+                className={fullscreenButtonClassName}
+              />
             )}
             {resolvedMinimized && (isMinimized || (!isFullscreen && !isSplit)) && (
               <DialogMinimize className={minimizeButtonClassName} />
@@ -1787,7 +1785,8 @@ function DialogContent({
         </DialogPrimitive.Content>
       </DialogPortal>
     </DialogSizeContext.Provider>
-  );
+  </DialogDepthContext.Provider>
+);
 }
 
 /**

@@ -11,6 +11,7 @@ import {
   unregisterDialog,
   getOpenCount,
   getTopOpenDialogId,
+  getDialogLayerIndex,
   subscribeOverlay,
 } from '@/shared/utils/popup/dialogOverlayRegistry';
 import { buttonVariants } from '@uiux/Button';
@@ -18,8 +19,8 @@ import { buttonVariants } from '@uiux/Button';
 // AlertDialog가 열릴 때 공유 레지스트리에 등록하기 위한 Context
 const AlertDialogIdContext = React.createContext<string | null>(null);
 
-// AlertDialog depth는 Dialog보다 항상 위에 있도록 큰 값 사용
-const ALERT_DIALOG_DEPTH = 999;
+// AlertDialog / Dialog 공유 z-index 시작 Base 값 (100부터 순차적으로 +1씩 부여)
+const DEFAULT_ALERT_DIALOG_Z_INDEX = 100;
 
 function AlertDialog({
   open: openProp,
@@ -42,10 +43,10 @@ function AlertDialog({
     [isControlled, onOpenChange]
   );
 
-  // 열린 상태일 때만 공유 레지스트리에 등록
+  // 열린 상태일 때만 공유 레지스트리에 등록 (순서대로 order 부여)
   React.useEffect(() => {
     if (!isOpen) return;
-    registerDialog(alertDialogId, ALERT_DIALOG_DEPTH);
+    registerDialog(alertDialogId, 1);
     return () => unregisterDialog(alertDialogId);
   }, [isOpen, alertDialogId]);
 
@@ -72,6 +73,7 @@ function AlertDialogPortal({ ...props }: React.ComponentProps<typeof AlertDialog
 
 function AlertDialogOverlay({
   className,
+  style,
   disableMotion = false,
   ...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Overlay> & {
@@ -80,8 +82,9 @@ function AlertDialogOverlay({
   return (
     <AlertDialogPrimitive.Overlay
       data-slot="alert-dialog-overlay"
+      style={style}
       className={cn(
-        'cp-alertdialog-overlay fixed inset-0 z-2050 bg-black/60',
+        'cp-alertdialog-overlay fixed inset-0 bg-black/60',
         disableMotion
           ? 'transition-none'
           : 'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
@@ -92,30 +95,37 @@ function AlertDialogOverlay({
   );
 }
 
-function AlertDialogContent({ className, ...props }: React.ComponentProps<typeof AlertDialogPrimitive.Content>) {
+function AlertDialogContent({ className, style, ...props }: React.ComponentProps<typeof AlertDialogPrimitive.Content>) {
   const alertDialogId = React.useContext(AlertDialogIdContext);
 
-  // 공유 레지스트리 구독: 최상위 다이얼로그만 딤 표시
+  // 공유 레지스트리 구독: 최상위 다이얼로그만 딤 표시 및 동적 z-index 계산
   const [topOpenDialogId, setTopOpenDialogId] = React.useState(getTopOpenDialogId);
   const [openCount, setOpenCount] = React.useState(getOpenCount);
+  const [dialogLayerIndex, setDialogLayerIndex] = React.useState(() => getDialogLayerIndex(alertDialogId));
 
   React.useEffect(
     () =>
       subscribeOverlay(() => {
         setTopOpenDialogId(getTopOpenDialogId());
         setOpenCount(getOpenCount());
+        setDialogLayerIndex(getDialogLayerIndex(alertDialogId));
       }),
-    []
+    [alertDialogId]
   );
 
   const showOverlay = openCount <= 1 || alertDialogId === topOpenDialogId;
   const disableOverlayMotion = openCount > 1;
 
+  // 레이어 기반 z-index: Dialog와 동일하게 100부터 시작하여 열린 순서대로 +1씩 부여
+  const autoContentZIndex = DEFAULT_ALERT_DIALOG_Z_INDEX + (Math.max(dialogLayerIndex, 1) - 1);
+  const overlayZIndex = autoContentZIndex - 1;
+
   return (
     <AlertDialogPortal>
-      {showOverlay && <AlertDialogOverlay disableMotion={disableOverlayMotion} />}
+      {showOverlay && <AlertDialogOverlay style={{ zIndex: overlayZIndex }} disableMotion={disableOverlayMotion} />}
       <AlertDialogPrimitive.Content
         data-slot="alert-dialog-content"
+        style={{ zIndex: autoContentZIndex, ...style }}
         className={cn(
           `cp-alertdialog bg-white 
           data-[state=open]:animate-in 
@@ -124,7 +134,7 @@ function AlertDialogContent({ className, ...props }: React.ComponentProps<typeof
           data-[state=open]:fade-in-0 
           data-[state=closed]:zoom-out-95 
           data-[state=open]:zoom-in-95 
-          fixed top-[50%] left-[50%] z-2051 grid w-full translate-x-[-50%] translate-y-[-50%] max-w-[calc(100vw-2rem)] 
+          fixed top-[50%] left-[50%] grid w-full translate-x-[-50%] translate-y-[-50%] max-w-[calc(100vw-2rem)] 
           gap-5 rounded-[1rem] border border-[var(--color-gray-15)] py-5 px-6  shadow-none duration-200 w-auto min-w-[28rem] tracking-[-0.08rem]`,
           className
         )}
