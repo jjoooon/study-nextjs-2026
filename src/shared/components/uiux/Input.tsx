@@ -338,7 +338,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
         : 'text-[var(--color-text-basic)] border-[var(--color-input-border)] bg-white'
   );
   const ghostStyle = cn(
-    'w-full rounded-[0.4rem] p-0 text-[1.3rem] bg-[transparent] focus:bg-[#fff] focus:border focus:border-[0.1rem] box-border tracking-[-0.03rem] appearance-none truncate'
+    'w-full rounded-[0.4rem] p-0 text-[1.3rem] bg-[transparent]! focus:bg-[#fff] focus:border focus:border-[0.1rem] box-border tracking-[-0.03rem] appearance-none truncate'
   );
   const hoverStyle =
     isInvalid || shouldShowError

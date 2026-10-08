@@ -330,6 +330,9 @@ export function Ltpa35004({ onClose }: Ltpa35004Props = {}) {
     [attributeColumnWidth]
   );
 
+  // 동시설계
+  const [isMultiDesign, setIsMultiDesign] = useState(false);
+
   return (
     <LayoutTemplateLTPA350MainBody
       mainBody={
@@ -387,19 +390,28 @@ export function Ltpa35004({ onClose }: Ltpa35004Props = {}) {
               <FormTable caption="취급자 정보" variant={'head'}>
                 <FormRow className="w-full [&>div]:w-full">
                   <FormCell
-                    title={'동시설계'}
+                    title={isMultiDesign ? '동시설계' : '설계번호'}
                     className="min-w-[6.4rem]"
                     tdStyle={{ width: '100%' }}
                     tdClassName="justify-between w-full"
                   >
-                    <RadioGroup className="gap-2" errorMsg="하나를 선택해주세요." errorPs="bl" onValueChange={() => {}}>
-                      <RadioGroupItem color="primary" id="radio1" size="md" value="LA123456789012" variant="button">
-                        LA123456789012
-                      </RadioGroupItem>
-                      <RadioGroupItem color="primary" id="radio2" size="md" value="LA123456789012" variant="button">
-                        LA123456789012
-                      </RadioGroupItem>
-                    </RadioGroup>
+                    {isMultiDesign ? (
+                      <RadioGroup
+                        className="gap-2"
+                        errorMsg="하나를 선택해주세요."
+                        errorPs="bl"
+                        onValueChange={() => {}}
+                      >
+                        <RadioGroupItem color="primary" id="radio1" size="md" value="LA123456789012" variant="button">
+                          LA123456789012
+                        </RadioGroupItem>
+                        <RadioGroupItem color="primary" id="radio2" size="md" value="LA123456789012" variant="button">
+                          LA123456789012
+                        </RadioGroupItem>
+                      </RadioGroup>
+                    ) : (
+                      <Input width={'full'} value={'LA123456789012'} size={'md'} variant="ghost" readOnly />
+                    )}
 
                     <Grow className="flex items-center gap-1">
                       <Button variant={'outlined'} color={'gray'} size={'md'}>
