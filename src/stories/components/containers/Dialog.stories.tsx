@@ -46,11 +46,17 @@ const meta: Meta<DialogContentProps> = {
                 Dialog는 Radix UI의 <code>@radix-ui/react-dialog</code>를 기반으로 만들어진 모달 다이얼로그
                 컴포넌트입니다.
                 <br />
-                드래그 이동, 리사이즈, 기본 위치 지정 등 고급 기능을 지원합니다.
+                드래그 이동, 리사이즈, 전체화면, 화면분할(우측 35%) 등 고급 기능을 지원합니다.
               </p>
               <ul>
                 <li>
                   <b>DialogHeader</b> 영역을 드래그하여 다이얼로그를 이동할 수 있습니다.
+                </li>
+                <li>
+                  <b>showFullscreenButton</b> 또는 <b>fullscreen</b> prop으로 전체화면 토글 버튼을 제공할 수 있습니다.
+                </li>
+                <li>
+                  <b>showSplitButton</b> 또는 <b>split</b> prop으로 화면분할(우측 35% 위치 차지, BODY padding-right:35% 공간 생성, 이동 방지) 토글 버튼을 제공할 수 있습니다.
                 </li>
                 <li>
                   <b>resizable</b> prop을 true로 설정하면 8방향 리사이즈 핸들이 노출됩니다.
@@ -136,11 +142,16 @@ import { Button } from '@uiux/Button';
     },
   },
   argTypes: {
-    // showCloseButton: {
-    //   control: 'boolean',
-    //   description: '우측 상단 닫기(X) 버튼 표시 여부',
-    //   table: { category: 'Appearance', defaultValue: { summary: 'true' } },
-    // },
+    showFullscreenButton: {
+      control: 'boolean',
+      description: '우측 상단 전체화면 버튼 표시 여부',
+      table: { category: 'prop', defaultValue: { summary: 'false' } },
+    },
+    showSplitButton: {
+      control: 'boolean',
+      description: '우측 상단 화면분할(우측 35%) 버튼 표시 여부',
+      table: { category: 'prop', defaultValue: { summary: 'false' } },
+    },
     resizable: {
       control: 'boolean',
       description: '8방향 리사이즈 핸들 활성화 여부',
@@ -157,12 +168,6 @@ import { Button } from '@uiux/Button';
       description: '크기 설정: sm/md/lg/full 또는 { width, height, minWidth, minHeight, maxWidth, maxHeight }',
       table: { category: 'prop' },
     },
-    // zIndex: {
-    //   control: 'number',
-    //   description: '다이얼로그 z-index (기본값: overlay보다 1 높음)',
-    //   table: { category: 'prop' },
-    // },
-
     showOverlay: {
       control: 'boolean',
       description: '오버레이 표시 여부',
@@ -175,11 +180,6 @@ import { Button } from '@uiux/Button';
         '어두운 백드롭 딤 오버레이 타입 (dark: 반투명 검정, transparent: 클릭 차단용 투명, none: 오버레이 없음)',
       table: { category: 'prop', defaultValue: { summary: "'dark'" } },
     },
-    // overlayClassName: {
-    //   control: 'text',
-    //   description: '오버레이에 추가할 CSS 클래스',
-    //   table: { category: 'Overlay props' },
-    // },
     zIndex: { table: { disable: true } },
     overlayClassName: { table: { disable: true } },
     showCloseButton: { table: { disable: true } },
@@ -191,6 +191,8 @@ import { Button } from '@uiux/Button';
     showOverlay: true,
     dim: 'dark',
     showCloseButton: true,
+    showFullscreenButton: true,
+    showSplitButton: true,
     resizable: true,
     defaultPosition: { x: 0, y: 0 },
     size: 'md',

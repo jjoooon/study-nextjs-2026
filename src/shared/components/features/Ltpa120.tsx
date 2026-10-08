@@ -39,7 +39,7 @@ function getInitialDialogPosition(buttonRect: DOMRect): { x: number; y: number }
   };
 }
 
-const styleClass = `ai-chatbot w-[${CHATBOT_DIALOG_WIDTH / 10}rem] h-[${CHATBOT_DIALOG_HEIGHT / 10}rem] min-w-[19.8rem] min-h-[30rem] max-w-[calc(100vw-2.4rem)] max-h-[calc(100vh-2.4rem)] p-0 gap-0 overflow-hidden grid-rows-[auto_1fr] bg-transparent border-0`;
+const styleClass = `ai-chatbot w-[64rem] h-[60rem] min-w-[19.8rem] min-h-[30rem] max-w-[calc(100vw-2.4rem)] max-h-[calc(100vh-2.4rem)] p-0 gap-0 overflow-hidden grid-rows-[auto_1fr] bg-transparent border-0`;
 
 export interface Ltpa120Props {
   isButton?: boolean;
@@ -85,14 +85,25 @@ export const Ltpa120 = ({
     }
   );
 
+  const [isFullscreen, setIsFullscreen] = React.useState(false);
+  const [isSplit, setIsSplit] = React.useState(false);
+
   return (
     <Dialog
       open={open}
-      onOpenChange={() => {
+      onOpenChange={(nextOpen) => {
         chatbotUtils.setRef(null);
-        setOpen(!open);
+        if (!nextOpen) {
+          setIsFullscreen(false);
+          setIsSplit(false);
+        }
+        setOpen(nextOpen);
       }}
       modal={false}
+      fullscreen={isFullscreen}
+      onFullscreenChange={setIsFullscreen}
+      split={isSplit}
+      onSplitChange={setIsSplit}
       minimized={minimized}
       onMinimizeChange={onMinimizeChange}
     >
@@ -118,6 +129,8 @@ export const Ltpa120 = ({
         popupId="LTPA120"
         defaultPosition={defaultPosition}
         showCloseButton={true}
+        showFullscreenButton={true}
+        showSplitButton={true}
         showOverlay={true}
         resizable={true}
         minimized={true}
@@ -125,13 +138,16 @@ export const Ltpa120 = ({
         onPointerDownOutside={(event) => event.preventDefault()}
         onInteractOutside={(event) => event.preventDefault()}
         onEscapeKeyDown={(event) => event.preventDefault()}
-        closeButtonClassName="absolute right-[1.2rem] top-[1.8rem] z-10 flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] transition-colors hover:bg-[var(--color-primary-60)] [&>svg]:w-[1.4rem] [&>svg]:h-[1.4rem] [&>svg_path]:fill-white"
-        minimizeButtonClassName="absolute right-[4rem] top-[1.8rem] z-10 flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] transition-colors hover:bg-[var(--color-primary-60)] [&>span]:!bg-[var(--color-gray-0)] [&>span]:!border-[var(--color-gray-0)]"
+        buttonGroupClassName="top-[1.8rem] right-[1.2rem] gap-1.5"
+        closeButtonClassName="flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] text-white transition-colors hover:bg-[var(--color-primary-60)] [&>svg]:w-[1.4rem] [&>svg]:h-[1.4rem] [&>svg_path]:fill-white"
+        minimizeButtonClassName="flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] text-white transition-colors hover:bg-[var(--color-primary-60)] [&>span]:!bg-[var(--color-gray-0)] [&>span]:!border-[var(--color-gray-0)]"
+        fullscreenButtonClassName="flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] text-white transition-colors hover:bg-[var(--color-primary-60)] [&>svg]:w-[1.4rem] [&>svg]:h-[1.4rem] [&>svg_path]:stroke-white"
+        splitButtonClassName="flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] text-white transition-colors hover:bg-[var(--color-primary-60)] [&>svg]:w-[1.4rem] [&>svg]:h-[1.4rem] [&>svg_rect]:stroke-white [&>svg_path]:stroke-white"
         className={cn(styleClass, className)}
       >
         <DialogHeader className="!max-h-[4.9rem] h-[4.9rem] min-h-0 !p-0 items-end">
           <Grow
-            className="w-full relative bg-[rgba(0,0,0,0.75)] backdrop-blur-xs h-[4rem] rounded-t-[1rem] pl-3 pr-[6.6rem]"
+            className="w-full relative bg-[rgba(0,0,0,0.75)] backdrop-blur-xs h-[4rem] rounded-t-[1rem] pl-3 pr-[12.8rem]"
             placement="se"
             gap={1}
           >

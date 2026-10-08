@@ -2249,3 +2249,65 @@ export const LinkIcon: React.FC<IconProps> = ({ className = '', size = 32, color
     />
   </svg>
 );
+
+export const FullscreenIcon: React.FC<IconProps> = ({ className = '', size = 14, color = 'currentColor' }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={toRem(size)}
+    height={toRem(size)}
+    viewBox="0 0 16 16"
+    fill="none"
+    className={className}
+  >
+    <path d="M2 5.5V3C2 2.44772 2.44772 2 3 2H5.5" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M10.5 2H13C13.5523 2 14 2.44772 14 3V5.5" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M14 10.5V13C14 13.5523 13.5523 14 13 14H10.5" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M5.5 14H3C2.44772 14 2 13.5523 2 13V10.5" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+export const FullscreenExitIcon: React.FC<IconProps> = ({ className = '', size = 14, color = 'currentColor' }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={toRem(size)}
+    height={toRem(size)}
+    viewBox="0 0 16 16"
+    fill="none"
+    className={className}
+  >
+    <path d="M5.5 2V5.5H2" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M10.5 2V5.5H14" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M14 10.5H10.5V14" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M2 10.5H5.5V14" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+export const SplitScreenIcon: React.FC<IconProps> = ({ className = '', size = 14, color = 'currentColor' }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={toRem(size)}
+    height={toRem(size)}
+    viewBox="0 0 16 16"
+    fill="none"
+    className={className}
+  >
+    <rect x="1.5" y="2" width="13" height="12" rx="1.5" stroke={color} strokeWidth="1.3" />
+    <path d="M10.5 2V14" stroke={color} strokeWidth="1.3" strokeDasharray="1.5 1.5" />
+    <rect x="10.5" y="2" width="4" height="12" fill={color} fillOpacity="0.2" />
+  </svg>
+);
+
+export const SplitScreenExitIcon: React.FC<IconProps> = ({ className = '', size = 14, color = 'currentColor' }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={toRem(size)}
+    height={toRem(size)}
+    viewBox="0 0 16 16"
+    fill="none"
+    className={className}
+  >
+    <rect x="1.5" y="2" width="13" height="12" rx="1.5" stroke={color} strokeWidth="1.3" />
+    <path d="M10.5 2V14" stroke={color} strokeWidth="1.3" />
+  </svg>
+);
+

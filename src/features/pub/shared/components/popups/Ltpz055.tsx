@@ -4,7 +4,11 @@
 
 // 2026-05-21 import 수정
 'use client';
+import '@/shared/lib/agGridPub';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 
 import { BulletListItem } from '@common/BulletList';
@@ -24,17 +28,115 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
+
+type SendRowData = {
+  id: string;
+  category: string;
+  oldPhone: string;
+  newPhoneKey: 'number1' | 'number2' | 'number3';
+};
+
+const defaultRowData: SendRowData[] = [
+  { id: '1', category: '모집자', oldPhone: '010-****-0000', newPhoneKey: 'number1' },
+  { id: '2', category: '계약자', oldPhone: '010-****-5678', newPhoneKey: 'number2' },
+  { id: '3', category: '피보험자', oldPhone: '010-****-9876', newPhoneKey: 'number3' },
+];
 
 const Ltpz055 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const [sendType, setSendType] = useState<string>('option1');
   const [number1, setNumber1] = useState<string>('');
   const [number2, setNumber2] = useState<string>('');
   const [number3, setNumber3] = useState<string>('');
 
+  const [rowData] = useState<SendRowData[]>(defaultRowData);
+
+  const SendTypeHeader = () => (
+    <RadioGroup className="gap-2 flex justify-center px-2" onValueChange={setSendType} value={sendType} width="full">
+      {[
+        { value: 'option1', label: '알림톡' },
+        { value: 'option2', label: 'LMS' },
+      ].map((option) => (
+        <RadioGroupItem
+          key={option.value}
+          color="primary"
+          id={option.value}
+          size="lg"
+          value={option.value}
+          variant="default"
+        >
+          {option.label}
+        </RadioGroupItem>
+      ))}
+    </RadioGroup>
+  );
+
+  const columnDefs: ColDef<SendRowData>[] = [
+    {
+      headerName: '구분',
+      field: 'category',
+      minWidth: attributeColumnWidth(90),
+      flex: 1,
+      cellClass: 'text-center bg-[var(--color-gray-5)] font-bold ',
+    },
+    {
+      headerName: '기존발송번호',
+      field: 'oldPhone',
+      minWidth: attributeColumnWidth(120),
+      flex: 1,
+      cellClass: 'text-center flex! items-center',
+      cellRenderer: (params: ICellRendererParams<SendRowData>) => (
+        <Input
+          errorMsg="입력은 필수입니다."
+          errorPs="bl"
+          onChange={() => {}}
+          size="md"
+          value={params.value || ''}
+          variant="default"
+          width="full"
+          readOnly
+        />
+      ),
+    },
+    {
+      headerName: '신규발송번호',
+      field: 'newPhoneKey',
+      minWidth: attributeColumnWidth(120),
+      flex: 1,
+      cellClass: 'text-center flex! items-center',
+      cellRenderer: (params: ICellRendererParams<SendRowData>) => {
+        const key = params.data?.newPhoneKey;
+        const value = key === 'number1' ? number1 : key === 'number2' ? number2 : number3;
+        const setValue = key === 'number1' ? setNumber1 : key === 'number2' ? setNumber2 : setNumber3;
+
+        return (
+          <Input
+            errorMsg="입력은 필수입니다."
+            errorPs="bl"
+            onChange={(e) => setValue(e.target.value)}
+            size="md"
+            value={value}
+            variant="default"
+            width="full"
+          />
+        );
+      },
+    },
+    {
+      headerComponent: SendTypeHeader,
+      flex: 10,
+      cellClass: 'text-center flex! items-center justify-center',
+      cellRenderer: () => (
+        <Button color="secondary" onClick={() => {}} only="default" size="md" variant="outlined">
+          발송
+        </Button>
+      ),
+    },
+  ];
+
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="sm">
+      <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -57,141 +159,19 @@ const Ltpz055 = () => {
             </FormTable>
           </Grow>
           <Gcol className="gap-2" placement="ss">
-            <Table>
-              <caption className="a11y-hidden">화면담당자 정보입니다.</caption>
-              <colgroup>
-                <col className="w-[6rem]" />
-                <col className="w-[11.6rem]" />
-                <col className="w-auto" />
-                <col className="w-[14rem]" />
-              </colgroup>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>구분</TableHead>
-                  <TableHead>기존발송번호</TableHead>
-                  <TableHead>신규발송번호</TableHead>
-                  <TableHead>
-                    <RadioGroup
-                      className="gap-2 grid grid-cols-2"
-                      onValueChange={setSendType}
-                      value={sendType}
-                      width="full"
-                    >
-                      {[
-                        { value: 'option1', label: '알림톡' },
-                        { value: 'option2', label: 'LMS' },
-                      ].map((option) => (
-                        <RadioGroupItem
-                          key={option.value}
-                          color="primary"
-                          id={option.value}
-                          size="lg"
-                          value={option.value}
-                          variant="default"
-                        >
-                          {option.label}
-                        </RadioGroupItem>
-                      ))}
-                    </RadioGroup>
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableHead>모집자</TableHead>
-                  <TableCell className="text-center">
-                    <Input
-                      errorMsg="입력은 필수입니다."
-                      errorPs="bl"
-                      onChange={() => {}}
-                      size="lg"
-                      value={'010-****-0000'}
-                      variant="default"
-                      width="full"
-                      readOnly
-                    />
-                  </TableCell>
-                  <TableCell className="text-center">
-                    <Input
-                      errorMsg="입력은 필수입니다."
-                      errorPs="bl"
-                      onChange={(e) => setNumber1(e.target.value)}
-                      size="lg"
-                      value={number1}
-                      variant="default"
-                      width="full"
-                    />
-                  </TableCell>
-                  <TableCell className="text-center">
-                    <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
-                      발송
-                    </Button>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableHead>계약자</TableHead>
-                  <TableCell className="text-center">
-                    <Input
-                      errorMsg="입력은 필수입니다."
-                      errorPs="bl"
-                      onChange={() => {}}
-                      size="lg"
-                      value={'010-****-5678'}
-                      variant="default"
-                      width="full"
-                      readOnly
-                    />
-                  </TableCell>
-                  <TableCell className="text-center">
-                    <Input
-                      errorMsg="입력은 필수입니다."
-                      errorPs="bl"
-                      onChange={(e) => setNumber2(e.target.value)}
-                      size="lg"
-                      value={number2}
-                      variant="default"
-                      width="full"
-                    />
-                  </TableCell>
-                  <TableCell className="text-center">
-                    <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
-                      발송
-                    </Button>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableHead>피보험자</TableHead>
-                  <TableCell className="text-center">
-                    <Input
-                      errorMsg="입력은 필수입니다."
-                      errorPs="bl"
-                      onChange={() => {}}
-                      size="lg"
-                      value={'010-****-9876'}
-                      variant="default"
-                      width="full"
-                      readOnly
-                    />
-                  </TableCell>
-                  <TableCell className="text-center">
-                    <Input
-                      errorMsg="입력은 필수입니다."
-                      errorPs="bl"
-                      onChange={(e) => setNumber3(e.target.value)}
-                      size="lg"
-                      value={number3}
-                      variant="default"
-                      width="full"
-                    />
-                  </TableCell>
-                  <TableCell className="text-center">
-                    <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
-                      발송
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+            <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
+              <AgGridReact<SendRowData>
+                getRowId={(params) => String(params.data.id)}
+                rowData={rowData}
+                columnDefs={columnDefs}
+                noRowsOverlayComponent={AgGridEmptyComponent}
+                defaultColDef={{
+                  sortable: false,
+                  resizable: true,
+                }}
+                domLayout="normal"
+              />
+            </div>
             <Gcol className="w-full" placement="ss" variant="box-info">
               <Typo icon="info" variant="body-sm">
                 <b>알림톡/LMS 발송을 위한 팝업 입니다.</b>
