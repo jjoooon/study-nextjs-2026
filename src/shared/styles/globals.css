@@ -1184,6 +1184,7 @@
   .is-iframe [data-slot='dialog-footer'] {
     border-radius: 0 !important;
   }
+  .is-iframe > [data-slot="dialog-controls"] [data-slot='dialog-close'],
   .is-iframe > [data-slot='dialog-close'],
   .is-iframe [data-slot='resize-handle'],
   .is-iframe [data-slot='dialog-header'] {
