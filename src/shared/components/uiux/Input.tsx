@@ -379,7 +379,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
 
   // formatter가 'jumin'이고 placeholder 미지정 시 자동으로 주민번호 placeholder 적용
   const resolvedPlaceholder = formatter?.replaceAll('#', '_');
-  const clearPaddingStyle = clear && isInputFocused && displayValue !== '' ? { paddingRight: '2.5rem' } : undefined;
+  const clearPaddingStyle = clear && isInputFocused && displayValue !== '' ? undefined : undefined;
   const mergedInputStyle = clearPaddingStyle ? { ...styleProp, ...clearPaddingStyle } : styleProp;
 
   const [isOverflow, setIsOverflow] = React.useState(false);
@@ -516,7 +516,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                 color="gray"
                 only="icon"
                 size="xs"
-                className="absolute! right-0 top-1/2 -translate-y-1/2"
+                className="absolute! right-0 top-1/2 -translate-y-1/2 bg-[red]"
                 onMouseDown={(e) => e.preventDefault()} // 포커스 유지
                 onClick={() => {
                   if (onChange) {
@@ -574,7 +574,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
               variant="none"
               only="icon"
               size="xs"
-              className="absolute! right-2 top-1/2 -translate-y-1/2"
+              className="absolute! right-[0.2rem] top-1/2 -translate-y-1/2 bg-[#fff] h-[calc(100%-0.5rem)]"
               onMouseDown={(e) => e.preventDefault()} // 포커스 유지
               onClick={() => {
                 if (onChange) {

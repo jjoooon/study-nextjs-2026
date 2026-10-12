@@ -246,6 +246,28 @@ export const ProductNameHeader = React.memo(function ProductNameHeader({
  */
 export function AgGridProductNameHeader(props: IHeaderParams) {
   const { context } = props;
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
+
+  React.useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const stop = (e: Event) => {
+      e.stopPropagation();
+    };
+
+    el.addEventListener('mousedown', stop);
+    el.addEventListener('pointerdown', stop);
+    el.addEventListener('touchstart', stop);
+    el.addEventListener('dragstart', stop);
+
+    return () => {
+      el.removeEventListener('mousedown', stop);
+      el.removeEventListener('pointerdown', stop);
+      el.removeEventListener('touchstart', stop);
+      el.removeEventListener('dragstart', stop);
+    };
+  }, []);
 
   // 1. 담보명 말풍선 툴팁 상태 관리 및 상위 context 동기화
   const [showTooltip, setShowTooltip] = React.useState<boolean>(context?.showProductNameTooltip ?? false);
@@ -305,11 +327,7 @@ export function AgGridProductNameHeader(props: IHeaderParams) {
   );
 
   return (
-    <div
-      className="w-full h-full flex items-center"
-      onClick={(e) => e.stopPropagation()}
-      onMouseDown={(e) => e.stopPropagation()}
-    >
+    <div ref={containerRef} className="w-full h-full flex items-center" onClick={(e) => e.stopPropagation()}>
       <ProductNameHeader
         coverageName={coverageName}
         onCoverageNameChange={handleCoverageNameChange}

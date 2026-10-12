@@ -398,6 +398,43 @@ const possibleDummyData3b: DummyDataType3[] = [];
 const possibleDummyData3c: DummyDataType3[] = [];
 
 /**
+ * AG Grid 헤더 내부의 인터랙티브 요소(Input, Button, Checkbox 등)에서
+ * 마우스 드래그/클릭 시 AG Grid 컬럼 이동(Column Moving) 이벤트가 트리거되지 않도록
+ * 네이티브 DOM 레벨에서 이벤트 버블링을 완벽하게 차단하는 래퍼 컴포넌트입니다.
+ */
+function HeaderDragBlocker({ children, className }: { children: React.ReactNode; className?: string }) {
+  const ref = React.useRef<HTMLDivElement | null>(null);
+
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const stopNative = (e: Event) => {
+      e.stopPropagation();
+    };
+
+    // AG Grid의 네이티브 mousedown/pointerdown/touchstart 및 HTML5 dragstart 버블링 차단
+    el.addEventListener('mousedown', stopNative);
+    el.addEventListener('pointerdown', stopNative);
+    el.addEventListener('touchstart', stopNative);
+    el.addEventListener('dragstart', stopNative);
+
+    return () => {
+      el.removeEventListener('mousedown', stopNative);
+      el.removeEventListener('pointerdown', stopNative);
+      el.removeEventListener('touchstart', stopNative);
+      el.removeEventListener('dragstart', stopNative);
+    };
+  }, []);
+
+  return (
+    <div ref={ref} className={className}>
+      {children}
+    </div>
+  );
+}
+
+/**
  * LTPA02001 - 상품 및 플랜 선택 화면 컴포넌트
  *
  * @param props - {@link Ltpa02001Props}
@@ -453,22 +490,31 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
       setShowProductNameTooltip(!!checked);
       // gridKey 제거: 리렌더 강제 목적이 아니면 필요 없음
     };
+
     return (
       <Grow className="w-full px-[0.6rem]" placement={'cc'} gap={4}>
-        <Grow>
-          <Input aria-label="상품명" placeholder="상품명 입력" type="text" width={'full'} size={'sm'} clear={true} />
+        <HeaderDragBlocker className="flex items-center gap-1 w-full flex-1">
+          <Input
+            aria-label="상품명"
+            placeholder="상품명 입력"
+            type="text"
+            width={'full'}
+            size={'sm'}
+            clear={true}
+            className="select-text cursor-text"
+          />
           <Button aria-label="상품명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
             <SearchIcon color={'var(--color-primary-50)'} />
           </Button>
           <Button aria-label="상품명 초기화" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
             <ResetIcon color={'var(--color-primary-50)'} />
           </Button>
-        </Grow>
-        <Grow placement={'sc'}>
+        </HeaderDragBlocker>
+        <HeaderDragBlocker className="flex items-center">
           <Checkbox size={'md'} checked={showProductNameTooltip} onCheckedChange={handleTooltipCheck}>
             상품명 말풍선
           </Checkbox>
-        </Grow>
+        </HeaderDragBlocker>
       </Grow>
     );
   }, [showProductNameTooltip]);
