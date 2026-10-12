@@ -379,8 +379,9 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
 
   // formatter가 'jumin'이고 placeholder 미지정 시 자동으로 주민번호 placeholder 적용
   const resolvedPlaceholder = formatter?.replaceAll('#', '_');
-  const clearPaddingStyle = clear && isInputFocused && displayValue !== '' ? undefined : undefined;
-  const mergedInputStyle = clearPaddingStyle ? { ...styleProp, ...clearPaddingStyle } : styleProp;
+  const clearPaddingStyle: React.CSSProperties | undefined =
+    clear && isInputFocused && displayValue !== '' ? undefined : undefined;
+  const mergedInputStyle = clearPaddingStyle ? Object.assign({}, styleProp, clearPaddingStyle) : styleProp;
 
   const [isOverflow, setIsOverflow] = React.useState(false);
 

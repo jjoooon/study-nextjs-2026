@@ -27,7 +27,7 @@ import { Typo, Grow, Grid, Gcol } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DatePickerInput } from '@common/DatePicker';
 import { Ltpa120 } from '@features/Ltpa120';
-import { InfoBoxWarningIcon, MinusIcon, PlusIcon, TableSelectArrowIcon, SearchIcon } from '@icons';
+import { InfoBoxWarningIcon, MinusIcon, PlusIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
@@ -974,9 +974,7 @@ export function createDuplicateButtonCellRenderer<
             event.stopPropagation();
             onDuplicate(rowId);
           }}
-        >
-          <PlusIcon color={'var(--color-primary-50)'} />
-        </Button>
+        />
       </Grow>
     );
   };
@@ -1365,10 +1363,6 @@ export function editableSelectCellRenderer<RowType>(
   return (
     <div className={`relative flex w-full h-full items-center ${paddingClass} editor-select select-none`}>
       <span className={`block flex-1 min-w-0 truncate-no ${textClass}`}>{displayValue}</span>
-      <TableSelectArrowIcon
-        color={'var(--color-gray-60)'}
-        className="absolute right-[0rem] top-1/2 -translate-y-1/2 shrink-0 pointer-events-none"
-      />
     </div>
   );
 }
@@ -1752,19 +1746,19 @@ export const createFieldRenderer = <T extends Record<string, unknown>>(
 
     return div === 'col' ? (
       <Grid className="w-full grid-rows-[1fr_1fr] divide-y divide-gray-200" gap={0}>
-        <div className="h-[3rem] w-full leading-[3rem] truncate-no pl-1">
+        <div className="flex items-center h-[3rem] w-full leading-[3rem] truncate-no pl-1">
           {renderCellWithTooltip(aNode, aTooltipText)}
         </div>
-        <div className="h-[3rem] w-full leading-[3rem] truncate-no pl-1">
+        <div className="flex items-center h-[3rem] w-full leading-[3rem] truncate-no pl-1">
           {renderCellWithTooltip(bNode, bTooltipText)}
         </div>
       </Grid>
     ) : (
       <div className="flex w-full h-full justify-start divide-x divide-gray-200">
-        <div className="truncate-no" style={getRowCellStyle(0, parsedField1.size)}>
+        <div className="flex items-center truncate-no" style={getRowCellStyle(0, parsedField1.size)}>
           {renderCellWithTooltip(aNode, aTooltipText)}
         </div>
-        <div className="truncate-no" style={getRowCellStyle(1, parsedField2.size)}>
+        <div className="flex items-center truncate-no" style={getRowCellStyle(1, parsedField2.size)}>
           {renderCellWithTooltip(bNode, bTooltipText)}
         </div>
       </div>
