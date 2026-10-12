@@ -5,7 +5,7 @@
 
 import '@/shared/lib/agGridPub';
 
-import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
@@ -217,6 +217,34 @@ interface Ltpz00501Props {
 const Ltpz00501 = ({ onClose }: Ltpz00501Props) => {
   /** 화면 해상도에 따른 동적 컬럼 너비 계산 */
   const { attributeColumnWidth } = useDynamicColumnWidths();
+
+  const gridContainerRef = React.useRef<HTMLDivElement>(null);
+  const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
+
+  /**
+   * 팝업/Fold 레이아웃 애니메이션 완료 후 컨테이너 실제 너비(Width > 0)가 확정되는 시점을 감지하여
+   * autoHeight 측정 및 셀 병합 레이아웃 동적 갱신
+   */
+  React.useEffect(() => {
+    if (!gridContainerRef.current) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.contentRect.width > 0 && gridApiRef.current && !gridApiRef.current.isDestroyed()) {
+          gridApiRef.current.resetRowHeights();
+          gridApiRef.current.refreshClientSideRowModel('everything');
+          gridApiRef.current.redrawRows();
+        }
+      }
+    });
+
+    observer.observe(gridContainerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const onGridReady = React.useCallback((params: { api: GridApi<DummyDataType> }) => {
+    gridApiRef.current = params.api;
+  }, []);
 
   /** 하단 필수지침 그리드 컬럼 정의 */
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
@@ -488,7 +516,7 @@ const Ltpz00501 = ({ onClose }: Ltpz00501Props) => {
               <TableFold>
                 <TableFoldHead title="필수지침"></TableFoldHead>
                 <TableFoldBody>
-                  <div className="ag-theme-alpine ">
+                  <div ref={gridContainerRef} className="ag-theme-alpine ">
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
@@ -500,6 +528,8 @@ const Ltpz00501 = ({ onClose }: Ltpz00501Props) => {
                       }}
                       rowClassRules={{}}
                       enableCellSpan={true}
+                      suppressRowTransform={true}
+                      onGridReady={onGridReady}
                       domLayout="autoHeight"
                       animateRows={false}
                     />

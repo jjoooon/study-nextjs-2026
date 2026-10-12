@@ -666,7 +666,7 @@
         const subIdQuery = item.subId && item.subId.includes('sub_') ? `&step=${encodeURIComponent(item.subId)}` : '';
 
         const base = (storybookBase || '').replace(/\/+$/, '');
-        return `${base}/iframe.html?id=${storyPath}--default&viewMode=story${stepQuery}${subIdQuery}&isPopup=true&args=isPopup:true`;
+        return `${base}/iframe.html?id=${storyPath}--default&viewMode=story${stepQuery}${subIdQuery}&isPopup=${isPopup}&args=isPopup:${isPopup}`;
       }
 
       let allItems = [];
@@ -822,12 +822,16 @@
           if (receivedTitle || receivedId) {
             const modalHeaderTitle = document.getElementById('modalHeaderTitle');
             if (modalHeaderTitle) {
-              if (receivedTitle && receivedId) {
-                modalHeaderTitle.textContent = `${receivedTitle} (${receivedId})`;
+              const currentItem = allItems.find(
+                (i) => (i.id || '').toLowerCase() === (receivedId || '').toLowerCase()
+              );
+              const displayId = currentItem?.id || (receivedId ? receivedId.toUpperCase() : '');
+              if (receivedTitle && displayId) {
+                modalHeaderTitle.textContent = `${receivedTitle} (${displayId})`;
               } else if (receivedTitle) {
                 modalHeaderTitle.textContent = receivedTitle;
-              } else if (receivedId) {
-                modalHeaderTitle.textContent = `(${receivedId})`;
+              } else if (displayId) {
+                modalHeaderTitle.textContent = `(${displayId})`;
               }
             }
           }
@@ -1048,7 +1052,8 @@
               (i) => (i.id || '').toLowerCase() === (popupId || '').toLowerCase()
             );
             const subIdText = currentItem?.subId ? ` (${currentItem.subId})` : '';
-            modalHeaderTitle.textContent = `${title} (${popupId}${subIdText})`;
+            const displayId = currentItem?.id || popupId.toUpperCase();
+            modalHeaderTitle.textContent = `${title} (${displayId}${subIdText})`;
           }
         }
       });

@@ -1176,8 +1176,7 @@ function DialogContent({
 
     const timer = setTimeout(() => {
       // dialogSizes.json 에서 현재 팝업의 사전 정의 정보 조회
-      const currentId =
-        scridProp ?? popupId ?? getCurrentPopupIdFromUrl() ?? getPopupIdFromElement(contentRef.current);
+      const currentId = scridProp ?? popupId ?? getCurrentPopupIdFromUrl() ?? getPopupIdFromElement(contentRef.current);
       const predefined = getDialogPredefinedSize(currentId);
 
       // explicitIframe이 명시되었으면 최우선 적용, 없으면 predefined?.isIframe, 둘 다 없으면 isIframeState 사용
@@ -1654,139 +1653,139 @@ function DialogContent({
       }}
     >
       <DialogSizeContext.Provider value={{ size, initialSectionWidth, isFullSize, isAutoFullWidth }}>
-      <DialogPortal data-slot="dialog-portal">
-        {resolvedShowOverlay && dim !== 'none' && !isIframeState && (
-          <DialogOverlay
-            dim={dim === 'transparent' ? 'transparent' : 'dark'}
-            style={{ zIndex: overlayZIndex }}
-            className={cn(isIframeState && 'is-iframe', overlayClassName)}
-            disableMotion={disableOverlayMotion}
-          />
-        )}
-        <DialogPrimitive.Content
-          ref={contentRef}
-          data-slot="dialog-content"
-          style={contentStyle}
-          data-isminimize={isMinimized ? 'true' : 'false'}
-          data-is-iframe={isIframeState ? 'true' : undefined}
-          className={cn(
-            isRelative ? 'relative w-full' : 'fixed w-full',
-            'grid grid-rows-[auto_1fr_auto] gap-5 !pointer-events-auto bg-white rounded-[0.2rem] border border-[#1f1f1f] px-0 py-0 shadow-[0_0.2rem_1.2rem_0_#222222] outline-none',
-            isDragging || !!isResizing || isSplit || isFullscreen ? 'transition-none' : 'dialog-bounce-transition',
-            isIframeState && 'is-iframe',
-            className
-          )}
-          onMouseDown={handleMouseDown}
-          onDoubleClick={() => {
-            if (isMinimized) {
-              setMinimized?.(false);
-            }
-          }}
-          onPointerDownOutside={(event) => {
-            event.preventDefault();
-            onPointerDownOutside?.(event);
-          }}
-          onInteractOutside={(event) => {
-            event.preventDefault();
-            onInteractOutside?.(event);
-          }}
-          {...props}
-        >
-          {children}
-          {(isDragging || !!isResizing) && !isFullSize && !isIframeState && (
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 z-51 bg-transparent"
-              style={{
-                cursor: isDragging ? 'grabbing' : undefined,
-              }}
+        <DialogPortal data-slot="dialog-portal">
+          {resolvedShowOverlay && dim !== 'none' && !isIframeState && (
+            <DialogOverlay
+              dim={dim === 'transparent' ? 'transparent' : 'dark'}
+              style={{ zIndex: overlayZIndex }}
+              className={cn(isIframeState && 'is-iframe', overlayClassName)}
+              disableMotion={disableOverlayMotion}
             />
           )}
-          {/* 우상단 컨트롤 버튼 영역 (상태별 제어 버튼 + 닫기) */}
-          <div
-            data-slot="dialog-controls"
+          <DialogPrimitive.Content
+            ref={contentRef}
+            data-slot="dialog-content"
+            style={contentStyle}
+            data-isminimize={isMinimized ? 'true' : 'false'}
+            data-is-iframe={isIframeState ? 'true' : undefined}
             className={cn(
-              'absolute top-[0.3rem] right-[0.5rem] flex items-center gap-1.5 z-10 pointer-events-auto',
-              buttonGroupClassName
+              isRelative ? 'relative w-full' : 'fixed w-full',
+              'grid grid-rows-[auto_1fr_auto] gap-5 !pointer-events-auto bg-white rounded-[0.2rem] border border-[#1f1f1f] px-0 py-0 shadow-[0_0.2rem_1.2rem_0_#222222] outline-none',
+              isDragging || !!isResizing || isSplit || isFullscreen ? 'transition-none' : 'dialog-bounce-transition',
+              isIframeState && 'is-iframe',
+              className
             )}
+            onMouseDown={handleMouseDown}
+            onDoubleClick={() => {
+              if (isMinimized) {
+                setMinimized?.(false);
+              }
+            }}
+            onPointerDownOutside={(event) => {
+              event.preventDefault();
+              onPointerDownOutside?.(event);
+            }}
+            onInteractOutside={(event) => {
+              event.preventDefault();
+              onInteractOutside?.(event);
+            }}
+            {...props}
           >
-            {resolvedShowSplitButton && (isSplit || (!isMinimized && !isFullscreen)) && (
-              <DialogSplit isSplit={isSplit} onClick={() => setIsSplit(!isSplit)} className={splitButtonClassName} />
-            )}
-            {resolvedShowFullscreenButton && (isFullscreen || (!isMinimized && !isSplit)) && (
-              <DialogFullscreen
-                isFullscreen={isFullscreen}
-                onClick={() => setIsFullscreen(!isFullscreen)}
-                className={fullscreenButtonClassName}
+            {children}
+            {(isDragging || !!isResizing) && !isFullSize && !isIframeState && (
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 z-51 bg-transparent"
+                style={{
+                  cursor: isDragging ? 'grabbing' : undefined,
+                }}
               />
             )}
-            {resolvedMinimized && (isMinimized || (!isFullscreen && !isSplit)) && (
-              <DialogMinimize className={minimizeButtonClassName} />
-            )}
-            {resolvedShowCloseButton && (
-              <DialogPrimitive.Close
-                data-slot="dialog-close"
-                className={cn(
-                  'flex items-center justify-center w-[2.4rem] h-[2.4rem] ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground rounded-xs transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none',
-                  closeButtonClassName
-                )}
-              >
-                <CloseIcon color="#2C2724" />
-              </DialogPrimitive.Close>
-            )}
-          </div>
+            {/* 우상단 컨트롤 버튼 영역 (상태별 제어 버튼 + 닫기) */}
+            <div
+              data-slot="dialog-controls"
+              className={cn(
+                'absolute top-[0.3rem] right-[0.5rem] flex items-center gap-1.5 z-10 pointer-events-auto',
+                buttonGroupClassName
+              )}
+            >
+              {resolvedShowSplitButton && (isSplit || (!isMinimized && !isFullscreen)) && (
+                <DialogSplit isSplit={isSplit} onClick={() => setIsSplit(!isSplit)} className={splitButtonClassName} />
+              )}
+              {resolvedShowFullscreenButton && (isFullscreen || (!isMinimized && !isSplit)) && (
+                <DialogFullscreen
+                  isFullscreen={isFullscreen}
+                  onClick={() => setIsFullscreen(!isFullscreen)}
+                  className={fullscreenButtonClassName}
+                />
+              )}
+              {resolvedMinimized && (isMinimized || (!isFullscreen && !isSplit)) && (
+                <DialogMinimize className={minimizeButtonClassName} />
+              )}
+              {resolvedShowCloseButton && (
+                <DialogPrimitive.Close
+                  data-slot="dialog-close"
+                  className={cn(
+                    'flex items-center justify-center w-[2.4rem] h-[2.4rem] ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground rounded-xs transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none',
+                    closeButtonClassName
+                  )}
+                >
+                  <CloseIcon color="#2C2724" />
+                </DialogPrimitive.Close>
+              )}
+            </div>
 
-          {/* Resize Handles - Only shown when resizable is true and not full size/fullscreen/split */}
-          {resolvedResizable && !isFullSize && !isFullscreen && !isSplit && (
-            <>
-              <div
-                data-slot="resize-handle"
-                data-direction="e"
-                className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-blue-500/20 transition-colors"
-              />
-              <div
-                data-slot="resize-handle"
-                data-direction="w"
-                className="absolute top-0 left-0 w-1 h-full cursor-col-resize hover:bg-blue-500/20 transition-colors"
-              />
-              <div
-                data-slot="resize-handle"
-                data-direction="s"
-                className="absolute bottom-0 left-0 h-1 w-full cursor-row-resize hover:bg-blue-500/20 transition-colors"
-              />
-              <div
-                data-slot="resize-handle"
-                data-direction="n"
-                className="absolute top-0 left-0 h-1 w-full cursor-row-resize hover:bg-blue-500/20 transition-colors"
-              />
-              {/* Corner resize handles */}
-              <div
-                data-slot="resize-handle"
-                data-direction="se"
-                className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize hover:bg-blue-500/30 transition-colors rounded-bl-lg"
-              />
-              <div
-                data-slot="resize-handle"
-                data-direction="sw"
-                className="absolute bottom-0 left-0 w-4 h-4 cursor-sw-resize hover:bg-blue-500/30 transition-colors rounded-br-lg"
-              />
-              <div
-                data-slot="resize-handle"
-                data-direction="ne"
-                className="absolute top-0 right-0 w-4 h-4 cursor-ne-resize hover:bg-blue-500/30 transition-colors rounded-tl-lg"
-              />
-              <div
-                data-slot="resize-handle"
-                data-direction="nw"
-                className="absolute top-0 left-0 w-4 h-4 cursor-nw-resize hover:bg-blue-500/30 transition-colors rounded-tr-lg"
-              />
-            </>
-          )}
-        </DialogPrimitive.Content>
-      </DialogPortal>
-    </DialogSizeContext.Provider>
-  </DialogDepthContext.Provider>
-);
+            {/* Resize Handles - Only shown when resizable is true and not full size/fullscreen/split */}
+            {resolvedResizable && !isFullSize && !isFullscreen && !isSplit && (
+              <>
+                <div
+                  data-slot="resize-handle"
+                  data-direction="e"
+                  className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-blue-500/20 transition-colors"
+                />
+                <div
+                  data-slot="resize-handle"
+                  data-direction="w"
+                  className="absolute top-0 left-0 w-1 h-full cursor-col-resize hover:bg-blue-500/20 transition-colors"
+                />
+                <div
+                  data-slot="resize-handle"
+                  data-direction="s"
+                  className="absolute bottom-0 left-0 h-1 w-full cursor-row-resize hover:bg-blue-500/20 transition-colors"
+                />
+                <div
+                  data-slot="resize-handle"
+                  data-direction="n"
+                  className="absolute top-0 left-0 h-1 w-full cursor-row-resize hover:bg-blue-500/20 transition-colors"
+                />
+                {/* Corner resize handles */}
+                <div
+                  data-slot="resize-handle"
+                  data-direction="se"
+                  className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize hover:bg-blue-500/30 transition-colors rounded-bl-lg"
+                />
+                <div
+                  data-slot="resize-handle"
+                  data-direction="sw"
+                  className="absolute bottom-0 left-0 w-4 h-4 cursor-sw-resize hover:bg-blue-500/30 transition-colors rounded-br-lg"
+                />
+                <div
+                  data-slot="resize-handle"
+                  data-direction="ne"
+                  className="absolute top-0 right-0 w-4 h-4 cursor-ne-resize hover:bg-blue-500/30 transition-colors rounded-tl-lg"
+                />
+                <div
+                  data-slot="resize-handle"
+                  data-direction="nw"
+                  className="absolute top-0 left-0 w-4 h-4 cursor-nw-resize hover:bg-blue-500/30 transition-colors rounded-tr-lg"
+                />
+              </>
+            )}
+          </DialogPrimitive.Content>
+        </DialogPortal>
+      </DialogSizeContext.Provider>
+    </DialogDepthContext.Provider>
+  );
 }
 
 /**
@@ -1837,13 +1836,18 @@ function DialogFooterArea({ className, ...props }: React.ComponentProps<'div'>) 
   );
 }
 
+type ElementPropsWithTag = {
+  tag?: string;
+  children?: React.ReactNode;
+  [key: string]: unknown;
+};
+
 function replaceTitleAndScridInChildren(
   children: React.ReactNode,
   newTitle?: string,
   newScrid?: string
 ): React.ReactNode {
   let titleReplaced = false;
-  let scridReplaced = false;
 
   const formattedScrid = newScrid
     ? newScrid.startsWith('(') && newScrid.endsWith(')')
@@ -1855,7 +1859,7 @@ function replaceTitleAndScridInChildren(
     return React.Children.map(nodes, (child) => {
       if (!React.isValidElement(child)) return child;
 
-      const element = child as React.ReactElement<any>;
+      const element = child as React.ReactElement<ElementPropsWithTag>;
       const props = element.props || {};
 
       // 1. Title 교체
@@ -1871,7 +1875,6 @@ function replaceTitleAndScridInChildren(
           element.type === 'p' ||
           (typeof props.children === 'string' && /^\(?([A-Z0-9_-]*)\)?$/i.test(props.children.trim())))
       ) {
-        scridReplaced = true;
         return React.cloneElement(element, { ...props, children: formattedScrid });
       }
 
@@ -1892,7 +1895,7 @@ function replaceTitleAndScridInChildren(
     } else {
       result = React.Children.map(result, (child, index) => {
         if (index === 0 && React.isValidElement(child)) {
-          const element = child as React.ReactElement<any>;
+          const element = child as React.ReactElement<ElementPropsWithTag>;
           const props = element.props || {};
           return React.cloneElement(element, { ...props, children: newTitle });
         }

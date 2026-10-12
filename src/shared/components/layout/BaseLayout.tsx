@@ -51,7 +51,7 @@ interface LayoutProps {
   scrid?: string;
 }
 
-// 팝업 여부 판별 훅 (URL 파라미터 isPopup=true / popup=true / popup=y / popup=1 또는 prop 기준)
+// 팝업 여부 판별 훅 (URL 파라미터, 스토리 ID, 화면 ID 패턴 또는 prop 기준)
 export const useIsPopup = (propIsPopup?: boolean) => {
   const searchParams = useSearchParams();
 
@@ -64,8 +64,11 @@ export const useIsPopup = (propIsPopup?: boolean) => {
   if (searchParamVal === 'true' || searchParamVal === 'y' || searchParamVal === '1') {
     return true;
   }
+  if (searchParamVal === 'false' || searchParamVal === 'n' || searchParamVal === '0') {
+    return false;
+  }
 
-  // 2. 브라우저 window.location.search 검사 (Storybook iframe / 외부 iframe 환경 호환)
+  // 2. 브라우저 window.location 검사 (Storybook iframe / 외부 iframe 환경 호환)
   if (typeof window !== 'undefined') {
     try {
       const urlParams = new URLSearchParams(window.location.search);
@@ -73,10 +76,38 @@ export const useIsPopup = (propIsPopup?: boolean) => {
       if (winParamVal === 'true' || winParamVal === 'y' || winParamVal === '1') {
         return true;
       }
+      if (winParamVal === 'false' || winParamVal === 'n' || winParamVal === '0') {
+        return false;
+      }
 
-      // 3. Hash URL (예: #/?isPopup=true) 감지
+      // 3. Hash URL 감지
       if (window.location.hash.includes('isPopup=true') || window.location.hash.includes('popup=true')) {
         return true;
+      }
+      if (window.location.hash.includes('isPopup=false') || window.location.hash.includes('popup=false')) {
+        return false;
+      }
+
+      // 4. Storybook ID 파라미터 기반 자동 판별 (app-popup-... -> 팝업, app-page-... -> 페이지)
+      const storyId = urlParams.get('id') || urlParams.get('story');
+      if (storyId) {
+        if (storyId.startsWith('app-popup-') || storyId.startsWith('popup-')) {
+          return true;
+        }
+        if (storyId.startsWith('app-page-') || storyId.startsWith('page-')) {
+          return false;
+        }
+      }
+
+      // 5. 화면 ID 패턴 기반 자동 판별 (LTPZ, LTRZ -> 팝업 / LTPA, LTRA -> 페이지)
+      const currentId = getCurrentPopupIdFromUrl();
+      if (currentId) {
+        if (/^(?:LTPZ|LTRZ)/i.test(currentId)) {
+          return true;
+        }
+        if (/^(?:LTPA|LTRA)/i.test(currentId)) {
+          return false;
+        }
       }
     } catch {
       // ignore
@@ -98,8 +129,13 @@ export const LayoutDoc = ({
   const isPopup = useIsPopup(propIsPopup);
 
   useEffect(() => {
-    if (typeof window === 'undefined' || !isPopup) return;
+    if (typeof window === 'undefined') return;
 
+    // 팝업인 경우: Dialog 컴포넌트(DialogContent)가 스스로 자신의 타이틀과 크기를 postMessage로 전송하므로,
+    // LayoutDoc에서는 postMessage를 전송하지 않고 팝업(Dialog)의 값을 그대로 사용합니다.
+    if (isPopup) return;
+
+    // 페이지(화면)인 경우: Dialog가 없으므로 LayoutDoc이 pageSizes.json 기반으로 postMessage 전송
     const timer = setTimeout(() => {
       const currentId = propScrid ?? getCurrentPopupIdFromUrl();
       const predefined = getPredefinedSize(currentId);
@@ -117,14 +153,14 @@ export const LayoutDoc = ({
 
       const targetWidthPx = parsePx(predefined?.width) ?? 1204;
       const targetHeightPx = parsePx(predefined?.height) ?? 700;
-      const popupTitle = propTitle ?? predefined?.title ?? '';
+      const pageTitle = propTitle ?? predefined?.title ?? '';
 
       try {
         window.parent.postMessage(
           {
             type: 'DIALOG_DEFAULT_SIZE',
             popupId: currentId,
-            title: popupTitle,
+            title: pageTitle,
             width: Math.round(targetWidthPx) + 2,
             height: Math.round(targetHeightPx),
             sizePreset: size,
@@ -132,8 +168,8 @@ export const LayoutDoc = ({
           '*'
         );
 
-        if (popupTitle) {
-          changeTitle(popupTitle);
+        if (pageTitle) {
+          changeTitle(pageTitle);
         }
         resizeWindow({ width: Math.round(targetWidthPx) + 2, height: Math.round(targetHeightPx) });
       } catch {
