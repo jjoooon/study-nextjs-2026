@@ -1,8 +1,8 @@
 /**
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { EventMessage } from '@/shared/types/externalTypes';
 import log from '@/shared/utils/logger';
+import { ExternalEventMessage } from '../../types/externalEventTypes';
 import { gParentIframeUrlHost } from '../authUtils';
 
 const logger = log.getLogger('IFrameMessage');
@@ -26,30 +26,33 @@ const logger = log.getLogger('IFrameMessage');
  * });
  */
 export const sendMessage = ({
-  message,
+  eventMessage,
   channelPort,
   targetRef = null,
 }: {
   targetRef?: HTMLIFrameElement | null;
-  message: EventMessage;
+  eventMessage: ExternalEventMessage;
   channelPort?: MessagePort;
 }) => {
-  // 현재 창이 iframe 내부인지 확인
-  if (window.parent === window) {
+  // 현재 창이 iframe내부인지 확인
+  if (window !== undefined && window.parent === window) {
     return;
   }
+
+  logger.debug('자식 전송데이터: ', eventMessage);
+
+  // 메시지 전송
   if (targetRef) {
     if (channelPort) {
-      targetRef.contentWindow?.postMessage(message, gParentIframeUrlHost, [channelPort]);
+      targetRef.contentWindow?.postMessage(eventMessage, gParentIframeUrlHost, [channelPort]);
     } else {
-      targetRef.contentWindow?.postMessage(message, gParentIframeUrlHost);
+      targetRef.contentWindow?.postMessage(eventMessage, gParentIframeUrlHost);
     }
   } else {
-    logger.debug('자식 전송데이터: ', message);
     if (channelPort) {
-      window.parent.postMessage(message, gParentIframeUrlHost, [channelPort]);
+      window.parent.postMessage(eventMessage, gParentIframeUrlHost, [channelPort]);
     } else {
-      window.parent.postMessage(message, gParentIframeUrlHost);
+      window.parent.postMessage(eventMessage, gParentIframeUrlHost);
     }
   }
 };

@@ -858,6 +858,46 @@
             heightVal.value = newHeight;
           }
         }
+
+        // 3. 내부망 NCRM 연계 이벤트: changeTitle 수신 처리
+        if (
+          (event.data.type === 'REACT' || event.data.type === 'CORE') &&
+          event.data.eventName === 'changeTitle'
+        ) {
+          const newTitle = event.data.title;
+          if (newTitle) {
+            const modalHeaderTitle = document.getElementById('modalHeaderTitle');
+            if (modalHeaderTitle) {
+              const currentText = modalHeaderTitle.textContent || '';
+              const idMatch = currentText.match(/\(([^)]+)\)$/);
+              if (idMatch) {
+                modalHeaderTitle.textContent = `${newTitle} ${idMatch[0]}`;
+              } else {
+                modalHeaderTitle.textContent = newTitle;
+              }
+            }
+          }
+        }
+
+        // 4. 내부망 NCRM 연계 이벤트: resizeWindow 수신 처리
+        if (
+          event.data.type === 'REACT' &&
+          event.data.eventName === 'resizeWindow' &&
+          event.data.message
+        ) {
+          const { width, height } = event.data.message;
+          if (width) {
+            iframeWrapper.style.width = width + 'px';
+            if (widthSlider) widthSlider.value = width;
+            if (widthVal) widthVal.value = width;
+          }
+          if (height) {
+            iframeWrapper.style.height = height + 'px';
+            updateDialogPopupHeight(height);
+            if (heightSlider) heightSlider.value = height;
+            if (heightVal) heightVal.value = height;
+          }
+        }
       });
 
       // 현재 페이지 위치(HTML) 기준 상대경로 URL 목록 계산

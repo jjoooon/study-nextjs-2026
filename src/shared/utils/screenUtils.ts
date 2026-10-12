@@ -2,6 +2,9 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 
+import { EXTERNAL_TYPE } from '@/shared/constants/external';
+import { sendMessage } from './iframe/iframeBridgeUtil';
+
 export const isIframe = () => {
   try {
     return window !== window.top;
@@ -11,10 +14,28 @@ export const isIframe = () => {
 };
 
 export const changeTitle = (title: string) => {
-  console.log(title, '타이틀 변경');
+  console.log(1111111111);
+  sendMessage({
+    eventMessage: {
+      type: EXTERNAL_TYPE.REACT,
+      eventName: 'changeTitle',
+      title,
+    },
+  });
 };
+
 export const resizeWindow = (options: { width: number; height: number }) => {
   console.log(options, '리사이즈 변경');
+  sendMessage({
+    message: {
+      type: 'REACT',
+      eventName: 'resizeWindow',
+      message: {
+        width: options.width,
+        height: options.height,
+      },
+    },
+  });
 };
 
 /**

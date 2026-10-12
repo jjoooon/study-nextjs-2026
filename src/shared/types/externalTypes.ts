@@ -27,6 +27,7 @@ export type EventMessage =
   | {
       type: 'REACT' | 'CORE';
       eventName: 'changeTitle';
+      title?: string;
     }
   // 업ㅁ화면내 마우스다운 이벤트 전송
   | {
