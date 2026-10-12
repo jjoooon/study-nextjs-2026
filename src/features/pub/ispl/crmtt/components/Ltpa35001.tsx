@@ -1015,7 +1015,7 @@ export const Ltpa35001 = ({
                                 <FormCell title="주피와 관계" colSpan={3}>
                                   <Grow placement="bwc">
                                     <Grow>
-                                      <Input aria-label="피보험자명" width={84} value={'김한화'} readOnly />는
+                                      <Input aria-label="피보험자명" width={'auto'} value={'주피(김한화)'} readOnly />는
                                       <NativeSelect
                                         aria-label="주피와 관계 선택"
                                         width={'auto'}
@@ -1570,7 +1570,7 @@ export const Ltpa35001 = ({
                         {currentTab?.type !== '재물목적물' && (
                           <FormRow>
                             <FormCell title={currentTab?.type !== '연금저축' ? '계약자와 관계' : '주피와 관계'}>
-                              <Input aria-label="피보험자명" width={84} value={'김한화'} readOnly />는{' '}
+                              <Input aria-label="피보험자명" width={'auto'} value={'김한화'} readOnly />는{' '}
                               {currentTab?.type !== '연금저축' ? '계약자의' : ''}
                               <NativeSelect
                                 aria-label="주피와 관계 선택"
