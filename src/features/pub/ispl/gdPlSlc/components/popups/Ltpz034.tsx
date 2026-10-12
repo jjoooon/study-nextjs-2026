@@ -845,14 +845,9 @@ const Ltpz034 = ({
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              {/* <Button
-                variant={'outlined'}
-                size={'xl'}
-                color={'gray'}
-                onClick={() => handleMinimizeChange(!isMinimized)}
-              >
+              <Button variant={'outlined'} size={'xl'} color={'gray'}>
                 접어두기
-              </Button> */}
+              </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                   닫기

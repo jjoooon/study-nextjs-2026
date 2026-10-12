@@ -9,6 +9,7 @@ import { AgGridReact } from 'ag-grid-react';
 import Image from 'next/image';
 import * as React from 'react';
 import { useState } from 'react';
+import { AiBotIcon } from '@/shared/components/features/AiBotIcon';
 import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
@@ -253,8 +254,30 @@ export function Ltpa02002({ userType }: { userType: string }) {
   const customerType = userType;
 
   const analysisOptionList = [
-    { value: '1', label: '기계약 유지하고, 부족한 담보를 중심으로 한 설계' },
-    { value: '2', label: '기계약과의 누적을 체크하지 않은 설계' },
+    {
+      value: '1',
+      label: (
+        <Grow className="flex-wrap gap-y-0 ga-x-1" placement="ss">
+          <span>
+            <b className="text-[var(--color-primary-50)]">기계약 유지</b>하고,
+          </span>{' '}
+          <span className="pr-4">
+            <b>부족한 담보를 중심</b>으로 한 설계
+          </span>
+        </Grow>
+      ),
+    },
+    {
+      value: '2',
+      label: (
+        <>
+          기계약과의 누적을{' '}
+          <b>
+            체크하지 <span className="text-[var(--color-primary-50)]">않은</span> 설계
+          </b>
+        </>
+      ),
+    },
   ] as const;
 
   const columnDefs4: ColDef<DummyDataListDetailType>[] = [
@@ -454,7 +477,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
     const timer = setTimeout(() => {
       setDataList(dummyDataList);
       setLoadingAI(false);
-    }, 3000);
+    }, 0);
 
     return () => {
       clearTimeout(timer);
@@ -492,7 +515,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
             <Grow className="w-full">
               <button
                 type="button"
-                className="w-full p-1 min-h-[3.3rem] h-auto border-b border-b-[var(--color-gray-30)] flex justify-between items-center gap-[0.6rem]"
+                className="w-full p-1 min-h-[3.3rem] h-auto flex justify-between items-center gap-[0.6rem]"
                 onClick={() => setIsFilterOptionOpen((prev) => !prev)}
                 aria-expanded={isFilterOptionOpen}
               >
@@ -564,7 +587,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
           {isFilterOptionOpen && (
             <Grid
               variant="box-round-b"
-              className="absolute top-[calc(100%-.6rem)] left-0 w-full bg-[var(--color-blue-gray-10)] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] pt-2.5 pb-[2.5rem] grid-cols-[minmax(29rem,2fr)_minmax(30rem,2fr)_3fr] gap-[2.4rem] z-10 pl-[6.7rem]! pr-[14rem]! justify-stretch! "
+              className="absolute top-[calc(100%-.6rem)] left-0 w-full bg-[var(--color-blue-gray-10)] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] pt-2.5 pb-[2.5rem] grid-cols-[minmax(29rem,2fr)_minmax(30rem,2fr)_3fr] gap-[2.4rem] z-10 pl-[6.7rem]! pr-[15rem]! justify-stretch! "
               placement="ss"
             >
               {/* 상품특징 */}
@@ -906,7 +929,6 @@ export function Ltpa02002({ userType }: { userType: string }) {
 
               {/* 설계유형 or 고지유형 */}
               {customerType === 'recent' ? (
-                // 20260810 - 구조 수정
                 // 등록고객
                 <Gcol placement="ss" gap={1}>
                   <Grow gap={0}>
@@ -961,9 +983,9 @@ export function Ltpa02002({ userType }: { userType: string }) {
                           key={opt.value}
                           value={opt.value}
                           variant="button"
-                          size={'lg'}
+                          size={'xl'}
                           disabled={!lastInquiryDate}
-                          className="!w-full !text-left whitespace-normal h-auto min-h-[2.8rem] leading-[1.2] items-center py-1.5 break-keep"
+                          className="!w-full !text-left whitespace-normal h-auto items-center break-keep"
                         >
                           {opt.label}
                         </RadioGroupItem>
@@ -1090,25 +1112,16 @@ export function Ltpa02002({ userType }: { userType: string }) {
       </div>
 
       {dataNone ? (
-        <Grow className="h-full gap-2.5 pt-[35rem] pb-[2rem]" placement="cs">
-          <Grow className="gap-0" placement="cc">
-            <div className="w-[19.6rem]">
-              <Image
-                src={withPublicUrl('/images/Ltpa020/pro100.jpg')}
-                alt="설명"
-                fill
-                style={{ objectFit: 'cover' }}
-                onClick={() => {
-                  setDataNone(false);
-                }}
-                className="relative!"
-              />
+        <Grow className="h-full gap-2.5 pt-[36rem]" placement="cs">
+          <Grow className="gap-4 pb-[2rem]" placement="cs">
+            <div className="w-[3.2rem]">
+              <AiBotIcon open={false} />
             </div>
-            <Gcol placement="ss">
-              <Typo variant={'heading-md'} icon={'warning'}>
-                유의사항
+            <Gcol placement="ss" className="mt-[0.6rem] gap-2">
+              <Typo variant={'body-xl'} weight={'bold'}>
+                AI 설계비서가 알려드려요!
               </Typo>
-              <BulletList>
+              <BulletList size="lg">
                 <BulletListItem>
                   <b className="text-[var(--color-primary-50)]">편리한 설계의 출발점</b>으로 추천설계를 활용해 보세요.
                 </BulletListItem>
@@ -1126,7 +1139,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
       ) : (
         <>
           <Grid
-            className="w-[calc(100vw + 2rem)] h-full grid-rows-[minmax(0,1fr)] grid-cols-[minmax(64rem,2fr)_minmax(48rem,1fr)] gap-4 items-stretch overflow-hidden bg-[var(--color-gray-5)] p-[2rem] "
+            className="w-[calc(100vw + 2rem)] h-full grid-rows-[minmax(0,1fr)] grid-cols-[minmax(73rem,2fr)_minmax(41rem,1fr)] gap-4 items-stretch overflow-hidden bg-[var(--color-gray-5)] p-[2rem] "
             gap={3}
           >
             {/* 리스트 */}
@@ -1160,50 +1173,51 @@ export function Ltpa02002({ userType }: { userType: string }) {
                     {dataList.map((item) => (
                       <Grid
                         key={item.id}
-                        className="w-full px-[2.4rem] py-[1.6rem] grid-cols-[1fr_auto] gap-4 place-items-center bg-white rounded-[3.2rem_0.6rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)] min-h-[19.1rem]"
+                        className="w-full px-[2.4rem] py-[1.6rem] grid-cols-[1fr_auto] gap-4  bg-white rounded-[1rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)]"
                       >
-                        <Gcol gap={2} placement="ss">
-                          <Typo tag="h3" variant="heading-xl" className="break-keep pb-[0.4rem]">
-                            {item.field1}
-                          </Typo>
-                          <Grow
-                            className="py-[0.5rem] px-2 rounded-[0.6rem] bg-[var(--color-information-5)] flex-wrap gap-x-[0.4rem] gap-y-[0.2rem]"
-                            placement="sc"
-                          >
-                            {item.field2.map((v, idx) => (
-                              <React.Fragment key={idx}>
-                                {idx > 0 && <Divider variant="dot" color="gray-dark" />}
-                                <Typo tag="p" variant="body-sm">
+                        <Gcol gap={2} placement="bws" className="pt-2">
+                          <Gcol className="gap-y-3" placement="ss">
+                            <Typo tag="h3" variant="heading-lg" className="break-keep">
+                              {item.field1}
+                            </Typo>
+                            <Typo
+                              tag="p"
+                              variant="body-sm"
+                              className="flex items-center text-[var(--color-blue-gray-60)]"
+                            >
+                              {item.field2.map((v, idx) => (
+                                <React.Fragment key={idx}>
+                                  {idx > 0 && '・'}
                                   {v}
-                                </Typo>
-                              </React.Fragment>
-                            ))}
-                          </Grow>
+                                </React.Fragment>
+                              ))}
+                            </Typo>
+                          </Gcol>
                           <Grow placement="ss">
-                            {item.field3.map((v, idx) => (
-                              <Grow
-                                key={idx}
-                                className="py-[0.5rem] px-2 rounded-[0.6rem] bg-[var(--color-warning-5)]"
-                                placement="ss"
-                              >
-                                <Typo tag="p" variant="body-sm">
+                            <Grow
+                              className="py-[0.5rem] px-2 rounded-[0.6rem] bg-[var(--color-information-5)]"
+                              placement="ss"
+                            >
+                              {item.field3.map((v, idx) => (
+                                <Typo key={idx} tag="p" variant="body-sm">
+                                  {idx > 0 && '・'}
                                   {v}
                                 </Typo>
-                              </Grow>
-                            ))}
+                              ))}
+                            </Grow>
                           </Grow>
                         </Gcol>
-                        <Grow>
+                        <Grow gap={3}>
                           {item.field4.map((v, idx) => {
                             const planKey = `${item.id}-${idx}`;
                             const isSelected = selectedPlanKey === planKey;
                             return (
                               <Grid
                                 key={idx}
-                                className={`relative grid-rows-[minmax(0,1fr)_auto] w-[13rem] h-[15.9rem] rounded-[1rem] overflow-hidden transition-all gap-0 border-[0.2rem] ${
+                                className={`relative grid-rows-[minmax(0,1fr)_auto] w-[13rem] h-[14.8rem] rounded-[1rem] overflow-hidden gap-0 border-[0.1rem] border-[var(--color-gray-10)] ${
                                   isSelected
                                     ? 'border-[#FF5C2E] bg-[var(--color-primary-10)] shadow-[0_0.4rem_0.8rem_0_rgba(255,92,46,0.20)]'
-                                    : 'border-transparent bg-[var(--color-primary-5)] shadow-[inset_0_0_0_0.1rem_rgba(0,0,0,0.1)]'
+                                    : 'bg-[var(--color-primary-5)]'
                                 }`}
                                 style={
                                   isSelected
@@ -1224,32 +1238,40 @@ export function Ltpa02002({ userType }: { userType: string }) {
                                 >
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    width="40"
-                                    height="40"
-                                    viewBox="0 0 40 40"
+                                    width="32"
+                                    height="32"
+                                    viewBox="0 0 32 32"
                                     fill="none"
                                   >
-                                    <circle
-                                      cx="30.5"
-                                      cy="29.5"
-                                      r="9.5"
-                                      fill={isSelected ? 'rgba(255, 255, 255, 0.3)' : 'var(--color-primary-20)'}
-                                    />
-                                    <path
-                                      d="M18.9854 22.4062C19.7586 22.4062 20.3857 23.0334 20.3857 23.8066C20.3857 24.5798 19.7585 25.207 18.9854 25.207H11.8066C11.0335 25.207 10.4063 24.5798 10.4062 23.8066C10.4062 23.0334 11.0334 22.4062 11.8066 22.4062H18.9854Z"
-                                      fill={isSelected ? '#FFFFFF' : '#61554F'}
-                                    />
-                                    <path
-                                      d="M22.6484 16.3994C23.4215 16.3996 24.0479 17.0267 24.0479 17.7998C24.0479 18.5729 23.4215 19.2 22.6484 19.2002H11.8066C11.0334 19.2002 10.4062 18.573 10.4062 17.7998C10.4062 17.0266 11.0334 16.3994 11.8066 16.3994H22.6484Z"
-                                      fill={isSelected ? '#FFFFFF' : '#61554F'}
-                                    />
-                                    <path
-                                      fillRule="evenodd"
-                                      clipRule="evenodd"
-                                      d="M23.8057 4C25.5194 4.00002 27.1515 4.73281 28.29 6.01367L32.9844 11.2949C33.9606 12.3932 34.5 13.8118 34.5 15.2812V31C34.5 34.3137 31.8137 37 28.5 37H11.5L11.1914 36.9922C8.02111 36.8316 5.5 34.2102 5.5 31V10C5.5 6.68629 8.18629 4 11.5 4H23.8057ZM11.5 6.59961C9.62223 6.59961 8.09961 8.12223 8.09961 10V31C8.09961 32.8778 9.62223 34.4004 11.5 34.4004H28.5C30.3778 34.4004 31.9004 32.8778 31.9004 31V15.2998H28.5C25.5729 15.2998 23.2002 12.9271 23.2002 10V6.59961H11.5ZM25.7998 10C25.7998 11.4912 27.0088 12.7002 28.5 12.7002H30.7549L26.3467 7.74121C26.1814 7.55526 25.9979 7.38952 25.7998 7.24609V10Z"
-                                      fill={isSelected ? '#FFFFFF' : '#61554F'}
-                                    />
+                                    <g clipPath="url(#clip0_5367_119012)">
+                                      <circle
+                                        cx="24.4"
+                                        cy="23.6"
+                                        r="7.6"
+                                        fill={isSelected ? 'rgba(255, 255, 255, 0.3)' : 'var(--color-primary-20)'}
+                                      />
+                                      <path
+                                        d="M15.1882 17.925C15.8067 17.925 16.3085 18.4267 16.3085 19.0453C16.3084 19.6638 15.8067 20.1656 15.1882 20.1656H9.44521C8.82669 20.1656 8.32496 19.6638 8.3249 19.0453C8.3249 18.4267 8.82666 17.925 9.44521 17.925H15.1882Z"
+                                        fill={isSelected ? '#FFFFFF' : '#61554F'}
+                                      />
+                                      <path
+                                        d="M18.1187 13.1195C18.7371 13.1196 19.2382 13.6213 19.2382 14.2398C19.2382 14.8583 18.7371 15.3599 18.1187 15.3601H9.44521C8.82666 15.3601 8.3249 14.8584 8.3249 14.2398C8.3249 13.6212 8.82666 13.1195 9.44521 13.1195H18.1187Z"
+                                        fill={isSelected ? '#FFFFFF' : '#61554F'}
+                                      />
+                                      <path
+                                        fillRule="evenodd"
+                                        clipRule="evenodd"
+                                        d="M19.0444 3.19995C20.4154 3.19997 21.7211 3.7862 22.6319 4.81089L26.3874 9.03589C27.1684 9.91453 27.5999 11.0494 27.5999 12.225V24.8C27.5999 27.4509 25.4509 29.6 22.7999 29.6H9.1999L8.95303 29.5937C6.41679 29.4652 4.3999 27.3681 4.3999 24.8V7.99995C4.3999 5.34898 6.54894 3.19995 9.1999 3.19995H19.0444ZM9.1999 5.27964C7.69769 5.27964 6.47959 6.49774 6.47959 7.99995V24.8C6.47959 26.3022 7.69769 27.5203 9.1999 27.5203H22.7999C24.3021 27.5203 25.5202 26.3022 25.5202 24.8V12.2398H22.7999C20.4582 12.2398 18.5601 10.3416 18.5601 7.99995V5.27964H9.1999ZM20.6397 7.99995C20.6397 9.19289 21.607 10.1601 22.7999 10.1601H24.6038L21.0772 6.19292C20.945 6.04416 20.7982 5.91157 20.6397 5.79683V7.99995Z"
+                                        fill={isSelected ? '#FFFFFF' : '#61554F'}
+                                      />
+                                    </g>
+                                    <defs>
+                                      <clipPath id="clip0_5367_119012">
+                                        <rect width="32" height="32" fill="white" />
+                                      </clipPath>
+                                    </defs>
                                   </svg>
+
                                   <Gcol placement="ss" gap={0}>
                                     <Typo
                                       tag="p"
@@ -1260,14 +1282,14 @@ export function Ltpa02002({ userType }: { userType: string }) {
                                     </Typo>
                                     <Typo
                                       tag="p"
-                                      variant="heading-xl"
+                                      variant="heading-lg"
                                       className={isSelected ? 'text-white' : 'text-[var(--color-primary-50)]'}
                                     >
                                       {v.field1.toLocaleString()}원
                                     </Typo>
                                   </Gcol>
                                 </button>
-                                <Grow className="w-full h-[4rem] bg-[var(--color-secondary-50)]" placement="cc">
+                                <Grow className="w-full h-[4rem] bg-[#fff] px-4" placement="sc">
                                   <Checkbox
                                     checked={comparedPlanKeys.includes(planKey)}
                                     onCheckedChange={(checked) => {
@@ -1280,7 +1302,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                                       });
                                     }}
                                   >
-                                    <span className="text-[#FFF]">비교하기</span>
+                                    <span>비교하기</span>
                                   </Checkbox>
                                 </Grow>
                               </Grid>

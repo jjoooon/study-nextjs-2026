@@ -28,7 +28,7 @@ const RadioGroupContext = React.createContext<{
   /** 라디오 그룹 변형 */
   variant?: 'default' | 'button' | 'noCheckButton' | 'chipBox' | 'tab' | 'folderTab' | 'tabBadge' | 'none';
   /** 아이템 크기 */
-  size?: 'lg' | 'md' | 'sm';
+  size?: 'xl' | 'lg' | 'md' | 'sm';
   /** 아이템 색상 */
   color?: 'primary' | 'info';
 }>({
@@ -96,6 +96,7 @@ const radioGroupItemVariants = cva(
         none: '',
       },
       size: {
+        xl: '',
         lg: '',
         md: '',
         sm: '',
@@ -119,6 +120,12 @@ const radioGroupItemVariants = cva(
         variant: 'default',
         size: 'md',
         className: 'h-[1.4rem] w-[1.4rem]',
+      },
+      {
+        variant: 'button',
+        size: 'xl',
+        className:
+          'min-h-[4.8rem] h-auto pl-[4.2rem] pr-[1.6rem] py-[1.2rem] text-[1.3rem] tracking-[-0.13rem] w-auto inline-flex items-center text-left whitespace-normal',
       },
       {
         variant: 'button',
@@ -146,6 +153,12 @@ const radioGroupItemVariants = cva(
         color: 'info',
         className:
           'data-[state=checked]:bg-[#f0f7ff] data-[state=checked]:text-[#006ff2] data-[state=checked]:border-[#006ff2] data-[state=checked]:shadow-[0rem_0.1rem_0.1rem_0rem_rgba(0,111,242,0.19)]',
+      },
+      {
+        variant: 'noCheckButton',
+        size: 'xl',
+        className:
+          'h-auto pr-[1.6rem] pl-[4.2rem] py-[1.2rem] text-[1.3rem] tracking-[-0.05rem] w-auto justify-center items-center flex whitespace-normal leading-[1.2]',
       },
       {
         variant: 'noCheckButton',
@@ -291,7 +304,7 @@ interface RadioGroupExtraProps {
    * 라디오 그룹 아이템의 기본 크기
    * @default 'lg'
    */
-  size?: 'lg' | 'md' | 'sm';
+  size?: 'xl' | 'lg' | 'md' | 'sm';
   /**
    * 라디오 그룹 아이템의 기본 색상
    * @default 'primary'
@@ -482,7 +495,7 @@ const RadioGroupItem = React.forwardRef<
     const isError = error || groupError;
     const isRequired = Boolean(props.required || groupRequired);
     const isDisabled = Boolean(props.disabled || groupDisabled);
-    const indicatorSize = resolvedSize === 'sm' ? 'md' : resolvedSize;
+    const indicatorSize = resolvedSize === 'sm' ? 'md' : resolvedSize === 'xl' ? 'lg' : resolvedSize;
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       props.onClick?.(e);
@@ -508,11 +521,13 @@ const RadioGroupItem = React.forwardRef<
           onClick={handleClick}
           className={cn(
             radioGroupItemVariants({ variant: resolvedVariant, size: resolvedSize, color: resolvedColor, width }),
-            'relative whitespace-nowrap',
+            resolvedVariant === 'button' && resolvedSize === 'xl'
+              ? 'relative whitespace-normal'
+              : 'relative whitespace-nowrap',
             isError &&
               'bg-[var(--color-input-surface-error)]! border-[var(--color-input-border-error)]! border-[0.2rem]!',
             isRequired && 'data-[state=checked]:border-[var(--color-input-border-highlight)]',
-            isButton && 'pl-[2.2rem]',
+            isButton && resolvedSize !== 'xl' && 'pl-[2.2rem]',
             className
           )}
           data-variant={resolvedVariant || undefined}
@@ -525,12 +540,17 @@ const RadioGroupItem = React.forwardRef<
           {isButton ? (
             <div
               className={cn(
-                'border border-[var(--color-gray-15)]! absolute left-[0.6rem] rounded-full flex items-center justify-center bg-white focus:!outline-none tracking-[-0.13rem]',
-                resolvedSize === 'sm'
-                  ? 'top-[0.35rem] h-[1.2rem] w-[1.2rem]'
-                  : resolvedSize === 'md'
-                    ? 'top-[0.45rem] h-[1.4rem] w-[1.4rem]'
-                    : 'top-[0.55rem] h-[1.4rem] w-[1.4rem]'
+                'border border-[var(--color-gray-15)]! rounded-full flex items-center justify-center bg-white focus:!outline-none tracking-[-0.13rem] shrink-0',
+                cn(
+                  'absolute left-[0.6rem]',
+                  resolvedSize === 'sm'
+                    ? 'top-[0.35rem] h-[1.2rem] w-[1.2rem]'
+                    : resolvedSize === 'md'
+                      ? 'top-[0.45rem] h-[1.4rem] w-[1.4rem]'
+                      : resolvedSize === 'xl'
+                        ? 'top-[1.5rem] left-[1.6rem] h-[1.4rem] w-[1.4rem]'
+                        : 'top-[0.55rem] h-[1.4rem] w-[1.4rem]'
+                )
               )}
             >
               <RadioGroupPrimitive.Indicator className="flex items-center justify-center whitespace-nowrap focus:!outline-none">
