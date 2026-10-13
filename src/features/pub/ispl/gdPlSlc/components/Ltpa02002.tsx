@@ -29,6 +29,16 @@ import {
 } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogFooterArea,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+} from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
@@ -222,6 +232,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
   const [isFilterOptionOpen, setIsFilterOptionOpen] = useState<boolean>(true);
   const [isProductOptionOpen, setIsProductOptionOpen] = useState<string>('상품옵션');
   const [isAiReasonExpanded, setIsAiReasonExpanded] = useState<boolean>(false);
+  const [isGuideOpen, setIsGuideOpen] = useState<boolean>(false);
 
   // 2-3. 추가 정보 / 보장 분석 / 특징 조건 관련 상태
   const [lastInquiryDate, setLastInquiryDate] = useState('');
@@ -1119,7 +1130,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
             </div>
             <Gcol placement="ss" className="mt-[0.6rem] gap-2">
               <Typo variant={'body-xl'} weight={'bold'}>
-                AI 설계비서가 알려드려요!
+                추천설계 참고사항!
               </Typo>
               <BulletList size="lg">
                 <BulletListItem>
@@ -1325,23 +1336,34 @@ export function Ltpa02002({ userType }: { userType: string }) {
                 className="w-full h-full rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_0.2rem_0.2rem_0_rgba(255,92,46,0.2)] overflow-hidden grid-rows-[auto_minmax(0,1fr)_auto] max-h-[59.6rem]"
                 gap={0}
               >
-                <Gcol
-                  className="relative px-[1.6rem] py-[1rem] gap-[0.2rem] rounded-b-[1rem] "
+                <Grow
+                  className="relative px-[1.6rem] py-[1.7rem] gap-[0.2rem] rounded-b-[1rem] "
                   placement="ss"
                   style={{
-                    backgroundImage: `url(${withPublicUrl('/images/Ltpa020/cand_on_bg.png')}), linear-gradient(358deg,#FF5C2E 9.4%,#FF8D02 97.24%)`,
+                    backgroundImage: `url(${withPublicUrl('/images/Ltpa020/cand_on_bg_big.png')}), linear-gradient(358deg,#FF5C2E 9.4%,#FF8D02 97.24%)`,
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: '10rem, cover',
-                    backgroundPosition: '96% -6%',
+                    backgroundPosition: '98% -6%',
                   }}
                 >
-                  <Typo tag="p" variant="body-sm" className="text-white opacity-80">
-                    보장내용 확인
-                  </Typo>
-                  <Typo tag="strong" variant="body-md" weight="bold" className="text-white">
-                    {selectedPlanInfo?.product.field1}
-                  </Typo>
-                </Gcol>
+                  <Gcol placement="ss">
+                    <Typo tag="p" variant="body-sm" className="text-white opacity-80">
+                      보장내용 확인
+                    </Typo>
+                    <Typo tag="strong" variant="heading-lg" weight="bold" className="text-white">
+                      {selectedPlanInfo?.product.field1}
+                    </Typo>
+                  </Gcol>
+                  <Button
+                    color="secondary"
+                    onClick={() => setIsGuideOpen(true)}
+                    only="default"
+                    variant="contained"
+                    className="w-[7.2rem] h-[3.8rem] text-[1.1rem] px-[1.1rem]"
+                  >
+                    추천설계<br></br> 이용가이드
+                  </Button>
+                </Grow>
 
                 <Grid className="px-[1rem] pb-0 pt-[0.8rem] gap-[0.8rem] grid-rows-[auto_minmax(0,1fr)]">
                   <Grow
@@ -1534,6 +1556,94 @@ export function Ltpa02002({ userType }: { userType: string }) {
           80% { transform: translate(1px, 1px) scale(1.01); }
         }
       `}</style>
+      <Dialog open={isGuideOpen} onOpenChange={setIsGuideOpen}>
+        <DialogContent showCloseButton resizable={true} size="sm">
+          <DialogHeader>
+            <DialogTitle>
+              <Typo tag={'strong'} variant={'heading-lg'}>
+                추천설계 이용가이드
+              </Typo>
+            </DialogTitle>
+          </DialogHeader>
+
+          <DialogSection className="w-full flex flex-col gap-4">
+            {/* 유의사항 안내 박스 */}
+            <Gcol variant="box-warning" placement="ss" className="w-full" gap={1}>
+              <Typo icon="warning" variant="body-sm" weight="bold">
+                유의사항
+              </Typo>
+              <BulletList size="sm" type="dot" className="w-full">
+                <BulletListItem size="sm">
+                  <Typo tag="strong" variant="body-sm" color="primary" weight="bold">
+                    편리한 설계의 출발점
+                  </Typo>
+                  으로 추천설계를 활용해 보세요.
+                </BulletListItem>
+                <BulletListItem size="sm">
+                  추천설계는 입력하신 사항과 AI 학습데이터를 종합 분석하여,{' '}
+                  <Typo tag="strong" variant="body-sm" color="primary" weight="bold">
+                    설계의 방향을 찾아드리는 참고안
+                  </Typo>{' '}
+                  입니다.
+                </BulletListItem>
+                <BulletListItem size="sm">
+                  다양한 조건, 이용 시점 등 여러 요인에 따라 추천설계 결과는 달라질 수 있습니다.
+                </BulletListItem>
+              </BulletList>
+            </Gcol>
+
+            {/* 가이드 스텝 목록 */}
+            <ol className="flex flex-col gap-[2.4rem]">
+              <li className="relative z-1 flex items-start gap-3 w-full">
+                <div className="shrink-0 flex items-center justify-center font-bold text-[2rem] leading-none">01.</div>
+                <div className="flex flex-col gap-1 w-full">
+                  <strong className="font-bold text-[1.3rem]">보장내용 상세보기</strong>
+                  <p className="text-[1.3rem] leading-[150%] break-keep text-[var(--color-blue-gray-60)]">
+                    <b className="text-[var(--color-information-50)]">추천결과 카드를 선택</b>하여,
+                    <br /> 자세한 보장내용과 보험료를 확인해 보세요.
+                  </p>
+                </div>
+              </li>
+              <li className="relative z-1 flex items-start gap-3 w-full">
+                <div className="shrink-0 flex items-center justify-center font-bold text-[2rem] leading-none">02.</div>
+                <div className="flex flex-col gap-1 w-full">
+                  <strong className="font-bold text-[1.3rem]">추천설계 비교하기</strong>
+                  <p className="text-[1.3rem] leading-[150%] break-keep text-[var(--color-blue-gray-60)]">
+                    카드별 ‘비교하기’ 체크하신 후, <br />
+                    <b className="text-[var(--color-information-50)]">[추천설계비교]를 클릭하여 비교</b>해 보세요.
+                    3개까지 가능해요.
+                  </p>
+                </div>
+              </li>
+              <li className="relative z-1 flex items-start gap-3 w-full">
+                <div className="shrink-0 flex items-center justify-center font-bold text-[2rem] leading-none">03.</div>
+                <div className="flex flex-col gap-1 w-full">
+                  <strong className="font-bold text-[1.3rem]">설계 생성하기</strong>
+                  <p className="text-[1.3rem] leading-[150%] break-keep text-[var(--color-blue-gray-60)]">
+                    원하는 <b className="text-[var(--color-information-50)]">추천결과를 선택 후 [설계생성]</b>을
+                    눌러보세요.
+                    <br />
+                    최대 3개까지 자동으로 설계가 생성됩니다. <br />
+                    가입설계 화면에서 담보 조정 등으로 최적의 설계를 진행하세요.
+                  </p>
+                </div>
+              </li>
+            </ol>
+          </DialogSection>
+
+          <DialogFooter>
+            <DialogFooterArea>
+              <Grow placement="ee">
+                <DialogClose asChild>
+                  <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                    닫기
+                  </Button>
+                </DialogClose>
+              </Grow>
+            </DialogFooterArea>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Grid>
   );
 }
