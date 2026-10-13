@@ -8,7 +8,6 @@ import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow } from '@atoms';
 import { ErrorMsg } from '@common/ErrorMsg';
-import { CheckIcon, Favorite } from '@icons';
 
 // 단일 Checkbox 컴포넌트 props
 // - variant/size/color로 UI 모양을 바꾼다.
@@ -150,12 +149,19 @@ function Checkbox({
       data-[state=checked]:shadow-[0rem_0.2rem_0.2rem_0rem_rgba(27,46,91,0.19)]`,
   };
 
-  const iconSize = size === 'xl' ? 19 : size === 'lg' ? 16 : size === 'md' ? 12 : 10;
-  const checkedColorStyles = {
-    primary: 'var(--color-primary-50)',
-    info: 'var(--color-element-information)',
-    secondary: 'var(--color-secondary-90)',
+  // CSS 마스크 아이콘(.cp-icon) 크기 / 색상 맵 (globals.css 참고)
+  const iconSizeStyles = {
+    xl: 'size-[1.9rem]',
+    lg: 'size-[1.6rem]',
+    md: 'size-[1.2rem]',
+    sm: 'size-[1rem]',
   };
+  const checkedColorStyles = {
+    primary: 'text-[var(--color-primary-50)]',
+    info: 'text-[var(--color-element-information)]',
+    secondary: 'text-[var(--color-secondary-90)]',
+  };
+  const uncheckedIconColor = 'text-[var(--color-gray-30)]';
 
   // controlled/ uncontrolled 공용 상태 처리
   const [internalChecked, setInternalChecked] = React.useState<boolean | 'indeterminate'>(defaultChecked ?? false);
@@ -285,11 +291,24 @@ function Checkbox({
       >
         {/* variant별 내부 표시 분기 */}
         {isFavorite ? (
-          <Favorite color={checkedState ? checkedColorStyles[color] : 'var(--color-gray-30)'} />
+          <span
+            aria-hidden="true"
+            className={cn(
+              'cp-icon cp-icon-favorite size-[2rem] max-w-full max-h-full',
+              checkedState ? checkedColorStyles[color] : uncheckedIconColor
+            )}
+          />
         ) : isButton || isChipBox ? (
           <Grow className={cn('tracking-[-0.13rem]', size === 'sm' ? 'gap-0' : 'gap-[0.2rem]')} placement="sc">
             {icon && variant !== 'noCheckButton' && isButton && (
-              <CheckIcon size={iconSize} color={checkedState ? checkedColorStyles[color] : 'var(--color-gray-30)'} />
+              <span
+                aria-hidden="true"
+                className={cn(
+                  'cp-icon cp-icon-check',
+                  iconSizeStyles[size],
+                  checkedState ? checkedColorStyles[color] : uncheckedIconColor
+                )}
+              />
             )}
             {children}
           </Grow>
@@ -298,7 +317,16 @@ function Checkbox({
             data-slot="checkbox-indicator"
             className={cn('flex items-center justify-center h-full w-full text-current transition-none')}
           >
-            {icon && <CheckIcon size={iconSize} color={props.disabled ? 'var(--color-icon-gray-light)' : undefined} />}
+            {icon && (
+              <span
+                aria-hidden="true"
+                className={cn(
+                  'cp-icon cp-icon-check',
+                  iconSizeStyles[size],
+                  props.disabled && 'text-[var(--color-icon-gray-light)]'
+                )}
+              />
+            )}
           </CheckboxPrimitive.Indicator>
         )}
       </CheckboxPrimitive.Root>

@@ -7,7 +7,6 @@ import * as React from 'react';
 import { type DateRange, type Matcher } from 'react-day-picker';
 import { FormItemSize } from '@/shared/types/uiTypes';
 import { ErrorMsg } from '@common/ErrorMsg';
-import { CalendarIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Calendar } from '@uiux/Calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
@@ -867,7 +866,10 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
             disabled={isCalendarButtonDisabled}
             onClick={() => handleOpenChange(!open)}
           >
-            <CalendarIcon color="var(--color-icon-primary)" />
+            <span
+              aria-hidden="true"
+              className="cp-icon cp-icon-calendar size-[1.6rem] text-[var(--color-icon-primary)]"
+            />
             <span className="sr-only">Select date</span>
           </Button>
         </PopoverTrigger>

@@ -75,7 +75,10 @@
 .cp-checkbox-group-button .cp-checkbox[data-state='checked'] svg,
 .cp-checkbox-group-button .cp-checkbox[data-state='checked']:hover svg,
 .cp-checkbox-group-button [data-slot='checkbox'][data-state='checked'] svg,
-.cp-checkbox-group-button [data-slot='checkbox'][data-state='checked']:hover svg {
+.cp-checkbox-group-button [data-slot='checkbox'][data-state='checked']:hover svg,
+.v109 .cp-checkbox[data-variant='button'][data-state='checked'] .cp-icon,
+.cp-checkbox-group-button .cp-checkbox[data-state='checked'] .cp-icon,
+.cp-checkbox-group-button [data-slot='checkbox'][data-state='checked'] .cp-icon {
   color: var(--color-primary-50, #ff5c2e) !important;
   stroke: var(--color-primary-50, #ff5c2e) !important;
 }
