@@ -256,6 +256,12 @@ const Ltpz204 = () => {
                     resizable: true,
                   }}
                   singleClickEdit={true}
+                  rowSelection={{
+                    mode: 'multiRow',
+                    headerCheckbox: false,
+                    checkboxes: true,
+                    enableClickSelection: false,
+                  }}
                   domLayout="normal"
                   animateRows={false}
                   tooltipShowMode="whenTruncated"
