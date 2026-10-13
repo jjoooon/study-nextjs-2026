@@ -824,10 +824,8 @@
           if (receivedTitle || receivedId) {
             const modalHeaderTitle = document.getElementById('modalHeaderTitle');
             if (modalHeaderTitle) {
-              const currentItem = allItems.find(
-                (i) => (i.id || '').toLowerCase() === (receivedId || '').toLowerCase()
-              );
-              const displayId = currentItem?.id || (receivedId ? receivedId.toUpperCase() : '');
+              // 전달받은 값만 사용 (ialist 조회로 보정하지 않음)
+              const displayId = receivedId || '';
               if (receivedTitle && displayId) {
                 modalHeaderTitle.textContent = `${receivedTitle} (${displayId})`;
               } else if (receivedTitle) {
@@ -867,17 +865,10 @@
           event.data.eventName === 'changeTitle'
         ) {
           const newTitle = event.data.title;
-          if (newTitle) {
-            const modalHeaderTitle = document.getElementById('modalHeaderTitle');
-            if (modalHeaderTitle) {
-              const currentText = modalHeaderTitle.textContent || '';
-              const idMatch = currentText.match(/\(([^)]+)\)$/);
-              if (idMatch) {
-                modalHeaderTitle.textContent = `${newTitle} ${idMatch[0]}`;
-              } else {
-                modalHeaderTitle.textContent = newTitle;
-              }
-            }
+          // 전달받은 title 문자열을 그대로 표시 (기존 헤더의 화면ID를 이어붙이지 않음)
+          const modalHeaderTitle = document.getElementById('modalHeaderTitle');
+          if (newTitle && modalHeaderTitle) {
+            modalHeaderTitle.textContent = newTitle;
           }
         }
 
@@ -1002,23 +993,51 @@
       };
 
       let dialogSizesMap = new Map();
+      // Dialog(dialogSizes.json) / BaseLayout(pageSizes.json) 가 기본으로 사용하는 화면 정보 (id → { id, title, ... })
+      let screenInfoMap = new Map();
 
-      async function loadDialogSizes() {
-        const candidates = ['./dialogSizes.json', 'dialogSizes.json', 'src/shared/popups/dialogSizes.json'];
+      // 소스(src/shared/popups)의 json 을 그대로 읽어온다. (Storybook/Vite 개발 서버는 /src 경로를 그대로 서빙)
+      async function fetchJsonList(fileName) {
+        const candidates = [
+          `./${fileName}`,
+          `src/shared/popups/${fileName}`,
+          `/src/shared/popups/${fileName}`,
+          `../src/shared/popups/${fileName}`,
+        ];
         for (const url of candidates) {
           try {
             const res = await fetch(url);
-            if (res.ok) {
-              const list = await res.json();
-              list.forEach((item) => {
-                if (item.id) {
-                  dialogSizesMap.set(item.id.toLowerCase(), item);
-                }
-              });
-              break;
-            }
+            if (!res.ok) continue;
+            const list = await res.json();
+            if (Array.isArray(list)) return list;
           } catch (e) {}
         }
+        console.warn(`[iframe-test] ${fileName} 을(를) 불러오지 못했습니다.`);
+        return [];
+      }
+
+      async function loadDialogSizes() {
+        const [dialogList, pageList] = await Promise.all([
+          fetchJsonList('dialogSizes.json'),
+          fetchJsonList('pageSizes.json'),
+        ]);
+        pageList.forEach((item) => {
+          if (item.id) screenInfoMap.set(item.id.toLowerCase(), item);
+        });
+        dialogList.forEach((item) => {
+          if (!item.id) return;
+          dialogSizesMap.set(item.id.toLowerCase(), item);
+          screenInfoMap.set(item.id.toLowerCase(), item);
+        });
+      }
+
+      // json 기본 정보로 헤더 문자열 생성: 타이틀(화면ID)
+      function getDefaultHeaderTitle(id) {
+        const info = screenInfoMap.get((id || '').toLowerCase());
+        if (!info) return '';
+        const title = (info.title || '').trim();
+        const scrId = (info.id || '').toUpperCase();
+        return title ? `${title}(${scrId})` : `(${scrId})`;
       }
 
       // 아이템 선택 시 iframe 로드 주소 변경 및 모달 헤더 정보 업데이트
@@ -1057,23 +1076,30 @@
         testIframe.src = url;
         if (currentUrl) currentUrl.textContent = url;
 
-        // 상단 모달 헤더에 제목과 화면 아이디 동적 반영
+        // 상단 모달 헤더 기본값: Dialog/BaseLayout 과 동일한 json(dialogSizes / pageSizes) 정보
+        // 화면에서 title prop 을 지정하면 iframe 내부가 changeTitle 을 보내고, 수신 시 그 값으로 덮어쓴다.
         const modalHeaderTitle = document.getElementById('modalHeaderTitle');
-        if (modalHeaderTitle) {
-          const subIdText = item.subId ? ` (${item.subId})` : '';
-          const titleName = predefined?.title || item.dep4 || item.title || item.name || '';
-          modalHeaderTitle.textContent = `${titleName} (${item.id}${subIdText})`;
-        }
+        if (modalHeaderTitle) modalHeaderTitle.textContent = getDefaultHeaderTitle(item.id);
       };
 
-      // iframe 내부 Dialog에서 전달되는 DIALOG_DEFAULT_SIZE postMessage 수신 처리
+      // iframe 내부(Dialog / BaseLayout)가 screenUtils 의 changeTitle / resizeWindow 로 보내는 postMessage 수신
+      //  - changeTitle : { type: 'REACT', eventName: 'changeTitle', title }
+      //  - resizeWindow: { type: 'REACT', eventName: 'resizeWindow', message: { width, height } }
       window.addEventListener('message', (event) => {
-        if (!event.data || typeof event.data !== 'object') return;
+        const data = event.data;
+        if (!data || typeof data !== 'object' || data.type !== 'REACT') return;
 
-        if (event.data.type === 'DIALOG_DEFAULT_SIZE') {
-          const { width, height, title, popupId } = event.data;
+        if (data.eventName === 'changeTitle') {
+          // 화면별 title prop 으로 전달된 값 → json 기본값을 덮어써서 가공 없이 그대로 표시
+          const modalHeaderTitle = document.getElementById('modalHeaderTitle');
+          if (modalHeaderTitle && typeof data.title === 'string') {
+            modalHeaderTitle.textContent = data.title;
+          }
+          return;
+        }
 
-          // Dialog에서 전달하는 30px 차감 완료된 높이 값으로 그대로 적용
+        if (data.eventName === 'resizeWindow') {
+          const { width, height } = data.message || {};
           if (width && height) {
             iframeWrapper.style.width = width + 'px';
             iframeWrapper.style.height = height + 'px';
@@ -1086,16 +1112,6 @@
             // 넘어오는 값이 없다면 기본값으로 width, height 를 100% 로 변경
             iframeWrapper.style.width = '100%';
             iframeWrapper.style.height = '100%';
-          }
-
-          const modalHeaderTitle = document.getElementById('modalHeaderTitle');
-          if (title && modalHeaderTitle && popupId) {
-            const currentItem = allItems.find(
-              (i) => (i.id || '').toLowerCase() === (popupId || '').toLowerCase()
-            );
-            const subIdText = currentItem?.subId ? ` (${currentItem.subId})` : '';
-            const displayId = currentItem?.id || popupId.toUpperCase();
-            modalHeaderTitle.textContent = `${title} (${displayId}${subIdText})`;
           }
         }
       });
