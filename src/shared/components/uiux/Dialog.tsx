@@ -1994,7 +1994,11 @@ function DialogSection({ children, className, ...props }: React.ComponentProps<t
     : '100%';
 
   return (
-    <Grid data-slot="dialog-section" className="px-6 w-full h-full overflow-auto grid-rows-[minmax(0,1fr)]" {...props}>
+    <Grid
+      data-slot="dialog-section"
+      className="pl-6 pr-[calc(2.4rem-1.8rem)] w-full h-full overflow-y-scroll grid-rows-[minmax(0,1fr)]"
+      {...props}
+    >
       <Grid
         gap={3}
         style={{ minWidth: minWidthValue }}

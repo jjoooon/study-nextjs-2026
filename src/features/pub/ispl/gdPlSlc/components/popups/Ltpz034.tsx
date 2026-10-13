@@ -401,7 +401,7 @@ const UnderwritingBadge = ({ id, label, onRemove }: UnderwritingBadgeProps) => {
   return (
     <div
       ref={badgeRef}
-      className={`inline-flex flex-row items-center gap-1 bg-[#2E3B4E] text-[#FFF] rounded-full  text-[1.2rem] py-[0.5rem] px-[0.6rem] transition-opacity duration-150 ${
+      className={`inline-flex flex-row items-center gap-1 bg-[#2E3B4E] text-[#FFF] rounded-full text-[1.2rem] py-[0.5rem] px-[0.8rem] transition-opacity duration-150 ${
         isReady ? 'animate-slide-from-click' : 'opacity-0'
       }`}
       style={
@@ -411,13 +411,13 @@ const UnderwritingBadge = ({ id, label, onRemove }: UnderwritingBadgeProps) => {
         } as React.CSSProperties
       }
     >
-      <span className="font-bold">{label}</span>
+      <span className="font-[400]! tracking-[-0.5%]!">{label}</span>
       <button
         type="button"
         onClick={() => onRemove(id)}
-        className="flex items-center justify-center rounded-full hover:bg-gray-700 focus:outline-none ml-1"
+        className="flex items-center justify-center rounded-full hover:bg-gray-700 focus:outline-none "
       >
-        <CloseIcon size={10} className="text-gray-400 hover:text-[#FFF]" />
+        <CloseIcon size={12} className="text-gray-400 hover:text-[#FFF]" />
       </button>
     </div>
   );
@@ -565,7 +565,7 @@ const Ltpz034 = ({
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable dim={'dark'} className={isRegistered ? 'w-[69.2rem]' : 'w-[76rem]'}>
+      <DialogContent showCloseButton resizable dim={'dark'} size={'lg'}>
         <DialogHeader>
           <DialogTitle>
             <Typo tag="strong" variant="heading-lg">
@@ -633,24 +633,24 @@ const Ltpz034 = ({
               </Typo>
               <Divider />
               <span className="flex items-center gap-1 text-[1.2rem]">
-                <RefuseIcon size={16} />
-                거절
-              </span>
-              <span className="flex items-center gap-1 text-[1.2rem]">
-                <DiamondIcon />
-                연기
-              </span>
-              <span className="flex items-center gap-1 text-[1.2rem]">
-                <AuditIcon />
-                심사
+                <CircleCheckIcon size={14} />
+                인수
               </span>
               <span className="flex items-center gap-1 text-[1.2rem]">
                 <ConditionalIcon />
                 조건부
               </span>
               <span className="flex items-center gap-1 text-[1.2rem]">
-                <CircleCheckIcon size={14} />
-                인수
+                <AuditIcon />
+                심사
+              </span>
+              <span className="flex items-center gap-1 text-[1.2rem]">
+                <DiamondIcon />
+                연기
+              </span>
+              <span className="flex items-center gap-1 text-[1.2rem]">
+                <RefuseIcon size={16} />
+                거절
               </span>
             </Grow>
           </Gcol>
@@ -736,7 +736,7 @@ const Ltpz034 = ({
               {selectedIds.length > 0 && (
                 <Typo className="text-[1.2rem] font-bold text-[#414141] shrink-0">고지유형 선택</Typo>
               )}
-              <Grow className="flex-wrap gap-[0.1rem] justify-start flex-1" id="selected-underwriting-container">
+              <Grow className="flex-wrap gap-[0.4rem] justify-start flex-1" id="selected-underwriting-container">
                 {selectedIds.length > 0 ? (
                   selectedIds.map((id) => {
                     const label = underwritingItemsMap[id];

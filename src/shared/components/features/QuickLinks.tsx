@@ -50,7 +50,7 @@ export function QuickLinks() {
           className={`${DummyList.length % 2 === 0 ? 'col-span-2' : 'w-full'}`}
         >
           전체보기
-          <AddIcon color="var(--color-gray-50)" size={12} />
+          <AddIcon color="var(--color-primary-50)" size={12} />
         </Button>
       </Grid>
     </Gcol>

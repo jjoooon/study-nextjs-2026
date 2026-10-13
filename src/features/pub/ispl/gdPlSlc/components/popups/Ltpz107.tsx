@@ -23,7 +23,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 const Ltpz107 = () => {
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="xl">
+      <DialogContent showCloseButton resizable={true} size="sm">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -49,7 +49,7 @@ const Ltpz107 = () => {
             <TableFoldBody>
               <Table variant="default">
                 <colgroup>
-                  <col style={{ width: '10rem' }} />
+                  <col style={{ width: '8rem' }} />
                   <col style={{ width: 'auto' }} />
                 </colgroup>
                 <TableHeader>

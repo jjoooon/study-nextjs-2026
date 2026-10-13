@@ -37,7 +37,7 @@
   {
     "id": "LTPZ004",
     "title": "담보보기",
-    "width": 560,
+    "width": 760,
     "height": 478,
     "isIframe": true
   },
@@ -660,8 +660,8 @@
   {
     "id": "LTPZ107",
     "title": "보험료 납입면제 안내",
-    "width": 960,
-    "height": 608,
+    "width": 480,
+    "height": 480,
     "isIframe": true
   },
   {
