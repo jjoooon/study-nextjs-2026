@@ -139,7 +139,7 @@ const section3Data: DummyDataType2[] = [
   },
 ];
 
-/** 감점계산 소계 및 합계 행 데이터 */
+/** 감점계산 소계 행 데이터 */
 const section3SumData: DummyDataType2[] = [
   {
     id: -1,
@@ -151,6 +151,10 @@ const section3SumData: DummyDataType2[] = [
     field6: '-0.85',
     isSumRow: true,
   },
+];
+
+/** 감점계산 최소필요 행 데이터 (합계 행이 아닌 일반 행) */
+const section3MinNeedData: DummyDataType2[] = [
   {
     id: -2,
     field1: '(X1)최소필요',
@@ -160,6 +164,10 @@ const section3SumData: DummyDataType2[] = [
     field5: '10,000',
     field6: '-10.00',
   },
+];
+
+/** 감점계산 합계 행 데이터 */
+const section3TotalData: DummyDataType2[] = [
   {
     id: -3,
     field1: '감점 합계',
@@ -435,12 +443,23 @@ const Ltpz012 = () => {
                     rowData={section3Data}
                     columnDefs={columnDefs}
                     pinnedBottomRowData={section3SumData}
-                    getRowStyle={(params) =>
-                      params.node.rowPinned && !params.data?.isSumRow ? { backgroundColor: '#ffffff' } : undefined
-                    }
                     defaultColDef={{ sortable: true, resizable: true }}
                     domLayout={'normal'}
                     // alwaysShowVerticalScroll={true}
+                  />
+                </div>
+                {/* 최소필요(일반 행) + 감점 합계(합계 행) */}
+                <div className="ag-theme-alpine no-header">
+                  <AgGridReact<DummyDataType2>
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={section3MinNeedData}
+                    columnDefs={columnDefs}
+                    pinnedBottomRowData={section3TotalData}
+                    headerHeight={0}
+                    groupHeaderHeight={0}
+                    defaultColDef={{ sortable: true, resizable: true }}
+                    domLayout={'autoHeight'}
                   />
                 </div>
               </TableFoldBody>
