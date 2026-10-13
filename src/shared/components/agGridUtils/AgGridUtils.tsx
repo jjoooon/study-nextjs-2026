@@ -1264,9 +1264,9 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
           />
         </PopoverAnchor>
         <PopoverContent
-          side="bottom"
-          align="end"
-          className="p-3 flex flex-col gap-2 w-auto"
+          side="right"
+          align="center"
+          className="p-3 flex flex-col gap-2 w-[19.4rem]"
           closeButton={false}
           onOpenAutoFocus={(e) => e.preventDefault()} // 팝오버 오픈 시 인풋 포커스 유지
         >
@@ -1283,7 +1283,7 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
               >
                 <MinusIcon color={'var(--color-primary-50)'} />
               </Button>
-              <Input size={'md'} value={value} after={'만'} readOnly className="w-[11.2rem]" align="right" />
+              <Input size={'md'} width={'auto'} value={value} after={'만'} readOnly align="right" />
               <Button
                 aria-label={'백만원 추가'}
                 variant={'outlined'}
@@ -1296,13 +1296,13 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
                 <PlusIcon color={'var(--color-primary-50)'} />
               </Button>
             </Grow>
-            <Grow>
+            <Grow className="w-full">
               <Button
                 size={'md'}
                 color={'secondary'}
                 onMouseDown={(e) => e.stopPropagation()} // 클릭 시 그리드 편집 모드 유지
                 onClick={() => updateValue(min)}
-                className="min-w-[8.3rem]"
+                className="w-full"
               >
                 최소 {min.toLocaleString()}만원
               </Button>
@@ -1310,7 +1310,7 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
                 size={'md'}
                 onMouseDown={(e) => e.stopPropagation()} // 클릭 시 그리드 편집 모드 유지
                 onClick={() => updateValue(max)}
-                className="min-w-[8.3rem]"
+                className="w-full"
               >
                 최대 {max >= 10000 ? `${max / 10000}억` : `${max.toLocaleString()}만원`}
               </Button>
