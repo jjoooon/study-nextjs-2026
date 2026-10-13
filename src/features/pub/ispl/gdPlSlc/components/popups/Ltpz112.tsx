@@ -178,7 +178,6 @@ export type DummyDataType2 = {
   field6: string | number;
   badge?: string[];
   checked?: boolean;
-  checkedDisabled?: boolean;
   dateType?: 'month' | 'day';
 };
 
@@ -193,7 +192,6 @@ export const DummyData2: DummyDataType2[] = [
     field6: '',
     badge: ['SI경증'],
     checked: true,
-    checkedDisabled: true,
   },
   {
     id: 2,
@@ -205,7 +203,6 @@ export const DummyData2: DummyDataType2[] = [
     field6: '',
     badge: ['할증'],
     checked: false,
-    checkedDisabled: false,
   },
   {
     id: 3,
@@ -217,7 +214,6 @@ export const DummyData2: DummyDataType2[] = [
     field6: '',
     badge: ['SI경증(감액)'],
     checked: true,
-    checkedDisabled: false,
   },
   {
     id: 4,
@@ -229,7 +225,6 @@ export const DummyData2: DummyDataType2[] = [
     field6: '',
     badge: ['부담보'],
     checked: false,
-    checkedDisabled: true,
   },
 ];
 
@@ -471,7 +466,6 @@ const createDiseaseRow = (
   disease: Pick<DummyDataType, 'field1' | 'field2' | 'field3'>
 ): DummyDataType2 => {
   const nextId = prev.length > 0 ? Math.max(...prev.map((row) => row.id)) + 1 : 1;
-  const hasSIGyeongjeung = disease.field3.includes('SI경증');
   const defaultChecked = disease.field3.includes('SI경증(감액)');
 
   return {
@@ -484,7 +478,6 @@ const createDiseaseRow = (
     field6: defaultChecked ? '' : '선택',
     badge: disease.field3,
     checked: defaultChecked,
-    checkedDisabled: hasSIGyeongjeung,
     dateType: 'month',
   };
 };
@@ -557,17 +550,25 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
     setRowData2((prev) => prev.filter((row) => !selectedIds.has(row.id)));
   }, []);
 
-  const handleDiseaseRowClick = useCallback((event: RowClickedEvent<DummyDataType>) => {
-    const selectedRow = event.data;
+  const handleDiseaseRowClick = useCallback(
+    (event: RowClickedEvent<DummyDataType>) => {
+      const selectedRow = event.data;
 
-    if (!selectedRow) return;
+      if (!selectedRow) return;
 
-    setRowData2((prev) => {
-      if (prev.length >= MAX_DISEASE_COUNT) return prev;
+      if (rowData2.length >= MAX_DISEASE_COUNT) {
+        alert('최대 4건까지만 선택할 수 있습니다.');
+        return;
+      }
 
-      return [...prev, createDiseaseRow(prev, selectedRow)];
-    });
-  }, []);
+      setRowData2((prev) => {
+        if (prev.length >= MAX_DISEASE_COUNT) return prev;
+
+        return [...prev, createDiseaseRow(prev, selectedRow)];
+      });
+    },
+    [rowData2.length]
+  );
 
   // 많이 찾는 질병 중 현재 입원/수술 정보 입력 테이블에 등록된 항목 (CheckboxGroup 체크 상태)
   const popularSelectedValues = React.useMemo(
@@ -771,7 +772,6 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
                   <Grow variant="box-round" placement={'bwc'}>
                     <CheckboxGroup
                       className="gap-1"
-                      minSelected={2}
                       value={popularSelectedValues}
                       onValueChange={handlePopularDiseaseChange}
                       variant="button"
