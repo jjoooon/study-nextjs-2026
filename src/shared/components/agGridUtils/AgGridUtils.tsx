@@ -22,6 +22,7 @@ import type { AgGridReact, CustomLoadingOverlayProps, CustomCellEditorProps, Cus
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState, useImperativeHandle, forwardRef } from 'react';
 import type { RefObject } from 'react';
+import useMounted from '@/shared/hooks/useMounted';
 import { SCALE_CHANGE_EVENT } from '@/shared/utils/scale';
 import { Typo, Grow, Grid, Gcol } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -1152,8 +1153,89 @@ export const numberValueFormatter = <T,>(params: ValueFormatterParams<T>) => {
   return params.value;
 };
 
+/** 가입금액 입력단위(step) */
+export type AmountStepUnit = '천원' | '만원' | '천만원' | '억원';
+
+type AmountStepConfig = {
+  /** 1 입력단위의 원 환산값 (+/- 증감폭) */
+  unitWon: number;
+  /** 최소값(원, 이상) */
+  minWon: number;
+  /** 최대값(원, 미만 상한에서 1단위 뺀 값) - 억원 등 상한 없으면 생략 */
+  maxWon?: number;
+  /** 단위 접미어 (Input after) */
+  suffix: string;
+  /** 최소 버튼 고정 라벨 */
+  minLabel: string;
+  /** 최대 버튼 고정 라벨 (생략 시 최대 버튼 미노출) */
+  maxLabel?: string;
+};
+
+/**
+ * step 단위별 범위 정의
+ * - 천원  : 1원이상 ~ 1만미만
+ * - 만원  : 1만이상 ~ 1천미만
+ * - 천만원: 1천이상 ~ 1억미만
+ * - 억원  : 1억이상 (최대값 없음, 최소 버튼만 노출)
+ */
+export const AMOUNT_STEP_CONFIG: Record<AmountStepUnit, AmountStepConfig> = {
+  천원: {
+    unitWon: 1_000,
+    minWon: 1,
+    maxWon: 10_000 - 1_000,
+    suffix: '천',
+    minLabel: '1원이상',
+    maxLabel: '1만미만',
+  },
+  만원: {
+    unitWon: 10_000,
+    minWon: 10_000,
+    maxWon: 10_000_000 - 10_000,
+    suffix: '만',
+    minLabel: '1만이상',
+    maxLabel: '1천미만',
+  },
+  천만원: {
+    unitWon: 10_000_000,
+    minWon: 10_000_000,
+    maxWon: 100_000_000 - 10_000_000,
+    suffix: '천만',
+    minLabel: '1천이상',
+    maxLabel: '1억미만',
+  },
+  억원: {
+    unitWon: 100_000_000,
+    minWon: 100_000_000,
+    suffix: '억',
+    minLabel: '1억이상',
+  },
+};
+
+const isAmountStepUnit = (value: unknown): value is AmountStepUnit =>
+  typeof value === 'string' && value in AMOUNT_STEP_CONFIG;
+
+/** 원 단위 금액을 '1억 2,000만원' 형태로 변환 */
+export const formatKoreanWon = (won: number): string => {
+  const eok = Math.floor(won / 100_000_000);
+  const man = Math.floor((won % 100_000_000) / 10_000);
+  const rest = won % 10_000;
+  const parts: string[] = [];
+  if (eok) parts.push(`${eok.toLocaleString()}억`);
+  if (man) parts.push(`${man.toLocaleString()}만`);
+  if (rest) parts.push(rest.toLocaleString());
+  return parts.length ? `${parts.join(' ')}원` : '0원';
+};
+
+/** 금액 하한(0원) 및 상한(max) 범위 제한 순수 함수 */
+const clampAmount = (v: number, max: number): number => Math.min(max, Math.max(0, Math.round(v * 10_000) / 10_000));
+
 /**
  * Popover를 통한 +/- 조정 기능이 포함된 숫자 편집기 (가입금액 전용 커스텀 Cell Editor)
+ *
+ * [step 파라미터]
+ * - '천원' | '만원' | '천만원' | '억원' : 단위별 min/max/증감폭/입력단위 문구 자동 적용
+ * - valueUnit(기본 10000): 셀 데이터 1의 원 환산값 (가입금액(만원) 컬럼이면 10000)
+ * - 숫자 step: 기존 방식(min/max 직접 지정, 만원 기준) 유지
  *
  * [동작 상세 설명 & 다른 개발자를 위한 가이드]
  * 1. 상태 분리 (로컬 상태 vs 글로벌 상태):
@@ -1173,14 +1255,45 @@ export const numberValueFormatter = <T,>(params: ValueFormatterParams<T>) => {
  *      팝오버 영역 내부 클릭 시 셀 포커스가 튀거나 팝업이 닫히는 현상을 구조적으로 방지합니다.
  */
 export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams, ref) => {
-  const initialValue = Number(props.value) || 0;
+  const rawVal = Number(props.value);
+  const initialValue = !isNaN(rawVal) ? rawVal : 0;
   // UI 렌더링 동기화를 위한 State와 unmount 시 참조할 최신 값을 보관하는 Ref를 분리하여 관리
   const [value, setValueState] = useState<number>(initialValue);
   const valueRef = useRef<number>(initialValue);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(true);
-  const step = props.colDef?.cellEditorParams?.step || 100;
-  const min = props.colDef?.cellEditorParams?.min ?? 100;
-  const max = props.colDef?.cellEditorParams?.max ?? 20000;
+  // cellEditorSelector의 params는 props에 병합되어 들어오므로 props 우선, 없으면 colDef 참조
+  const editorParams = { ...(props.colDef?.cellEditorParams ?? {}), ...props } as {
+    step?: number | AmountStepUnit;
+    min?: number;
+    max?: number;
+    valueUnit?: number;
+  };
+  const stepConfig = isAmountStepUnit(editorParams.step) ? AMOUNT_STEP_CONFIG[editorParams.step] : null;
+  const valueUnit = editorParams.valueUnit ?? 10_000; // 셀 값 1 = 1만원
+  // 원 → 셀 값 단위 변환 (부동소수 오차 보정)
+  const toCell = (won: number) => Math.round((won / valueUnit) * 10_000) / 10_000;
+
+  const step = stepConfig ? toCell(stepConfig.unitWon) : Number(editorParams.step) || 100;
+  const min = stepConfig ? toCell(stepConfig.minWon) : (editorParams.min ?? 100);
+  const max = stepConfig
+    ? stepConfig.maxWon !== undefined
+      ? toCell(stepConfig.maxWon)
+      : (editorParams.max ?? Infinity)
+    : (editorParams.max ?? 20000);
+
+  // 0원까지 입력 및 감액(-)이 가능하도록 하한선을 0으로 설정하는 헬퍼 함수
+  const clamp = (v: number) => clampAmount(v, max);
+
+  // 표시용 버튼 라벨
+  const minButtonLabel = stepConfig?.minLabel ?? `최소 ${min.toLocaleString()}만원`;
+  const maxButtonLabel = stepConfig
+    ? stepConfig.maxLabel
+    : `최대 ${max >= 10000 ? `${max / 10000}억` : `${max.toLocaleString()}만원`}`;
+  const unitLabel = isAmountStepUnit(editorParams.step) ? `1${editorParams.step}` : `${step.toLocaleString()}만원`;
+  // 바닥화면(가입금액 만원 단위)과 동일하게 언제나 만원 단위로 일관성 있게 표시
+  const popoverDisplayValue = typeof value === 'number' ? value.toLocaleString() : (value ?? '');
+  const popoverSuffix = '만';
 
   // 값 업데이트 시 State와 Ref를 동시에 동기화
   const updateValue = useCallback((newValue: number) => {
@@ -1188,35 +1301,55 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
     setValueState(newValue);
   }, []);
 
+  const focusTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // 마운트 시 인풋 포커스 및 텍스트 전체 선택 처리 (연속 입력 편의성 제공 - useMounted 훅 사용)
+  useMounted(
+    () => {
+      focusTimerRef.current = setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+          inputRef.current.select();
+        }
+      }, 50);
+    },
+    () => {
+      if (focusTimerRef.current) {
+        clearTimeout(focusTimerRef.current);
+      }
+    }
+  );
+
   // [중요] 에디터 컴포넌트가 언마운트(소멸)되는 최종 시점에 최종 누적값을 그리드 셀에 반영
   // 이 처리를 통해 여러 번 버튼을 클릭하여 수정한 최종 값이 중간 유실 없이 상위 rowData 상태까지 일괄 동기화됩니다.
   useEffect(() => {
     return () => {
       if (props.node && props.column) {
-        props.node.setDataValue(props.column.getColId(), valueRef.current);
+        props.node.setDataValue(props.column.getColId(), clampAmount(valueRef.current, max));
       }
     };
-  }, [props.node, props.column]);
+  }, [props.node, props.column, max]);
 
   // 그리드 바디 스크롤 발생 시 자동으로 에디터 팝업을 닫음
+  const { api, stopEditing } = props;
   useEffect(() => {
     const handleScroll = () => {
-      props.stopEditing?.(false);
+      stopEditing?.(false);
     };
-    props.api?.addEventListener('bodyScroll', handleScroll);
+    api?.addEventListener('bodyScroll', handleScroll);
     return () => {
-      props.api?.removeEventListener('bodyScroll', handleScroll);
+      api?.removeEventListener('bodyScroll', handleScroll);
     };
-  }, [props.api, props.stopEditing]);
+  }, [api, stopEditing]);
 
   useImperativeHandle(
     ref,
     () => ({
-      getValue: () => valueRef.current,
+      getValue: () => clampAmount(valueRef.current, max),
       isCancelAfterEnd: () => false,
       isPopup: () => true, // ag-Grid에 이 컴포넌트가 팝업 형태임을 알려 위치 및 포커스 관리를 위임
     }),
-    []
+    [max]
   );
 
   // 팝오버의 열림/닫힘 상태가 바뀔 때 에디팅 모드를 함께 종료시켜줍니다.
@@ -1230,11 +1363,98 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
     [props]
   );
 
+  // Tab 키 누를 때 다음(또는 Shift+Tab 시 이전) 행의 가입금액 셀로 즉시 이동하여 편집 세션을 여는 핸들러
+  const handleTabNavigation = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key !== 'Tab') return;
+
+      e.preventDefault();
+      e.stopPropagation();
+      e.nativeEvent?.stopImmediatePropagation?.();
+
+      const api = props.api;
+      const column = props.column;
+      if (!api || !column) {
+        props.stopEditing?.(false);
+        return;
+      }
+
+      const colKey = column.getColId();
+      const currentRowIndex = props.node?.rowIndex ?? props.rowIndex ?? 0;
+      const direction = e.shiftKey ? -1 : 1;
+      const totalRows = api.getDisplayedRowCount?.() ?? 0;
+
+      let targetRowIndex: number | null = null;
+      let idx = currentRowIndex + direction;
+
+      while (idx >= 0 && idx < totalRows) {
+        const targetNode = api.getDisplayedRowAtIndex?.(idx);
+        if (targetNode) {
+          const colDef = props.colDef;
+          let isEditable = true;
+
+          // 그룹 타이틀 행이면서 편집 불가인 경우 건너뜀
+          if (targetNode.data?.isStandard?.group && !targetNode.data?.isStandard?.edit) {
+            isEditable = false;
+          } else if (typeof colDef?.editable === 'function') {
+            try {
+              isEditable = !!colDef.editable({
+                node: targetNode,
+                data: targetNode.data,
+                column: column,
+                colDef: colDef,
+                api: api,
+                context: props.context,
+              } as unknown as EditableCallbackParams);
+            } catch {
+              isEditable = true;
+            }
+          } else if (colDef?.editable === false) {
+            isEditable = false;
+          }
+
+          if (isEditable) {
+            targetRowIndex = idx;
+            break;
+          }
+        }
+        idx += direction;
+      }
+
+      // 현재 변경된 값을 명시적으로 셀에 먼저 커밋
+      if (props.node && props.column) {
+        props.node.setDataValue(props.column.getColId(), clampAmount(valueRef.current, max));
+      }
+
+      // 현재 편집 모드 종료
+      props.stopEditing?.(false);
+
+      // 대상 행으로 이동 및 편집 모드 오픈
+      if (targetRowIndex !== null) {
+        const nextIdx = targetRowIndex;
+        setTimeout(() => {
+          try {
+            api.ensureIndexVisible(nextIdx);
+            api.setFocusedCell(nextIdx, colKey);
+            api.startEditingCell({
+              rowIndex: nextIdx,
+              colKey: colKey,
+            });
+          } catch {
+            // 네비게이션 실패 시 무시
+          }
+        }, 0);
+      }
+    },
+    [props, max]
+  );
+
   return (
     <div className="flex items-center w-full h-full">
       <Popover open={open} onOpenChange={handleOpenChange}>
         <PopoverAnchor asChild>
           <input
+            ref={inputRef}
             className="ag-input-field-input flex-1 w-full h-full border-none outline-none text-right bg-transparent p-0"
             type="number"
             value={value}
@@ -1254,7 +1474,12 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
               e.stopPropagation();
             }}
             onKeyDown={(e) => {
+              if (e.key === 'Tab') {
+                handleTabNavigation(e);
+                return;
+              }
               if (e.key === 'Enter') {
+                updateValue(clamp(valueRef.current));
                 props.stopEditing?.(false);
                 return;
               }
@@ -1273,25 +1498,32 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
           <Gcol className="items-center" gap={1.5} placement="ss">
             <Grow gap={1.5} placement="ss">
               <Button
-                aria-label={'백만원 추가'}
+                aria-label={'금액 차감'}
                 variant={'outlined'}
                 only={'icon'}
                 size={'md'}
                 color={'gray'}
                 onMouseDown={(e) => e.stopPropagation()} // 클릭 시 그리드 편집 모드 유지
-                onClick={() => updateValue(Math.max(min, valueRef.current - step))}
+                onClick={() => updateValue(clamp(valueRef.current - step))}
               >
                 <MinusIcon color={'var(--color-primary-50)'} />
               </Button>
-              <Input size={'md'} width={'auto'} value={value} after={'만'} readOnly align="right" />
+              <Input
+                size={'md'}
+                width={'auto'}
+                value={popoverDisplayValue}
+                after={popoverSuffix}
+                readOnly
+                align="right"
+              />
               <Button
-                aria-label={'백만원 추가'}
+                aria-label={'금액 추가'}
                 variant={'outlined'}
                 only={'icon'}
                 size={'md'}
                 color={'gray'}
                 onMouseDown={(e) => e.stopPropagation()} // 클릭 시 그리드 편집 모드 유지
-                onClick={() => updateValue(Math.min(max, valueRef.current + step))}
+                onClick={() => updateValue(clamp(valueRef.current + step))}
               >
                 <PlusIcon color={'var(--color-primary-50)'} />
               </Button>
@@ -1304,19 +1536,21 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
                 onClick={() => updateValue(min)}
                 className="w-full"
               >
-                최소 {min.toLocaleString()}만원
+                {minButtonLabel}
               </Button>
-              <Button
-                size={'md'}
-                onMouseDown={(e) => e.stopPropagation()} // 클릭 시 그리드 편집 모드 유지
-                onClick={() => updateValue(max)}
-                className="w-full"
-              >
-                최대 {max >= 10000 ? `${max / 10000}억` : `${max.toLocaleString()}만원`}
-              </Button>
+              {maxButtonLabel && (
+                <Button
+                  size={'md'}
+                  onMouseDown={(e) => e.stopPropagation()} // 클릭 시 그리드 편집 모드 유지
+                  onClick={() => updateValue(max)}
+                  className="w-full"
+                >
+                  {maxButtonLabel}
+                </Button>
+              )}
             </Grow>
             <Typo icon="ref" color="gray" className="mt-1">
-              가입금액 입력단위 : 100만원
+              가입금액 입력단위 : {unitLabel}
             </Typo>
           </Gcol>
         </PopoverContent>

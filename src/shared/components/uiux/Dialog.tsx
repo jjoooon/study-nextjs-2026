@@ -1950,7 +1950,7 @@ function DialogTitle({ className, children, title: titleProp, scrid: scridProp, 
     <DialogPrimitive.Title
       data-slot="dialog-title"
       className={cn(
-        'flex items-center gap-0.5 leading-none text-[1.4rem] tracking-tighter text-left pb-0 w-full pr-6 [&_strong]:text-[1.4rem]! [&_strong]:text-[#111827]! [&_strong]:font-bold!',
+        'flex items-center gap-0.5 leading-none text-[1.4rem] tracking-[-0.5%] text-left pb-0 w-full pr-6 [&_strong]:text-[1.2rem]! [&_strong]:text-[#111827]! [&_strong]:font-bold! [&_p]:text-[1.2rem]! [&_p]:text-[#111827]! [&_p]:font-bold! [&_p]:leading-[1.2rem]! [&_strong]:leading-[1.2rem]!',
         className
       )}
       {...props}

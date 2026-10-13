@@ -3,10 +3,10 @@
  */
 'use client';
 
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import type { ColDef, ICellRendererParams, IHeaderParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import type { ClonedTopRow } from '@aggrid';
 import { AgGridEmptyComponent, createTooltipValueGetter, useCloneTopRows, useDynamicColumnWidths } from '@aggrid';
@@ -434,43 +434,66 @@ function HeaderDragBlocker({ children, className }: { children: React.ReactNode;
   );
 }
 
+interface ProductNameHeaderParams extends Partial<IHeaderParams> {
+  showTooltip?: boolean;
+  onTooltipChange?: (checked: boolean | 'indeterminate') => void;
+}
+
 /**
- * 상품명 검색 입력 + 검색/초기화 버튼
- * - Input 의 clear 버튼은 value 가 있는 제어 컴포넌트 + 포커스 상태일 때만 노출된다.
- * - 상태를 이 컴포넌트 내부에 두어, 입력 시 AG-Grid 헤더 컴포넌트가 재생성(포커스 유실)되지 않도록 한다.
+ * 상품선택 AG-Grid 헤더 렌더러 컴포넌트 (단일 컴포넌트)
+ * - 개발 페이지 스펙에 맞추어 하나의 컴포넌트로 통합
+ * - HeaderDragBlocker를 적용하여 AG-Grid 컬럼 드래그(Column moving) 방지
+ * - 로컬 상태(productName)로 Input을 제어하여 입력 시 포커스 유실 없이 clear 버튼 정상 노출 및 초기화 동작
  */
-function ProductNameSearch(): React.JSX.Element {
+function ProductNameHeader(params: ProductNameHeaderParams): React.JSX.Element {
   const [productName, setProductName] = useState('');
+  const [localTooltip, setLocalTooltip] = useState(false);
+
+  const isTooltipChecked = params?.showTooltip !== undefined ? params.showTooltip : localTooltip;
+  const handleTooltipChange = (checked: boolean | 'indeterminate') => {
+    if (params?.onTooltipChange) {
+      params.onTooltipChange(checked);
+    } else {
+      setLocalTooltip(!!checked);
+    }
+  };
 
   return (
-    <HeaderDragBlocker className="flex items-center gap-1 w-full flex-1">
-      <Input
-        aria-label="상품명"
-        placeholder="상품명 입력"
-        type="text"
-        width={'auto'}
-        size={'sm'}
-        clear={true}
-        value={productName}
-        onChange={(e) => setProductName(e.target.value)}
-        className="select-text cursor-text"
-      />
-      <Button aria-label="상품명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
-        <SearchIcon color={'var(--color-primary-50)'} />
-      </Button>
-      <Button
-        aria-label="상품명 초기화"
-        variant={'outlined'}
-        color={'gray-light'}
-        only={'icon'}
-        size={'md'}
-        onClick={() => setProductName('')}
-      >
-        <ResetIcon color={'var(--color-primary-50)'} />
-      </Button>
-    </HeaderDragBlocker>
+    <Grow className="w-full px-[0.6rem]" placement={'cc'} gap={4}>
+      <HeaderDragBlocker className="flex items-center gap-1 w-full flex-1">
+        <Input
+          aria-label="상품명"
+          placeholder="상품명 입력"
+          type="text"
+          width={'auto'}
+          size={'sm'}
+          clear={true}
+          value={productName}
+          onChange={(e) => setProductName(e.target.value)}
+          className="select-text cursor-text"
+        />
+        <Button aria-label="상품명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
+          <SearchIcon color={'var(--color-primary-50)'} />
+        </Button>
+        <Button
+          aria-label="상품명 초기화"
+          variant={'outlined'}
+          color={'gray-light'}
+          only={'icon'}
+          size={'md'}
+          onClick={() => setProductName('')}
+        >
+          <ResetIcon color={'var(--color-primary-50)'} />
+        </Button>
+      </HeaderDragBlocker>
+      <Checkbox size={'md'} checked={isTooltipChecked} onCheckedChange={handleTooltipChange}>
+        상품명 말풍선
+      </Checkbox>
+    </Grow>
   );
 }
+
+const productNameHeader = ProductNameHeader;
 
 /**
  * LTPA02001 - 상품 및 플랜 선택 화면 컴포넌트
@@ -521,25 +544,6 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
   });
 
   type ProductGridRow = DummyDataType | ClonedTopRow<DummyDataType>;
-
-  /** 상품선택 AG-Grid 헤더 렌더러 (검색/초기화 버튼 및 상품명 말풍선 툴팁 체크박스) */
-  const productNameHeader = useCallback(() => {
-    const handleTooltipCheck = (checked: boolean | 'indeterminate') => {
-      setShowProductNameTooltip(!!checked);
-      // gridKey 제거: 리렌더 강제 목적이 아니면 필요 없음
-    };
-
-    return (
-      <Grow className="w-full px-[0.6rem]" placement={'cc'} gap={4}>
-        <ProductNameSearch />
-        <HeaderDragBlocker className="flex items-center">
-          <Checkbox size={'md'} checked={showProductNameTooltip} onCheckedChange={handleTooltipCheck}>
-            상품명 말풍선
-          </Checkbox>
-        </HeaderDragBlocker>
-      </Grow>
-    );
-  }, [showProductNameTooltip]);
 
   /** 상품명 컬럼 셀 렌더러 (즐겨찾기 토글, 상품명, 특성 배지 렌더링) */
   const importanceCellRenderer = (params: ICellRendererParams<ProductGridRow>) => {
@@ -646,6 +650,13 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
       tooltipValueGetter: createTooltipValueGetter<ProductGridRow>({ field: 'field2' }),
       cellRenderer: importanceCellRenderer,
       headerComponent: productNameHeader,
+      suppressMovable: true,
+      headerComponentParams: {
+        showTooltip: showProductNameTooltip,
+        onTooltipChange: (checked: boolean | 'indeterminate') => {
+          setShowProductNameTooltip(!!checked);
+        },
+      },
     },
     {
       headerName: '가입연령',

@@ -247,19 +247,6 @@ const Ltpz018 = ({ onSaveMyMenuList }: Ltpz018Props) => {
     return groups;
   }, []);
 
-  const customChunkedMenuList = useMemo(() => {
-    const chunks = [];
-    if (groupedMenuList.length > 0) {
-      chunks.push(groupedMenuList.slice(0, 3));
-    }
-    let i = 3;
-    while (i < groupedMenuList.length) {
-      chunks.push(groupedMenuList.slice(i, i + 2));
-      i += 2;
-    }
-    return chunks;
-  }, [groupedMenuList]);
-
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="lg" className="ltpz018-popup">
@@ -287,81 +274,69 @@ const Ltpz018 = ({ onSaveMyMenuList }: Ltpz018Props) => {
               renderTab={(tab) => <span>{tab.label}</span>}
             >
               {/* 탭 내부 콘텐츠 영역 */}
-              <Gcol
-                variant="box-round-b"
-                className="w-full flex-wrap content-start overflow-y-auto h-full min-h-[27rem] relative "
-                placement="ss"
-              >
-                <Grow
-                  className="absolute top-0 left-0 w-full px-5 py-4 flex-wrap content-start items-start"
-                  placement="ss"
-                  gap={2.5}
-                >
-                  {/* [탭1] 전체메뉴 뷰: 등록된 바로가기 메뉴들을 아웃라인 버튼 형식으로 나열 */}
-                  {active === 'tab1' &&
-                    customChunkedMenuList.map((chunk, chunkIdx) => (
-                      <Gcol className="flex-1 gap-[1.3rem]" key={`col-${chunkIdx}`} placement="ss">
-                        {chunk.map((g, gIdx) => (
-                          <Gcol className="w-full" key={`group-${chunkIdx}-${gIdx}`} placement="ss">
-                            {/* 카테고리/그룹명 타이틀 */}
-                            <Typo tag="h3" variant={'body-sm'} weight={'bold'}>
-                              {g.group}
-                            </Typo>
-                            {/* 그룹별 소속 메뉴 바로가기 버튼 */}
-                            <Gcol className="w-full" placement="ss">
-                              {g.items.map((menu) => (
-                                <Button
-                                  key={menu.code}
-                                  variant={'outlined'}
-                                  size={'md'}
-                                  color={'gray-light'}
-                                  className="w-full min-w-[14.8rem] justify-start! text-left!"
-                                >
-                                  {menu.name}
-                                </Button>
-                              ))}
-                            </Gcol>
-                          </Gcol>
-                        ))}
-                      </Gcol>
+              <Gcol variant="box-round-b" className="w-full overflow-y-auto h-full min-h-[27rem] p-5" placement="ss">
+                {/* [탭1] 전체메뉴 뷰: 3개 열의 높이에 맞춰 균등하게 채워지는 다단(columns-3) 배치 */}
+                {active === 'tab1' && (
+                  <div className="w-full columns-3 gap-5">
+                    {groupedMenuList.map((g, gIdx) => (
+                      <div className="break-inside-avoid mb-[1.3rem] flex flex-col gap-1 w-full" key={`group-${gIdx}`}>
+                        {/* 카테고리/그룹명 타이틀 */}
+                        <Typo tag="h3" variant={'body-sm'} weight={'bold'}>
+                          {g.group}
+                        </Typo>
+                        {/* 그룹별 소속 메뉴 바로가기 버튼 */}
+                        <Gcol className="w-full" placement="ss">
+                          {g.items.map((menu) => (
+                            <Button
+                              key={menu.code}
+                              variant={'outlined'}
+                              size={'md'}
+                              color={'gray-light'}
+                              className="w-full min-w-[14.8rem] justify-start! text-left!"
+                            >
+                              {menu.name}
+                            </Button>
+                          ))}
+                        </Gcol>
+                      </div>
                     ))}
+                  </div>
+                )}
 
-                  {/* [탭2] 편집모드 뷰: 체크박스 버튼을 통해 즐겨찾기 메뉴 추가/해제 가능 */}
-                  {active === 'tab2' &&
-                    customChunkedMenuList.map((chunk, chunkIdx) => (
-                      <Gcol className="flex-1 gap-[1.3rem]" key={`col-${chunkIdx}`} placement="ss">
-                        {chunk.map((g, gIdx) => (
-                          <Gcol className="w-full" key={`group-${chunkIdx}-${gIdx}`} placement="ss">
-                            {/* 카테고리/그룹명 타이틀 */}
-                            <Typo tag="h3" variant={'body-sm'} weight={'bold'}>
-                              {g.group}
-                            </Typo>
-                            {/* 그룹별 소속 메뉴 체크박스 그룹 */}
-                            <Gcol className="w-auto" placement="ss">
-                              <CheckboxGroup
-                                className="gap-1 [&>div]:min-w-[calc(25%_-_0.3rem)]"
-                                value={selectedMenuNames} // 현재 즐겨찾기 선택된 메뉴 고유 코드 바인딩
-                                onValueChange={handleMenuSelectionChange} // 선택 한계(7개) 제어 검증 포함 핸들러
+                {/* [탭2] 편집모드 뷰: 3개 열의 높이에 맞춰 균등하게 채워지는 다단(columns-3) 배치 */}
+                {active === 'tab2' && (
+                  <div className="w-full columns-3 gap-5">
+                    {groupedMenuList.map((g, gIdx) => (
+                      <div className="break-inside-avoid mb-[1.3rem] flex flex-col gap-1 w-full" key={`group-${gIdx}`}>
+                        {/* 카테고리/그룹명 타이틀 */}
+                        <Typo tag="h3" variant={'body-sm'} weight={'bold'}>
+                          {g.group}
+                        </Typo>
+                        {/* 그룹별 소속 메뉴 체크박스 그룹 */}
+                        <Gcol className="w-auto" placement="ss">
+                          <CheckboxGroup
+                            className="gap-1 [&>div]:min-w-[calc(25%_-_0.3rem)]"
+                            value={selectedMenuNames} // 현재 즐겨찾기 선택된 메뉴 고유 코드 바인딩
+                            onValueChange={handleMenuSelectionChange} // 선택 한계(7개) 제어 검증 포함 핸들러
+                          >
+                            {g.items.map((menu) => (
+                              <CheckboxGroupItem
+                                variant="button"
+                                key={menu.code}
+                                value={menu.code}
+                                size="md"
+                                className="w-full min-w-[14.8rem] justify-start! text-left! ltpz018-checkbox-btn"
+                                disabled={menu.fix} // [중요] 기본 필수 고정(fix: true) 메뉴는 비활성화하여 해제 불가 처리
                               >
-                                {g.items.map((menu) => (
-                                  <CheckboxGroupItem
-                                    variant="button"
-                                    key={menu.code}
-                                    value={menu.code}
-                                    size="md"
-                                    className="w-full min-w-[14.8rem] justify-start! text-left! ltpz018-checkbox-btn"
-                                    disabled={menu.fix} // [중요] 기본 필수 고정(fix: true) 메뉴는 비활성화하여 해제 불가 처리
-                                  >
-                                    {menu.name}
-                                  </CheckboxGroupItem>
-                                ))}
-                              </CheckboxGroup>
-                            </Gcol>
-                          </Gcol>
-                        ))}
-                      </Gcol>
+                                {menu.name}
+                              </CheckboxGroupItem>
+                            ))}
+                          </CheckboxGroup>
+                        </Gcol>
+                      </div>
                     ))}
-                </Grow>
+                  </div>
+                )}
               </Gcol>
             </TabPager>
 
