@@ -1215,18 +1215,6 @@ function DialogContent({
       const popupTitle = titleProp ?? predefined?.title ?? '';
 
       try {
-        // window.parent.postMessage(
-        //   {
-        //     type: 'DIALOG_DEFAULT_SIZE',
-        //     popupId: currentId,
-        //     title: popupTitle,
-        //     width: Math.round(targetWidthPx) + 2,
-        //     height: Math.round(finalIframeHeight),
-        //     sizePreset: typeof size === 'string' ? size : undefined,
-        //   },
-        //   '*'
-        // );
-
         if (titleProp) {
           changeTitle(popupTitle);
         }

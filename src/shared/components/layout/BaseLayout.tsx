@@ -156,18 +156,6 @@ export const LayoutDoc = ({
       const pageTitle = propTitle ?? predefined?.title ?? '';
 
       try {
-        // window.parent.postMessage(
-        //   {
-        //     type: 'DIALOG_DEFAULT_SIZE',
-        //     popupId: currentId,
-        //     title: pageTitle,
-        //     width: Math.round(targetWidthPx) + 2,
-        //     height: Math.round(targetHeightPx),
-        //     sizePreset: size,
-        //   },
-        //   '*'
-        // );
-
         if (propTitle) {
           changeTitle(pageTitle);
         }

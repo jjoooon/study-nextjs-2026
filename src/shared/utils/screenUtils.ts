@@ -14,7 +14,6 @@ export const isIframe = () => {
 };
 
 export const changeTitle = (title: string) => {
-  console.log(1111111111);
   sendMessage({
     eventMessage: {
       type: EXTERNAL_TYPE.REACT,
