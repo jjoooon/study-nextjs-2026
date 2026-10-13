@@ -1215,8 +1215,9 @@ function DialogContent({
       const popupTitle = titleProp ?? predefined?.title ?? '';
 
       try {
-        if (titleProp) {
-          changeTitle(popupTitle);
+        if (popupTitle) {
+          const titId = `${popupTitle} (${currentId})`;
+          changeTitle(titId);
         }
         resizeWindow({ width: Math.round(targetWidthPx) + 2, height: Math.round(finalIframeHeight) });
       } catch {

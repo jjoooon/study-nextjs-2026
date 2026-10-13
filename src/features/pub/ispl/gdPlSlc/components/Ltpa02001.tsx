@@ -435,6 +435,44 @@ function HeaderDragBlocker({ children, className }: { children: React.ReactNode;
 }
 
 /**
+ * 상품명 검색 입력 + 검색/초기화 버튼
+ * - Input 의 clear 버튼은 value 가 있는 제어 컴포넌트 + 포커스 상태일 때만 노출된다.
+ * - 상태를 이 컴포넌트 내부에 두어, 입력 시 AG-Grid 헤더 컴포넌트가 재생성(포커스 유실)되지 않도록 한다.
+ */
+function ProductNameSearch(): React.JSX.Element {
+  const [productName, setProductName] = useState('');
+
+  return (
+    <HeaderDragBlocker className="flex items-center gap-1 w-full flex-1">
+      <Input
+        aria-label="상품명"
+        placeholder="상품명 입력"
+        type="text"
+        width={'auto'}
+        size={'sm'}
+        clear={true}
+        value={productName}
+        onChange={(e) => setProductName(e.target.value)}
+        className="select-text cursor-text"
+      />
+      <Button aria-label="상품명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
+        <SearchIcon color={'var(--color-primary-50)'} />
+      </Button>
+      <Button
+        aria-label="상품명 초기화"
+        variant={'outlined'}
+        color={'gray-light'}
+        only={'icon'}
+        size={'md'}
+        onClick={() => setProductName('')}
+      >
+        <ResetIcon color={'var(--color-primary-50)'} />
+      </Button>
+    </HeaderDragBlocker>
+  );
+}
+
+/**
  * LTPA02001 - 상품 및 플랜 선택 화면 컴포넌트
  *
  * @param props - {@link Ltpa02001Props}
@@ -493,23 +531,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
 
     return (
       <Grow className="w-full px-[0.6rem]" placement={'cc'} gap={4}>
-        <HeaderDragBlocker className="flex items-center gap-1 w-full flex-1">
-          <Input
-            aria-label="상품명"
-            placeholder="상품명 입력"
-            type="text"
-            width={'full'}
-            size={'sm'}
-            clear={true}
-            className="select-text cursor-text"
-          />
-          <Button aria-label="상품명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
-            <SearchIcon color={'var(--color-primary-50)'} />
-          </Button>
-          <Button aria-label="상품명 초기화" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
-            <ResetIcon color={'var(--color-primary-50)'} />
-          </Button>
-        </HeaderDragBlocker>
+        <ProductNameSearch />
         <HeaderDragBlocker className="flex items-center">
           <Checkbox size={'md'} checked={showProductNameTooltip} onCheckedChange={handleTooltipCheck}>
             상품명 말풍선
