@@ -1227,7 +1227,7 @@ function DialogContent({
         //   '*'
         // );
 
-        if (popupTitle) {
+        if (titleProp) {
           changeTitle(popupTitle);
         }
         resizeWindow({ width: Math.round(targetWidthPx) + 2, height: Math.round(finalIframeHeight) });

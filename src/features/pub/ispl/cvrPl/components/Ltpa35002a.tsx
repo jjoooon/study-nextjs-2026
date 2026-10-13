@@ -374,7 +374,7 @@ export function Ltpa35002a({
             return {
               component: AmountWithPopoverCellEditor,
               params: {
-                step: 100, //입력단위 100만원
+                step: '천원', // 천원, 만원, 천만원, 억원
               },
             };
           } else {
