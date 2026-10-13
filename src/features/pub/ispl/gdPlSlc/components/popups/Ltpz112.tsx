@@ -178,7 +178,6 @@ export type DummyDataType2 = {
   field6: string | number;
   badge?: string[];
   checked?: boolean;
-  checkedDisabled?: boolean;
   dateType?: 'month' | 'day';
 };
 
@@ -193,7 +192,6 @@ export const DummyData2: DummyDataType2[] = [
     field6: '',
     badge: ['SI경증'],
     checked: true,
-    checkedDisabled: true,
   },
   {
     id: 2,
@@ -205,7 +203,6 @@ export const DummyData2: DummyDataType2[] = [
     field6: '',
     badge: ['할증'],
     checked: false,
-    checkedDisabled: false,
   },
   {
     id: 3,
@@ -217,7 +214,6 @@ export const DummyData2: DummyDataType2[] = [
     field6: '',
     badge: ['SI경증(감액)'],
     checked: true,
-    checkedDisabled: false,
   },
   {
     id: 4,
@@ -229,7 +225,6 @@ export const DummyData2: DummyDataType2[] = [
     field6: '',
     badge: ['부담보'],
     checked: false,
-    checkedDisabled: true,
   },
 ];
 
@@ -448,6 +443,45 @@ const DiseaseEmptyComponent = () => {
   );
 };
 
+/** 입원/수술 정보 입력 테이블 최대 등록 건수 */
+const MAX_DISEASE_COUNT = 4;
+
+/** 많이 찾는 질병 목록 (CheckboxGroup 항목 + 입원/수술 정보 입력 테이블 추가용 데이터) */
+const POPULAR_DISEASES: Pick<DummyDataType, 'field1' | 'field2' | 'field3'>[] = [
+  { field1: 'K63.5', field2: '대장·직장용종', field3: ['부담보'] },
+  { field1: 'S13.4', field2: '척주염좌', field3: ['SI경증(감액)', '부담보'] },
+  { field1: 'M54.9', field2: '등통증', field3: ['SI경증'] },
+  { field1: 'H26.9', field2: '후천성 백내장', field3: ['할증', '부담보'] },
+  { field1: 'T14.1', field2: '열상·표재성손상', field3: ['SI경증'] },
+  { field1: 'M51.9', field2: '추간판장애', field3: ['SI경증(감액)', '부담보'] },
+  { field1: 'J00', field2: '금성 비인두염', field3: ['SI경증'] },
+  { field1: 'V89.2', field2: '교통사고', field3: ['할증'] },
+  { field1: 'K64.9', field2: '치액/치질', field3: ['부담보'] },
+  { field1: 'D25.9', field2: '자궁근종', field3: ['할증', '부담보'] },
+];
+
+/** 질병 정보(KCD코드/질병명/구분)를 입원/수술 정보 입력 테이블 행 데이터로 변환한다. */
+const createDiseaseRow = (
+  prev: DummyDataType2[],
+  disease: Pick<DummyDataType, 'field1' | 'field2' | 'field3'>
+): DummyDataType2 => {
+  const nextId = prev.length > 0 ? Math.max(...prev.map((row) => row.id)) + 1 : 1;
+  const defaultChecked = disease.field3.includes('SI경증(감액)');
+
+  return {
+    id: nextId,
+    field1: disease.field1,
+    field2: disease.field2,
+    field3: '3일이하',
+    field4: 'Y',
+    field5: '',
+    field6: defaultChecked ? '' : '선택',
+    badge: disease.field3,
+    checked: defaultChecked,
+    dateType: 'month',
+  };
+};
+
 export interface Ltpz112Props {
   initialRowData?: DummyDataType[];
   initialRowData2?: DummyDataType2[];
@@ -516,38 +550,66 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
     setRowData2((prev) => prev.filter((row) => !selectedIds.has(row.id)));
   }, []);
 
-  const handleDiseaseRowClick = useCallback((event: RowClickedEvent<DummyDataType>) => {
-    const selectedRow = event.data;
+  const handleDiseaseRowClick = useCallback(
+    (event: RowClickedEvent<DummyDataType>) => {
+      const selectedRow = event.data;
 
-    if (!selectedRow) return;
+      if (!selectedRow) return;
 
-    setRowData2((prev) => {
-      if (prev.length >= 4) return prev;
+      if (rowData2.length >= MAX_DISEASE_COUNT) {
+        alert('최대 4건까지만 선택할 수 있습니다.');
+        return;
+      }
 
-      const nextId = prev.length > 0 ? Math.max(...prev.map((row) => row.id)) + 1 : 1;
+      setRowData2((prev) => {
+        if (prev.length >= MAX_DISEASE_COUNT) return prev;
 
-      const hasSIGyeongjeung = selectedRow.field3.includes('SI경증');
-      const hasSIGyeongjeungGamaek = selectedRow.field3.includes('SI경증(감액)');
-      const defaultChecked = hasSIGyeongjeungGamaek;
+        return [...prev, createDiseaseRow(prev, selectedRow)];
+      });
+    },
+    [rowData2.length]
+  );
 
-      return [
-        ...prev,
-        {
-          id: nextId,
-          field1: selectedRow.field1,
-          field2: selectedRow.field2,
-          field3: '3일이하',
-          field4: 'Y',
-          field5: '',
-          field6: defaultChecked ? '' : '선택',
-          badge: selectedRow.field3,
-          checked: defaultChecked,
-          checkedDisabled: hasSIGyeongjeung,
-          dateType: 'month',
-        },
-      ];
-    });
-  }, []);
+  // 많이 찾는 질병 중 현재 입원/수술 정보 입력 테이블에 등록된 항목 (CheckboxGroup 체크 상태)
+  const popularSelectedValues = React.useMemo(
+    () =>
+      POPULAR_DISEASES.filter((disease) => rowData2.some((row) => row.field2 === disease.field2)).map(
+        (disease) => disease.field2
+      ),
+    [rowData2]
+  );
+
+  /**
+   * 많이 찾는 질병 CheckboxGroup 변경 핸들러
+   * - 체크 시: 입원/수술 정보 입력 테이블에 행 추가 (최대 4건)
+   * - 체크 해제 시: 해당 질병명의 행 제거
+   */
+  const handlePopularDiseaseChange = useCallback(
+    (nextValues: string[]) => {
+      const addedNames = nextValues.filter((name) => !popularSelectedValues.includes(name));
+      const removedNames = popularSelectedValues.filter((name) => !nextValues.includes(name));
+
+      if (addedNames.length === 0 && removedNames.length === 0) return;
+
+      if (addedNames.length > 0 && rowData2.length >= MAX_DISEASE_COUNT) {
+        alert('최대 4건까지만 선택할 수 있습니다.');
+        return;
+      }
+
+      setRowData2((prev) => {
+        let next = prev.filter((row) => !removedNames.includes(String(row.field2)));
+
+        addedNames.forEach((name) => {
+          const disease = POPULAR_DISEASES.find((item) => item.field2 === name);
+          if (!disease || next.length >= MAX_DISEASE_COUNT) return;
+          next = [...next, createDiseaseRow(next, disease)];
+        });
+
+        return next;
+      });
+    },
+    [popularSelectedValues, rowData2.length]
+  );
 
   // 질병 검색 agGrid
   const columnDefs: ColDef<DummyDataType>[] = [
@@ -708,21 +770,15 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
                 <Gcol className="w-full" placement={'ss'} gap={2}>
                   <Typo variant="heading-md">많이 찾는 질병</Typo>
                   <Grow variant="box-round" placement={'bwc'}>
-                    <CheckboxGroup className="gap-1" minSelected={2} defaultValue={[]} variant="button">
-                      {[
-                        { value: '대장·직장용종', label: '대장·직장용종' },
-                        { value: '척주염좌', label: '척주염좌' },
-                        { value: '등통증', label: '등통증' },
-                        { value: '후천성 백내장', label: '후천성 백내장' },
-                        { value: '열상·표재성손상', label: '열상·표재성손상' },
-                        { value: '추간판장애', label: '추간판장애' },
-                        { value: '금성 비인두염', label: '금성 비인두염' },
-                        { value: '교통사고', label: '교통사고' },
-                        { value: '치액/치질', label: '치액/치질' },
-                        { value: '자궁근종', label: '자궁근종' },
-                      ].map((item) => (
-                        <CheckboxGroupItem key={item.value} value={item.value}>
-                          {item.label}
+                    <CheckboxGroup
+                      className="gap-1"
+                      value={popularSelectedValues}
+                      onValueChange={handlePopularDiseaseChange}
+                      variant="button"
+                    >
+                      {POPULAR_DISEASES.map((item) => (
+                        <CheckboxGroupItem key={item.field2} value={item.field2}>
+                          {item.field2}
                         </CheckboxGroupItem>
                       ))}
                     </CheckboxGroup>
