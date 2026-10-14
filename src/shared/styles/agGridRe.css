@@ -1216,6 +1216,16 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   max-height: 15rem !important;
 }
 
+/* inner-min-scroll: data-row={2} 일 때 5개 행(15rem)이 아닌 2개 행(6rem) 기준으로 높이에 따라 가변 동작 */
+.ag-theme-alpine.inner-scroll.inner-min-scroll[data-row='2'] .ag-root-wrapper-body .ag-overlay,
+.ag-theme-alpine.inner-scroll.inner-min-scroll[data-row='2'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
+  height: 6rem !important;
+  min-height: 6rem !important;
+  max-height: 100% !important;
+  overflow-y: auto !important;
+}
+
+
 .ag-theme-alpine.inner-scroll[data-page='1'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height: 100%;
   max-height: 3rem !important;

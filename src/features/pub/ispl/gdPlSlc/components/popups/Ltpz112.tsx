@@ -817,7 +817,7 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
                           SI경증(감액)
                         </Grow>
                       </Grow>
-                      <div className="ag-theme-alpine min-h-[30rem] ">
+                      <div className="ag-theme-alpine inner-scroll inner-min-scroll" data-row={2}>
                         <AgGridReact<DummyDataType>
                           noRowsOverlayComponent={DiseaseEmptyComponent}
                           getRowId={(params) => String(params.data.id)}
