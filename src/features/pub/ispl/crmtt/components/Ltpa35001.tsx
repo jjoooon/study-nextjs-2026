@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow, Gcol, Typo, Grid } from '@atoms';
@@ -94,11 +94,10 @@ const TabsData: TabsDataType[] = [
  * 물음표(?) 아이콘 클릭 시 활성화되는 툴팁 컨텐츠 정의 (안내 동의 여부 관련)
  */
 const tooltipContents = [
-  <>
-    문서서명/TM은 청양서상 고객이 청약서로 [전자적 방밥의 안내동의여부]에 기재한 내용을 화면에서 선택하시면 됩니다.
-    <br />
+  <Fragment key="tooltip0">
+    문서서명/TM은 청약서상 고객이 청약서로 [전자적 방법의 안내동의여부]에 기재한 내용을 화면에서 선택하시면 됩니다.
     전자서명/전자청약은 전자적 안내동의가 필수사항입니다.
-  </>,
+  </Fragment>,
 ];
 
 const tooltipContents2 = [
@@ -205,7 +204,14 @@ export const Ltpa35001 = ({
                           </Button>
                         </FormCell>
                         <FormCell title={'보험기간'}>
-                          <Input placeholder="____-__-__" width={84} readOnly />-
+                          <Input
+                            placeholder="____-__-__"
+                            value={'2099-09-09'}
+                            width={84}
+                            readOnly
+                            className="text-[var(--color-primary-50)]"
+                          />
+                          -
                           <Input
                             placeholder="____-__-__"
                             value={'2099-09-09'}
@@ -1624,7 +1630,7 @@ export const Ltpa35001 = ({
                                   <Badge color="red" size="md">
                                     N
                                   </Badge>
-                                  <TooltipQ>{tooltipContents[0]}</TooltipQ>
+                                  <TooltipQ className="max-w-[47rem]">{tooltipContents[0]}</TooltipQ>
                                 </Grow>
                               </KeyValueItem>
                             </Grow>

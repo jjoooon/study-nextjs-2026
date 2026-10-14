@@ -565,7 +565,7 @@ const Ltpz034 = ({
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable dim={'dark'} size={'lg'}>
+      <DialogContent showCloseButton resizable dim={'dark'} className="w-[100rem]">
         <DialogHeader>
           <DialogTitle>
             <Typo tag="strong" variant="heading-lg">
@@ -813,7 +813,7 @@ const Ltpz034 = ({
                 </BulletListItem>
               </BulletList>
             ) : (
-              <BulletList color={'warning'} size="sm">
+              <BulletList color={'warning'} size="sm" className="grid grid-cols-[auto_1fr] gap-4">
                 <BulletListItem>
                   추천유형 안내 :
                   <BulletItem size="sm" type="dash">

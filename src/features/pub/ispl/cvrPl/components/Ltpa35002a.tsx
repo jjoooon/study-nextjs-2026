@@ -365,16 +365,19 @@ export function Ltpa35002a({
           isStandard: (params) => !!params.data?.isStandard?.edit,
           'tooltip-on': (params) => !!params.data?._tooltipOn,
         },
-        cellEditorSelector: (params: EditableCallbackParams): CellEditorSelectorResult | undefined => {
+        cellEditorSelector: (params: EditableCallbackParams<AgGridRow>): CellEditorSelectorResult | undefined => {
           if (params.data?.isStandard?.group && !params.data?.isStandard?.edit) {
             return undefined;
           }
           const isSelectedInsuredAmount = params.data?.isSelectedInsuredAmount ?? false;
           if (!isSelectedInsuredAmount) {
+            const amount = params.data?.amount;
             return {
               component: AmountWithPopoverCellEditor,
               params: {
-                step: '천만원', // 천원, 만원, 천만원, 억원
+                min: amount?.[0],
+                max: amount?.[1],
+                step: amount?.[2],
               },
             };
           } else {

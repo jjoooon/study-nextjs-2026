@@ -39,16 +39,16 @@ const Ltpz041 = () => {
           <TableFold>
             <TableFoldHead title="개인사업자정보" />
             <TableFoldBody>
-              <Gcol gap={2}>
+              <Gcol gap={2} placement="ss">
                 <FormTable caption="사업자" cols={['w-[9rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'사업자명'}>
-                      <Input value={'김한화'} readOnly />
+                      <Input value={'김한화'} />
                     </FormCell>
                   </FormRow>
                   <FormRow>
                     <FormCell title={'사업자번호'}>
-                      <Input value={'123-45-67890'} readOnly />
+                      <Input placeholder="___-__-_____" />
                     </FormCell>
                   </FormRow>
                 </FormTable>

@@ -44,6 +44,8 @@ export type DummyDataType = {
   isError?: boolean;
   badge?: string[];
   [key: string]: unknown;
+
+  amount?: number[];
 };
 
 export const dummyData: DummyDataType[] = [
@@ -74,6 +76,7 @@ export const dummyData: DummyDataType[] = [
     locked: true,
     badge: [],
     isError: false,
+    amount: [0, 1000000, 1],
   },
   {
     id: 2,
@@ -101,6 +104,7 @@ export const dummyData: DummyDataType[] = [
     locked: true,
     badge: [],
     isError: false,
+    amount: [10000000, 100000000, 1000],
   },
   {
     id: 3,
@@ -128,6 +132,7 @@ export const dummyData: DummyDataType[] = [
     locked: false,
     badge: [],
     isError: false,
+    amount: [0, 10000, 0.1],
   },
   {
     id: 4,
@@ -181,6 +186,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -208,6 +214,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -235,6 +242,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -262,6 +270,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -289,6 +298,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -316,6 +326,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -343,6 +354,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -370,6 +382,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -397,6 +410,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -424,6 +438,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -451,6 +466,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -478,6 +494,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -505,6 +522,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -532,6 +550,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -559,6 +578,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -586,6 +606,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -613,6 +634,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -640,6 +662,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -667,6 +690,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -694,6 +718,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -721,6 +746,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -748,6 +774,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -775,6 +802,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -802,6 +830,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -829,6 +858,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -856,6 +886,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -883,6 +914,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -910,6 +942,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -937,6 +970,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -964,6 +998,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -991,6 +1026,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -1018,6 +1054,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -1045,6 +1082,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -1072,6 +1110,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -1099,6 +1138,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -1126,6 +1166,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -1153,6 +1194,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -1180,6 +1222,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -1207,6 +1250,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -1235,6 +1279,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -1262,6 +1307,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -1289,6 +1335,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -1316,6 +1363,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -1343,6 +1391,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -1370,6 +1419,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -1397,6 +1447,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -1424,6 +1475,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -1451,6 +1503,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -1478,6 +1531,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -1505,6 +1559,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -1532,6 +1587,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
   {
@@ -1559,6 +1615,7 @@ export const dummyData: DummyDataType[] = [
     },
     locked: false,
     badge: [],
+    amount: [0, 1000000, 1],
     isError: false,
   },
 ];
