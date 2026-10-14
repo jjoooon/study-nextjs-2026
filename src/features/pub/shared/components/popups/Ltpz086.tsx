@@ -68,7 +68,7 @@ const DummyData: DummyDataType[] = [
     field07: 2000,
     field08: '1.0',
     field09: '청약완료',
-    field10: 1000,
+    field10: 10000000,
   },
   {
     id: 3,
@@ -81,7 +81,7 @@ const DummyData: DummyDataType[] = [
     field07: 2000,
     field08: '20.0',
     field09: '정상',
-    field10: 1000,
+    field10: 100000000,
   },
   {
     id: 4,
@@ -94,7 +94,7 @@ const DummyData: DummyDataType[] = [
     field07: 2000,
     field08: '1.0',
     field09: '정상',
-    field10: 1000,
+    field10: 323400000,
   },
 ];
 
@@ -150,8 +150,8 @@ const Ltpz086 = () => {
       flex: 1,
       spanRows: true,
       autoHeight: true,
-      // 하단 합계 행(rowPinned)일 때 가로로 9개 셀을 병합하여 넓게 쓰고, 일반 행일 때는 1셀만 사용
-      colSpan: (params) => (params.node?.rowPinned ? 9 : 1),
+      // 하단 합계 행(rowPinned)일 때 회사명~담보명(6개 셀)을 병합하여 '합계' 표시
+      colSpan: (params) => (params.node?.rowPinned ? 6 : 1),
       cellClass: 'text-center',
       cellStyle: (params) => (params.node?.rowPinned ? { textAlign: 'center' } : undefined),
     },
@@ -222,7 +222,8 @@ const Ltpz086 = () => {
       field: 'field07',
       minWidth: attributeColumnWidth(70),
       flex: 1,
-      colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
+      // 하단 합계 행일 때 가입금액~반영금액(4개 셀)을 병합하여 합계 금액을 넓게 표시
+      colSpan: (params) => (params.node?.rowPinned ? 4 : 1),
       cellClass: 'text-right',
       autoHeight: true,
       valueFormatter: numberValueFormatter, // 세 자리 콤마 포맷터 적용
@@ -251,6 +252,8 @@ const Ltpz086 = () => {
       minWidth: attributeColumnWidth(70),
       flex: 1,
       autoHeight: true,
+      // 합계 행일 때는 가입금액 열에 병합(colSpan 4)되므로 가려짐 (0 처리)
+      colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter, // 세 자리 콤마 포맷터 적용
     },
@@ -330,10 +333,10 @@ const Ltpz086 = () => {
         field04: '',
         field05: '',
         field06: '',
-        field07: '',
+        field07: totalField10, // 가입금액 열(field07)에 합계 금액 바인딩 (4칸 colSpan 시작 열)
         field08: '',
         field09: '',
-        field10: totalField10.toLocaleString(), // 포맷된 금액 적용
+        field10: '',
       },
     ];
   }, [rowData]);
