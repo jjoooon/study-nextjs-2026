@@ -180,6 +180,11 @@ import { Input } from '@uiux/Input';
       control: { type: 'boolean' },
       table: { category: '설정 props' },
     },
+    datecolor: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+      description: '날짜 요일별 텍스트 색상 자동 적용 (토: 파랑, 일: 빨강)',
+    },
     formatter: {
       control: { type: 'text' },
       table: { category: '설정 props' },
@@ -230,6 +235,7 @@ import { Input } from '@uiux/Input';
     errorPs: 'bl',
     commaAmount: false,
     clear: false,
+    datecolor: false,
     align: 'left',
     restrictChars: true,
     forceFocused: false,

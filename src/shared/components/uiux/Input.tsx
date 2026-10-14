@@ -30,6 +30,10 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   /** 숫자를 천 단위 콤마로 표시, onChange에서 formattedValue도 함께 전달 */
   commaAmount?: boolean;
   clear?: boolean;
+  /** 날짜(YYYY-MM-DD 등)의 요일별 텍스트 색상 자동 적용 여부 (토: 파랑, 일: 빨강) */
+  dateColor?: boolean;
+  /** dateColor 소문자 별칭 */
+  datecolor?: boolean;
   /** 외부에서 포커스 상태를 강제 지정할 때 사용 (commaAmount 표시 전환 등) */
   forceFocused?: boolean;
   /** 날짜·전화번호 등 포맷 패턴 문자열 (예: '####-##-##') */
@@ -118,6 +122,36 @@ function getDigitsBeforePosition(value: string, position: number): number {
   return [...value.slice(0, position)].filter((char) => /\d/.test(char)).length;
 }
 
+/**
+ * 날짜 문자열의 요일에 따른 텍스트 색상 클래스를 반환하는 공통 유틸 함수
+ * - 토요일: text-[var(--color-information-50)] (파란색)
+ * - 일요일: text-[var(--color-primary-50)] (빨간색)
+ * - 평일 또는 유효하지 않은 날짜: ''
+ */
+export function getDateColorClass(dateValue?: string | number | readonly string[] | Date | null): string {
+  if (!dateValue) return '';
+
+  let date: Date;
+  if (dateValue instanceof Date) {
+    date = dateValue;
+  } else {
+    const trimmed = String(dateValue).trim();
+    const match = trimmed.match(/^(\d{4})[-./]?(\d{2})[-./]?(\d{2})/);
+    if (match) {
+      const [, y, m, d] = match;
+      date = new Date(Number(y), Number(m) - 1, Number(d));
+    } else {
+      date = new Date(trimmed);
+    }
+  }
+
+  if (isNaN(date.getTime())) return '';
+  const day = date.getDay();
+  if (day === 6) return 'text-[var(--color-information-50)]';
+  if (day === 0) return 'text-[var(--color-primary-50)]';
+  return '';
+}
+
 const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
   {
     size = 'lg',
@@ -134,6 +168,8 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
     disabled = false,
     commaAmount = false,
     clear = false,
+    dateColor = false,
+    datecolor = false,
     forceFocused = false,
     restrictChars = true,
     align = 'left',
@@ -380,6 +416,8 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
   // formatter가 'jumin'이고 placeholder 미지정 시 자동으로 주민번호 placeholder 적용
   const resolvedPlaceholder = formatter?.replaceAll('#', '_');
   const showClearButton = Boolean(clear && isInputFocused && displayValue !== '' && !readOnly && !disabled);
+  const hasDateColor = Boolean(dateColor || datecolor);
+  const dateColorStyle = hasDateColor ? getDateColorClass(displayValue) : '';
   const mergedInputStyle = styleProp;
 
   const [isOverflow, setIsOverflow] = React.useState(false);
@@ -416,6 +454,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
       data-slot="input"
       className={cn(
         variantStyles[variant],
+        dateColorStyle,
         commaAmount
           ? 'text-right tracking-[-0.03rem]'
           : align === 'right'
@@ -468,6 +507,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                     data-slot="input"
                     className={cn(
                       align === 'right' ? 'text-right' : align === 'center' ? 'text-center' : 'text-left',
+                      dateColorStyle,
                       showClearButton && 'pr-[2.2rem]'
                     )}
                     required={required}
@@ -498,6 +538,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                 data-slot="input"
                 className={cn(
                   align === 'right' ? 'text-right' : align === 'center' ? 'text-center' : 'text-left',
+                  dateColorStyle,
                   showClearButton && 'pr-[2.2rem]'
                 )}
                 required={required}
@@ -551,6 +592,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                   <span
                     className={cn(
                       'font-bold text-[#000] text-[1.3rem] inline-flex items-center truncate max-w-full',
+                      dateColorStyle,
                       sizeStyle
                     )}
                   >
@@ -562,7 +604,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                 </TooltipContent>
               </Tooltip>
             ) : (
-              <span className={cn('font-bold text-[#000] text-[1.3rem] inline-flex items-center', sizeStyle)}>
+              <span className={cn('font-bold text-[#000] text-[1.3rem] inline-flex items-center', dateColorStyle, sizeStyle)}>
                 {displayValue}
               </span>
             )
