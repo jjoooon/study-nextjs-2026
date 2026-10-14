@@ -728,9 +728,9 @@ export function Ltpa02002({ userType }: { userType: string }) {
                             className="text-[var(--color-gray-70)] text-[1.2rem] leading-[1.8rem] pt-[1rem] flex items-center flex-wrap gap-x-1"
                           >
                             <span>N종, 납입중50%해약환급금지급형</span>
-                            <DotIcon size={6} color="#777" />
+                            <span className="text-[var(--color-gray-50)] mx-[0.3rem] select-none">•</span>
                             <span>납입면제 운영형</span>
-                            <DotIcon size={6} color="#777" />
+                            <span className="text-[var(--color-gray-50)] mx-[0.3rem] select-none">•</span>
                             <span>3N52간편고지형Ⅲ</span>
                           </Typo>
                         </Gcol>
