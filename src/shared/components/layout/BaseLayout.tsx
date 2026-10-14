@@ -173,7 +173,7 @@ export const LayoutDoc = ({
       data-layout="doc"
       data-is-popup={isPopup}
       className={cn(
-        'relative grid h-full min-h-[51rem] bg-[#fff]',
+        'relative grid h-full bg-[#fff]',
         // 기본 2개 구조 (Head + Body), 팝업일 경우 1개 구조
         isPopup ? 'grid-rows-[minmax(0,1fr)]' : 'grid-rows-[auto_minmax(0,1fr)]',
         // 직계 자식(>) 중 3번째 자식이 존재하고 팝업이 아닌 경우 3행 구조 (Head + Body + Foot)로 변경

@@ -14,9 +14,9 @@ import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
-
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { AdderIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -373,7 +373,7 @@ const Ltpz021 = () => {
           <Grow gap={3} placement="ss" className="w-full h-full min-h-0 overflow-hidden">
             {[...Array(3)].map((_, i) => (
               <Grid
-                className="grid-rows-[auto_1fr] w-full overflow-hidden border border-[#CBE3FF] rounded-[0.6rem] gap-5 h-full min-h-0 pb-[1rem]"
+                className="grid-rows-[auto_1fr] w-full overflow-hidden border border-[#CBE3FF] rounded-[0.6rem] gap-5 h-full min-h-0"
                 key={i}
               >
                 <Grow placement="bws" className="w-full bg-[#EFF8FF] p-[1rem] rounded-t-[0.6rem]">
@@ -401,7 +401,7 @@ const Ltpz021 = () => {
                     ></Checkbox>
                   </Grow>
                 </Grow>
-                <Gcol className="w-full overflow-hidden px-[1rem] pb-[3rem]" placement="ss" gap={0}>
+                <Gcol className="w-full overflow-hidden px-[1rem] pb-[3.3rem]" placement="ss" gap={0}>
                   <div className="ag-theme-alpine w-full inner-scroll min-h-[30rem]" data-row={rowData1.length}>
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
@@ -422,14 +422,15 @@ const Ltpz021 = () => {
 
                   {/* 예상보험료 요약 영역 */}
                   <Grow
-                    className="absolute bottom-0 flex h-[3rem] w-[calc(100%-2rem)] border-t !border-t-[var(--color-primary-50)] bg-[var(--color-primary-10)] border-t-[0.1rem] border-b border-b-[var(--color-gray-15)] px-[0.6rem] text-[1.3rem] class-expected-premium-bar"
-                    placement="bwc"
+                    className="absolute bottom-0 left-0 w-full bg-[var(--color-warning-5)] h-[3.4rem] px-4 shadow-[0_-0.1rem_0.8rem_0_rgba(0,0,0,0.1)] class-expected-premium-bar"
+                    placement="ec"
                   >
-                    <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[var(--color-primary-50)]">
+                    <AdderIcon />
+                    <Typo tag={'span'} variant={'body-sm'} color={'gray'}>
                       예상보험료
                     </Typo>
-                    <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[var(--color-primary-50)]">
-                      {i === 0 ? '121,375' : i === 1 ? '103,695' : '89,230'}
+                    <Typo tag={'strong'} variant={'heading-lg'} color={'primary'}>
+                      89,230원
                     </Typo>
                   </Grow>
                 </Gcol>

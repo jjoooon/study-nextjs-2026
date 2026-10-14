@@ -690,7 +690,7 @@
     overflow-x: auto;
     height: 100%;
   }
-  [data-layout='doc'] {
+  [data-layout='main'] {
     min-width: 119.5rem;
   }
   .a11y-hidden {
@@ -833,9 +833,9 @@
     letter-spacing: -0.02rem !important;
   }
 
-  /* [data-layout='doc'] {
+ [data-layout='main'] {
     min-width: 1204px;
-  } */
+  }
 
   /* filefond */
   .filepond--wrapper {
@@ -1515,10 +1515,10 @@
 .button-process-animate * {
   color: inherit !important;
 }
-body,
+/* body,
 .sb-show-main.sb-main-padded {
   background-color: var(--color-blue-gray-20);
-}
+} */
 .sb-show-main.sb-main-padded.dialog-split-active,
 .dialog-split-active {margin-right: 35% !important; }
 
