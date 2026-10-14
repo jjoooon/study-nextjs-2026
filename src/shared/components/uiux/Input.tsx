@@ -379,9 +379,8 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
 
   // formatter가 'jumin'이고 placeholder 미지정 시 자동으로 주민번호 placeholder 적용
   const resolvedPlaceholder = formatter?.replaceAll('#', '_');
-  const clearPaddingStyle: React.CSSProperties | undefined =
-    clear && isInputFocused && displayValue !== '' ? undefined : undefined;
-  const mergedInputStyle = clearPaddingStyle ? Object.assign({}, styleProp, clearPaddingStyle) : styleProp;
+  const showClearButton = Boolean(clear && isInputFocused && displayValue !== '' && !readOnly && !disabled);
+  const mergedInputStyle = styleProp;
 
   const [isOverflow, setIsOverflow] = React.useState(false);
 
@@ -424,7 +423,8 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
             : align === 'center'
               ? 'text-center'
               : 'text-left',
-        'w-[100%] [:focus]:px-[0.7rem]'
+        'w-full min-w-0 box-border [:focus]:pl-[0.7rem]',
+        showClearButton ? 'pr-[2.4rem] [:focus]:pr-[2.4rem]' : '[:focus]:pr-[0.7rem]'
       )}
       required={required}
       readOnly={readOnly}
@@ -446,7 +446,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
 
   return (
     <div
-      className={cn('relative cp-input', className)}
+      className={cn('relative cp-input min-w-0 box-border', className)}
       data-comma-amount={commaAmount ? 'true' : undefined}
       style={variant !== 'info' ? widthStyle : undefined}
     >
@@ -458,7 +458,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
           )}
         >
           {before && <div>{before}</div>}
-          <div className="relative w-full [&>input]:w-full [&>input]:bg-transparent [&>input]:border-0 [&>input]:tracking-[-0.03rem] [&>input]:p-0 [&>input]:m-0 [&>input]:focus:ring-0 [&>input]:focus:outline-none">
+          <div className="relative w-full min-w-0 [&>input]:w-full [&>input]:min-w-0 [&>input]:box-border [&>input]:bg-transparent [&>input]:border-0 [&>input]:tracking-[-0.03rem] [&>input]:p-0 [&>input]:m-0 [&>input]:focus:ring-0 [&>input]:focus:outline-none">
             {shouldRenderTooltip ? (
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -466,7 +466,10 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                     ref={inputRef}
                     type={type}
                     data-slot="input"
-                    className={cn(align === 'right' ? 'text-right' : align === 'center' ? 'text-center' : 'text-left')}
+                    className={cn(
+                      align === 'right' ? 'text-right' : align === 'center' ? 'text-center' : 'text-left',
+                      showClearButton && 'pr-[2.2rem]'
+                    )}
                     required={required}
                     readOnly={readOnly}
                     maxLength={maxLength}
@@ -493,7 +496,10 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                 ref={inputRef}
                 type={type}
                 data-slot="input"
-                className={cn(align === 'right' ? 'text-right' : align === 'center' ? 'text-center' : 'text-left')}
+                className={cn(
+                  align === 'right' ? 'text-right' : align === 'center' ? 'text-center' : 'text-left',
+                  showClearButton && 'pr-[2.2rem]'
+                )}
                 required={required}
                 readOnly={readOnly}
                 maxLength={maxLength}
@@ -511,13 +517,13 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                 {...inputProps}
               />
             )}
-            {clear && isInputFocused && displayValue !== '' && (
+            {showClearButton && (
               <Button
                 variant="none"
                 color="gray"
                 only="icon"
                 size="xs"
-                className="absolute! right-0 top-1/2 -translate-y-1/2 bg-[red]"
+                className="absolute! right-0 top-1/2 -translate-y-1/2"
                 onMouseDown={(e) => e.preventDefault()} // 포커스 유지
                 onClick={() => {
                   if (onChange) {
@@ -570,12 +576,12 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
           ) : (
             renderSingleInput
           )}
-          {clear && isInputFocused && displayValue !== '' && (
+          {showClearButton && (
             <Button
               variant="none"
               only="icon"
               size="xs"
-              className="absolute! right-[0.2rem] top-1/2 -translate-y-1/2 bg-[#fff] h-[calc(100%-0.5rem)]"
+              className="absolute! right-[0.2rem] top-1/2 -translate-y-1/2 h-[calc(100%-0.5rem)]"
               onMouseDown={(e) => e.preventDefault()} // 포커스 유지
               onClick={() => {
                 if (onChange) {

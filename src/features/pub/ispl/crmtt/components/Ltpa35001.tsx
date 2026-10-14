@@ -1021,7 +1021,7 @@ export const Ltpa35001 = ({
                                 <FormCell title="주피와 관계" colSpan={3}>
                                   <Grow placement="bwc">
                                     <Grow>
-                                      <Input aria-label="피보험자명" width={'auto'} value={'주피(김한화)'} readOnly />는
+                                      <Input aria-label="피보험자명" width={'auto'} value={'주피(김한화)'} readOnly />의
                                       <NativeSelect
                                         aria-label="주피와 관계 선택"
                                         width={'auto'}
