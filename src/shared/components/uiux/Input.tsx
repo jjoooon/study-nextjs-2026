@@ -32,8 +32,6 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   clear?: boolean;
   /** 날짜(YYYY-MM-DD 등)의 요일별 텍스트 색상 자동 적용 여부 (토: 파랑, 일: 빨강) */
   dateColor?: boolean;
-  /** dateColor 소문자 별칭 */
-  datecolor?: boolean;
   /** 외부에서 포커스 상태를 강제 지정할 때 사용 (commaAmount 표시 전환 등) */
   forceFocused?: boolean;
   /** 날짜·전화번호 등 포맷 패턴 문자열 (예: '####-##-##') */
@@ -169,7 +167,6 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
     commaAmount = false,
     clear = false,
     dateColor = false,
-    datecolor = false,
     forceFocused = false,
     restrictChars = true,
     align = 'left',
@@ -416,7 +413,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
   // formatter가 'jumin'이고 placeholder 미지정 시 자동으로 주민번호 placeholder 적용
   const resolvedPlaceholder = formatter?.replaceAll('#', '_');
   const showClearButton = Boolean(clear && isInputFocused && displayValue !== '' && !readOnly && !disabled);
-  const hasDateColor = Boolean(dateColor || datecolor);
+  const hasDateColor = Boolean(dateColor);
   const dateColorStyle = hasDateColor ? getDateColorClass(displayValue) : '';
   const mergedInputStyle = styleProp;
 
@@ -604,7 +601,13 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                 </TooltipContent>
               </Tooltip>
             ) : (
-              <span className={cn('font-bold text-[#000] text-[1.3rem] inline-flex items-center', dateColorStyle, sizeStyle)}>
+              <span
+                className={cn(
+                  'font-bold text-[#000] text-[1.3rem] inline-flex items-center',
+                  dateColorStyle,
+                  sizeStyle
+                )}
+              >
                 {displayValue}
               </span>
             )

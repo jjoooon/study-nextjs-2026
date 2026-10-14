@@ -153,7 +153,7 @@ const Ltpz105 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="gap-3">
+        <DialogSection className="gap-3 grid-rows-[auto_auto_minmax(0,1fr)]">
           {/* 상단: 기본 설계정보 영역 */}
           <Gcol className="w-full" placement="ss">
             <Typo variant={'body-lg'} weight={'bold'}>

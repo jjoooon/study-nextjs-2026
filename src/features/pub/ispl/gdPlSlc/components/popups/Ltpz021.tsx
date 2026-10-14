@@ -17,6 +17,7 @@ import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AdderIcon } from '@icons';
+import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -274,15 +275,15 @@ const coverageDummyList2 = [
 const productInfoList = [
   {
     name: '한화 시그니처 여성 건강보험4.0 2604',
-    option: '100세만기 월납 / 20년납',
+    option: '납입면제형 • 납입후 50%해약환급금지급형[할증운영상품] • 20년납 • 100세만기',
   },
   {
     name: '한화 시그니처 여성 건강보험4.0 2604',
-    option: '100세만기 월납 / 20년납',
+    option: '납입면제형 • 납입후 50%해약환급금지급형[할증운영상품]',
   },
   {
     name: '한화 더건강한 한아름종합보험 2604',
-    option: '100세만기 월납 / 20년납',
+    option: '납입면제형 • 납입후 50%해약환급금지급형[할증운영상품]',
   },
 ];
 
@@ -376,30 +377,33 @@ const Ltpz021 = () => {
                 className="grid-rows-[auto_1fr] w-full overflow-hidden border border-[#CBE3FF] rounded-[0.6rem] gap-5 h-full min-h-0"
                 key={i}
               >
-                <Grow placement="bws" className="w-full bg-[#EFF8FF] p-[1rem] rounded-t-[0.6rem]">
-                  <Gcol placement="ss">
-                    <Typo tag={'strong'} variant={'body-lg'} weight={'bold'}>
-                      {productInfoList[i].name}
-                    </Typo>
-                    <Typo tag={'p'} variant={'body-sm'} color={'gray'}>
-                      {productInfoList[i].option}
-                    </Typo>
+                <Grow placement="bws" className="w-full bg-[#EFF8FF] p-[1rem] rounded-t-[0.6rem] min-h-[10rem]">
+                  <Gcol placement="bws">
+                    <Gcol placement="ss">
+                      <Typo tag={'strong'} variant={'body-lg'} weight={'bold'}>
+                        {productInfoList[i].name}
+                      </Typo>
+                      <Typo tag={'p'} variant={'body-sm'} color={'gray'}>
+                        {productInfoList[i].option}
+                      </Typo>
+                    </Gcol>
+                    <Badge variant={'soft'} color={'bluegray'} size={'md'} className="leading-1 px-2">
+                      3.10.5간편고지형(고당지뇌심관폐추가고지)
+                    </Badge>
                   </Gcol>
-                  <Grow>
-                    <Checkbox
-                      color="info"
-                      checked={checkedStates[i]}
-                      onCheckedChange={(checked) => {
-                        setCheckedStates((prev) => {
-                          const next = [...prev];
-                          next[i] = !!checked;
-                          return next;
-                        });
-                      }}
-                      size="lg"
-                      variant="default"
-                    ></Checkbox>
-                  </Grow>
+                  <Checkbox
+                    color="info"
+                    checked={checkedStates[i]}
+                    onCheckedChange={(checked) => {
+                      setCheckedStates((prev) => {
+                        const next = [...prev];
+                        next[i] = !!checked;
+                        return next;
+                      });
+                    }}
+                    size="lg"
+                    variant="default"
+                  ></Checkbox>
                 </Grow>
                 <Gcol className="w-full overflow-hidden px-[1rem] pb-[3.3rem]" placement="ss" gap={0}>
                   <div className="ag-theme-alpine w-full inner-scroll min-h-[30rem]" data-row={rowData1.length}>
