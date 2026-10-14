@@ -774,8 +774,8 @@ const Ltpz034 = ({
               <b>주의사항</b>
             </Typo>
             {isRegistered ? (
-              <BulletList color={'warning'} size="sm">
-                <BulletListItem>
+              <BulletList color={'warning'} size="sm" className="columns-2 w-full block">
+                <BulletListItem className="break-inside-avoid mb-[1.3rem] w-full">
                   추천유형 안내 :
                   <em className="font-normal!">
                     일반/건강고지형은 &quot;심사가능&quot; 유형, 간편고지형은 &quot;인수가능&quot; 유형 안내
@@ -787,7 +787,10 @@ const Ltpz034 = ({
                     </p>
                   </BulletItem>
                 </BulletListItem>
-                <BulletListItem>
+                <BulletListItem className="break-inside-avoid mb-[1.3rem] w-full">
+                  설계상품 &middot; 고지유형 선정의 보조수단으로 활용바라며, 실제 심사결과와 다를 수 있음
+                </BulletListItem>
+                <BulletListItem className="break-inside-avoid mb-[1.3rem] w-full">
                   사전심사 적용범위 : 일부 주요상품 및 주요담보만 사전심사 적용
                   <BulletList>
                     <BulletListItem size="sm" type="dash">
@@ -808,13 +811,10 @@ const Ltpz034 = ({
                     </BulletItem>
                   </BulletList>
                 </BulletListItem>
-                <BulletListItem>
-                  설계상품 &middot; 고지유형 선정의 보조수단으로 활용바라며, 실제 심사결과와 다를 수 있음
-                </BulletListItem>
               </BulletList>
             ) : (
-              <BulletList color={'warning'} size="sm" className="grid grid-cols-[auto_1fr] gap-4">
-                <BulletListItem>
+              <BulletList color={'warning'} size="sm" className="columns-2 w-full block">
+                <BulletListItem className="break-inside-avoid mb-[1.3rem] w-full">
                   추천유형 안내 :
                   <BulletItem size="sm" type="dash">
                     단순 비교시 고객에게 불리한 고지유형이 적용될 수 있으므로 주의
@@ -823,7 +823,10 @@ const Ltpz034 = ({
                     </p>
                   </BulletItem>
                 </BulletListItem>
-                <BulletListItem>
+                <BulletListItem className="break-inside-avoid mb-[1.3rem] w-full">
+                  설계가능한 상품 선정의 보조수단으로 활용바라며, 실제 심사결과와 다를 수 있음
+                </BulletListItem>
+                <BulletListItem className="break-inside-avoid mb-[1.3rem] w-full">
                   사전심사 적용범위 : 일부 주요상품 및 주요담보만 사전심사 적용
                   <BulletList>
                     <BulletListItem size="sm" type="dash">
@@ -833,9 +836,6 @@ const Ltpz034 = ({
                       적용담보 예시 : 질병후유, 암, 2대진단비, 질병입원비, 질병수술비, 상해입원비, 상해수술비
                     </BulletItem>
                   </BulletList>
-                </BulletListItem>
-                <BulletListItem>
-                  설계가능한 상품 선정의 보조수단으로 활용바라며, 실제 심사결과와 다를 수 있음
                 </BulletListItem>
               </BulletList>
             )}
