@@ -27,7 +27,6 @@ import {
   QuestionMark,
   PaperIcon,
   AiIcon,
-  DotIcon,
 } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
