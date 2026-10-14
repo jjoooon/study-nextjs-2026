@@ -16,7 +16,7 @@ import { KeyValueItem } from '@common/KeyValueList';
 import { ViewMode } from '@common/ViewMode';
 import { EmpInput } from '@features/EmpInput';
 import { PageID } from '@features/PageID';
-import { SearchIcon, AiIcon, PlusIcon } from '@icons';
+import { SearchIcon, AiIcon, PlusIcon, ResetIcon } from '@icons';
 import { LayoutFoot, LayoutHead } from '@layout/BaseLayout';
 import { LayoutTemplatePx0 } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
@@ -210,6 +210,9 @@ export default function Ltpa020Section() {
                                 <Button variant={'outlined'} color={'gray-light'} size={'lg'} only="icon">
                                   <SearchIcon color="var(--color-primary-50)" />
                                 </Button>
+                                <Button variant={'outlined'} color={'gray-light'} size={'lg'} only="icon">
+                                  <ResetIcon color="var(--color-gray-60)" />
+                                </Button>
                               </Grow>
 
                               <Grow placement="sc" gap={3}>
@@ -229,12 +232,12 @@ export default function Ltpa020Section() {
                           {customerType === 'new' && (
                             <Grow placement="sc" gap={3}>
                               <KeyValueItem
-                                label={'나이'}
+                                label={'연령'}
                                 variant="info"
                                 className="[&>div]:!text-[var(--color-gray-20)] [&>div+div]:!text-[#000] [&>div+div]:!font-normal"
                               >
                                 <InputCombo
-                                  aria-label="나이 검색"
+                                  aria-label="연령 검색"
                                   width={48}
                                   col={2}
                                   variant="recommend"
@@ -312,7 +315,7 @@ export default function Ltpa020Section() {
                                 variant="info"
                                 className="[&>div]:!text-[var(--color-gray-20)] [&>div+div]:!text-[#fff]"
                               >
-                                <RadioGroup className="gap-2" value={newCustomerGender}>
+                                <RadioGroup className="gap-2 [&_label]:!font-bold" value={newCustomerGender}>
                                   {[
                                     { value: '남', label: '남' },
                                     { value: '여', label: '여' },
@@ -365,7 +368,7 @@ export default function Ltpa020Section() {
                                   )
                                 ) : (
                                   <Typo variant={'body-sm'} icon={'info'} className="text-[#FFF]">
-                                    고객정보를 입력해주세요.
+                                    고객정보를 먼저 입력해주세요
                                   </Typo>
                                 )}
                               </>

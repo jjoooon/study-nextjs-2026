@@ -10,6 +10,7 @@ import Image from 'next/image';
 import * as React from 'react';
 import { useState } from 'react';
 import { AiBotIcon } from '@/shared/components/features/AiBotIcon';
+import { cn } from '@/shared/lib/shadcn/utils';
 import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
@@ -26,6 +27,7 @@ import {
   QuestionMark,
   PaperIcon,
   AiIcon,
+  DotIcon,
 } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -56,6 +58,7 @@ type DummyDataListType = {
   field1: string;
   field2: string[];
   field3: string[];
+  field5?: string;
   field4: {
     field1: number;
     field2: string;
@@ -135,9 +138,10 @@ const coverageDummyList = [
 const dummyDataList: DummyDataListType[] = [
   {
     id: 1,
-    field1: '한화 시그니처 여성 건강보험4.0 2604',
-    field2: ['납입면제형', '납입후50%해약환급금지급형'],
+    field1: '한화 시그니처 여성 간편건강보험4.0 2604',
+    field2: ['납입면제형', '납입후 50%해약환급금지급형', '3N5간편고지형'],
     field3: ['20년납', '100세만기'],
+    field5: '3.10.5간편고지형(고당지뇌심관폐추가고지)',
     field4: [
       {
         field1: 103695,
@@ -162,8 +166,9 @@ const dummyDataList: DummyDataListType[] = [
   {
     id: 2,
     field1: '한화 더건강한 한아름종합보험 2604',
-    field2: ['납입면제형', '납입후50%해약환급금지급형[할증운영상품]'],
+    field2: ['납입면제형', '납입후 50%해약환급금지급형[할증운영상품]'],
     field3: ['20년납', '100세만기'],
+    field5: '3.10.5간편고지형(고당지뇌심관폐추가고지)',
     field4: [
       {
         field1: 89230,
@@ -190,6 +195,7 @@ const dummyDataList: DummyDataListType[] = [
     field1: '한화 더 경증 간편건강보험(연만기 갱신형)',
     field2: ['해약환급금미지급형', '3.10.5간편고지형'],
     field3: ['20년납', '100세만기'],
+    field5: '3.10.5간편고지형(고당지뇌심관폐추가고지)',
     field4: [
       {
         field1: 98000,
@@ -536,7 +542,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                       {selectedTags.map((tag, idx) => (
                         <span
                           key={idx}
-                          className="inline-flex items-center px-2.5 py-1 rounded-full bg-[var(--color-gray-90)] text-white font-bold min-h-[2.2rem] text-[1.2rem] leading-none shrink-0"
+                          className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#817772] text-white font-bold min-h-[2.2rem] text-[1.2rem] leading-none shrink-0"
                         >
                           {tag}
                         </span>
@@ -545,7 +551,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                   ) : (
                     <Typo tag="div" variant={'body-md'} className="min-h-[2.2rem] flex items-start gap-1">
                       <KebabIcon />
-                      상세 검색을 선택하시면 더 정확한 추천 결과를 받아볼 수 있습니다.
+                      아래 영역에서 항목을 선택하시면, 더 정확한 추천을 받아볼 수 있습니다.
                     </Typo>
                   )}
                 </span>
@@ -608,34 +614,39 @@ export function Ltpa02002({ userType }: { userType: string }) {
                     상품유형
                   </Typo>
                   <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3" gap={2}>
-                    <RadioGroup
-                      variant="tab"
-                      width={'full'}
-                      defaultValue={isProductOptionOpen}
-                      onValueChange={(value) => setIsProductOptionOpen(value)}
-                    >
+                    <div className="w-full bg-[#F4F4F4] p-[0.3rem] rounded-full grid grid-cols-2">
                       {[
                         { value: '상품옵션', label: '상품옵션' },
                         { value: '상품선택', label: '상품선택' },
-                      ].map((opt, idx) => (
-                        <RadioGroupItem key={'po' + idx} value={opt.value} size={'lg'}>
+                      ].map((opt) => (
+                        <button
+                          key={opt.value}
+                          type="button"
+                          onClick={() => setIsProductOptionOpen(opt.value)}
+                          className={cn(
+                            'h-[3.2rem] rounded-full text-[1.2rem] font-bold transition-all flex items-center justify-center cursor-pointer',
+                            isProductOptionOpen === opt.value
+                              ? 'bg-white text-[#414141] border border-[var(--color-primary-50)] shadow-[0px_2px_4px_0px_#273D751A]'
+                              : 'bg-transparent text-[#6B7280] border border-transparent'
+                          )}
+                        >
                           {opt.label}
-                        </RadioGroupItem>
+                        </button>
                       ))}
-                    </RadioGroup>
+                    </div>
                     <Gcol className="px-1 w-full" placement="ss">
                       {isProductOptionOpen === '상품옵션' ? (
                         <>
-                          {/* 간편고지/일반고지 */}
+                          {/* 일반고지/간편고지 */}
                           <RadioGroup
                             width={'full'}
                             value={simpleType}
                             onValueChange={handleOnChangeNcMttTpcd}
-                            className="bg-[var(--color-blue-gray-10)] gap-[0.4rem] px-[0.8rem] py-[0.4rem] w-full grid grid-cols-[1fr_1fr]"
+                            className="w-full grid grid-cols-2 py-[0.8rem] border-b border-dashed border-[#D8D8D8]"
                           >
                             {[
-                              { value: '간편고지형', label: '간편고지형' },
-                              { value: '일반고지형', label: '일반고지형' },
+                              { value: '일반고지', label: '일반고지' },
+                              { value: '간편고지', label: '간편고지' },
                             ].map((opt) => (
                               <RadioGroupItem key={opt.value} value={opt.value} size={'md'}>
                                 {opt.label}
@@ -647,7 +658,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                             width={'full'}
                             value={noRefundValue}
                             onValueChange={handleOnChangeNcnYn}
-                            className="bg-[var(--color-blue-gray-10)] gap-[0.4rem] px-[0.8rem] py-[0.4rem] w-full grid grid-cols-[1fr_1fr]"
+                            className="w-full grid grid-cols-2 py-[0.8rem] border-b border-dashed border-[#D8D8D8]"
                           >
                             {[
                               { value: '무해지형', label: '무해지형' },
@@ -663,7 +674,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                             width={'full'}
                             value={premiumWaiverValue}
                             onValueChange={handleOnChangePymXmpYn}
-                            className="bg-[var(--color-blue-gray-10)] gap-[0.4rem] px-[0.8rem] py-[0.4rem] w-full grid grid-cols-[1fr_1fr]"
+                            className="w-full grid grid-cols-2 py-[0.8rem] border-b border-dashed border-[#D8D8D8]"
                           >
                             {[
                               { value: '납입면제형', label: '납입면제형' },
@@ -679,7 +690,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                             width={'full'}
                             value={maturityValue}
                             onValueChange={handleOnChangeNdFlgcd}
-                            className="bg-[var(--color-blue-gray-10)] gap-[0.4rem] px-[0.8rem] py-[0.4rem] w-full grid grid-cols-[1fr_1fr]"
+                            className="w-full grid grid-cols-2 pt-[0.8rem] pb-[0.2rem]"
                           >
                             {[
                               { value: '세만기', label: '세만기' },
@@ -692,30 +703,37 @@ export function Ltpa02002({ userType }: { userType: string }) {
                           </RadioGroup>
                         </>
                       ) : (
-                        <>
-                          <Gcol variant="box-round" placement="ss" gap={1}>
-                            <Grid className="grid-cols-[1fr_auto] gap-1 items-center w-full">
-                              <Input
-                                size={'lg'}
-                                placeholder="상품명 검색"
-                                value={productSearchName}
-                                onChange={(e) => setProductSearchName(e.target.value)}
-                              />
-                              <Button
-                                variant={'outlined'}
-                                color={'gray-light'}
-                                size={'lg'}
-                                only={'icon'}
-                                aria-label="상품 검색"
-                              >
-                                <SearchIcon color="var(--color-primary-50)" />
-                              </Button>
-                            </Grid>
-                            <Typo tag="p" variant={'body-xs'} className="text-[var(--color-gray-70)] max-w-[24.8rem]">
-                              납입중50%해약환급금지급형, 납입면제 운영형, 3N52간편고지형Ⅲ
-                            </Typo>
-                          </Gcol>
-                        </>
+                        <Gcol className="w-full pt-[0.8rem]" placement="ss">
+                          <Grid className="grid-cols-[1fr_auto] gap-1 items-center w-full pb-[1.2rem] border-b border-dashed border-[#D8D8D8]">
+                            <Input
+                              size={'lg'}
+                              placeholder="상품명 검색"
+                              value={productSearchName}
+                              onChange={(e) => setProductSearchName(e.target.value)}
+                            />
+                            <Button
+                              variant={'outlined'}
+                              color={'gray-light'}
+                              size={'lg'}
+                              only={'icon'}
+                              aria-label="상품 검색"
+                              className="border-[#D8D8D8]"
+                            >
+                              <SearchIcon color="var(--color-primary-50)" />
+                            </Button>
+                          </Grid>
+                          <Typo
+                            tag="p"
+                            variant={'body-xs'}
+                            className="text-[var(--color-gray-70)] text-[1.2rem] leading-[1.8rem] pt-[1rem] flex items-center flex-wrap gap-x-1"
+                          >
+                            <span>N종, 납입중50%해약환급금지급형</span>
+                            <DotIcon size={6} color="#777" />
+                            <span>납입면제 운영형</span>
+                            <DotIcon size={6} color="#777" />
+                            <span>3N52간편고지형Ⅲ</span>
+                          </Typo>
+                        </Gcol>
                       )}
                     </Gcol>
                   </Gcol>
@@ -733,7 +751,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         variant="button"
                         className="w-full"
                       >
-                        고혈압
+                        고혈압 있어요
                       </Checkbox>
                       <Checkbox
                         checked={isDiabetesChecked}
@@ -742,14 +760,13 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         variant="button"
                         className="w-full"
                       >
-                        당뇨
+                        당뇨 있어요
                       </Checkbox>
                     </Grid>
                     <Typo icon="info">추가고지형 있는 상품인 경우에만 적용됩니다.</Typo>
                   </Gcol>
                 </Gcol>
               </Gcol>
-
               {/* 담보군 */}
               <Gcol placement="ss" gap={1}>
                 <Typo tag="h4" variant={'heading-sm'} color={'blueGray'}>
@@ -921,23 +938,21 @@ export function Ltpa02002({ userType }: { userType: string }) {
                     >
                       패키지
                     </Typo>
-                    <Grow className="w-full">
+                    <Grow className="w-full" placement="ss">
                       <Button
                         variant={'contained'}
                         color={isCoveragePackage ? 'primary' : 'coolgray-light'}
                         size={'lg'}
-                        className="w-full justify-start!"
                         onClick={() => setIsCoveragePackage((prev) => !prev)}
                       >
                         <PaperIcon />
-                        보장패키지
+                        보장패키지 선택
                       </Button>
                     </Grow>
                   </Grow>
                   <Typo icon="info">선택 시, 담보군이 포함된 설계안을 찾습니다.</Typo>
                 </Gcol>
               </Gcol>
-
               {/* 설계유형 or 고지유형 */}
               {customerType === 'recent' ? (
                 // 등록고객
@@ -1117,6 +1132,15 @@ export function Ltpa02002({ userType }: { userType: string }) {
                   </Gcol>
                 </Gcol>
               )}
+              <Button
+                color="secondary"
+                onClick={() => setIsGuideOpen(true)}
+                only="default"
+                variant="contained"
+                className="w-[9.2rem] h-[3.8rem] text-[1.3rem] absolute right-[1rem] font-normal leading-[1.5rem]"
+              >
+                추천설계<br></br> 이용가이드
+              </Button>
             </Grid>
           )}
         </Grow>
@@ -1186,7 +1210,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         key={item.id}
                         className="w-full px-[2.4rem] py-[1.6rem] grid-cols-[1fr_auto] gap-4  bg-white rounded-[1rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)]"
                       >
-                        <Gcol gap={2} placement="bws" className="pt-2">
+                        <Gcol gap={2} placement="bws" className="pt-1">
                           <Gcol className="gap-y-3" placement="ss">
                             <Typo tag="h3" variant="heading-lg" className="break-keep">
                               {item.field1}
@@ -1194,29 +1218,46 @@ export function Ltpa02002({ userType }: { userType: string }) {
                             <Typo
                               tag="p"
                               variant="body-sm"
-                              className="flex items-center text-[var(--color-blue-gray-60)]"
+                              className="flex flex-wrap items-center text-[var(--color-blue-gray-60)] break-keep leading-[2rem]"
                             >
                               {item.field2.map((v, idx) => (
-                                <React.Fragment key={idx}>
-                                  {idx > 0 && '・'}
-                                  {v}
+                                <React.Fragment key={`field2-${idx}`}>
+                                  {idx > 0 && (
+                                    <span className="text-[var(--color-gray-30)] mx-[0.4rem] select-none">•</span>
+                                  )}
+                                  <span>{v}</span>
                                 </React.Fragment>
                               ))}
+                              {item.field3 && item.field3.length > 0 && (
+                                <>
+                                  {item.field2 && item.field2.length > 0 && (
+                                    <span className="text-[var(--color-gray-30)] mx-[0.4rem] select-none">•</span>
+                                  )}
+                                  <span className="inline-flex items-center text-[var(--color-information-50)]">
+                                    {item.field3.map((v, idx) => (
+                                      <React.Fragment key={`field3-${idx}`}>
+                                        {idx > 0 && (
+                                          <span className="text-[var(--color-gray-30)] mx-[0.4rem] select-none">•</span>
+                                        )}
+                                        <span>{v}</span>
+                                      </React.Fragment>
+                                    ))}
+                                  </span>
+                                </>
+                              )}
                             </Typo>
                           </Gcol>
-                          <Grow placement="ss">
-                            <Grow
-                              className="py-[0.5rem] px-2 rounded-[0.6rem] bg-[var(--color-information-5)]"
-                              placement="ss"
-                            >
-                              {item.field3.map((v, idx) => (
-                                <Typo key={idx} tag="p" variant="body-sm">
-                                  {idx > 0 && '・'}
-                                  {v}
-                                </Typo>
-                              ))}
+                          {item.field5 && (
+                            <Grow placement="ss">
+                              <Typo
+                                tag="p"
+                                variant="body-sm"
+                                className="py-[0.5rem] px-[1rem] rounded-[0.6rem] bg-[var(--color-information-5)] text-[var(--color-gray-100)]"
+                              >
+                                {item.field5}
+                              </Typo>
                             </Grow>
-                          </Grow>
+                          )}
                         </Gcol>
                         <Grow gap={3}>
                           {item.field4.map((v, idx) => {
@@ -1450,7 +1491,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
 
                 <Gcol className="overflow-y-auto gap-4 px-[4rem] pb-5 " placement="ss">
                   {/* 타임라인 / 가이드 스텝 3단계 */}
-                  <div className="relative gap-0 h-full">
+                  <div className="relative gap-0 h-full w-full">
                     <Grow
                       placement="bwc"
                       className="w-full border-b-[0.1rem] border-[var(--color-gray-10)] border-dashed"
