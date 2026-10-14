@@ -1391,7 +1391,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                       />
                     </Button>
                     <div
-                      className={`${isAiReasonExpanded ? 'max-h-[100%]' : 'max-h-[3.4rem]'} h-full overflow-y-auto pr-[0.2rem] text-[1.1rem] leading-[1.5] transition-all`}
+                      className={`${isAiReasonExpanded ? 'max-h-[100%] overflow-y-auto' : 'max-h-[3.4rem] overflow-y-hidden'} h-full pr-[0.2rem] text-[1.1rem] leading-[1.5] transition-all`}
                       dangerouslySetInnerHTML={{ __html: selectedPlanInfo?.plan.field2 ?? '' }}
                     />
                   </Grow>
