@@ -1900,3 +1900,19 @@ body:not(:has(.ag-cell:hover, .ag-header-cell:hover)) .ag-popup-child:has(.ag-to
   transition: none !important;
   animation: none !important;
 }
+
+/* Ltpz204 보장패키지 선택 팝업 구분선 스타일 */
+.ltpz204-style .ag-theme-alpine .ag-row.package-group-divider,
+.ag-theme-alpine .ag-row.package-group-divider {
+  border-top: 1px solid #6B7280 !important;
+  margin-top: -1px;
+  z-index: 1;
+}
+.ltpz204-style .ag-theme-alpine .ag-row.package-group-divider .ag-cell,
+.ag-theme-alpine .ag-row.package-group-divider .ag-cell {
+  border-top: none !important;
+}
+.ltpz204-style .ag-theme-alpine .ag-row:has(+ .package-group-divider),
+.ag-theme-alpine .ag-row:has(+ .package-group-divider) {
+  border-bottom: none !important;
+}

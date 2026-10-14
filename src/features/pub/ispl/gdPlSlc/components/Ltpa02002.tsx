@@ -10,7 +10,6 @@ import Image from 'next/image';
 import * as React from 'react';
 import { useState } from 'react';
 import { AiBotIcon } from '@/shared/components/features/AiBotIcon';
-import { cn } from '@/shared/lib/shadcn/utils';
 import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
@@ -613,26 +612,28 @@ export function Ltpa02002({ userType }: { userType: string }) {
                     상품유형
                   </Typo>
                   <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3" gap={2}>
-                    <div className="w-full bg-[#F4F4F4] p-[0.3rem] rounded-full grid grid-cols-2">
+                    <RadioGroup
+                      variant="tab"
+                      width={'full'}
+                      value={isProductOptionOpen}
+                      defaultValue={isProductOptionOpen}
+                      onValueChange={(value) => setIsProductOptionOpen(value)}
+                      className="w-full bg-[#F4F4F4] rounded-full grid grid-cols-2 border-b-0! border-none! gap-0"
+                    >
                       {[
                         { value: '상품옵션', label: '상품옵션' },
                         { value: '상품선택', label: '상품선택' },
-                      ].map((opt) => (
-                        <button
-                          key={opt.value}
-                          type="button"
-                          onClick={() => setIsProductOptionOpen(opt.value)}
-                          className={cn(
-                            'h-[3.2rem] rounded-full text-[1.2rem] font-bold transition-all flex items-center justify-center cursor-pointer',
-                            isProductOptionOpen === opt.value
-                              ? 'bg-white text-[#414141] border border-[var(--color-primary-50)] shadow-[0px_2px_4px_0px_#273D751A]'
-                              : 'bg-transparent text-[#6B7280] border border-transparent'
-                          )}
+                      ].map((opt, idx) => (
+                        <RadioGroupItem
+                          key={'po' + idx}
+                          value={opt.value}
+                          size={'lg'}
+                          className="w-full h-[3rem] rounded-full! text-[1.2rem] font-bold transition-all flex items-center justify-center cursor-pointer border border-transparent text-[#6B7280] bg-transparent hover:bg-transparent hover:text-[var(--color-primary-50)] data-[state=checked]:bg-white! data-[state=checked]:text-[#414141]! data-[state=checked]:border-[var(--color-primary-50)]! data-[state=checked]:shadow-[0px_2px_4px_0px_#273D751A]! data-[state=checked]:border-t-[0.1rem]! data-[state=checked]:border-l-[0.1rem]! data-[state=checked]:border-r-[0.1rem]! data-[state=checked]:border-b-[0.1rem]! data-[state=checked]:-mb-0!"
                         >
                           {opt.label}
-                        </button>
+                        </RadioGroupItem>
                       ))}
-                    </div>
+                    </RadioGroup>
                     <Gcol className="px-1 w-full" placement="ss">
                       {isProductOptionOpen === '상품옵션' ? (
                         <>

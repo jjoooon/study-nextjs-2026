@@ -341,20 +341,7 @@ const Ltpz204 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg">
-        <style>{`
-          .ag-theme-alpine .ag-row.package-group-divider {
-            border-top: 1px solid #6B7280 !important;
-            margin-top: -1px;
-            z-index: 1;
-          }
-          .ag-theme-alpine .ag-row.package-group-divider .ag-cell {
-            border-top: none !important;
-          }
-          .ag-theme-alpine .ag-row:has(+ .package-group-divider) {
-            border-bottom: none !important;
-          }
-        `}</style>
+      <DialogContent showCloseButton resizable={true} size="lg" className="ltpz204-style">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
