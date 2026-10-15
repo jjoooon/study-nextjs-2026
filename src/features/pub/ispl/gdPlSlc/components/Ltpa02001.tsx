@@ -465,7 +465,7 @@ function ProductNameHeader(params: ProductNameHeaderParams): React.JSX.Element {
           aria-label="상품명"
           placeholder="상품명 입력"
           type="text"
-          width={'auto'}
+          width={160}
           size={'sm'}
           clear={true}
           value={productName}

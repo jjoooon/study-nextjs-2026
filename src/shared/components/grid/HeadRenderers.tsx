@@ -215,6 +215,7 @@ export const ProductNameHeader = React.memo(function ProductNameHeader({
         <Input
           size={'md'}
           placeholder="담보명 입력"
+          width={120}
           clear={true}
           key="coverage-name-input"
           readOnly={false} // 명시적으로 readOnly를 false로 설정

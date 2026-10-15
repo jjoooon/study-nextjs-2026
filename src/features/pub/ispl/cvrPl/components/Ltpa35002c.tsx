@@ -624,7 +624,7 @@ export function Ltpa35002c({
                 'min-w-[8rem]',
                 'w-[20%]',
                 'min-w-[8rem]',
-                'w-[20%]',
+                'w-auto',
               ]}
             >
               <FormRow>
@@ -719,7 +719,7 @@ export function Ltpa35002c({
                         commaAmount={true}
                         value={0}
                         clear={true}
-                        width={'full'}
+                        width={113}
                         size={'md'}
                         required={true}
                         error={false}

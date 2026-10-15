@@ -694,7 +694,7 @@ export function Ltpa35002b({
                 'min-w-[8rem]',
                 'w-[20%]',
                 'min-w-[8rem]',
-                'w-[20%]',
+                'w-auto',
               ]}
             >
               <FormRow className="overflow-hidden h-[4.5rem]">
@@ -753,7 +753,7 @@ export function Ltpa35002b({
                         commaAmount={true}
                         value={0}
                         clear={true}
-                        width={'full'}
+                        width={113}
                         size={'md'}
                         required={true}
                         error={false}
@@ -884,7 +884,7 @@ export function Ltpa35002b({
                         value={0}
                         clear={true}
                         size={'md'}
-                        width={'full'}
+                        width={113}
                         required={true}
                         error={false}
                         errorMsg={'계약자 입력은 필수입니다.'}

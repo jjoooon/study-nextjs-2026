@@ -293,7 +293,7 @@ const Ltpz019 = () => {
             aria-label="상품명"
             placeholder="상품명 입력"
             type="text"
-            width={'full'}
+            width={170}
             size={'sm'}
             clear={true}
             value={coverageName}

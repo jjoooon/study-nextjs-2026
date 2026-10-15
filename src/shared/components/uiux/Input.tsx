@@ -176,6 +176,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
     isFocused,
     onErrorChange,
     className,
+    e2eType = 0,
     charFilter,
     maxLength,
     minLength,
@@ -459,7 +460,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
               ? 'text-center'
               : 'text-left',
         'w-full min-w-0 box-border [:focus]:pl-[0.7rem]',
-        showClearButton ? 'pr-[2.4rem] [:focus]:pr-[2.4rem]' : '[:focus]:pr-[0.7rem]'
+        showClearButton ? 'pr-[2rem] [:focus]:pr-[2rem]' : '[:focus]:pr-[0.7rem]'
       )}
       required={required}
       readOnly={readOnly}
@@ -474,6 +475,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
       onBlur={handleBlur}
       style={mergedInputStyle}
       placeholder={resolvedPlaceholder}
+      e2e_type={e2eType}
       {...inputProps}
     />
   );
@@ -518,6 +520,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                     onBlur={handleBlur}
                     style={mergedInputStyle}
                     placeholder={resolvedPlaceholder}
+                    e2e_type={e2eType}
                     {...inputProps}
                   />
                 </TooltipTrigger>
@@ -531,9 +534,10 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                 type={type}
                 data-slot="input"
                 className={cn(
+                  'w-auto',
                   align === 'right' ? 'text-right' : align === 'center' ? 'text-center' : 'text-left',
                   dateColorStyle,
-                  showClearButton && 'pr-[2.2rem]'
+                  showClearButton && 'pr-[2rem]'
                 )}
                 required={required}
                 readOnly={readOnly}
@@ -548,6 +552,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                 onBlur={handleBlur}
                 style={mergedInputStyle}
                 placeholder={resolvedPlaceholder}
+                e2e_type={e2eType}
                 {...inputProps}
               />
             )}

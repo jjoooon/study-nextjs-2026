@@ -137,7 +137,7 @@ export function LTPA350Step2({ onCalcGuidelineClick }: LTPA350Step2Props) {
                   commaAmount={true}
                   value={amount}
                   clear={true}
-                  width={'lg'}
+                  width={113}
                   onChange={(e) => {
                     // 값이 비면 에러 표시, 값이 있으면 에러 해제
                     setAmount(e.target.value);
