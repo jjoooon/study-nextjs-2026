@@ -151,7 +151,7 @@ interface TypoProps extends VariantProps<typeof typoVariants> {
  * 말줄임(overflow)이 실제로 발생했을 때만 툴팁을 표시하는 내부 컴포넌트.
  */
 interface TypoWithTooltipProps extends TypoProps {
-  effectiveColor?: string;
+  effectiveColor?: TypoProps['color'];
   iconNode: ReactNode;
   indentClass: string;
 }

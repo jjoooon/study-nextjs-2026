@@ -1003,9 +1003,22 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
    * - 'center': 중앙 정렬 (기본값)
    * - 'left': 화면 좌측 정렬 (2.4rem 여백)
    * - 'right': 화면 우측 정렬 (2.4rem 여백)
+   * - 'bottom-right': 화면 우측 하단 정렬 (기본: 우측 1.4rem, 하단 7.5rem)
+   * - 'bottom-left': 화면 좌측 하단 정렬
+   * - 'top-right': 화면 우측 상단 정렬
+   * - 'top-left': 화면 좌측 상단 정렬
    * @default 'center'
    */
-  align?: 'center' | 'left' | 'right';
+  align?: 'center' | 'left' | 'right' | 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
+  /**
+   * align 적용 시 커스텀 오프셋 설정 (예: { bottom: '7.5rem', right: '1.4rem' })
+   */
+  alignOffset?: {
+    top?: number | string;
+    bottom?: number | string;
+    left?: number | string;
+    right?: number | string;
+  };
   /**
    * fixed 화면 중앙 정렬 대신 relative 포지셔닝과 기본 위치값(top:0, left:0, transform:none)을 사용하여
    * 부모 영역 안의 레이아웃 흐름 속에 바로 배치할지 여부
@@ -1051,6 +1064,7 @@ function DialogContent({
   size,
   defaultPosition,
   align = 'center',
+  alignOffset,
   onPointerDownOutside,
   onInteractOutside,
   minimized,
@@ -1439,14 +1453,41 @@ function DialogContent({
     }
 
     let initialLeft = '50%';
+    let initialTop = '50%';
     let transformValue = `translate(-50%, -50%)`;
 
     if (align === 'left') {
-      initialLeft = '2.4rem';
+      const leftOffset = alignOffset?.left !== undefined ? toCssSize(alignOffset.left)! : '2.4rem';
+      initialLeft = leftOffset;
       transformValue = `translate(0, -50%)`;
     } else if (align === 'right') {
-      initialLeft = 'calc(100% - 2.4rem)';
+      const rightOffset = alignOffset?.right !== undefined ? toCssSize(alignOffset.right)! : '2.4rem';
+      initialLeft = `calc(100% - ${rightOffset})`;
       transformValue = `translate(-100%, -50%)`;
+    } else if (align === 'bottom-right') {
+      const rightOffset = alignOffset?.right !== undefined ? toCssSize(alignOffset.right)! : '1.4rem';
+      const bottomOffset = alignOffset?.bottom !== undefined ? toCssSize(alignOffset.bottom)! : '7.5rem';
+      initialLeft = `calc(100% - ${rightOffset})`;
+      initialTop = `calc(100% - ${bottomOffset})`;
+      transformValue = `translate(-100%, -100%)`;
+    } else if (align === 'bottom-left') {
+      const leftOffset = alignOffset?.left !== undefined ? toCssSize(alignOffset.left)! : '2.4rem';
+      const bottomOffset = alignOffset?.bottom !== undefined ? toCssSize(alignOffset.bottom)! : '7.5rem';
+      initialLeft = leftOffset;
+      initialTop = `calc(100% - ${bottomOffset})`;
+      transformValue = `translate(0, -100%)`;
+    } else if (align === 'top-right') {
+      const rightOffset = alignOffset?.right !== undefined ? toCssSize(alignOffset.right)! : '2.4rem';
+      const topOffset = alignOffset?.top !== undefined ? toCssSize(alignOffset.top)! : '2.4rem';
+      initialLeft = `calc(100% - ${rightOffset})`;
+      initialTop = topOffset;
+      transformValue = `translate(-100%, 0)`;
+    } else if (align === 'top-left') {
+      const leftOffset = alignOffset?.left !== undefined ? toCssSize(alignOffset.left)! : '2.4rem';
+      const topOffset = alignOffset?.top !== undefined ? toCssSize(alignOffset.top)! : '2.4rem';
+      initialLeft = leftOffset;
+      initialTop = topOffset;
+      transformValue = `translate(0, 0)`;
     }
 
     if (isInitialized) {
@@ -1462,7 +1503,7 @@ function DialogContent({
     return {
       ...(props.style ?? {}),
       left: isFullSize ? '50%' : initialLeft,
-      top: isFullSize ? '50%' : isInitialized ? '0px' : '50%',
+      top: isFullSize ? '50%' : isInitialized ? '0px' : initialTop,
       transform: isFullSize ? `translate(-50%, -50%)` : transformValue,
       cursor: isDragging ? 'grabbing' : isResizing ? 'auto' : undefined,
       width: isFullWidth ? DIALOG_FULL_WIDTH : resizedSize.width > 0 ? `${resizedSize.width}px` : resolvedSize.width,
@@ -1480,6 +1521,7 @@ function DialogContent({
   }, [
     props.style,
     align,
+    alignOffset,
     position.x,
     position.y,
     isDragging,
