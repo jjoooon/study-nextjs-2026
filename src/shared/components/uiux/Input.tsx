@@ -176,7 +176,6 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
     isFocused,
     onErrorChange,
     className,
-    e2eType = 0,
     charFilter,
     maxLength,
     minLength,
@@ -475,7 +474,6 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
       onBlur={handleBlur}
       style={mergedInputStyle}
       placeholder={resolvedPlaceholder}
-      e2e_type={e2eType}
       {...inputProps}
     />
   );
@@ -520,7 +518,6 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                     onBlur={handleBlur}
                     style={mergedInputStyle}
                     placeholder={resolvedPlaceholder}
-                    e2e_type={e2eType}
                     {...inputProps}
                   />
                 </TooltipTrigger>
@@ -551,7 +548,6 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                 onBlur={handleBlur}
                 style={mergedInputStyle}
                 placeholder={resolvedPlaceholder}
-                e2e_type={e2eType}
                 {...inputProps}
               />
             )}
