@@ -1378,7 +1378,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                 gap={0}
               >
                 <Grow
-                  className="relative px-[1.6rem] py-[1.7rem] gap-[0.2rem] rounded-b-[1rem] "
+                  className="relative px-[1.6rem] py-[1.7rem] gap-[0.2rem] rounded-t-[1rem] items-end"
                   placement="ss"
                   style={{
                     backgroundImage: `url(${withPublicUrl('/images/Ltpa020/cand_on_bg_big.png')}), linear-gradient(358deg,#FF5C2E 9.4%,#FF8D02 97.24%)`,
@@ -1387,11 +1387,11 @@ export function Ltpa02002({ userType }: { userType: string }) {
                     backgroundPosition: '98% -6%',
                   }}
                 >
-                  <Gcol placement="ss">
+                  <Gcol placement="ss" className="min-w-0 flex-1">
                     <Typo tag="p" variant="body-sm" className="text-white opacity-80">
                       보장내용 확인
                     </Typo>
-                    <Typo tag="strong" variant="heading-lg" weight="bold" className="text-white">
+                    <Typo tag="strong" variant="heading-lg" weight="bold" className="text-white line-clamp-2 break-all">
                       {selectedPlanInfo?.product.field1}
                     </Typo>
                   </Gcol>
