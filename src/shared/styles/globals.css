@@ -832,8 +832,10 @@
   select {
     letter-spacing: -0.02rem !important;
   }
-
- [data-layout='main'] {
+  [data-layout='body'] [data-layout='main'] {
+    min-width: 100% !important;
+  }
+  [data-layout='main'] {
     min-width: 1204px;
   }
 

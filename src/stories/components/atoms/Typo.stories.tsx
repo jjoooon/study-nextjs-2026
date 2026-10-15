@@ -97,6 +97,21 @@ const meta: Meta<typeof Typo> = {
               description: '텍스트 왼쪽에 아이콘 표시 및 정렬/들여쓰기 적용',
             },
             {
+              prop: 'tooltip',
+              type: "'1' | '2' | 1 | 2",
+              description: '말줄임 줄 수 및 호버 시 전체 내용 툴팁 표시 ("1": 1줄, "2": 2줄)',
+            },
+            {
+              prop: 'tooltipContent',
+              type: 'ReactNode',
+              description: '툴팁에 별도로 표시할 콘텐츠 (기본값: children)',
+            },
+            {
+              prop: 'tooltipSide',
+              type: "'top' | 'right' | 'bottom' | 'left'",
+              description: '툴팁 표시 위치 (@default "top")',
+            },
+            {
               prop: 'children',
               type: 'ReactNode',
               description: '표시할 텍스트 및 콘텐츠',
@@ -187,6 +202,33 @@ const meta: Meta<typeof Typo> = {
         type: { summary: 'string' },
       },
     },
+    tooltip: {
+      control: 'select',
+      options: [undefined, '1', '2'],
+      description: '말줄임 및 호버 시 전체 내용 툴팁 표시 ("1": 1줄, "2": 2줄)',
+      table: {
+        category: 'Tooltip',
+        type: { summary: "'1' | '2' | 1 | 2" },
+      },
+    },
+    tooltipContent: {
+      control: 'text',
+      description: '툴팁에 표시할 커스텀 내용 (미지정 시 children 표시)',
+      table: {
+        category: 'Tooltip',
+        type: { summary: 'ReactNode' },
+      },
+    },
+    tooltipSide: {
+      control: 'select',
+      options: ['top', 'right', 'bottom', 'left'],
+      description: '툴팁 표시 위치',
+      table: {
+        category: 'Tooltip',
+        type: { summary: "'top' | 'right' | 'bottom' | 'left'" },
+        defaultValue: { summary: 'top' },
+      },
+    },
     children: {
       control: 'text',
       description: '표시할 텍스트 콘텐츠',
@@ -218,6 +260,7 @@ const meta: Meta<typeof Typo> = {
     weight: 'normal',
     color: 'default',
     icon: undefined,
+    tooltip: undefined,
     children: '샘플용 Typography 0123\n샘플용 Typography 0123',
   },
 };
@@ -235,6 +278,68 @@ export const Default: Story = {
           샘플용 Typography 0123
         </Typo>
       </>
+    );
+  },
+};
+
+export const WithTooltip: Story = {
+  render: () => {
+    const sampleLongText =
+      '무배당 한화 간편가입 다이렉트 3.10.5간편고지형(고당지뇌심관폐추가고지) 보장보험 상품의 전체 명칭 및 세부 옵션 안내 텍스트입니다.';
+    const sampleShortText = '한화 시그니처 여성 건강보험';
+
+    return (
+      <Gcol gap="6" className="w-[32rem] border border-[#E5E5E5] p-6 rounded-[0.8rem] bg-white">
+        <div>
+          <Typo variant="body-sm" color="gray" className="mb-2 block">
+            [1줄 말줄임 - 긴 텍스트] 말줄임 발생 → 호버 시 툴팁 표시
+          </Typo>
+          <Typo tooltip="1" variant="body-lg" weight="bold">
+            {sampleLongText}
+          </Typo>
+        </div>
+
+        <div>
+          <Typo variant="body-sm" color="gray" className="mb-2 block">
+            [1줄 말줄임 - 짧은 텍스트] 말줄임 없음 → 호버해도 툴팁 미표시
+          </Typo>
+          <Typo tooltip="1" variant="body-lg" weight="bold">
+            {sampleShortText}
+          </Typo>
+        </div>
+
+        <div>
+          <Typo variant="body-sm" color="gray" className="mb-2 block">
+            [2줄 말줄임 - 긴 텍스트] 말줄임 발생 → 호버 시 툴팁 표시
+          </Typo>
+          <Typo tooltip="2" variant="body-md" color="default">
+            {sampleLongText}
+          </Typo>
+        </div>
+
+        <div>
+          <Typo variant="body-sm" color="gray" className="mb-2 block">
+            [2줄 말줄임 - 짧은 텍스트] 말줄임 없음 → 호버해도 툴팁 미표시
+          </Typo>
+          <Typo tooltip="2" variant="body-md" color="default">
+            {sampleShortText}
+          </Typo>
+        </div>
+
+        <div>
+          <Typo variant="body-sm" color="gray" className="mb-2 block">
+            [커스텀 툴팁 내용] tooltipContent 지정
+          </Typo>
+          <Typo
+            tooltip="1"
+            variant="body-md"
+            color="primary"
+            tooltipContent="이곳은 커스텀 툴팁 안내 문구입니다. 별도의 상세 설명을 제공할 수 있습니다."
+          >
+            {sampleLongText}
+          </Typo>
+        </div>
+      </Gcol>
     );
   },
 };

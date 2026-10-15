@@ -1,10 +1,13 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
+'use client';
+
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ReactNode, createElement } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { InfoBoxWarningIcon, InfoBoxInfoIcon, DotIcon, RefIcon, StarIcon, DashIcon, HashIcon } from '@icons';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 /**
  * Typo 디자인 토큰(variant/weight/color/icon)을 class-variance-authority로 선언.
@@ -123,7 +126,110 @@ interface TypoProps extends VariantProps<typeof typoVariants> {
    * 커스텀 인라인 스타일 객체
    */
   style?: React.CSSProperties;
+  /**
+   * 말줄임 줄 수 및 마우스 호버 시 전체 내용 툴팁 노출 여부
+   * - '1' 또는 1: 1줄 말줄임(line-clamp-1) 후 호버 시 전체 내용 툴팁 표시
+   * - '2' 또는 2: 2줄 말줄임(line-clamp-2) 후 호버 시 전체 내용 툴팁 표시
+   */
+  tooltip?: '1' | '2' | 1 | 2;
+  /**
+   * 툴팁에 별도로 표시할 콘텐츠 (미지정 시 children 전체 내용 표시)
+   */
+  tooltipContent?: ReactNode;
+  /**
+   * 툴팁 표시 위치
+   * @default 'top'
+   */
+  tooltipSide?: 'top' | 'right' | 'bottom' | 'left';
+  /**
+   * 툴팁 트리거와의 간격
+   */
+  tooltipSideOffset?: number;
 }
+
+/**
+ * 말줄임(overflow)이 실제로 발생했을 때만 툴팁을 표시하는 내부 컴포넌트.
+ */
+interface TypoWithTooltipProps extends TypoProps {
+  effectiveColor?: string;
+  iconNode: ReactNode;
+  indentClass: string;
+}
+
+const TypoWithTooltip = ({
+  tag = 'span',
+  variant,
+  weight,
+  children,
+  className,
+  style,
+  tooltip,
+  tooltipContent,
+  tooltipSide = 'top',
+  tooltipSideOffset,
+  effectiveColor,
+  iconNode,
+  indentClass,
+}: TypoWithTooltipProps) => {
+  const [open, setOpen] = useState(false);
+  const textRef = useRef<HTMLElement | null>(null);
+
+  /** tooltip 옵션에 따른 말줄임(line-clamp) 스타일 */
+  const tooltipClass =
+    tooltip === '1' || tooltip === 1
+      ? 'min-w-0 line-clamp-1 break-all'
+      : tooltip === '2' || tooltip === 2
+        ? 'min-w-0 line-clamp-2 break-all'
+        : '';
+
+  /** 실제 텍스트가 잘렸는지(말줄임이 발생했는지) 감지 */
+  const checkOverflow = useCallback(() => {
+    const el = textRef.current;
+    if (!el) return false;
+    // 수평 또는 수직 오버플로우 감지 (서브픽셀 렌더링 오차 방지를 위해 1px 여유)
+    return el.scrollHeight - el.clientHeight > 1 || el.scrollWidth - el.clientWidth > 1;
+  }, []);
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (nextOpen) {
+      if (checkOverflow()) {
+        setOpen(true);
+        return;
+      }
+      setOpen(false);
+    } else {
+      setOpen(false);
+    }
+  };
+
+  /** 본문 텍스트 요소 생성 */
+  const typoElement = createElement(
+    tag,
+    {
+      ref: textRef,
+      className: cn(typoVariants({ variant, weight, color: effectiveColor }), indentClass, tooltipClass, className),
+      style,
+      onMouseEnter: () => {
+        if (!checkOverflow()) {
+          setOpen(false);
+        }
+      },
+    },
+    <>
+      {iconNode}
+      {children}
+    </>
+  );
+
+  return (
+    <Tooltip open={open} onOpenChange={handleOpenChange}>
+      <TooltipTrigger asChild>{typoElement}</TooltipTrigger>
+      <TooltipContent side={tooltipSide} sideOffset={tooltipSideOffset} variant="default">
+        {tooltipContent ?? children}
+      </TooltipContent>
+    </Tooltip>
+  );
+};
 
 /**
  * 공통 타이포 컴포넌트.
@@ -131,9 +237,23 @@ interface TypoProps extends VariantProps<typeof typoVariants> {
  * 역할:
  * - 디자인 토큰 기반 텍스트 스타일 적용
  * - 아이콘 + 들여쓰기(indent) 패턴 일괄 제공
+ * - 1줄/2줄 말줄임 발생 시에만 호버 시 전체 내용을 보여주는 툴팁 기능 제공
  * - `createElement`를 통해 동적 태그 렌더링
  */
-export const Typo = ({ tag = 'span', variant, weight, color, children, className, icon, style }: TypoProps) => {
+export const Typo = ({
+  tag = 'span',
+  variant,
+  weight,
+  color,
+  children,
+  className,
+  icon,
+  style,
+  tooltip,
+  tooltipContent,
+  tooltipSide = 'top',
+  tooltipSideOffset,
+}: TypoProps) => {
   /** 선택된 icon 토큰에 대응하는 실제 아이콘 노드 */
   let IconComponent: ReactNode = null;
   const iconSize = variant === 'heading-lg' ? 20 : 16;
@@ -189,12 +309,36 @@ export const Typo = ({ tag = 'span', variant, weight, color, children, className
 
   /** info/warning/detail 의 기본색은 gray 이지만, color Prop이 명시되면 해당 color 가 우선 */
   const effectiveColor = color ?? (icon === 'info' || icon === 'warning' || icon === 'detail' ? 'gray' : undefined);
+  const indentClass = icon ? indentStyle[icon] : '';
 
-  /** 최종 렌더: variants + 아이콘 들여쓰기 + 외부 className 병합 */
+  /** tooltip prop이 지정된 경우 말줄임 오버플로우 감지 툴팁 컴포넌트 렌더링 */
+  if (tooltip && (tooltipContent !== undefined ? tooltipContent : children)) {
+    return (
+      <TypoWithTooltip
+        tag={tag}
+        variant={variant}
+        weight={weight}
+        color={color}
+        className={className}
+        style={style}
+        tooltip={tooltip}
+        tooltipContent={tooltipContent}
+        tooltipSide={tooltipSide}
+        tooltipSideOffset={tooltipSideOffset}
+        effectiveColor={effectiveColor}
+        iconNode={IconComponent}
+        indentClass={indentClass}
+      >
+        {children}
+      </TypoWithTooltip>
+    );
+  }
+
+  /** 기본 렌더: variants + 아이콘 들여쓰기 + 외부 className 병합 */
   return createElement(
     tag,
     {
-      className: cn(typoVariants({ variant, weight, color: effectiveColor }), icon ? indentStyle[icon] : '', className),
+      className: cn(typoVariants({ variant, weight, color: effectiveColor }), indentClass, className),
       style,
     },
     <>

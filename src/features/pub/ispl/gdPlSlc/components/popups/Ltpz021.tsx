@@ -274,7 +274,7 @@ const coverageDummyList2 = [
 
 const productInfoList = [
   {
-    name: '한화 시그니처 여성 건강보험4.0 2604',
+    name: '한화 시그니처 여성 건강보험4.0 2604한화 시그니처 여성 건강보험4.0 2604한화 시그니처 여성 건강보험4.0 2604',
     option: '납입면제형 • 납입후 50%해약환급금지급형[할증운영상품] • 20년납 • 100세만기',
   },
   {
@@ -341,7 +341,7 @@ const Ltpz021 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              추가설계비교
+              추천설계비교
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ021)
@@ -380,7 +380,7 @@ const Ltpz021 = () => {
                 <Grow placement="bws" className="w-full bg-[#EFF8FF] p-[1rem] rounded-t-[0.6rem] min-h-[10rem]">
                   <Gcol placement="bws">
                     <Gcol placement="ss">
-                      <Typo tag={'strong'} variant={'body-lg'} weight={'bold'}>
+                      <Typo tag={'strong'} variant={'body-lg'} weight={'bold'} tooltip="1">
                         {productInfoList[i].name}
                       </Typo>
                       <Typo tag={'p'} variant={'body-sm'} color={'gray'}>

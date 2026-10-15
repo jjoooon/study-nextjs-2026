@@ -140,7 +140,7 @@ export function uwIconRenderer<T>(params: ICellRendererParams<T>) {
   if (Array.isArray(value)) {
     return (
       <Gcol className="h-full" placement="cc">
-        <div className="flex gap-1 justify-center items-center">
+        <div className="flex gap-[0.2rem] justify-center items-center">
           {value.map((val, idx) => (
             <DotColor key={idx} status={String(val)} />
           ))}
