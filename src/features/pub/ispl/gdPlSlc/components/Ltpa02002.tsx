@@ -285,12 +285,13 @@ export function Ltpa02002({ userType }: { userType: string }) {
     {
       value: '2',
       label: (
-        <>
-          기계약과의 누적을{' '}
+        <Grow>
+          기계약과의 누적을
+          <br></br>
           <b>
             체크하지 <span className="text-[var(--color-primary-50)]">않은</span> 설계
           </b>
-        </>
+        </Grow>
       ),
     },
   ] as const;
@@ -961,41 +962,6 @@ export function Ltpa02002({ userType }: { userType: string }) {
                     <Typo tag="h4" variant={'heading-sm'} color={'blueGray'}>
                       설계유형
                     </Typo>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button variant={'none'} size={'md'} only={'icon'} className="w-[2.5rem]! h-[1.4rem]!">
-                          <QuestionMark color="var(--color-gray-60)" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent side="bottom" align="start" sideOffset={0}>
-                        <dl className="flex flex-col gap-2 divide-y-1 divide-[var(--color-gray-10)] gap-2">
-                          <div className="pb-1">
-                            <dt className="text-[1.2rem] font-bold text-[#000]">기계약 유지(부족자금)</dt>
-                            <dd>
-                              <BulletItem type="dot" size="sm">
-                                기계약 해약 없이 부족자금에 맞춘 설계
-                              </BulletItem>
-                            </dd>
-                          </div>
-                          <div className="pb-1">
-                            <dt className="text-[1.2rem] font-bold text-[#000]">일부 리모델링</dt>
-                            <dd>
-                              <BulletItem type="dot" size="sm">
-                                보장분석 컨설팅 저장된 정보 이용
-                              </BulletItem>
-                            </dd>
-                          </div>
-                          <div>
-                            <dt className="text-[1.2rem] font-bold text-[#000]">기계약 전체 누적해소</dt>
-                            <dd>
-                              <BulletItem type="dot" size="sm">
-                                기계약 해약을 전제로 설계 진행
-                              </BulletItem>
-                            </dd>
-                          </div>
-                        </dl>
-                      </TooltipContent>
-                    </Tooltip>
                   </Grow>
                   <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3" gap={2}>
                     <RadioGroup
