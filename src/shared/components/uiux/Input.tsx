@@ -176,7 +176,6 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
     isFocused,
     onErrorChange,
     className,
-    e2eType = 0,
     charFilter,
     maxLength,
     minLength,
@@ -460,9 +459,6 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
               ? 'text-center'
               : 'text-left',
         'w-full min-w-0 box-border [:focus]:pl-[0.7rem]',
-        // clear 모드: 입력 텍스트 길이가 input의 intrinsic 너비로 반영되어 부모(table cell 등)가 늘어나지 않도록
-        // width:0 + min-width:100% 로 고정 (부모 너비만 따라감)
-        clear && 'w-0 min-w-full',
         showClearButton ? 'pr-[2.4rem] [:focus]:pr-[2.4rem]' : '[:focus]:pr-[0.7rem]'
       )}
       required={required}
@@ -478,7 +474,6 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
       onBlur={handleBlur}
       style={mergedInputStyle}
       placeholder={resolvedPlaceholder}
-      e2e_type={e2eType}
       {...inputProps}
     />
   );
@@ -523,7 +518,6 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                     onBlur={handleBlur}
                     style={mergedInputStyle}
                     placeholder={resolvedPlaceholder}
-                    e2e_type={e2eType}
                     {...inputProps}
                   />
                 </TooltipTrigger>
@@ -554,7 +548,6 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                 onBlur={handleBlur}
                 style={mergedInputStyle}
                 placeholder={resolvedPlaceholder}
-                e2e_type={e2eType}
                 {...inputProps}
               />
             )}
