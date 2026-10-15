@@ -1448,7 +1448,10 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
             headerName: '2026년 2월 현재공시이율(1.5%) 적용시',
             headerGroupComponent: () => (
               <Grow placement="cc" className="w-full">
-                <span className="font-bold text-[1.3rem]!">2026년 2월 현재공시이율(1.5%) 적용시</span>
+                <span className="font-bold text-[1.3rem]!">
+                  <b className="text-[var(--color-primary-50)]">2026년 2월</b> 현재공시이율
+                  <b className="text-[var(--color-primary-50)]">(1.5%)</b> 적용시
+                </span>
               </Grow>
             ),
             cellClass: 'text-right',
@@ -1492,7 +1495,9 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
             headerName: '평균공시이율(1.5%) 적용시',
             headerGroupComponent: () => (
               <Grow placement="cc" className="w-full">
-                <span className="font-bold text-[1.3rem]!">평균공시이율(1.5%) 적용시</span>
+                <span className="font-bold text-[1.3rem]!">
+                  평균공시이율<b className="text-[var(--color-primary-50)]">(1.5%)</b> 적용시
+                </span>
               </Grow>
             ),
             cellClass: 'text-center',
@@ -1917,7 +1922,10 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
             headerName: '2026년 2월 현재공시이율(1.5%) 적용시',
             headerGroupComponent: () => (
               <Grow placement="cc" className="w-full">
-                <span className="font-bold! text-[1.3rem]!">2026년 2월 현재공시이율(1.5%) 적용시</span>
+                <span className="font-bold! text-[1.3rem]!">
+                  <b className="text-[var(--color-primary-50)]">2026년 2월</b> 현재공시이율
+                  <b className="text-[var(--color-primary-50)]">(1.5%)</b> 적용시
+                </span>
               </Grow>
             ),
             cellClass: 'text-right',
@@ -1961,7 +1969,10 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
             headerName: '평균공시이율(1.5%) 적용시',
             headerGroupComponent: () => (
               <Grow placement="cc" className="w-full">
-                <span className="font-bold! text-[1.3rem]!">평균공시이율(1.5%) 적용시</span>
+                <span className="font-bold! text-[1.3rem]!">
+                  평균공시이율
+                  <b className="text-[var(--color-primary-50)]">(1.5%)</b> 적용시
+                </span>
               </Grow>
             ),
             cellClass: 'text-center',
@@ -2111,7 +2122,10 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
             headerName: '2026년 2월 현재공시이율(1.5%) 적용시',
             headerGroupComponent: () => (
               <Grow placement="cc" className="w-full">
-                <span className="font-bold! text-[1.3rem]!">2026년 2월 현재공시이율(1.5%) 적용시</span>
+                <span className="font-bold! text-[1.3rem]!">
+                  <b className="text-[var(--color-primary-50)]">2026년 2월</b> 현재공시이율
+                  <b className="text-[var(--color-primary-50)]">(1.5%)</b> 적용시
+                </span>
               </Grow>
             ),
             cellClass: 'text-right',
@@ -2154,7 +2168,10 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
             headerName: '평균공시이율(1.5%) 적용시',
             headerGroupComponent: () => (
               <Grow placement="cc" className="w-full">
-                <span className="font-bold! text-[1.3rem]!">평균공시이율(1.5%) 적용시</span>
+                <span className="font-bold! text-[1.3rem]!">
+                  평균공시이율
+                  <b className="text-[var(--color-primary-50)]">(1.5%)</b> 적용시
+                </span>
               </Grow>
             ),
             cellClass: 'text-center',
@@ -2306,7 +2323,10 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
             headerName: '2026년 2월 현재공시이율(1.5%) 적용시',
             headerGroupComponent: () => (
               <Grow placement="cc" className="w-full">
-                <span className="font-bold! text-[1.3rem]!">2026년 2월 현재공시이율(1.5%) 적용시</span>
+                <span className="font-bold! text-[1.3rem]!">
+                  <b className="text-[var(--color-primary-50)]">2026년 2월</b> 현재공시이율
+                  <b className="text-[var(--color-primary-50)]">(1.5%)</b> 적용시
+                </span>
               </Grow>
             ),
             cellClass: 'text-right',
@@ -2349,7 +2369,10 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
             headerName: '평균공시이율(1.5%) 적용시',
             headerGroupComponent: () => (
               <Grow placement="cc" className="w-full">
-                <span className="font-bold! text-[1.3rem]!">평균공시이율(1.5%) 적용시</span>
+                <span className="font-bold! text-[1.3rem]!">
+                  평균공시이율
+                  <b className="text-[var(--color-primary-50)]">(1.5%)</b> 적용시
+                </span>
               </Grow>
             ),
             cellClass: 'text-center',
