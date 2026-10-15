@@ -47,6 +47,7 @@ import AiLoadingPuzzle from '@/shared/components/icons/AI-loading/puzzle.svg';
 import AiLoadingSearch from '@/shared/components/icons/AI-loading/search.svg';
 import AiLoadingSetting from '@/shared/components/icons/AI-loading/setting.svg';
 import AiLoadingTypeCheck from '@/shared/components/icons/AI-loading/type-check.svg';
+import { cn } from '@/shared/lib/shadcn/utils';
 import {
   selectIsSpinnerVisible,
   selectSpinnerMessage,
@@ -218,7 +219,8 @@ export interface PuzzleSpinnerProps {
 
 export interface LocalSpinnerProps {
   className?: string;
-  texts?: string[];
+  text?: React.ReactNode;
+  texts?: (string | React.ReactNode)[];
   interval?: number; // 텍스트 변경 주기 (ms)
 }
 
@@ -644,13 +646,26 @@ export function SpinnerRoot(props?: SpinnerRootProps) {
 /**
  * Spinner
  * - Portal이나 Redux 스토어 상태에 구애받지 않고 특정 영역(Grid 등) 내부에서 인라인으로 직접 돌아가는 독립형 로컬 스피너 컴포넌트입니다.
+ * - 텍스트 정보(text/texts)가 없을 경우 텍스트 영역 없이 Gooey 애니메이션 아이콘만 표시됩니다.
  * - 복수의 텍스트 배열을 전달받은 경우 설정된 interval 간격(기본 2000ms)으로 텍스트를 순환하며 출력합니다.
  */
-export function Spinner({ className, texts = ['조회중입니다.'], interval = 2000 }: LocalSpinnerProps) {
-  const { currentIndex, currentText } = useTextLoop(texts, interval, '조회중입니다.');
+export function Spinner({ className, text, texts, interval = 2000 }: LocalSpinnerProps) {
+  const effectiveTexts = texts ?? (text !== undefined && text !== null && text !== '' ? [text] : undefined);
+  const hasText = Boolean(effectiveTexts && effectiveTexts.length > 0 && effectiveTexts.some((t) => Boolean(t)));
+
+  const { currentIndex, currentText } = useTextLoop(hasText ? effectiveTexts : undefined, interval, '');
+
+  if (!hasText) {
+    return (
+      <div className={cn('flex items-center justify-center relative w-full h-[5rem]', className)}>
+        <GooeyDots wrapperClassName="w-[12rem] h-[5rem] absolute flex items-center justify-center animate-rotate-move [filter:url(#goo)] scale-[0.7]" />
+        <GooeySvgFilter />
+      </div>
+    );
+  }
 
   return (
-    <Gcol className={`flex items-center justify-center gap-[5rem] -translate-y-[2rem] ${className ?? ''}`}>
+    <Gcol className={cn('flex items-center justify-center gap-[5rem] -translate-y-[2rem]', className)}>
       <GooeyDots />
       <Typo key={currentIndex} variant={'body-md'} className="animate-text-change">
         {renderTextWithHtml(currentText)}

@@ -76,6 +76,7 @@ const meta: Meta<typeof SpinnerRoot> = {
               <li>2026.07.08 - 최초 생성</li>
               <li>2026.07.22 - VerticalRollingSpinner 세로 무한 롤링 스피너 컴포넌트 추가</li>
               <li>2026.08.27 - CircleSpinner, PuzzleSpinner, Spinner (로컬 인라인 스피너) 추가</li>
+              <li>2026.10.15 - Spinner 텍스트 미지정 시 아이콘만 렌더링되도록 개선 (text/texts 옵셔널 지원)</li>
             </ul>
 
             <h2>Overview</h2>
@@ -278,10 +279,19 @@ export const PuzzleSpinnerStory: Story = {
 };
 
 export const LocalSpinnerStory: Story = {
-  name: 'Local Spinner (Inline)',
+  name: 'Local Spinner (With Text)',
   args: {
     type: 'Spinner' as any,
     isVisible: true,
   },
-  render: (args: any) => <Spinner texts={args.texts ?? (args.message ? [args.message] : undefined)} />,
+  render: (args: any) => <Spinner texts={args.texts ?? (args.message ? [args.message] : ['조회중입니다.'])} />,
+};
+
+export const LocalSpinnerIconOnlyStory: Story = {
+  name: 'Local Spinner (Icon Only)',
+  args: {
+    type: 'Spinner' as any,
+    isVisible: true,
+  },
+  render: () => <Spinner />,
 };

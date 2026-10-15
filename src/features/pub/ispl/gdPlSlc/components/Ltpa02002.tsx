@@ -14,7 +14,7 @@ import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
 import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
-import { AiSpinner, PuzzleSpinner } from '@common/SpinnerRoot';
+import { AiSpinner, PuzzleSpinner, Spinner } from '@common/SpinnerRoot';
 import {
   Ai2Icon,
   SelectDropIcon,
@@ -41,7 +41,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 import '@/shared/lib/agGridPub';
 
@@ -136,7 +135,8 @@ const coverageDummyList = [
 const dummyDataList: DummyDataListType[] = [
   {
     id: 1,
-    field1: '한화 시그니처 여성 간편건강보험4.0 2604',
+    field1:
+      '한화 시그니처 여성 간편건강보험4.0 2604한화 시그니처 여성 간편건강보험4.0 2604한화 시그니처 여성 간편건강보험4.0 2604한화 시그니처 여성 간편건강보험4.0 2604한화 시그니처 여성 간편건강보험4.0 2604',
     field2: ['납입면제형', '납입후 50%해약환급금지급형', '3N5간편고지형'],
     field3: ['20년납', '100세만기'],
     field5: '3.10.5간편고지형(고당지뇌심관폐추가고지)',
@@ -1180,20 +1180,20 @@ export function Ltpa02002({ userType }: { userType: string }) {
                           >
                             <Gcol gap={2} placement="bws" className="pt-1">
                               <Gcol className="gap-y-3" placement="ss">
-                                <Typo tag="h3" variant="heading-lg" className="break-keep">
+                                <Typo tag="h3" variant="heading-lg" className="break-all" tooltip="2">
                                   {item.field1}
                                 </Typo>
                                 <Typo
                                   tag="p"
                                   variant="body-sm"
-                                  className="flex flex-wrap items-center text-[var(--color-blue-gray-60)] break-keep leading-[2rem]"
+                                  className="text-[var(--color-blue-gray-60)] break-all leading-[2rem]"
                                 >
                                   {item.field2.map((v, idx) => (
                                     <React.Fragment key={`field2-${idx}`}>
                                       {idx > 0 && (
                                         <span className="text-[var(--color-gray-30)] mx-[0.4rem] select-none">•</span>
                                       )}
-                                      <span>{v}</span>
+                                      {v}
                                     </React.Fragment>
                                   ))}
                                   {item.field3 && item.field3.length > 0 && (
@@ -1209,7 +1209,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                                                 •
                                               </span>
                                             )}
-                                            <span>{v}</span>
+                                            {v}
                                           </React.Fragment>
                                         ))}
                                       </span>
@@ -1235,7 +1235,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                                 className={`relative grid-rows-[minmax(0,1fr)_auto] w-[calc(13rem*3+2.4rem)] h-[14.8rem] rounded-[1rem] overflow-hidden gap-0 border-[0.1rem] border-[var(--color-primary-10)] bg-[var(--color-primary-5)]`}
                               >
                                 <Grow className="h-full" placement="cc">
-                                  <AiSpinner size="10rem" />
+                                  <Spinner />
                                 </Grow>
                                 <Grow className="w-full h-[4rem] bg-[#fff] px-4" placement="cc">
                                   <Typo tag="span" variant={'body-md'}>
@@ -1254,20 +1254,20 @@ export function Ltpa02002({ userType }: { userType: string }) {
                           >
                             <Gcol gap={2} placement="bws" className="pt-1">
                               <Gcol className="gap-y-3" placement="ss">
-                                <Typo tag="h3" variant="heading-lg" className="break-keep">
+                                <Typo tag="h3" variant="heading-lg" className="break-all" tooltip={2}>
                                   {item.field1}
                                 </Typo>
                                 <Typo
                                   tag="p"
                                   variant="body-sm"
-                                  className="flex flex-wrap items-center text-[var(--color-blue-gray-60)] break-keep leading-[2rem]"
+                                  className="text-[var(--color-blue-gray-60)] break-all  tooltip={2}leading-[2rem]"
                                 >
                                   {item.field2.map((v, idx) => (
                                     <React.Fragment key={`field2-${idx}`}>
                                       {idx > 0 && (
                                         <span className="text-[var(--color-gray-30)] mx-[0.4rem] select-none">•</span>
                                       )}
-                                      <span>{v}</span>
+                                      {v}
                                     </React.Fragment>
                                   ))}
                                   {item.field3 && item.field3.length > 0 && (
@@ -1283,7 +1283,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                                                 •
                                               </span>
                                             )}
-                                            <span>{v}</span>
+                                            {v}
                                           </React.Fragment>
                                         ))}
                                       </span>
@@ -1437,7 +1437,13 @@ export function Ltpa02002({ userType }: { userType: string }) {
                     <Typo tag="p" variant="body-sm" className="text-white opacity-80">
                       보장내용 확인
                     </Typo>
-                    <Typo tag="strong" variant="heading-lg" weight="bold" className="text-white line-clamp-2 break-all">
+                    <Typo
+                      tag="strong"
+                      variant="heading-lg"
+                      weight="bold"
+                      className="text-white leading-[1.2]"
+                      tooltip={2}
+                    >
                       {selectedPlanInfo?.product.field1}
                     </Typo>
                   </Gcol>
