@@ -239,12 +239,19 @@ const Ltpz022 = () => {
                   className="whitespace-nowrap "
                   tdClassName="grid grid-cols-[auto_1fr_auto] w-full"
                 >
-                  <Input aria-label="" width={'quoteNo'} value={'LA260706315118'} align="center" readOnly />
-                  <Input aria-label="" width={220} value={'시그니처여성건강(4종/올인원플랜)'} readOnly />
-                  <Input aria-label="" width={80} value={''} readOnly />
+                  <Input
+                    aria-label=""
+                    width={'quoteNo'}
+                    value={'LA260706315118'}
+                    align="center"
+                    readOnly
+                    variant="info"
+                  />
+                  <Input aria-label="" width={220} value={'시그니처여성건강(4종/올인원플랜)'} readOnly variant="info" />
+                  <Input aria-label="" width={80} value={''} readOnly variant="info" />
                 </FormCell>
                 <FormCell title={'플랜명'} className="whitespace-nowrap">
-                  <Input aria-label="" value={'100세만기 월납 / 20년납'} readOnly />
+                  <Input aria-label="" value={'100세만기 월납 / 20년납'} readOnly variant="info" />
                 </FormCell>
               </FormRow>
             </FormTable>
