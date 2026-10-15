@@ -1113,7 +1113,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
       </div>
 
       {dataNone ? (
-        <Grow className="h-full gap-2.5 pt-[36rem]" placement="cs">
+        <Grow className="h-full gap-2.5 pt-[39rem]" placement="cs">
           <Grow className="gap-4 pb-[2rem]" placement="cs">
             <div className="w-[3.2rem]">
               <AiBotIcon open={false} />
