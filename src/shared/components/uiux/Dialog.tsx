@@ -1004,7 +1004,18 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
    */
   disableMotion?: boolean;
   /**
-   * 마우스 드래그를 통해 다이얼로그 너비/높이를 조절(Resize)할 수 있는지 여부
+   * 마우스 드래그를 통해 다이얼로그 너비/높이를 조절(Resize)할 수 있는지 여부 (신규 전용 옵션)
+   * - 기존 페이지들의 일괄 resizable={true} 설정을 방지하고, 이 옵션이 명시적으로 true인 다이얼로그(또는 LTPA120)만 크기 조절이 활성화됩니다.
+   * @default false
+   */
+  allowResize?: boolean;
+  /**
+   * allowResize의 별칭 (Alias)
+   * @default false
+   */
+  enableResize?: boolean;
+  /**
+   * 마우스 드래그를 통해 다이얼로그 너비/높이를 조절(Resize)할 수 있는지 여부 (레거시 옵션)
    * @default false
    */
   resizable?: boolean;
@@ -1106,7 +1117,9 @@ function DialogContent({
   disableMotion = false,
   showOverlay,
   overlayClassName,
-  resizable = false,
+  allowResize,
+  enableResize,
+  resizable: _resizable = false,
   zIndex,
   size,
   defaultPosition,
@@ -1305,7 +1318,9 @@ function DialogContent({
   }, [isIframeState, size, className, iframeHeight, popupId, titleProp, scridProp]);
 
   const resolvedShowCloseButton = showCloseButton;
-  const resolvedResizable = resizable;
+  const currentCleanId = (popupId || getCurrentPopupIdFromUrl())?.trim().toUpperCase();
+  const resolvedResizable =
+    allowResize ?? enableResize ?? (currentCleanId === 'LTPA120' || currentCleanId === 'LTPZ120');
   const resolvedShowMinimizeButton =
     showMinimizeButtonProp ?? contextShowMinimizeButton ?? (minimized !== undefined ? true : false);
 

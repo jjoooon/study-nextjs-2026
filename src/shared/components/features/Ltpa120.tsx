@@ -135,6 +135,7 @@ export const Ltpa120 = ({
         showCloseButton={true}
         showFullscreenButton={true}
         showOverlay={true}
+        allowResize={true}
         resizable={true}
         minimized={true}
         zIndex={1000}
