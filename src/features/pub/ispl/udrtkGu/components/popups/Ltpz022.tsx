@@ -216,7 +216,14 @@ const Ltpz022 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="md" className="h-[50rem]">
+      <DialogContent
+        showCloseButton
+        resizable={true}
+        size="md"
+        className="h-[50rem]"
+        align="bottom-right"
+        alignOffset={{ bottom: '7.5rem', right: '1.4rem' }}
+      >
         {/* 헤더: 제목 및 화면ID */}
         <DialogHeader>
           <DialogTitle>

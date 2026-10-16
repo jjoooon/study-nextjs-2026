@@ -74,9 +74,6 @@ const MENU_LIST: MenuItem[] = [
   { code: 'm2_4', selected: false, fix: false, group: '지침', name: '인수기준', link: '/' },
   { code: 'm2_5', selected: false, fix: false, group: '지침', name: '인수스코어', link: '/' },
 
-  { code: 'm3_1', selected: false, fix: false, group: '영업관리', name: '수수료조회', link: '/' },
-  { code: 'm3_2', selected: false, fix: false, group: '영업관리', name: '物비용처리', link: '/' },
-
   { code: 'm4_1', selected: false, fix: false, group: '설계', name: '다른상품설계', link: '/' },
   { code: 'm4_2', selected: false, fix: false, group: '설계', name: '동일상품복사', link: '/' },
   { code: 'm4_3', selected: false, fix: false, group: '설계', name: '계약복사', link: '/' },
@@ -87,6 +84,9 @@ const MENU_LIST: MenuItem[] = [
   { code: 'm4_8', selected: false, fix: false, group: '설계', name: '설계완료알림', link: '/' },
   { code: 'm4_9', selected: false, fix: false, group: '설계', name: '법정대리인등록', link: '/' },
   { code: 'm4_10', selected: false, fix: false, group: '설계', name: '담보순서조정', link: '/' },
+
+  { code: 'm3_1', selected: false, fix: false, group: '영업관리', name: '수수료조회', link: '/' },
+  { code: 'm3_2', selected: false, fix: false, group: '영업관리', name: '物비용처리', link: '/' },
 
   { code: 'm5_1', selected: false, fix: false, group: 'UW', name: '질병가이드', link: '/' },
   { code: 'm5_2', selected: false, fix: false, group: 'UW', name: '고지콕콕', link: '/' },

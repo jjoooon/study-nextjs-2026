@@ -456,6 +456,7 @@ type DialogContextValue = {
   setIsSplit: (val: React.SetStateAction<boolean> | boolean) => void;
   showFullscreenButton?: boolean;
   showSplitButton?: boolean;
+  showMinimizeButton?: boolean;
   modal: boolean;
   setModalOverride?: (override: boolean | null) => void;
   open: boolean;
@@ -475,6 +476,7 @@ const DialogDepthContext = React.createContext<DialogContextValue>({
   setIsSplit: () => {},
   showFullscreenButton: undefined,
   showSplitButton: undefined,
+  showMinimizeButton: undefined,
   modal: true,
   open: false,
   isIframe: false,
@@ -559,6 +561,10 @@ interface DialogProps extends React.ComponentPropsWithoutRef<typeof DialogPrimit
    */
   showSplitButton?: boolean;
   /**
+   * 최소화 버튼 노출 여부
+   */
+  showMinimizeButton?: boolean;
+  /**
    * iframe 환경 여부 강제 지정 (boolean)
    * - true/false 값이 전달되면 dialogSizes.json 설정 및 URL 감지보다 이 값이 최우선 적용됩니다.
    * - 지정하지 않거나 undefined인 경우 dialogSizes.json 의 isIframe 설정 및 URL 기반으로 판단합니다.
@@ -586,6 +592,7 @@ function Dialog({
   defaultSplit,
   onSplitChange,
   showSplitButton,
+  showMinimizeButton,
   modal = true,
   iframe: iframeProp,
   isIframe: isIframeProp,
@@ -619,9 +626,23 @@ function Dialog({
         if (!isSplitControlled) setSplitState(false);
         onSplitChange?.(false);
       }
+      if (nextVal && isFullscreen) {
+        if (!isFullscreenControlled) setFullscreenState(false);
+        onFullscreenChange?.(false);
+      }
       onMinimizeChange?.(nextVal);
     },
-    [isMinimizedControlled, onMinimizeChange, isMinimized, isSplit, isSplitControlled, onSplitChange]
+    [
+      isMinimizedControlled,
+      onMinimizeChange,
+      isMinimized,
+      isSplit,
+      isSplitControlled,
+      onSplitChange,
+      isFullscreen,
+      isFullscreenControlled,
+      onFullscreenChange,
+    ]
   );
 
   const handleFullscreenChange = React.useCallback(
@@ -632,9 +653,23 @@ function Dialog({
         if (!isSplitControlled) setSplitState(false);
         onSplitChange?.(false);
       }
+      if (nextVal && isMinimized) {
+        if (!isMinimizedControlled) setMinimizedState(false);
+        onMinimizeChange?.(false);
+      }
       onFullscreenChange?.(nextVal);
     },
-    [isFullscreenControlled, onFullscreenChange, isFullscreen, isSplit, isSplitControlled, onSplitChange]
+    [
+      isFullscreenControlled,
+      onFullscreenChange,
+      isFullscreen,
+      isSplit,
+      isSplitControlled,
+      onSplitChange,
+      isMinimized,
+      isMinimizedControlled,
+      onMinimizeChange,
+    ]
   );
 
   const handleSplitChange = React.useCallback(
@@ -710,6 +745,7 @@ function Dialog({
         setIsSplit: handleSplitChange,
         showFullscreenButton,
         showSplitButton,
+        showMinimizeButton,
         modal,
         setModalOverride,
         open: isOpen,
@@ -763,7 +799,10 @@ function DialogMinimize({ className, ...props }: DialogMinimizeProps) {
       onClick={() => setMinimized(!isMinimized)}
       title={isMinimized ? '원래 크기로 복원' : '최소화'}
       aria-label={isMinimized ? '원래 크기로 복원' : '최소화'}
-      className={cn('flex items-center justify-center p-0 hover:bg-black/5 rounded-xs transition-colors', className)}
+      className={cn(
+        'flex items-center justify-center w-[2.4rem] h-[2.4rem] p-0 hover:bg-black/5 rounded-xs transition-colors',
+        className
+      )}
       {...props}
     >
       {isMinimized ? (
@@ -926,6 +965,10 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
    */
   showSplitButton?: boolean;
   /**
+   * 우측 상단에 최소화 버튼을 노출할지 여부
+   */
+  showMinimizeButton?: boolean;
+  /**
    * 다이얼로그 전체화면 상태 (Controlled)
    */
   fullscreen?: boolean;
@@ -954,12 +997,25 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
    * 값을 전달하지 않으면 여러 팝업이 겹쳐 열렸을 때 최상위 팝업에만 오버레이를 자동으로 띄워 가독성을 높입니다.
    */
   showOverlay?: boolean;
-  /**
-   * 백드롭 오버레이에 적용할 추가적인 CSS 클래스명
-   */
   overlayClassName?: string;
   /**
-   * 마우스 드래그를 통해 다이얼로그 너비/높이를 조절(Resize)할 수 있는지 여부
+   * 다이얼로그 모션/트랜지션 애니메이션 비활성화 여부
+   * @default false
+   */
+  disableMotion?: boolean;
+  /**
+   * 마우스 드래그를 통해 다이얼로그 너비/높이를 조절(Resize)할 수 있는지 여부 (신규 전용 옵션)
+   * - 기존 페이지들의 일괄 resizable={true} 설정을 방지하고, 이 옵션이 명시적으로 true인 다이얼로그(또는 LTPA120)만 크기 조절이 활성화됩니다.
+   * @default false
+   */
+  allowResize?: boolean;
+  /**
+   * allowResize의 별칭 (Alias)
+   * @default false
+   */
+  enableResize?: boolean;
+  /**
+   * 마우스 드래그를 통해 다이얼로그 너비/높이를 조절(Resize)할 수 있는지 여부 (레거시 옵션)
    * @default false
    */
   resizable?: boolean;
@@ -1003,9 +1059,22 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
    * - 'center': 중앙 정렬 (기본값)
    * - 'left': 화면 좌측 정렬 (2.4rem 여백)
    * - 'right': 화면 우측 정렬 (2.4rem 여백)
+   * - 'bottom-right': 화면 우측 하단 정렬 (기본: 우측 1.4rem, 하단 7.5rem)
+   * - 'bottom-left': 화면 좌측 하단 정렬
+   * - 'top-right': 화면 우측 상단 정렬
+   * - 'top-left': 화면 좌측 상단 정렬
    * @default 'center'
    */
-  align?: 'center' | 'left' | 'right';
+  align?: 'center' | 'left' | 'right' | 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
+  /**
+   * align 적용 시 커스텀 오프셋 설정 (예: { bottom: '7.5rem', right: '1.4rem' })
+   */
+  alignOffset?: {
+    top?: number | string;
+    bottom?: number | string;
+    left?: number | string;
+    right?: number | string;
+  };
   /**
    * fixed 화면 중앙 정렬 대신 relative 포지셔닝과 기본 위치값(top:0, left:0, transform:none)을 사용하여
    * 부모 영역 안의 레이아웃 흐름 속에 바로 배치할지 여부
@@ -1038,19 +1107,24 @@ function DialogContent({
   buttonGroupClassName,
   showFullscreenButton: showFullscreenButtonProp,
   showSplitButton: showSplitButtonProp,
+  showMinimizeButton: showMinimizeButtonProp,
   fullscreen: fullscreenProp,
   defaultFullscreen,
   onFullscreenChange: onFullscreenChangeProp,
   split: splitProp,
   defaultSplit,
   onSplitChange: onSplitChangeProp,
+  disableMotion = false,
   showOverlay,
   overlayClassName,
-  resizable = false,
+  allowResize,
+  enableResize,
+  resizable: _resizable = false,
   zIndex,
   size,
   defaultPosition,
   align = 'center',
+  alignOffset,
   onPointerDownOutside,
   onInteractOutside,
   minimized,
@@ -1073,6 +1147,7 @@ function DialogContent({
     setIsSplit: contextSetIsSplit,
     showFullscreenButton: contextShowFullscreenButton,
     showSplitButton: contextShowSplitButton,
+    showMinimizeButton: contextShowMinimizeButton,
     open,
     setModalOverride,
     isIframe: contextIsIframe,
@@ -1088,10 +1163,24 @@ function DialogContent({
     (val: React.SetStateAction<boolean> | boolean) => {
       const nextVal = typeof val === 'function' ? (val as (prev: boolean) => boolean)(isFullscreen) : val;
       if (!isFullscreenControlled) setLocalFullscreenState(nextVal);
+      if (nextVal && isMinimized) {
+        setMinimized?.(false);
+      }
       contextSetIsFullscreen(nextVal);
       onFullscreenChangeProp?.(nextVal);
     },
-    [isFullscreenControlled, contextSetIsFullscreen, onFullscreenChangeProp, isFullscreen]
+    [isFullscreenControlled, contextSetIsFullscreen, onFullscreenChangeProp, isFullscreen, isMinimized, setMinimized]
+  );
+
+  const handleLocalMinimize = React.useCallback(
+    (val: React.SetStateAction<boolean>) => {
+      const nextVal = typeof val === 'function' ? (val as (prev: boolean) => boolean)(isMinimized) : val;
+      if (nextVal && isFullscreen) {
+        setIsFullscreen(false);
+      }
+      setMinimized?.(nextVal);
+    },
+    [isMinimized, isFullscreen, setIsFullscreen, setMinimized]
   );
 
   // split 상태 처리
@@ -1229,8 +1318,11 @@ function DialogContent({
   }, [isIframeState, size, className, iframeHeight, popupId, titleProp, scridProp]);
 
   const resolvedShowCloseButton = showCloseButton;
-  const resolvedResizable = resizable;
-  const resolvedMinimized = minimized;
+  const currentCleanId = (popupId || getCurrentPopupIdFromUrl())?.trim().toUpperCase();
+  const resolvedResizable =
+    allowResize ?? enableResize ?? (currentCleanId === 'LTPA120' || currentCleanId === 'LTPZ120');
+  const resolvedShowMinimizeButton =
+    showMinimizeButtonProp ?? contextShowMinimizeButton ?? (minimized !== undefined ? true : false);
 
   // 오버레이 상태 구독만 (등록은 Dialog 에서 처리)
   const [topOpenDialogId, setTopOpenDialogId] = React.useState(getTopOpenDialogId);
@@ -1410,6 +1502,8 @@ function DialogContent({
         transform: 'none',
         borderRadius: '0px',
         zIndex: parallelZIndex,
+        cursor: 'default',
+        userSelect: 'auto',
       };
     }
 
@@ -1439,14 +1533,41 @@ function DialogContent({
     }
 
     let initialLeft = '50%';
+    let initialTop = '50%';
     let transformValue = `translate(-50%, -50%)`;
 
     if (align === 'left') {
-      initialLeft = '2.4rem';
+      const leftOffset = alignOffset?.left !== undefined ? toCssSize(alignOffset.left)! : '2.4rem';
+      initialLeft = leftOffset;
       transformValue = `translate(0, -50%)`;
     } else if (align === 'right') {
-      initialLeft = 'calc(100% - 2.4rem)';
+      const rightOffset = alignOffset?.right !== undefined ? toCssSize(alignOffset.right)! : '2.4rem';
+      initialLeft = `calc(100% - ${rightOffset})`;
       transformValue = `translate(-100%, -50%)`;
+    } else if (align === 'bottom-right') {
+      const rightOffset = alignOffset?.right !== undefined ? toCssSize(alignOffset.right)! : '1.4rem';
+      const bottomOffset = alignOffset?.bottom !== undefined ? toCssSize(alignOffset.bottom)! : '7.5rem';
+      initialLeft = `calc(100% - ${rightOffset})`;
+      initialTop = `calc(100% - ${bottomOffset})`;
+      transformValue = `translate(-100%, -100%)`;
+    } else if (align === 'bottom-left') {
+      const leftOffset = alignOffset?.left !== undefined ? toCssSize(alignOffset.left)! : '2.4rem';
+      const bottomOffset = alignOffset?.bottom !== undefined ? toCssSize(alignOffset.bottom)! : '7.5rem';
+      initialLeft = leftOffset;
+      initialTop = `calc(100% - ${bottomOffset})`;
+      transformValue = `translate(0, -100%)`;
+    } else if (align === 'top-right') {
+      const rightOffset = alignOffset?.right !== undefined ? toCssSize(alignOffset.right)! : '2.4rem';
+      const topOffset = alignOffset?.top !== undefined ? toCssSize(alignOffset.top)! : '2.4rem';
+      initialLeft = `calc(100% - ${rightOffset})`;
+      initialTop = topOffset;
+      transformValue = `translate(-100%, 0)`;
+    } else if (align === 'top-left') {
+      const leftOffset = alignOffset?.left !== undefined ? toCssSize(alignOffset.left)! : '2.4rem';
+      const topOffset = alignOffset?.top !== undefined ? toCssSize(alignOffset.top)! : '2.4rem';
+      initialLeft = leftOffset;
+      initialTop = topOffset;
+      transformValue = `translate(0, 0)`;
     }
 
     if (isInitialized) {
@@ -1462,7 +1583,7 @@ function DialogContent({
     return {
       ...(props.style ?? {}),
       left: isFullSize ? '50%' : initialLeft,
-      top: isFullSize ? '50%' : isInitialized ? '0px' : '50%',
+      top: isFullSize ? '50%' : isInitialized ? '0px' : initialTop,
       transform: isFullSize ? `translate(-50%, -50%)` : transformValue,
       cursor: isDragging ? 'grabbing' : isResizing ? 'auto' : undefined,
       width: isFullWidth ? DIALOG_FULL_WIDTH : resizedSize.width > 0 ? `${resizedSize.width}px` : resolvedSize.width,
@@ -1480,6 +1601,7 @@ function DialogContent({
   }, [
     props.style,
     align,
+    alignOffset,
     position.x,
     position.y,
     isDragging,
@@ -1639,6 +1761,15 @@ function DialogContent({
         ...parentDialogContext,
         title: titleProp,
         scrid: scridProp,
+        isFullscreen,
+        setIsFullscreen,
+        isSplit,
+        setIsSplit,
+        isMinimized,
+        setMinimized: handleLocalMinimize,
+        showFullscreenButton: resolvedShowFullscreenButton,
+        showSplitButton: resolvedShowSplitButton,
+        showMinimizeButton: resolvedShowMinimizeButton,
       }}
     >
       <DialogSizeContext.Provider value={{ size, initialSectionWidth, isFullSize, isAutoFullWidth }}>
@@ -1660,7 +1791,9 @@ function DialogContent({
             className={cn(
               isRelative ? 'relative w-full' : 'fixed w-full',
               'grid grid-rows-[auto_1fr_auto] gap-5 !pointer-events-auto bg-white rounded-[0.2rem] border border-[#1f1f1f] px-0 py-0 shadow-[0_0.2rem_1.2rem_0_#222222] outline-none',
-              isDragging || !!isResizing || isSplit || isFullscreen ? 'transition-none' : 'dialog-bounce-transition',
+              disableMotion || isDragging || !!isResizing || isSplit || isFullscreen
+                ? 'transition-none'
+                : 'dialog-bounce-transition',
               isIframeState && 'is-iframe',
               className
             )}
@@ -1701,14 +1834,21 @@ function DialogContent({
               {resolvedShowSplitButton && (isSplit || (!isMinimized && !isFullscreen)) && (
                 <DialogSplit isSplit={isSplit} onClick={() => setIsSplit(!isSplit)} className={splitButtonClassName} />
               )}
-              {resolvedShowFullscreenButton && (isFullscreen || (!isMinimized && !isSplit)) && (
+              {resolvedShowFullscreenButton && (isFullscreen || isMinimized || !isSplit) && (
                 <DialogFullscreen
                   isFullscreen={isFullscreen}
-                  onClick={() => setIsFullscreen(!isFullscreen)}
+                  onClick={() => {
+                    if (isMinimized) {
+                      setMinimized?.(false);
+                      setIsFullscreen(true);
+                    } else {
+                      setIsFullscreen(!isFullscreen);
+                    }
+                  }}
                   className={fullscreenButtonClassName}
                 />
               )}
-              {resolvedMinimized && (isMinimized || (!isFullscreen && !isSplit)) && (
+              {resolvedShowMinimizeButton && (isMinimized || isFullscreen || !isSplit) && (
                 <DialogMinimize className={minimizeButtonClassName} />
               )}
               {resolvedShowCloseButton && (
@@ -1724,8 +1864,8 @@ function DialogContent({
               )}
             </div>
 
-            {/* Resize Handles - Only shown when resizable is true and not full size/fullscreen/split */}
-            {resolvedResizable && !isFullSize && !isFullscreen && !isSplit && (
+            {/* Resize Handles - Only shown when resizable is true and not full size/fullscreen/split/minimized */}
+            {resolvedResizable && !isFullSize && !isFullscreen && !isSplit && !isMinimized && (
               <>
                 <div
                   data-slot="resize-handle"
@@ -1783,16 +1923,23 @@ function DialogContent({
  */
 function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
   const { isFullscreen, isSplit } = React.useContext(DialogDepthContext);
-  const isDraggableDisabled = isFullscreen || isSplit;
+  const { isFullSize } = React.useContext(DialogSizeContext);
+  const isDraggableDisabled = isFullscreen || isSplit || isFullSize;
 
   return (
     <div
       data-slot="dialog-header"
       className={cn(
         'flex flex-row content-start w-full min-h-[3rem] justify-center shrink-0 pl-[1rem] pr-[0.5rem] border-b border-b-[0.1rem] border-[var(--color-gray-20)]',
-        isDraggableDisabled ? 'cursor-default' : 'cursor-grab active:cursor-grabbing',
+        isDraggableDisabled ? 'cursor-default select-none' : 'cursor-grab active:cursor-grabbing',
         className
       )}
+      onMouseDown={(e) => {
+        if (isDraggableDisabled) {
+          e.stopPropagation();
+        }
+        props.onMouseDown?.(e);
+      }}
       {...props}
     />
   );

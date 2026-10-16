@@ -832,12 +832,14 @@
   select {
     letter-spacing: -0.02rem !important;
   }
+
   [data-layout='body'] [data-layout='main'] {
     min-width: 100% !important;
   }
   [data-layout='main'] {
-    min-width: 1204px;
+    min-width: 120.4rem;
   }
+
 
   /* filefond */
   .filepond--wrapper {
@@ -1206,10 +1208,7 @@
 }
 
 .dialog-bounce-transition {
-  transition:
-    transform 0.45s cubic-bezier(0.25, 1, 0.5, 1),
-    width 0.45s cubic-bezier(0.25, 1, 0.5, 1),
-    height 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 @keyframes blink-border {

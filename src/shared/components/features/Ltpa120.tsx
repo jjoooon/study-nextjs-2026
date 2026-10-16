@@ -5,7 +5,6 @@
 
 import Image from 'next/image';
 import * as React from 'react';
-import { publicConfig } from '@/shared/config/env';
 import useMounted from '@/shared/hooks/useMounted';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { chatbotUtils } from '@/shared/utils/chatbotUtils';
@@ -15,17 +14,23 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@uiux/Dialog';
 import { AiBotIcon } from './AiBotIcon';
 
 const CHATBOT_DIALOG_WIDTH = 640;
-const CHATBOT_DIALOG_HEIGHT = 600;
 const VIEWPORT_MARGIN = 12;
 
+function getChatbotDialogHeight(): number {
+  if (typeof window === 'undefined') return 600;
+  const rootFontSize = parseFloat(window.getComputedStyle(document.documentElement).fontSize) || 10;
+  return Math.max(300, window.innerHeight - 14 * rootFontSize);
+}
+
 function getInitialDialogPosition(buttonRect: DOMRect): { x: number; y: number } {
+  const currentHeight = getChatbotDialogHeight();
   const maxLeft = window.innerWidth - CHATBOT_DIALOG_WIDTH - VIEWPORT_MARGIN;
-  const maxTop = window.innerHeight - CHATBOT_DIALOG_HEIGHT - VIEWPORT_MARGIN;
+  const maxTop = window.innerHeight - currentHeight - VIEWPORT_MARGIN;
 
   // 버튼의 right에 맞추어 모달의 left 결정 (오른쪽 정렬)
   const targetLeft = buttonRect.right - CHATBOT_DIALOG_WIDTH;
   // 버튼의 top 기준으로 모달 높이와 12px 간격을 빼서 모달의 top 결정
-  const targetTop = buttonRect.top - CHATBOT_DIALOG_HEIGHT - 12;
+  const targetTop = buttonRect.top - currentHeight - 12;
 
   const left = Math.min(Math.max(targetLeft, VIEWPORT_MARGIN), maxLeft);
   const top = Math.min(Math.max(targetTop, VIEWPORT_MARGIN), maxTop);
@@ -35,11 +40,11 @@ function getInitialDialogPosition(buttonRect: DOMRect): { x: number; y: number }
 
   return {
     x: left + CHATBOT_DIALOG_WIDTH / 2 - centerX,
-    y: top + CHATBOT_DIALOG_HEIGHT / 2 - centerY,
+    y: top + currentHeight / 2 - centerY,
   };
 }
 
-const styleClass = `ai-chatbot w-[64rem] h-[60rem] min-w-[19.8rem] min-h-[30rem] max-w-[calc(100vw-2.4rem)] max-h-[calc(100vh-2.4rem)] p-0 gap-0 overflow-hidden grid-rows-[auto_1fr] bg-transparent border-0`;
+const styleClass = `ai-chatbot w-[64rem] h-[calc(100vh-14rem)] min-w-[19.8rem] min-h-[30rem] max-w-[calc(100vw-2.4rem)] max-h-[calc(100vh-14rem)] p-0 gap-0 overflow-hidden grid-rows-[auto_1fr] bg-transparent border-0`;
 
 export interface Ltpa120Props {
   isButton?: boolean;
@@ -86,7 +91,6 @@ export const Ltpa120 = ({
   );
 
   const [isFullscreen, setIsFullscreen] = React.useState(false);
-  const [isSplit, setIsSplit] = React.useState(false);
 
   return (
     <Dialog
@@ -95,15 +99,12 @@ export const Ltpa120 = ({
         chatbotUtils.setRef(null);
         if (!nextOpen) {
           setIsFullscreen(false);
-          setIsSplit(false);
         }
         setOpen(nextOpen);
       }}
       modal={false}
       fullscreen={isFullscreen}
       onFullscreenChange={setIsFullscreen}
-      split={isSplit}
-      onSplitChange={setIsSplit}
       minimized={minimized}
       onMinimizeChange={onMinimizeChange}
     >
@@ -112,7 +113,10 @@ export const Ltpa120 = ({
           ref={buttonRef}
           type="button"
           aria-label={'AI 설계비서'}
-          className="max-w-[4rem] w-[4rem] h-[2.8rem] min-w-0 h-[2.8rem] relative shrink-0 flex justify-center"
+          className={cn(
+            'max-w-[4rem] w-[4rem] h-[2.8rem] min-w-0 h-[2.8rem] relative shrink-0 flex justify-center',
+            className
+          )}
           onClick={handleToggle}
         >
           <span
@@ -130,8 +134,8 @@ export const Ltpa120 = ({
         defaultPosition={defaultPosition}
         showCloseButton={true}
         showFullscreenButton={true}
-        showSplitButton={true}
         showOverlay={true}
+        allowResize={true}
         resizable={true}
         minimized={true}
         zIndex={1000}
@@ -142,24 +146,36 @@ export const Ltpa120 = ({
         closeButtonClassName="flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] text-white transition-colors hover:bg-[var(--color-primary-60)] [&>svg]:w-[1.4rem] [&>svg]:h-[1.4rem] [&>svg_path]:fill-white"
         minimizeButtonClassName="flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] text-white transition-colors hover:bg-[var(--color-primary-60)] [&>span]:!bg-[var(--color-gray-0)] [&>span]:!border-[var(--color-gray-0)]"
         fullscreenButtonClassName="flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] text-white transition-colors hover:bg-[var(--color-primary-60)] [&>svg]:w-[1.4rem] [&>svg]:h-[1.4rem] [&>svg_path]:stroke-white"
-        splitButtonClassName="flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] text-white transition-colors hover:bg-[var(--color-primary-60)] [&>svg]:w-[1.4rem] [&>svg]:h-[1.4rem] [&>svg_rect]:stroke-white [&>svg_path]:stroke-white"
-        className={cn(styleClass, className)}
+        className={cn(styleClass, className, isFullscreen ? 'bg-[#3c3e40]' : '')}
       >
         <DialogHeader className="!max-h-[4.9rem] h-[4.9rem] min-h-0 !p-0 items-end">
           <Grow
-            className="w-full relative bg-[rgba(0,0,0,0.75)] backdrop-blur-xs h-[4rem] rounded-t-[1rem] pl-3 pr-[12.8rem]"
+            className={cn(
+              'w-full relative backdrop-blur-xs h-[4rem] rounded-t-[1rem] pl-3 pr-[12.8rem]',
+              isFullscreen ? 'bg-transparent rounded-none' : 'bg-[rgba(0,0,0,0.75)]'
+            )}
             placement="se"
             gap={1}
           >
             <DialogTitle asChild>
-              <div className="leading-[1.1] bg-[linear-gradient(328deg,rgba(255,92,46,1)_9.4%,rgba(255,244,147,1)_97.24%)] bg-clip-text text-transparent break-keep text-[1.4rem] font-[900]">
+              <div
+                className={cn(
+                  'leading-[1.1] bg-[linear-gradient(328deg,rgba(255,92,46,1)_9.4%,rgba(255,244,147,1)_97.24%)] bg-clip-text text-transparent break-keep text-[1.4rem] font-[900]',
+                  isFullscreen ? 'rounded-none' : ''
+                )}
+              >
                 <b className="block pt-[1rem]">AI 설계비서</b>
                 <Image src={withPublicUrl('/images/chatbot-top.svg')} alt="" width={50} height={48} />
               </div>
             </DialogTitle>
           </Grow>
         </DialogHeader>
-        <div className="w-full h-full min-h-0 bg-white rounded-b-[1rem] overflow-hidden border border-[#404040] border-t-0!">
+        <div
+          className={cn(
+            'w-full h-full min-h-0 bg-white rounded-b-[1rem] overflow-hidden border border-[#404040] border-t-0!',
+            isFullscreen ? 'rounded-none' : ''
+          )}
+        >
           <iframe
             ref={(el) => chatbotUtils.setRef(el)}
             src="http://localhost:6006/hgi/chatbot.html"
