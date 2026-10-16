@@ -443,7 +443,7 @@ export function Ltpa35002a({
         editable: (params: EditableCallbackParams) => {
           return params.data?.isEditedField5 === true;
         },
-        cellEditor: 'agSelectCellEditor',
+        cellEditor: 'agRichSelectCellEditor',
         cellEditorParams: {
           values: ['05년만기', '20세만기', '100세만기', '무제한'],
         },
