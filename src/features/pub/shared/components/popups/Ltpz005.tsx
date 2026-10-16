@@ -90,11 +90,11 @@ const Ltpz005 = ({
                   <Typo tag="strong" variant={'body-lg'}>
                     한화 더 경증 간편건강보험Ⅱ(세만기형) 2604
                   </Typo>
-                  <Divider variant={'dot'} className="w-[0.3rem] h-[0.3rem] bg-[#6B7280] rounded-full" />
+                  <Divider variant={'dot'} className="bg-[#6B7280] rounded-full" />
                   <Typo tag="span" variant={'body-lg'} color={'gray'}>
                     납입 후 50%해약환급금지급형
                   </Typo>
-                  <Divider variant={'dot'} className="w-[0.3rem] h-[0.3rem] bg-[#6B7280] rounded-full" />
+                  <Divider variant={'dot'} className="bg-[#6B7280] rounded-full" />
                   <Typo tag="span" variant={'body-lg'} color={'gray'}>
                     간편고지형
                   </Typo>
