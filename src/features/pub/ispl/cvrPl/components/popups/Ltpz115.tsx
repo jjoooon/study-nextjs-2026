@@ -273,7 +273,7 @@ const Ltpz070 = () => {
                   tooltipShowDelay={0}
                 />
               </div>
-              <div className="ag-theme-alpine radio-selection inner-scroll" data-row={rowData.length}>
+              <div className="ag-theme-alpine inner-scroll" data-row={rowData3.length}>
                 <AgGridReact<DummyData3Type>
                   getRowId={(params) => String(params.data.id)}
                   rowData={rowData3}
@@ -284,12 +284,11 @@ const Ltpz070 = () => {
                     resizable: false,
                   }}
                   rowSelection={{
-                    mode: 'singleRow',
+                    mode: 'multiRow',
                     checkboxes: true,
                     enableClickSelection: true,
                   }}
                   selectionColumnDef={{
-                    headerName: '선택',
                     width: 30,
                     cellClass: 'text-center editable-cell',
                   }}
@@ -299,14 +298,8 @@ const Ltpz070 = () => {
               </div>
               {/* 260713 - 안내문구 전체 추가 */}
               <Gcol placement="ss" variant="box-info">
-                <Typo icon="info" variant="body-sm" className="text-[var(--color-danger-50)]">
-                  안내문구는 추후 확정 예정입니다.
-                </Typo>
                 <Typo icon="info" variant="body-sm">
                   복사대상의 &#39;종&#39;에 존재하는 담보만 복사합니다.
-                </Typo>
-                <Typo icon="info" variant="body-sm">
-                  추가고지형 플랜 존재하는 경우, 대표플랜으로 복사합니다.
                 </Typo>
               </Gcol>
             </Gcol>
