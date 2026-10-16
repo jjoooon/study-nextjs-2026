@@ -8,7 +8,12 @@ import type { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo } from 'react';
 import * as React from 'react';
-import { AgGridEmptyComponent, useDynamicColumnWidths, createTreeNameCellRenderer } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  useDynamicColumnWidths,
+  createTreeNameCellRenderer,
+  createTooltipValueGetter,
+} from '@aggrid';
 import { Grow, Typo, Grid } from '@atoms';
 import { Button } from '@uiux/Button';
 import {
@@ -237,6 +242,7 @@ const Ltpz020 = ({ open }: { open: boolean }) => {
         field: 'field2',
         flex: 1,
         cellRenderer: treeNameCellRenderer,
+        tooltipValueGetter: createTooltipValueGetter<DummyData2Type>({ field: 'field2' }),
       },
     ],
     []
