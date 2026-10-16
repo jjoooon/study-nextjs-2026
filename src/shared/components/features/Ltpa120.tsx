@@ -113,7 +113,10 @@ export const Ltpa120 = ({
           ref={buttonRef}
           type="button"
           aria-label={'AI 설계비서'}
-          className="max-w-[4rem] w-[4rem] h-[2.8rem] min-w-0 h-[2.8rem] relative shrink-0 flex justify-center"
+          className={cn(
+            'max-w-[4rem] w-[4rem] h-[2.8rem] min-w-0 h-[2.8rem] relative shrink-0 flex justify-center',
+            className
+          )}
           onClick={handleToggle}
         >
           <span
@@ -142,11 +145,14 @@ export const Ltpa120 = ({
         closeButtonClassName="flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] text-white transition-colors hover:bg-[var(--color-primary-60)] [&>svg]:w-[1.4rem] [&>svg]:h-[1.4rem] [&>svg_path]:fill-white"
         minimizeButtonClassName="flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] text-white transition-colors hover:bg-[var(--color-primary-60)] [&>span]:!bg-[var(--color-gray-0)] [&>span]:!border-[var(--color-gray-0)]"
         fullscreenButtonClassName="flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] text-white transition-colors hover:bg-[var(--color-primary-60)] [&>svg]:w-[1.4rem] [&>svg]:h-[1.4rem] [&>svg_path]:stroke-white"
-        className={cn(styleClass, className)}
+        className={cn(styleClass, className, isFullscreen ? 'bg-[#3c3e40]' : '')}
       >
         <DialogHeader className="!max-h-[4.9rem] h-[4.9rem] min-h-0 !p-0 items-end">
           <Grow
-            className="w-full relative bg-[rgba(0,0,0,0.75)] backdrop-blur-xs h-[4rem] rounded-t-[1rem] pl-3 pr-[12.8rem]"
+            className={cn(
+              'w-full relative backdrop-blur-xs h-[4rem] rounded-t-[1rem] pl-3 pr-[12.8rem]',
+              isFullscreen ? 'bg-transparent rounded-none' : 'bg-[rgba(0,0,0,0.75)]'
+            )}
             placement="se"
             gap={1}
           >
