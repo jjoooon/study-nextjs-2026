@@ -8,7 +8,12 @@ import type { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo } from 'react';
 import * as React from 'react';
-import { AgGridEmptyComponent, useDynamicColumnWidths, createTreeNameCellRenderer } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  useDynamicColumnWidths,
+  createTreeNameCellRenderer,
+  createTooltipValueGetter,
+} from '@aggrid';
 import { Grow, Typo, Grid } from '@atoms';
 import { Button } from '@uiux/Button';
 import {
@@ -133,44 +138,143 @@ const DummyData2: DummyData2Type[] = [
   {
     id: 1,
     field1: 'CLA23114',
-    field2: '나눔의 행복(상해사망)',
+    field2:
+      '나눔의 행복(상해사망)나눔의 행복(상해사망)나눔의 행복(상해사망)나눔의 행복(상해사망)나눔의 행복(상해사망)나눔의 행복(상해사망)나눔의 행복(상해사망)나눔의 행복(상해사망)나눔의 행복(상해사망)나눔의 행복(상해사망)나눔의 행복(상해사망)나눔의 행복(상해사망)나눔의 행복(상해사망)나눔의 행복(상해사망)나눔의 행복(상해사망)',
     field3: '',
     filePath: ['1'],
   },
   {
     id: 2,
-    field1: 'CLA23114',
-    field2: '나눔의 행복(상해사망)',
+    field1: 'CLA23115',
+    field2: '기본계약(상해후유장해 80%미만)',
     field3: '',
     filePath: ['2'],
   },
   {
     id: 3,
-    field1: 'CLA23114',
-    field2: '통합암(4대유사암제외) 진단비',
+    field1: 'CLA23116',
+    field2: '통합암(4대유사암제외) 진단비 세트',
     field3: '세트담보',
     filePath: ['3'],
   },
   {
     id: 4,
-    field1: '',
-    field2: '나눔의 행복(상해사망)',
+    field1: 'CLA23116-1',
+    field2: '통합암진단비(일반암)',
     field3: '',
     filePath: ['3', '3-1'],
   },
   {
     id: 5,
-    field1: '',
-    field2: '나눔의 행복(상해사망)',
+    field1: 'CLA23116-2',
+    field2: '유사암진단비(갑상선암/기타피부암/경계성종양/제자리암)',
     field3: '',
     filePath: ['3', '3-2'],
   },
   {
     id: 6,
-    field1: 'CLA23114',
-    field2: '나눔의 행복(상해사망)',
+    field1: 'CLA23116-3',
+    field2: '특정소액암진단비',
+    field3: '',
+    filePath: ['3', '3-3'],
+  },
+  {
+    id: 7,
+    field1: 'CLA23117',
+    field2: '표적항암약물허가치료비',
     field3: '',
     filePath: ['4'],
+  },
+  {
+    id: 8,
+    field1: 'CLA23118',
+    field2: '암직접치료입원일당(1-180일)',
+    field3: '',
+    filePath: ['5'],
+  },
+  {
+    id: 9,
+    field1: 'CLA23119',
+    field2: '뇌혈관질환 종합보장 세트',
+    field3: '세트담보',
+    filePath: ['6'],
+  },
+  {
+    id: 10,
+    field1: 'CLA23119-1',
+    field2: '뇌혈관질환진단비',
+    field3: '',
+    filePath: ['6', '6-1'],
+  },
+  {
+    id: 11,
+    field1: 'CLA23119-2',
+    field2: '뇌출혈진단비',
+    field3: '',
+    filePath: ['6', '6-2'],
+  },
+  {
+    id: 12,
+    field1: 'CLA23119-3',
+    field2: '뇌혈관질환수술비',
+    field3: '',
+    filePath: ['6', '6-3'],
+  },
+  {
+    id: 13,
+    field1: 'CLA23120',
+    field2: '허혈성심장질환 종합보장 세트',
+    field3: '세트담보',
+    filePath: ['7'],
+  },
+  {
+    id: 14,
+    field1: 'CLA23120-1',
+    field2: '허혈성심장질환진단비',
+    field3: '',
+    filePath: ['7', '7-1'],
+  },
+  {
+    id: 15,
+    field1: 'CLA23120-2',
+    field2: '급성심근경색증진단비',
+    field3: '',
+    filePath: ['7', '7-2'],
+  },
+  {
+    id: 16,
+    field1: 'CLA23121',
+    field2: '골절진단비(치아파절제외)',
+    field3: '',
+    filePath: ['8'],
+  },
+  {
+    id: 17,
+    field1: 'CLA23122',
+    field2: '깁스치료비(부목치료제외)',
+    field3: '',
+    filePath: ['9'],
+  },
+  {
+    id: 18,
+    field1: 'CLA23123',
+    field2: '질병수술비(1-5종)',
+    field3: '',
+    filePath: ['10'],
+  },
+  {
+    id: 19,
+    field1: 'CLA23124',
+    field2: '상해수술비(비급여포함)',
+    field3: '',
+    filePath: ['11'],
+  },
+  {
+    id: 20,
+    field1: 'CLA23125',
+    field2: '가족일상생활배상책임(대인/대물 배상한도 1억원)',
+    field3: '',
+    filePath: ['12'],
   },
 ];
 
@@ -237,6 +341,7 @@ const Ltpz020 = ({ open }: { open: boolean }) => {
         field: 'field2',
         flex: 1,
         cellRenderer: treeNameCellRenderer,
+        tooltipValueGetter: createTooltipValueGetter<DummyData2Type>({ field: 'field2' }),
       },
     ],
     []
