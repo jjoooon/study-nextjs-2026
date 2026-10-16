@@ -55,13 +55,13 @@ const Ltpz045 = () => {
               <FormTable variant="head" cols={['w-1', 'w-auto', 'w-1', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'설계번호'}>
-                    <Input value={'LA123456789012'} width={'quoteNo'} readOnly />
+                    <Input value={'LA123456789012'} width={'quoteNo'} readOnly variant="info" />
                     -
-                    <Input width={26} value={'1'} readOnly />
+                    <Input width={26} value={'1'} readOnly variant="info" />
                   </FormCell>
                   <FormCell title={'계약자'}>
-                    <Input width={84} value={'김한화'} readOnly />
-                    <Input width={114} value={'000000-0******'} readOnly />
+                    <Input width={84} value={'김한화'} readOnly variant="info" />
+                    <Input width={114} value={'000000-0******'} readOnly variant="info" />
                   </FormCell>
                 </FormRow>
               </FormTable>

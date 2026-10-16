@@ -232,8 +232,8 @@ const Ltpz022 = () => {
         <DialogSection className="grid-rows-[auto_1fr] overflow-x-hidden">
           {/* 상단: 설계 기본 정보 표시 영역 */}
           <Grow className="w-full" variant="box-round" placement={'ss'}>
-            <FormTable variant={'head'}>
-              <FormRow>
+            <FormTable variant={'head'} cols={['w-1', 'w-auto', 'w-1', 'w-auto']}>
+              <FormRow className="gap-0">
                 <FormCell
                   title={'설계번호'}
                   className="whitespace-nowrap "
@@ -250,8 +250,8 @@ const Ltpz022 = () => {
                   <Input aria-label="" width={220} value={'시그니처여성건강(4종/올인원플랜)'} readOnly variant="info" />
                   <Input aria-label="" width={80} value={''} readOnly variant="info" />
                 </FormCell>
-                <FormCell title={'플랜명'} className="whitespace-nowrap">
-                  <Input aria-label="" value={'100세만기 월납 / 20년납'} readOnly variant="info" />
+                <FormCell title={'플랜명'} className="whitespace-nowrap pr-3">
+                  <Input width={'full'} aria-label="" value={'100세만기 월납 / 20년납 '} readOnly variant="info" />
                 </FormCell>
               </FormRow>
             </FormTable>

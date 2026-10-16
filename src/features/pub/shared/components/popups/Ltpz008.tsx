@@ -235,12 +235,12 @@ const Ltpz008 = () => {
             <FormTable caption="설계번호" variant="head" cols={['w-[1rem]', 'w-auto', 'w-[1rem]', 'w-auto']}>
               <FormRow className="grid grid-cols-[1fr_auto] w-full">
                 <FormCell title={'상품명'} className="shrink-0" tdClassName="flex-1">
-                  <Input value={'한화 시그니처 여성 검강보험 3.0 2504 '} readOnly />
+                  <Input value={'한화 시그니처 여성 검강보험 3.0 2504 '} readOnly variant="info" />
                 </FormCell>
                 <FormCell title={'설계번호'}>
-                  <Input aria-label="" width={'quoteNo'} value={'LA123456789012'} readOnly />
+                  <Input aria-label="" width={'quoteNo'} value={'LA123456789012'} readOnly variant="info" />
                   -
-                  <Input aria-label="" width={30} value={'1'} readOnly />
+                  <Input aria-label="" width={30} value={'1'} readOnly variant="info" />
                 </FormCell>
               </FormRow>
             </FormTable>

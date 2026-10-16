@@ -57,9 +57,9 @@ const Ltpz016 = () => {
                   title={'설계번호'}
                   tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full"
                 >
-                  <Input aria-label="" width={'quoteNo'} value={'LA123456789012'} readOnly />
+                  <Input aria-label="" width={'quoteNo'} value={'LA123456789012'} readOnly variant="info" />
                   -
-                  <Input aria-label="" width={26} value={'1'} readOnly />
+                  <Input aria-label="" width={26} value={'1'} readOnly variant="info" />
                   <Input aria-label="" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} variant="info" readOnly />
                 </FormCell>
               </FormRow>

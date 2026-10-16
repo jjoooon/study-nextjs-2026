@@ -109,9 +109,9 @@ const Ltpz005 = ({
                 <Typo tag="strong" className="w-[6rem]" variant={'body-lg'} color={'blueGray'}>
                   설계번호
                 </Typo>
-                <Input width={'quoteNo'} value={'LA123456789012'} readOnly />
+                <Input width={'quoteNo'} value={'LA123456789012'} readOnly variant="info" />
                 -
-                <Input width={26} value={'1'} readOnly />
+                <Input width={26} value={'1'} readOnly variant="info" />
               </Grow>
             </Grow>
           </Gcol>

@@ -395,16 +395,22 @@ const Ltpz012 = () => {
                   tdClassName="grid grid-cols-[auto_minmax(20rem,1fr)] gap-1 w-full"
                   className="whitespace-nowrap"
                 >
-                  <Input aria-label="설계번호" width={120} value={'LA123456789012'} readOnly />
-                  <Input aria-label="상품명" width={'full'} value={'한화 시그니쳐 여성 건강보험4.0'} readOnly />
+                  <Input aria-label="설계번호" width={120} value={'LA123456789012'} readOnly variant="info" />
+                  <Input
+                    aria-label="상품명"
+                    width={'full'}
+                    value={'한화 시그니쳐 여성 건강보험4.0'}
+                    readOnly
+                    variant="info"
+                  />
                 </FormCell>
                 <FormCell
                   title={'피보험자'}
                   tdClassName="grid grid-cols-[auto_auto] gap-1"
                   className="whitespace-nowrap"
                 >
-                  <Input aria-label="피보험자명" width={80} value={'홍길순'} readOnly />
-                  <Input aria-label="생년월일" width={120} value={'000000-0******'} readOnly />
+                  <Input aria-label="피보험자명" width={80} value={'홍길순'} readOnly variant="info" />
+                  <Input aria-label="생년월일" width={120} value={'000000-0******'} readOnly variant="info" />
                 </FormCell>
               </FormRow>
             </FormTable>
