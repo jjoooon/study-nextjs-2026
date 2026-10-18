@@ -604,7 +604,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
           {isFilterOptionOpen && (
             <Grid
               variant="box-round-b"
-              className="absolute top-[calc(100%-.6rem)] left-0 w-full bg-[var(--color-blue-gray-10)] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] pt-2.5 pb-[2.5rem] grid-cols-[minmax(29rem,2fr)_minmax(30rem,2fr)_3fr] gap-[2.4rem] z-10 pl-[6.7rem]! pr-[15rem]! justify-stretch! "
+              className="absolute top-[calc(100%-.6rem)] left-0 w-full bg-[var(--color-blue-gray-10)] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] pt-2.5 pb-[2.5rem] grid-cols-[minmax(29rem,4fr)_minmax(30rem,4fr)_5fr] gap-[2.4rem] z-10 pl-[6.7rem]! pr-[15rem]! justify-stretch! "
               placement="ss"
             >
               {/* 상품특징 */}
