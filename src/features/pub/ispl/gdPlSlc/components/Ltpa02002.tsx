@@ -10,6 +10,7 @@ import Image from 'next/image';
 import * as React from 'react';
 import { useState } from 'react';
 import { AiBotIcon } from '@/shared/components/features/AiBotIcon';
+import { cn } from '@/shared/lib/shadcn/utils';
 import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
@@ -1140,7 +1141,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
       ) : (
         <>
           <Grid
-            className="w-[calc(100vw + 2rem)] h-full grid-rows-[minmax(0,1fr)] grid-cols-[minmax(73rem,2fr)_minmax(41rem,1fr)] gap-4 items-stretch overflow-hidden bg-[var(--color-gray-5)] p-[2rem] "
+            className="w-[calc(100vw + 2rem)] h-full grid-rows-[minmax(0,1fr)] grid-cols-[minmax(73rem,2fr)_minmax(41rem,1fr)] gap-4 items-stretch overflow-hidden bg-[var(--color-gray-5)] p-[2rem]"
             gap={3}
           >
             {/* 리스트 */}
@@ -1638,6 +1639,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
               <ArrowNext size={16} />
             </Button>
           </Grow>
+          {isFilterOptionOpen && <div className="absolute w-full h-full top-0 left-0 z-10 backdrop-blur-xs"></div>}
         </>
       )}
       <style>{`
