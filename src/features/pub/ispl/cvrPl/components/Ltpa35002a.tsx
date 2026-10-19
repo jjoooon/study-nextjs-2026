@@ -362,7 +362,8 @@ export function Ltpa35002a({
         field: 'insuredAmount',
         flex: 1,
         minWidth: attributeColumnWidth(76),
-        cellClass: 'text-right editable-cell [&_input]:text-right',
+        cellClass: 'text-right editable-cell [&_input]:text-right [&_input]:tracking-normal',
+        valueFormatter: numberValueFormatter<AgGridRow>,
         cellClassRules: {
           'style-select': (params) => !!params.data?.isSelectedInsuredAmount,
           isStandardGroup: (params) => !!(params.data?.isStandard?.group && !params.data?.isStandard?.edit),
@@ -385,10 +386,10 @@ export function Ltpa35002a({
               },
             };
           } else {
-            const baseOptions = ['1천만원', '2천만원', '3천만원', '5천만원', '1억원'];
+            const baseOptions = [1000, 2000, 3000, 5000, 10000];
             return {
-              component: 'agSelectCellEditor',
-              params: { values: baseOptions },
+              component: 'agRichSelectCellEditor',
+              params: { values: baseOptions, valueListMaxWidth: 80 },
             };
           }
         },
@@ -433,12 +434,12 @@ export function Ltpa35002a({
         headerName: '만기',
         field: 'field5',
         flex: 1,
-        minWidth: attributeColumnWidth(cellWidth[4]),
+        minWidth: attributeColumnWidth(88),
         // width: attributeColumnWidth[7],
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           const base = 'tracking-tighter';
-          return params.data?.isEditedField5 === true ? `${base} editable-cell` : `${base} no-edited`;
+          return params.data?.isEditedField5 === true ? `${base} editable-cell px-0` : `${base} no-edited`;
         },
         editable: (params: EditableCallbackParams) => {
           return params.data?.isEditedField5 === true;
@@ -446,6 +447,7 @@ export function Ltpa35002a({
         cellEditor: 'agRichSelectCellEditor',
         cellEditorParams: {
           values: ['05년만기', '20세만기', '100세만기', '무제한'],
+          valueListMaxWidth: 90,
         },
         cellRenderer: getExpiryRenderer('left'),
       },
@@ -453,18 +455,19 @@ export function Ltpa35002a({
         headerName: '납기',
         field: 'field6',
         flex: 1,
-        minWidth: attributeColumnWidth(cellWidth[5]),
+        minWidth: attributeColumnWidth(68),
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           const base = 'tracking-tighter';
-          return params.data?.isEditedField6 === true ? `${base} editable-cell` : `${base} no-edited`;
+          return params.data?.isEditedField6 === true ? `${base} editable-cell px-0` : `${base} no-edited`;
         },
         editable: (params: EditableCallbackParams) => {
           return params.data?.isEditedField6 === true;
         },
-        cellEditor: 'agSelectCellEditor',
+        cellEditor: 'agRichSelectCellEditor',
         cellEditorParams: {
           values: ['5년납', '10년납', '15년납', '20년납', '25년납', '30년납', '35년납', '전기납'],
+          valueListMaxWidth: 90,
         },
         cellRenderer: getExpiryRenderer('left'),
       },

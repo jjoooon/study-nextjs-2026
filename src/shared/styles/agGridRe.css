@@ -381,7 +381,7 @@
 .ag-cell-wrapper,
 .ag-cell-value {
   min-height: 100%;
-  letter-spacing: -0.08rem;
+  letter-spacing: -0.05rem;
 }
 
 /* 대상 컬럼: 2줄 셀 행 높이 고정 */
@@ -881,7 +881,7 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 }
 
 .isStandard:after {
-  content: '기준담보의 가입금액을 변경하세요.';
+  content: '기준담보의 가입금액을 변경하세요.' !important;
   display: none;
   align-items: center;
   position: absolute;
@@ -1068,14 +1068,49 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   overflow: visible;
 } */
 
+/* ==========================================================================
+ * agSelectCellEditor 기준: agRichSelectCellEditor 디자인 1:1 통일 스타일
+ * ========================================================================== */
+
+/* 1. 드롭다운 팝업 컨테이너 (배경, 테두리, 그림자, 라운딩, 스크롤바, 콘텐츠 크기 맞춤) */
+.ag-popup-child:has(.ag-select-list),
+.ag-popup-child:has(.ag-rich-select-popup),
 .ag-select-list,
 .ag-rich-select-popup,
 .v109 .ag-select-list,
 .v109 .ag-rich-select-popup {
-  overflow-y: auto !important; /* 항목이 많으면 스크롤 생성 */
+  background-color: #ffffff !important;
+  border: 0.1rem solid #cbd5e1 !important;
+  border-radius: 0.4rem !important;
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.16) !important;
+  z-index: 99999 !important;
+  max-height: 18rem !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  width: max-content !important;
+  min-width: 8.5rem !important; /* 브라우저가 유효하게 인식하는 최소 8.5rem(85px) 보장 */
   letter-spacing: 0 !important;
-  min-width: max-content !important; /* 셀이 좁아도 옵션창 텍스트 크기에 맞춰 자동으로 최소 너비 확장 */
   white-space: nowrap !important;
+  box-sizing: border-box !important;
+  padding: 0.2rem 0 !important;
+}
+
+/* 2. agRichSelect 내부 가상 뷰포트/컨테이너를 static flow로 통일하여 max-content 계산 일치 */
+.ag-rich-select-popup .ag-rich-select-list,
+.ag-rich-select-popup .ag-virtual-list-viewport {
+  width: 100% !important;
+  height: auto !important;
+  overflow: visible !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.ag-rich-select-popup .ag-virtual-list-container {
+  height: auto !important;
+  min-height: auto !important;
+  width: 100% !important;
+  position: relative !important;
 }
 
 /* AG-Grid 선택 드롭다운 팝업 목록 전용 개별 스크롤바 스타일 */
@@ -1083,8 +1118,8 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 .ag-rich-select-popup::-webkit-scrollbar,
 .v109 .ag-select-list::-webkit-scrollbar,
 .v109 .ag-rich-select-popup::-webkit-scrollbar {
-  width: 1.5rem !important;
-  height: 1.5rem !important;
+  width: 1.2rem !important;
+  height: 1.2rem !important;
 }
 
 .ag-select-list::-webkit-scrollbar-track,
@@ -1101,7 +1136,7 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 .v109 .ag-rich-select-popup::-webkit-scrollbar-thumb {
   background: #c1c1c1;
   border-radius: 2rem;
-  border: 0.6rem solid #ffffff;
+  border: 0.4rem solid #ffffff;
 }
 
 .ag-select-list::-webkit-scrollbar-thumb:hover,
@@ -1109,17 +1144,85 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 .v109 .ag-select-list::-webkit-scrollbar-thumb:hover,
 .v109 .ag-rich-select-popup::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
-  border: 0.4rem solid #ffffff;
+  border: 0.3rem solid #ffffff;
 }
 
+/* 3. 옵션 아이템 행 (agSelectCellEditor의 .ag-select-list-item 기준으로 1:1 일치) */
 .ag-select-list-item,
 .ag-rich-select-row,
 .ag-list-item {
-  white-space: nowrap !important;
-  width: auto !important;
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  width: 100% !important;
+  min-width: max-content !important;
+  height: 2.6rem !important;
+  min-height: 2.6rem !important;
+  line-height: 2.6rem !important;
+  display: flex !important;
+  align-items: center !important;
   font-size: 1.2rem !important;
-  padding-left: 0.4rem !important;
-  padding-right: 0.8rem !important; /* 우측 텍스트 여유 패딩 확보 */
+  color: #1e293b !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  text-overflow: clip !important;
+  padding-left: 0.8rem !important;
+  padding-right: 1.8rem !important; /* 1.2rem 스크롤바 뒤로 텍스트가 숨지 않도록 충분한 우측 안전 마진 확보 */
+}
+
+/* ag-rich-select-row 내부 자식 요소의 불필요한 패딩/마진 초기화 */
+.ag-rich-select-row * {
+  font-size: 1.2rem !important;
+  letter-spacing: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* 4. 옵션 호버 및 선택 상태 (agSelectCellEditor 기준 일치) */
+.ag-select-list-item:hover,
+.ag-select-list-item.ag-selected,
+.ag-rich-select-row:hover,
+.ag-rich-select-row.ag-rich-select-row-selected,
+.ag-rich-select-row.ag-selected,
+.ag-list-item:hover,
+.ag-list-item.ag-list-item-selected,
+.v109 .ag-select-list-item:hover,
+.v109 .ag-select-list-item.ag-selected,
+.v109 .ag-rich-select-row:hover,
+.v109 .ag-rich-select-row.ag-rich-select-row-selected {
+  background-color: #f0f7ff !important;
+  background: #f0f7ff !important;
+  color: #006ff2 !important;
+  font-weight: 500 !important;
+}
+
+/* 5. 셀 편집 중인 인라인 에디터 박스 스타일 일치 */
+.ag-cell.ag-cell-inline-editing .ag-rich-select,
+.ag-cell.ag-cell-inline-editing .ag-cell-editor.ag-select-cell-editor,
+.ag-cell.ag-cell-inline-editing select {
+  height: 100% !important;
+  min-height: 100% !important;
+  border: transparent !important;
+  border-radius: 0.4rem !important;
+  /* background-color: #ffffff !important; */
+  font-size: 1.2rem !important;
+  letter-spacing: 0 !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.ag-cell.ag-cell-inline-editing .ag-rich-select-value {
+  padding-left: 0.3rem !important;
+  padding-right: 0rem !important;
+  font-size: 1.2rem !important;
+  letter-spacing: -0.04rem !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
 }
 .ltpz012-final-grid .ag-cell b {
   font-weight: 700;
@@ -1625,11 +1728,12 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 .ag-cell .editor-select {
   position: relative !important;
 }
-
+.ag-cell-focus.ag-cell-inline-editing {
+  padding:0 0.2rem !important;
+}
 .ag-cell.ag-select-cell:not(.ag-cell-inline-editing)::after,
 .ag-cell.select-cell:not(.ag-cell-inline-editing)::after,
-.ag-cell.cell-select:not(.ag-cell-inline-editing)::after,
-.ag-cell.style-select:not(.ag-cell-inline-editing)::after {
+.ag-cell.cell-select:not(.ag-cell-inline-editing)::after {
   content: '';
   position: absolute;
   right: 0.6rem;

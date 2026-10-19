@@ -284,7 +284,7 @@ export function Ltpa35002b({
         field: 'insuredAmount',
         flex: 1,
         minWidth: attributeColumnWidth(60),
-        cellClass: 'text-right editable-cell [&_input]:text-right',
+        cellClass: 'text-right editable-cell [&_input]:text-right tooltip-on',
         cellClassRules: {
           'style-select': (params) => !!params.data?.isSelectedInsuredAmount,
           isStandardGroup: (params) => !!(params.data?.isStandard?.group && !params.data?.isStandard?.edit),
@@ -304,10 +304,10 @@ export function Ltpa35002b({
               },
             };
           } else {
-            const baseOptions = ['1천만원', '2천만원', '3천만원', '5천만원', '1억원'];
+            const baseOptions = [1000, 2000, 3000, 5000, 10000];
             return {
-              component: 'agSelectCellEditor',
-              params: { values: baseOptions },
+              component: 'agRichSelectCellEditor',
+              params: { values: baseOptions, valueListMaxWidth: 80 },
             };
           }
         },
@@ -375,7 +375,7 @@ export function Ltpa35002b({
             editable: (params: EditableCallbackParams) => {
               return params.data?.isEditedField5 === true;
             },
-            cellEditor: 'agSelectCellEditor',
+            cellEditor: 'agRichSelectCellEditor',
             cellEditorParams: {
               values: [
                 '01개월',
@@ -392,6 +392,7 @@ export function Ltpa35002b({
                 '12개월',
                 '무제한',
               ],
+              valueListMaxWidth: 90,
             },
             cellRenderer: getExpiryRenderer('left'),
           },
@@ -408,9 +409,10 @@ export function Ltpa35002b({
             editable: (params: EditableCallbackParams) => {
               return params.data?.isEditedField5 === true;
             },
-            cellEditor: 'agSelectCellEditor',
+            cellEditor: 'agRichSelectCellEditor',
             cellEditorParams: {
               values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
+              valueListMaxWidth: 80,
             },
             cellRenderer: getExpiryRenderer('left'),
           },
@@ -432,9 +434,10 @@ export function Ltpa35002b({
             editable: (params: EditableCallbackParams) => {
               return params.data?.isEditedField6 === true;
             },
-            cellEditor: 'agSelectCellEditor',
+            cellEditor: 'agRichSelectCellEditor',
             cellEditorParams: {
               values: ['5년', '10년', '15년', '20년', '25년', '30년', '35년', '전기납'],
+              valueListMaxWidth: 80,
             },
             cellRenderer: getExpiryRenderer('left'),
           },

@@ -172,7 +172,8 @@ export function groupEditableButtonRenderer<
   },
 >(
   getExpiryRenderer: (align: 'left' | 'center' | 'right') => (params: ICellRendererParams<T>) => ReactNode,
-  numberValueFormatter: (params: ICellRendererParams<T>) => ReactNode
+  numberValueFormatter: (params: ICellRendererParams<T>) => ReactNode,
+  align: 'left' | 'center' | 'right' = 'right'
 ) {
   const Renderer = (params: ICellRendererParams<T>) => {
     const isSelectedInsuredAmount = params.data?.isSelectedInsuredAmount ?? false;
@@ -218,7 +219,7 @@ export function groupEditableButtonRenderer<
       );
     }
 
-    return isSelectedInsuredAmount ? getExpiryRenderer('left')(params) : numberValueFormatter(params);
+    return isSelectedInsuredAmount ? getExpiryRenderer(align)(params) : numberValueFormatter(params);
   };
 
   Renderer.displayName = 'GroupEditableButtonRenderer';
