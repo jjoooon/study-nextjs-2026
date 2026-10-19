@@ -1554,59 +1554,53 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
           closeButton={false}
           onOpenAutoFocus={(e) => e.preventDefault()} // 팝오버 오픈 시 인풋 포커스 유지
         >
-          <Gcol className="items-center" gap={1.5} placement="ss">
-            <Grow gap={1.5} placement="ss">
-              <Button
-                aria-label={'금액 차감'}
-                variant={'outlined'}
-                only={'icon'}
-                size={'md'}
-                color={'gray'}
-                onMouseDown={(e) => e.stopPropagation()} // 클릭 시 그리드 편집 모드 유지
-                onClick={() => updateValue(clamp(valueRef.current - step))}
-              >
-                <MinusIcon color={'var(--color-primary-50)'} />
-              </Button>
-              <Input
-                size={'md'}
-                width={'auto'}
-                value={popoverDisplayValue}
-                after={popoverSuffix}
-                readOnly
-                align="right"
-              />
-              <Button
-                aria-label={'금액 추가'}
-                variant={'outlined'}
-                only={'icon'}
-                size={'md'}
-                color={'gray'}
-                onMouseDown={(e) => e.stopPropagation()} // 클릭 시 그리드 편집 모드 유지
-                onClick={() => updateValue(clamp(valueRef.current + step))}
-              >
-                <PlusIcon color={'var(--color-primary-50)'} />
-              </Button>
-            </Grow>
-            <Grow className="w-full">
-              <Button
-                size={'md'}
-                color={'secondary'}
-                onMouseDown={(e) => e.stopPropagation()} // 클릭 시 그리드 편집 모드 유지
-                onClick={() => updateValue(minCell)}
-                className="w-full"
-              >
-                {minButtonLabel}
-              </Button>
-              {maxButtonLabel && (
+          <Gcol placement="ss">
+            <Grow className="w-full" gap={1} placement="ss">
+              <Gcol gap={1.5} className="w-auto" placement="ss">
+                <Button
+                  aria-label={'금액 추가'}
+                  variant={'outlined'}
+                  only={'icon'}
+                  size={'md'}
+                  color={'gray'}
+                  onMouseDown={(e) => e.stopPropagation()} // 클릭 시 그리드 편집 모드 유지
+                  onClick={() => updateValue(clamp(valueRef.current + step))}
+                >
+                  <PlusIcon color={'var(--color-primary-50)'} />
+                </Button>
+                <Button
+                  aria-label={'금액 차감'}
+                  variant={'outlined'}
+                  only={'icon'}
+                  size={'md'}
+                  color={'gray'}
+                  onMouseDown={(e) => e.stopPropagation()} // 클릭 시 그리드 편집 모드 유지
+                  onClick={() => updateValue(clamp(valueRef.current - step))}
+                >
+                  <MinusIcon color={'var(--color-primary-50)'} />
+                </Button>
+              </Gcol>
+              <Gcol gap={1.5} className="w-full flex-1">
+                {maxButtonLabel && (
+                  <Button
+                    size={'md'}
+                    onMouseDown={(e) => e.stopPropagation()} // 클릭 시 그리드 편집 모드 유지
+                    onClick={() => updateValue(maxCell)}
+                    className="w-full"
+                  >
+                    {maxButtonLabel}
+                  </Button>
+                )}
                 <Button
                   size={'md'}
+                  color={'secondary'}
                   onMouseDown={(e) => e.stopPropagation()} // 클릭 시 그리드 편집 모드 유지
-                  onClick={() => updateValue(maxCell)}
+                  onClick={() => updateValue(minCell)}
                   className="w-full"
                 >
-                  {maxButtonLabel}
+                  {minButtonLabel}
                 </Button>
-              )}
+              </Gcol>
             </Grow>
             <Typo icon="ref" color="gray" className="mt-1">
               가입금액 입력단위: {unitLabel}

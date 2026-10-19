@@ -101,6 +101,18 @@ import { Input } from '@uiux/Input';
               </Grow>
             </Gcol>
 
+            <h2 className="mt-8">Masking (개인정보 및 비밀번호 마스킹)</h2>
+            <p>
+              masking prop을 전달하면 우측에 눈 아이콘 버튼이 노출되며, 버튼 클릭 시 onMaskToggle 콜백을 통해
+              비동기로 원본 정보(API 조회)를 받아와 갱신하거나 다시 원래 마스킹 상태로 전환할 수 있습니다.
+            </p>
+            <Gcol
+              gap={4}
+              className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
+            >
+              <MaskingDocExample />
+            </Gcol>
+
             <h2 className="mt-8">Focus Control (Ref)</h2>
             <p>버튼 클릭 시 ref.current.focus()를 호출하여 Input에 포커스를 부여할 수 있습니다.</p>
             <Gcol
@@ -138,6 +150,29 @@ import { Input } from '@uiux/Input';
       control: { type: 'select' },
       options: ['full', 'auto', 'quoteNo', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'],
       table: { category: '스타일 props' },
+    },
+    masking: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+      description: '마스킹 토글 버튼(눈 아이콘) 표시 여부',
+    },
+    isMasked: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+      description: '외부 제어용 마스킹 상태 (true: 숨김, false: 표시)',
+    },
+    defaultMasked: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+      description: '비제어 초기 마스킹 상태 여부 (기본: true)',
+    },
+    isMaskLoading: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+      description: '마스킹 데이터 조회/갱신 중 로딩 상태 표시 여부',
+    },
+    onMaskToggle: {
+      table: { disable: true },
     },
     required: {
       control: { type: 'boolean' },
@@ -235,6 +270,8 @@ import { Input } from '@uiux/Input';
     errorPs: 'bl',
     commaAmount: false,
     clear: false,
+    masking: false,
+    defaultMasked: true,
     dateColor: false,
     align: 'left',
     restrictChars: true,
@@ -308,4 +345,72 @@ function DeclarativeFocusDocExample() {
 export const FocusWithProp: Story = {
   name: 'isFocused Prop으로 포커스 제어 (State)',
   render: () => <DeclarativeFocusDocExample />,
+};
+
+function MaskingDocExample() {
+  // 시나리오 1: 마스킹 해제 시 서버 API 등을 통해 원본 value를 받아와 갱신하고, 재마스킹 시 다시 원래 정보를 보여주는 콜백 패턴
+  const maskedResidentNo = '900101-1******';
+  const originalResidentNo = '900101-1234567';
+  const [residentVal, setResidentVal] = React.useState(maskedResidentNo);
+  const [isResidentLoading, setIsResidentLoading] = React.useState(false);
+
+  const handleResidentMaskToggle = (nextMasked: boolean) => {
+    setIsResidentLoading(true);
+    // 모의 API 비동기 조회 (0.4초 후 데이터 갱신)
+    setTimeout(() => {
+      setIsResidentLoading(false);
+      // nextMasked === false: 마스킹 해제 요청 -> 원본 정보 받아와서 표시
+      // nextMasked === true: 마스킹 재적용 요청 -> 원래 마스킹 정보로 복구
+      setResidentVal(nextMasked ? maskedResidentNo : originalResidentNo);
+    }, 400);
+  };
+
+  // 시나리오 2: 일반 비밀번호 입력 필드 마스킹 토글 (type="password" + clear)
+  const [passwordVal, setPasswordVal] = React.useState('123456!!!!!');
+
+  return (
+    <Grow gap={8} className="flex-wrap">
+      <div className="flex flex-col gap-2 min-w-[24rem]">
+        <span className="text-[1.2rem] font-bold text-gray-800">
+          개인정보 API 재조회 콜백 연동 (onMaskToggle)
+        </span>
+        <Input
+          masking
+          isMaskLoading={isResidentLoading}
+          value={residentVal}
+          readOnly
+          onMaskToggle={handleResidentMaskToggle}
+          onChange={(e) => setResidentVal(e.target.value)}
+          placeholder="주민등록번호"
+          width="md"
+        />
+        <span className="text-[1.1rem] text-gray-500">
+          * 눈 버튼 클릭 시 API 호출을 통해 원본/마스킹 value가 갱신됩니다.
+        </span>
+      </div>
+
+      <div className="flex flex-col gap-2 min-w-[24rem]">
+        <span className="text-[1.2rem] font-bold text-gray-800">
+          비밀번호 입력 마스킹 (type="password" + clear)
+        </span>
+        <Input
+          masking
+          type="password"
+          clear
+          value={passwordVal}
+          onChange={(e) => setPasswordVal(e.target.value)}
+          placeholder="비밀번호 입력"
+          width="md"
+        />
+        <span className="text-[1.1rem] text-gray-500">
+          * type="password" 지정 시 텍스트/비밀번호 모드가 자동 토글됩니다.
+        </span>
+      </div>
+    </Grow>
+  );
+}
+
+export const Masking: Story = {
+  name: '마스킹 토글 및 콜백 연동 (masking prop)',
+  render: () => <MaskingDocExample />,
 };

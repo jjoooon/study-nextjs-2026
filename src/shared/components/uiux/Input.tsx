@@ -3,6 +3,7 @@
  */
 'use client';
 
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import * as React from 'react';
 
@@ -11,7 +12,7 @@ import { cn } from '@/shared/lib/shadcn/utils';
 import { UIUXsize } from '@/shared/types/uiTypes';
 import { format } from '@/shared/utils/formatUtils';
 import { ErrorMsg } from '@common/ErrorMsg';
-import { InputClearIcon } from '@icons';
+import { InputClearIcon, MaskingOff, MaskingOn } from '@icons';
 import { Button } from '@uiux/Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
@@ -30,6 +31,16 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   /** 숫자를 천 단위 콤마로 표시, onChange에서 formattedValue도 함께 전달 */
   commaAmount?: boolean;
   clear?: boolean;
+  /** 마스킹 토글 버튼(눈 아이콘) 표시 여부 */
+  masking?: boolean;
+  /** 외부에서 마스킹 상태를 직접 제어할 때 사용 (true: 마스킹/숨김 상태, false: 마스킹 해제/표시 상태) */
+  isMasked?: boolean;
+  /** 비제어 마스킹 상태의 초기 마스킹(숨김) 여부 @default true */
+  defaultMasked?: boolean;
+  /** 마스킹 토글 버튼 클릭 시 호출되는 콜백. 다음 마스킹 상태(nextMasked)를 전달하여 개발자가 API 호출 등으로 value를 갱신할 수 있도록 지원 */
+  onMaskToggle?: (nextMasked: boolean, e: React.MouseEvent<HTMLButtonElement>) => void;
+  /** 마스킹 데이터 조회/갱신 중 로딩 인디케이터 표시 여부 @default false */
+  isMaskLoading?: boolean;
   /** 날짜(YYYY-MM-DD 등)의 요일별 텍스트 색상 자동 적용 여부 (토: 파랑, 일: 빨강) */
   dateColor?: boolean;
   /** 외부에서 포커스 상태를 강제 지정할 때 사용 (commaAmount 표시 전환 등) */
@@ -166,6 +177,11 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
     disabled = false,
     commaAmount = false,
     clear = false,
+    masking = false,
+    isMasked: isMaskedProp,
+    defaultMasked = true,
+    onMaskToggle,
+    isMaskLoading = false,
     dateColor = false,
     forceFocused = false,
     restrictChars = true,
@@ -187,7 +203,29 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
 ) {
   const [focused, setFocused] = useState(false);
   const [isErrorDismissed, setIsErrorDismissed] = useState(false);
+  const isControlledMask = typeof isMaskedProp === 'boolean';
+  const [internalMasked, setInternalMasked] = useState(defaultMasked);
+  const currentMasked = isControlledMask ? isMaskedProp : internalMasked;
   const inputRef = React.useRef<HTMLInputElement | null>(null);
+
+  React.useEffect(() => {
+    if (isControlledMask) {
+      setInternalMasked(isMaskedProp);
+    }
+  }, [isControlledMask, isMaskedProp]);
+
+  const resolvedType = type === 'password' ? (currentMasked ? 'password' : 'text') : type;
+  const showMaskToggle = Boolean(masking && !disabled);
+
+  const handleToggleMask = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (isMaskLoading) return;
+    const nextMasked = !currentMasked;
+    if (!isControlledMask) {
+      setInternalMasked(nextMasked);
+    }
+    onMaskToggle?.(nextMasked, e);
+  };
 
   React.useImperativeHandle(ref, () => inputRef.current as HTMLInputElement, []);
   const focusStartValueRef = React.useRef<string>('');
@@ -447,7 +485,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
   const renderSingleInput = (
     <input
       ref={inputRef}
-      type={type}
+      type={resolvedType}
       data-slot="input"
       className={cn(
         variantStyles[variant],
@@ -459,8 +497,14 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
             : align === 'center'
               ? 'text-center'
               : 'text-left',
-        'w-full min-w-0 box-border [:focus]:pl-[0.7rem]',
-        showClearButton ? 'pr-[2rem] [:focus]:pr-[2rem]' : '[:focus]:pr-[0.7rem]'
+        'w-full min-w-0 box-border [:focus]:pl-[0.7rem] [&::-ms-reveal]:hidden [&::-ms-clear]:hidden',
+        showClearButton && showMaskToggle
+          ? 'pr-[4.4rem] [:focus]:pr-[4.4rem]'
+          : showClearButton
+            ? 'pr-[2rem] [:focus]:pr-[2rem]'
+            : showMaskToggle
+              ? 'pr-[2.4rem] [:focus]:pr-[2.4rem]'
+              : '[:focus]:pr-[0.7rem]'
       )}
       required={required}
       readOnly={readOnly}
@@ -500,12 +544,19 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                 <TooltipTrigger asChild>
                   <input
                     ref={inputRef}
-                    type={type}
+                    type={resolvedType}
                     data-slot="input"
                     className={cn(
                       align === 'right' ? 'text-right' : align === 'center' ? 'text-center' : 'text-left',
                       dateColorStyle,
-                      showClearButton && 'pr-[2.2rem]'
+                      '[&::-ms-reveal]:hidden [&::-ms-clear]:hidden',
+                      showClearButton && showMaskToggle
+                        ? 'pr-[4.4rem]'
+                        : showClearButton
+                          ? 'pr-[2.2rem]'
+                          : showMaskToggle
+                            ? 'pr-[2.4rem]'
+                            : ''
                     )}
                     required={required}
                     readOnly={readOnly}
@@ -531,13 +582,20 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
             ) : (
               <input
                 ref={inputRef}
-                type={type}
+                type={resolvedType}
                 data-slot="input"
                 className={cn(
                   'w-auto',
                   align === 'right' ? 'text-right' : align === 'center' ? 'text-center' : 'text-left',
                   dateColorStyle,
-                  showClearButton && 'pr-[2rem]'
+                  '[&::-ms-reveal]:hidden [&::-ms-clear]:hidden',
+                  showClearButton && showMaskToggle
+                    ? 'pr-[4.4rem]'
+                    : showClearButton
+                      ? 'pr-[2rem]'
+                      : showMaskToggle
+                        ? 'pr-[2.4rem]'
+                        : ''
                 )}
                 required={required}
                 readOnly={readOnly}
@@ -562,7 +620,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                 color="gray"
                 only="icon"
                 size="xs"
-                className="absolute! right-0 top-1/2 -translate-y-1/2"
+                className={cn('absolute! top-1/2 -translate-y-1/2', showMaskToggle ? 'right-[2.4rem]' : 'right-0')}
                 onMouseDown={(e) => e.preventDefault()} // 포커스 유지
                 onClick={() => {
                   if (onChange) {
@@ -576,6 +634,28 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                 }}
               >
                 <InputClearIcon />
+              </Button>
+            )}
+            {showMaskToggle && (
+              <Button
+                type="button"
+                variant="none"
+                only="icon"
+                size="xs"
+                disabled={disabled || isMaskLoading}
+                className="absolute! right-0 top-1/2 -translate-y-1/2 text-[var(--color-gray-60)] hover:text-[var(--color-gray-90)] cursor-pointer"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={handleToggleMask}
+                aria-label={currentMasked ? '마스킹 해제 (정보 조회)' : '마스킹 적용 (정보 숨김)'}
+                title={currentMasked ? '마스킹 해제' : '마스킹 적용'}
+              >
+                {isMaskLoading ? (
+                  <Loader2 size={size === 'lg' ? 20 : 18} className="animate-spin stroke-[1.8]" />
+                ) : currentMasked ? (
+                  <MaskingOn size={size === 'lg' ? 20 : 18} />
+                ) : (
+                  <MaskingOff size={size === 'lg' ? 20 : 18} />
+                )}
               </Button>
             )}
           </div>
@@ -627,7 +707,10 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
               variant="none"
               only="icon"
               size="xs"
-              className="absolute! right-[0.2rem] top-1/2 -translate-y-1/2 h-[calc(100%-0.5rem)]"
+              className={cn(
+                'absolute! top-1/2 -translate-y-1/2 h-[calc(100%-0.5rem)]',
+                showMaskToggle ? 'right-[2.4rem]' : 'right-[0.2rem]'
+              )}
               onMouseDown={(e) => e.preventDefault()} // 포커스 유지
               onClick={() => {
                 if (onChange) {
@@ -641,6 +724,28 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
               }}
             >
               <InputClearIcon size={size === 'lg' ? 16 : 12} color="var(--color-gray-30)" />
+            </Button>
+          )}
+          {showMaskToggle && (
+            <Button
+              type="button"
+              variant="none"
+              only="icon"
+              size="xs"
+              disabled={disabled || isMaskLoading}
+              className="absolute! right-[0.3rem] top-1/2 -translate-y-1/2 h-[calc(100%-0.5rem)] text-[var(--color-gray-60)] hover:text-[var(--color-gray-90)] cursor-pointer"
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={handleToggleMask}
+              aria-label={currentMasked ? '마스킹 해제 (정보 조회)' : '마스킹 적용 (정보 숨김)'}
+              title={currentMasked ? '마스킹 해제' : '마스킹 적용'}
+            >
+              {isMaskLoading ? (
+                <Loader2 size={size === 'lg' ? 16 : 14} className="animate-spin stroke-[1.8]" />
+              ) : currentMasked ? (
+                <MaskingOn size={size === 'lg' ? 20 : 18} />
+              ) : (
+                <MaskingOff size={size === 'lg' ? 20 : 18} />
+              )}
             </Button>
           )}
         </>

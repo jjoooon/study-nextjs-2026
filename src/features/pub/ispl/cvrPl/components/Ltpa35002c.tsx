@@ -308,7 +308,7 @@ export function Ltpa35002c({
         headerName: '건물내/외',
         field: 'field6',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(90),
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           // 편집 가능 여부를 class로 시각화(no-edited)
