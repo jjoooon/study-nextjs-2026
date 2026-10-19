@@ -227,7 +227,7 @@ export const FormCell = ({
 
   if (contextVariant === 'head' || usedVariant === 'head') {
     return (
-      <div className="flex items-center gap-2 items-center">
+      <div className="flex items-center gap-2">
         {!thNone && title !== null && (
           <dt className={cn('font-bold', className)}>
             <Typo
