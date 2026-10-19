@@ -130,7 +130,7 @@ export function TabPager<T>({
   getValue,
   className,
   contentClass,
-  autoSelectFirstTab = true,
+  autoSelectFirstTab = false,
 }: TabPagerProps<T>) {
   const safeData = data ?? [];
 

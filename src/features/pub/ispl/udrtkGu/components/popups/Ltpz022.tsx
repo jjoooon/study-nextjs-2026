@@ -26,6 +26,7 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 /** 탭 메뉴 구성 타입 정의 */
 type Ltpz022TabType = {
@@ -38,27 +39,27 @@ const DATA_TABS: Ltpz022TabType[] = [
   {
     id: '1',
     value: 'tab1',
-    label: '설계 [단독실손] (LA239405905-1)',
+    label: '김한화한화김한화한화',
   },
   {
     id: '2',
     value: 'tab2',
-    label: '설계2 [단독실손] (LA239405905-1)',
+    label: '김한화한김한화한화화',
   },
   {
     id: '3',
     value: 'tab3',
-    label: '설계3 [단독실손] (LA239405905-1)',
+    label: '김한화한화김한화한화',
   },
   {
     id: '4',
     value: 'tab4',
-    label: '설계4 [단독실손] (LA239405905-1)',
+    label: '김한화한화김한화한화',
   },
   {
     id: '5',
     value: 'tab5',
-    label: '설계5 [단독실손] (LA239405905-1)',
+    label: '김한화한화김한화한화',
   },
 ];
 
@@ -234,6 +235,7 @@ const Ltpz022 = () => {
   };
 
   /** 탭 상태 관리 훅 */
+  const [otherDep, setOtherDep] = React.useState(false);
   const tabListData = DATA_TABS;
   const stringifiedTabs: Ltpz022TabType[] = tabListData.map((item) => ({ ...item, value: String(item.id) }));
   const { tabs: Tabs, active: TabActive, setActive: TabSetActive } = useTabs<Ltpz022TabType>(stringifiedTabs);
@@ -288,10 +290,25 @@ const Ltpz022 = () => {
             active={TabActive}
             setActive={TabSetActive}
             removable={false}
-            visibleCount={1}
+            visibleCount={otherDep ? 1 : 3}
             hasTableBelow={true}
             getValue={(tab) => String(tab.value)}
-            renderTab={(tab) => <span>{tab.label}</span>}
+            renderTab={(tab) => {
+              const isTruncated = tab.label.length > 5;
+              const displayLabel = isTruncated ? `${tab.label.slice(0, 5)}...` : tab.label;
+              return isTruncated ? (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span title={tab.label}>{displayLabel}</span>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" align="center" sideOffset={8}>
+                    {tab.label}
+                  </TooltipContent>
+                </Tooltip>
+              ) : (
+                <span>{tab.label}</span>
+              );
+            }}
             // AI 자동해소 버튼 추가 (플래시 효과 적용)
             renderAfter={
               <Button variant={'contained'} size={'md'} effect={'flash'}>
