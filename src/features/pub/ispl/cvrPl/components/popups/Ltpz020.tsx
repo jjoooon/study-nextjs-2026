@@ -350,7 +350,7 @@ const Ltpz020 = ({ open }: { open: boolean }) => {
   // 검수:체크시 트리구조 열림.
   return (
     <Dialog open={open}>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

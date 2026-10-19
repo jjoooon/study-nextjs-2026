@@ -1299,7 +1299,7 @@ function DialogContent({
               : undefined;
 
       const contentHeight = parsedIframeHeight ?? getTargetHeightPx(size, className) ?? 650;
-      const finalIframeHeight = Math.max(0, contentHeight);
+      const finalIframeHeight = Math.max(0, contentHeight - 25); //ncrm 높이값
 
       const popupTitle = titleProp ?? predefined?.title ?? '';
 
