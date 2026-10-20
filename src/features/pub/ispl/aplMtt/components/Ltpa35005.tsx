@@ -1134,7 +1134,7 @@ export const Ltpa35005 = () => {
                       );
                     }}
                   >
-                    <FormTable lineTop={false} cols={['w-[9rem]', 'w-[40%]', 'w-[9rem]', 'w-[auto]']}>
+                    <FormTable lineTop={false} cols={['w-[9rem]', 'w-[40%]', 'w-[9.6rem]', 'w-[auto]']}>
                       {/* 기본 케이스 */}
                       <FormRow>
                         <FormCell title={'사망수익자'}>

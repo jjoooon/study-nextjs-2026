@@ -254,7 +254,7 @@ export const FormCell = ({
       {!thNone && title !== null && (
         <TableHead
           data-variant={usedVariant}
-          className={cn(FormCellVariants({ variant: usedVariant }), 'text-left py-[0.4rem]', 'pr-[0.2rem]!', className)}
+          className={cn(FormCellVariants({ variant: usedVariant }), 'text-left py-[0.4rem]', 'pr-[0.4rem]!', className)}
           {...(titleColSpan && { colSpan: titleColSpan })}
           {...(titleRowSpan && { rowSpan: titleRowSpan })}
         >
