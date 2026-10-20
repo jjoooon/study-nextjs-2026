@@ -14,6 +14,7 @@ import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { TooltipQ } from '@common/TooltipQ';
 import { createExpiryCellRenderer } from '@grid/CellRenderers';
 import { ArrowIcon, EssentialIcon } from '@icons';
 import { Button } from '@uiux/Button';
@@ -31,6 +32,7 @@ import {
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 
 import '@/shared/lib/agGridPub';
 
@@ -738,7 +740,7 @@ const Ltpz059 = () => {
             params.data?.rowType === 'spacer' ? null : params.data?.rowType === 'title' ? (
               // 표제부/전유부 헤더의 우측 첫 번째 조회 버튼
               <Button
-                color="gray"
+                color="primary"
                 only="default"
                 size="sm"
                 variant="contained"
@@ -811,11 +813,11 @@ const Ltpz059 = () => {
             data?.rowType === 'title' ? (
               // 표제부/전유부 헤더의 우측 두 번째 발급 버튼
               <Button
-                color="gray"
+                color="link"
                 onClick={() => {}}
                 only="default"
                 size="sm"
-                variant="contained"
+                variant="outlined"
                 disabled={
                   data?.field01 === '표제부' ? !selectedDongValue : data?.field01 === '전유부' ? !selectedHoValue : true
                 }
@@ -1032,7 +1034,7 @@ const Ltpz059 = () => {
           <TableFold variant="accordion">
             <TableFoldHead title="소재지">
               <Grow>
-                <Button variant={'outlined'} color={'secondary'} onClick={() => {}}>
+                <Button variant={'contained'} color={'primary'} onClick={() => {}}>
                   층/면적반영
                 </Button>
                 {/* 2026-05-22 button 추가 */}
@@ -1043,6 +1045,7 @@ const Ltpz059 = () => {
             </TableFoldHead>
             <TableFoldBody>
               <FormTable
+                className="formTable-fixed"
                 caption="사업자"
                 cols={['w-[10rem]', 'w-[25rem]', 'w-[10rem]', 'w-auto', 'w-[7rem]', 'w-auto']}
               >
@@ -1096,6 +1099,26 @@ const Ltpz059 = () => {
                       <>
                         소유자
                         <br /> 사용유형
+                        <TooltipQ>
+                          <b>목적물 사용유형</b>
+                          <Table variant="default">
+                            <colgroup>
+                              <col style={{ width: '10rem' }} />
+                              <col style={{ width: 'auto' }} />
+                            </colgroup>
+                            <TableBody>
+                              {/* 첫 번째 즉시집금 행 설정 */}
+                              <TableRow>
+                                <TableHead>건물주(직접사용)</TableHead>
+                                <TableCell>
+                                  건물주가 직접 사용하는 면적
+                                  <br />
+                                  (건물주: 아파트 등 집합건물의 개별호실 소유자 포함)
+                                </TableCell>
+                              </TableRow>
+                            </TableBody>
+                          </Table>
+                        </TooltipQ>
                       </>
                     }
                     titleRowSpan={4}
