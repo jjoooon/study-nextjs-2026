@@ -934,6 +934,7 @@ export const Ltpa3500301 = ({
                       onCheckedChange={() => {}}
                       size="lg"
                       variant="default"
+                      className="items-start"
                       disabled={simpleMode}
                     >
                       {label}

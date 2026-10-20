@@ -10,7 +10,7 @@ import { useState } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import type { ClonedTopRow } from '@aggrid';
 import { AgGridEmptyComponent, createTooltipValueGetter, useCloneTopRows, useDynamicColumnWidths } from '@aggrid';
-import { Grow, Grid } from '@atoms';
+import { Grow, Grid, Typo } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -805,7 +805,11 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
         <ResizablePanelGroup orientation="horizontal" className="w-full h-full min-h-0">
           <ResizablePanel defaultSize={55}>
             <TableFold className="h-full flex flex-col min-h-0">
-              <TableFoldHead title="상품정보" variant="default" />
+              <TableFoldHead title="상품정보" variant="default">
+                <Typo variant={'body-sm'} icon={'info'}>
+                  상단 고객정보(연령,성별)와 취급자정보에 따른 상품리스트를 조회합니다.
+                </Typo>
+              </TableFoldHead>
               <TableFoldBody className="w-full flex-1 min-h-0 relative">
                 <div
                   className={`tooltip-hidden-toggle w-full h-full relative ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}

@@ -5,7 +5,9 @@
 
 import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
+import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow, Typo } from '@atoms';
+
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
@@ -24,19 +26,40 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 /** 탭 메뉴 구성 타입 정의 */
 type Ltpz022TabType = {
-  name: string;
+  id: string;
   value: string;
   label: string;
 };
 
 const DATA_TABS: Ltpz022TabType[] = [
   {
-    name: '설계',
+    id: '1',
     value: 'tab1',
-    label: '설계',
+    label: '김한화한화김한화한화',
+  },
+  {
+    id: '2',
+    value: 'tab2',
+    label: '김한화한김한화한화화',
+  },
+  {
+    id: '3',
+    value: 'tab3',
+    label: '김한화한화김한화한화',
+  },
+  {
+    id: '4',
+    value: 'tab4',
+    label: '김한화한화김한화한화',
+  },
+  {
+    id: '5',
+    value: 'tab5',
+    label: '김한화한화김한화한화',
   },
 ];
 
@@ -212,7 +235,10 @@ const Ltpz022 = () => {
   };
 
   /** 탭 상태 관리 훅 */
-  const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
+  const [otherDep, setOtherDep] = React.useState(false);
+  const tabListData = DATA_TABS;
+  const stringifiedTabs: Ltpz022TabType[] = tabListData.map((item) => ({ ...item, value: String(item.id) }));
+  const { tabs: Tabs, active: TabActive, setActive: TabSetActive } = useTabs<Ltpz022TabType>(stringifiedTabs);
 
   return (
     <Dialog open>
@@ -241,24 +267,18 @@ const Ltpz022 = () => {
           <Grow className="w-full" variant="box-round" placement={'ss'}>
             <FormTable variant={'head'} cols={['w-1', 'w-auto', 'w-1', 'w-auto']}>
               <FormRow className="gap-0">
-                <FormCell
-                  title={'설계번호'}
-                  className="whitespace-nowrap "
-                  tdClassName="grid grid-cols-[auto_1fr_auto] w-full"
-                >
+                <FormCell title={'설계번호'} className="whitespace-nowrap " tdClassName="w-full flex-wrap">
                   <Input
                     aria-label=""
-                    width={'quoteNo'}
-                    value={'LA260706315118'}
-                    align="center"
+                    value={
+                      'LA123456789012 시그니처여성건강(4종/올인원플랜시그니처여성건강(4종/올인원플랜)시그니처여성건강(4종/올인원플 2'
+                    }
                     readOnly
                     variant="info"
                   />
-                  <Input aria-label="" width={220} value={'시그니처여성건강(4종/올인원플랜)'} readOnly variant="info" />
-                  <Input aria-label="" width={80} value={''} readOnly variant="info" />
                 </FormCell>
                 <FormCell title={'플랜명'} className="whitespace-nowrap pr-3">
-                  <Input width={'full'} aria-label="" value={'100세만기 월납 / 20년납 '} readOnly variant="info" />
+                  <Input aria-label="" value={'태아플랜'} readOnly variant="info" />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -266,15 +286,29 @@ const Ltpz022 = () => {
 
           {/* 중간: 탭 영역 및 위배 내역 그리드 */}
           <TabPager
-            data={tabs}
-            active={active}
-            setActive={setActive}
+            data={Tabs}
+            active={TabActive}
+            setActive={TabSetActive}
             removable={false}
-            onRemove={handleRemove}
-            visibleCount={5}
+            visibleCount={otherDep ? 1 : 3}
             hasTableBelow={true}
             getValue={(tab) => String(tab.value)}
-            renderTab={(tab) => <span>{tab.label}</span>}
+            renderTab={(tab) => {
+              const isTruncated = tab.label.length > 5;
+              const displayLabel = isTruncated ? `${tab.label.slice(0, 5)}...` : tab.label;
+              return isTruncated ? (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span title={tab.label}>{displayLabel}</span>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" align="center" sideOffset={8}>
+                    {tab.label}
+                  </TooltipContent>
+                </Tooltip>
+              ) : (
+                <span>{tab.label}</span>
+              );
+            }}
             // AI 자동해소 버튼 추가 (플래시 효과 적용)
             renderAfter={
               <Button variant={'contained'} size={'md'} effect={'flash'}>
@@ -282,20 +316,33 @@ const Ltpz022 = () => {
                 AI자동해소
               </Button>
             }
-            renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (
-              <Button
-                variant="text"
-                key={String(tab.value)}
-                onClick={() => {
-                  setActive(String(tab.value));
-                  const idx = data.findIndex((t) => String(t.value) === String(tab.value));
-                  if (idx !== -1) {
-                    const page = Math.floor(idx / visibleCount);
-                    setVisibleStart(page * visibleCount);
-                  }
-                }}
-              ></Button>
-            )}
+            renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount, active) => {
+              const idx = data.findIndex((t) => String(t.value) === String(tab.value));
+              const isSelected = String(tab.value) === String(active ?? TabActive);
+              return (
+                <Button
+                  variant={'none'}
+                  key={String(tab.value)}
+                  onClick={() => {
+                    setActive(String(tab.value));
+                    if (idx !== -1) {
+                      const page = Math.floor(idx / visibleCount);
+                      setVisibleStart(page * visibleCount);
+                    }
+                  }}
+                  className={cn(
+                    'min-h-[2.8rem]! w-full rounded-none hover:bg-[var(--color-warning-10)]',
+                    isSelected && 'bg-[var(--color-warning-10)] font-bold text-[var(--color-primary-60)]'
+                  )}
+                  aria-selected={isSelected}
+                  style={idx > 0 ? { borderTop: '1px solid var(--color-gray-15)' } : undefined}
+                >
+                  <span className="flex items-start gap-2 w-full">
+                    <span className="block">{tab.label}</span>
+                  </span>
+                </Button>
+              );
+            }}
             className="border-separate"
             contentClass="relative"
           >

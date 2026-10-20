@@ -42,11 +42,11 @@ export const QuestionRadioCardHeaderTitle = ({
   className?: string;
 }) => {
   return (
-    <Grow className={cn('flex items-baseline gap-[0.6rem]', className)}>
+    <Grow className={cn('flex items-start gap-[0.6rem]', className)}>
       {icon ? (
         <span className="h-[1.8rem] w-[1.8rem] flex items-center justify-center">{icon}</span>
       ) : badgeLabel ? (
-        <Badge color="secondary" variant="contained" className="h-[1.8rem] w-[1.8rem]">
+        <Badge color="secondary" variant="contained" className="h-[1.8rem] w-[1.8rem] translate-y-[0.1rem]">
           {badgeLabel}
         </Badge>
       ) : null}

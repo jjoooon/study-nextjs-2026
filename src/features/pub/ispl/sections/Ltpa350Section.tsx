@@ -222,7 +222,7 @@ export default function Ltpa350Section({
     { id: 1, status: '경고', label: '공통', sum: 24 },
     { id: 2, status: '정상', label: '누적', sum: 0 },
     { id: 3, status: '중지', label: '직업', sum: 2 },
-    { id: 4, status: '정상', label: '예상UW', sum: 0 },
+    { id: 4, status: '없음', label: '예상UW', sum: 0 },
   ]);
 
   // 단계별 메인 콘텐츠 매핑

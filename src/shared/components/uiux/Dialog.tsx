@@ -461,6 +461,7 @@ type DialogContextValue = {
   setModalOverride?: (override: boolean | null) => void;
   open: boolean;
   isIframe?: boolean;
+  autoFocus?: boolean;
 };
 
 const DialogDepthContext = React.createContext<DialogContextValue>({
@@ -480,6 +481,7 @@ const DialogDepthContext = React.createContext<DialogContextValue>({
   modal: true,
   open: false,
   isIframe: false,
+  autoFocus: false,
 });
 
 type DialogSizeContextValue = {
@@ -571,6 +573,11 @@ interface DialogProps extends React.ComponentPropsWithoutRef<typeof DialogPrimit
    */
   iframe?: boolean;
   isIframe?: boolean;
+  /**
+   * 다이얼로그가 열릴 때 내부 첫 번째 포커스 가능 요소로 자동 포커스를 이동할지 여부
+   * @default false
+   */
+  autoFocus?: boolean;
 }
 
 /**
@@ -596,6 +603,7 @@ function Dialog({
   modal = true,
   iframe: iframeProp,
   isIframe: isIframeProp,
+  autoFocus = false,
   ...props
 }: DialogProps) {
   const parentDialogContext = React.useContext(DialogDepthContext);
@@ -750,6 +758,7 @@ function Dialog({
         setModalOverride,
         open: isOpen,
         isIframe: isIframeEnv,
+        autoFocus,
       }}
     >
       <DialogPrimitive.Root
@@ -1088,6 +1097,11 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
    */
   iframe?: boolean;
   isIframe?: boolean;
+  /**
+   * 다이얼로그가 열릴 때 내부 첫 번째 포커스 가능 요소로 자동 포커스를 이동할지 여부
+   * @default false
+   */
+  autoFocus?: boolean;
 }
 
 /**
@@ -1134,6 +1148,8 @@ function DialogContent({
   isRelative = false,
   iframe: iframeProp,
   isIframe: isIframeProp,
+  autoFocus: autoFocusProp,
+  onOpenAutoFocus,
   ...props
 }: DialogContentProps) {
   const parentDialogContext = React.useContext(DialogDepthContext);
@@ -1299,7 +1315,7 @@ function DialogContent({
               : undefined;
 
       const contentHeight = parsedIframeHeight ?? getTargetHeightPx(size, className) ?? 650;
-      const finalIframeHeight = Math.max(0, contentHeight);
+      const finalIframeHeight = Math.max(0, contentHeight - 25); //ncrm 높이값
 
       const popupTitle = titleProp ?? predefined?.title ?? '';
 
@@ -1755,6 +1771,8 @@ function DialogContent({
     }
   }, [isDragging, isResizing, dragStart, resizedSize, initialCapture]);
 
+  const resolvedAutoFocus = autoFocusProp ?? parentDialogContext.autoFocus ?? false;
+
   return (
     <DialogDepthContext.Provider
       value={{
@@ -1770,6 +1788,7 @@ function DialogContent({
         showFullscreenButton: resolvedShowFullscreenButton,
         showSplitButton: resolvedShowSplitButton,
         showMinimizeButton: resolvedShowMinimizeButton,
+        autoFocus: resolvedAutoFocus,
       }}
     >
       <DialogSizeContext.Provider value={{ size, initialSectionWidth, isFullSize, isAutoFullWidth }}>
@@ -1797,6 +1816,12 @@ function DialogContent({
               isIframeState && 'is-iframe',
               className
             )}
+            onOpenAutoFocus={(event) => {
+              if (!resolvedAutoFocus) {
+                event.preventDefault();
+              }
+              onOpenAutoFocus?.(event);
+            }}
             onMouseDown={handleMouseDown}
             onDoubleClick={() => {
               if (isMinimized) {

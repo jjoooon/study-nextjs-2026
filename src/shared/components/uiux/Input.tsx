@@ -675,7 +675,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                 <TooltipTrigger asChild>
                   <span
                     className={cn(
-                      'font-bold text-[#000] text-[1.3rem] inline-flex items-center truncate max-w-full',
+                      'leading-[1.2] font-bold text-[#000] text-[1.3rem] inline-flex items-center truncate max-w-full h-[auto]!',
                       dateColorStyle,
                       sizeStyle
                     )}
@@ -690,7 +690,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
             ) : (
               <span
                 className={cn(
-                  'font-bold text-[#000] text-[1.3rem] inline-flex items-center',
+                  'leading-[1.2]! font-bold text-[#000] text-[1.3rem] inline-flex items-center h-[auto]! py-[0.4rem]!',
                   dateColorStyle,
                   sizeStyle
                 )}
