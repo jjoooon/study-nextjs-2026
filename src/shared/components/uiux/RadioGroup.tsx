@@ -63,7 +63,7 @@ const radioGroupItemVariants = cva(
         noCheckButton:
           'rounded-[0.4rem] border border-[var(--color-border-gray-light)] bg-white font-normal leading-normal text-black data-[required=true]:bg-[var(--color-input-surface-highlight)] data-[required=true]:border-[var(--color-input-border-highlight)] data-[invalid]:text-[var(--color-text-danger)] data-[invalid]:bg-[var(--color-input-surface-error)] data-[invalid]:border-[var(--color-input-border-error)] disabled:data-[state=checked]:text-[var(--color-gray-30)] disabled:data-[state=checked]:shadow-none',
         chipBox:
-          'rounded-full border border-[var(--color-gray-20)] bg-[var(--color-gray-0)] font-normal leading-normal text-[var(--color-gray-100)] whitespace-nowrap px-2 text-[1.3rem] tracking-[-0.042rem] w-auto data-[state=checked]:bg-[var(--color-primary-50)] data-[state=checked]:text-[#FFF] data-[state=checked]:border-[#ff6135] ',
+          'rounded-full border border-[var(--color-gray-20)] bg-[var(--color-gray-0)] font-normal leading-normal text-[var(--color-gray-100)] whitespace-nowrap px-1 text-[1.3rem] tracking-[-0.042rem] w-auto data-[state=checked]:bg-[var(--color-primary-50)] data-[state=checked]:text-[#FFF] data-[state=checked]:border-[#ff6135] ',
         folderTab: `h-[3.2rem] px-[1.6rem] text-[1.3rem] font-bold leading-normal tracking-[-0.04rem] inline-flex items-center justify-center select-none transition-all
         rounded-t-[0.4rem] rounded-b-none -mr-px relative z-0
         bg-white text-[var(--color-gray-90,#222)]

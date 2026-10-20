@@ -204,9 +204,9 @@ export const Ltpa35001 = ({
                           </Button>
                         </FormCell>
                         <FormCell title={'보험기간'}>
-                          <Input placeholder="____-__-__" value={'2026-10-17'} width={84} readOnly dateColor />
+                          <Input placeholder="____-__-__" value={'2026-10-17'} width={76} readOnly dateColor />
                           -
-                          <Input placeholder="____-__-__" value={'2026-10-18'} width={84} readOnly dateColor />
+                          <Input placeholder="____-__-__" value={'2026-10-18'} width={76} readOnly dateColor />
                         </FormCell>
                       </FormRow>
                       <FormRow>
@@ -867,7 +867,7 @@ export const Ltpa35001 = ({
                                       required
                                       readOnly={currentTab?.type === '태아' ? true : false}
                                       value={currentTab?.type === '태아' ? '태아' : ''}
-                                      width={84}
+                                      width={76}
                                     />
                                     <Button
                                       aria-label="피보험자 검색"
@@ -893,7 +893,7 @@ export const Ltpa35001 = ({
                                       <Input
                                         aria-label="태아이름"
                                         placeholder="태아이름"
-                                        width={84}
+                                        width={76}
                                         value={''}
                                         className="ml-1"
                                       />
@@ -918,7 +918,7 @@ export const Ltpa35001 = ({
                                     <Grow placement="sc">
                                       {/* <Input
                                         aria-label="피보험자명"
-                                        width={84}
+                                        width={76}
                                         value={currentTab?.type === '태아' ? '태아' : '김환화환화'}
                                         readOnly
                                       /> */}
@@ -935,7 +935,7 @@ export const Ltpa35001 = ({
                                         col={2}
                                         readOnly={true}
                                         value={currentTab?.type === '태아' ? '태아' : ''}
-                                        width={84}
+                                        width={76}
                                       />
                                       <Input
                                         aria-label="주민등록번호 마스킹"
@@ -969,7 +969,7 @@ export const Ltpa35001 = ({
 
                                       {/* dev: 260903 - 태아이름 */}
                                       {currentTab?.type === '태아' && (
-                                        <Input aria-label="태아이름" placeholder="태아이름" width={84} value={''} />
+                                        <Input aria-label="태아이름" placeholder="태아이름" width={76} value={''} />
                                       )}
                                       {/* //dev: 260903 - 태아이름 */}
                                     </Grow>
@@ -1217,7 +1217,7 @@ export const Ltpa35001 = ({
                               <FormRow>
                                 {_simpleMode ? (
                                   <FormCell colSpan={3} title={'소유자'} titleVariant="section">
-                                    <Input aria-label="소유자명" width={84} value={'김환화'} readOnly />
+                                    <Input aria-label="소유자명" width={76} value={'김환화'} readOnly />
                                     <Button
                                       aria-label="소유자 검색"
                                       variant={'outlined'}
@@ -1235,7 +1235,7 @@ export const Ltpa35001 = ({
                                   <FormCell colSpan={3} title={'소유자'} titleVariant="section">
                                     <Grow className="flex-nowrap w-full" placement={'bwc'}>
                                       <Grow placement="sc">
-                                        <Input aria-label="소유자명" width={84} value={'김환화'} readOnly />
+                                        <Input aria-label="소유자명" width={76} value={'김환화'} readOnly />
                                         <Input
                                           aria-label="주민등록번호 마스킹"
                                           width={114}
@@ -1288,11 +1288,11 @@ export const Ltpa35001 = ({
                               <FormRow>
                                 {_simpleMode ? (
                                   <FormCell title="소재지" colSpan={3}>
-                                    <Input aria-label="목적물명" width={84} value={'목적물1'} />
+                                    <Input aria-label="목적물명" width={76} value={'목적물1'} />
                                   </FormCell>
                                 ) : (
                                   <FormCell title="소재지" colSpan={3} tdClassName="grid grid-cols-[auto_auto_1fr]">
-                                    <Input aria-label="목적물명" width={84} value={'목적물1'} />
+                                    <Input aria-label="목적물명" width={76} value={'목적물1'} />
                                     <Button
                                       aria-label="목적물 주소찾기"
                                       variant={'outlined'}
@@ -1510,7 +1510,7 @@ export const Ltpa35001 = ({
                                 col={2}
                                 required
                                 value=""
-                                width={84}
+                                width={76}
                               />
                               <Button
                                 aria-label="피보험자 검색"
@@ -1531,7 +1531,7 @@ export const Ltpa35001 = ({
                             <FormCell title={'계약자'} titleVariant="section" colSpan={3}>
                               <Grow placement="bwc">
                                 <Grow placement="sc">
-                                  <Input aria-label="피보험자명" width={84} value={'김환화'} readOnly />
+                                  <Input aria-label="피보험자명" width={76} value={'김환화'} readOnly />
                                   <Input
                                     aria-label="주민등록번호 마스킹"
                                     width={114}

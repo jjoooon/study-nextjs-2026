@@ -73,7 +73,7 @@ const Ltpz045 = () => {
                     <Input width={26} value={'1'} readOnly variant="info" />
                   </FormCell>
                   <FormCell title={'계약자'}>
-                    <Input width={84} value={'김한화'} readOnly variant="info" />
+                    <Input width={76} value={'김한화'} readOnly variant="info" />
                     <Input
                       aria-label="계약자 주민등록번호"
                       className="w-auto"
@@ -329,7 +329,7 @@ const Ltpz045 = () => {
                 <FormTable caption="고객정보" cols={['w-[12.4rem]', 'w-[30%]', 'w-[9.4rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'성명'}>
-                      <Input aria-label="성명 검색" width={84} value={''} readOnly />
+                      <Input aria-label="성명 검색" width={76} value={''} readOnly />
                       <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                         <SearchIcon color={'var(--color-primary-50)'} />
                       </Button>
@@ -389,7 +389,7 @@ const Ltpz045 = () => {
                     <FormTable caption="법정대리인 정보" cols={['w-[12.4rem]', 'w-auto']}>
                       <FormRow>
                         <FormCell title={'이름/주민번호'} tdClassName="flex-wrap">
-                          <Input aria-label="성명 검색" width={84} value={''} readOnly />
+                          <Input aria-label="성명 검색" width={76} value={''} readOnly />
                           <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                             <SearchIcon color={'var(--color-primary-50)'} />
                           </Button>

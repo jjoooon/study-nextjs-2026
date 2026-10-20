@@ -1036,7 +1036,7 @@ export default function Ltpa010Section() {
                     </NativeSelect>
                     {form.type01 === 'selection' || form.type01 === 'selection2' || form.type01 === 'selection3' ? (
                       <Grow placement="ss">
-                        <Input aria-label="이름" value={'김현화현화'} width={84} required />
+                        <Input aria-label="이름" value={'김현화현화'} width={76} required />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>

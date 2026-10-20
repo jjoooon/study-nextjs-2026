@@ -296,7 +296,7 @@ function SelectDrop<TValue extends string = string>({
   const showError = selectionMode === 'custom' ? false : error && !(radioHasValue || checkboxValid);
 
   const triggerStyle = cn(
-    'flex flex-row flex-nowrap items-center justify-between gap-1 rounded-[0.4rem] border px-1.5 text-[1.3rem] whitespace-nowrap',
+    'flex flex-row flex-nowrap items-center justify-between gap-1 rounded-[0.4rem] border px-1 text-[1.3rem] whitespace-nowrap',
     heightClass,
     showError
       ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)]'
@@ -366,7 +366,7 @@ function SelectDrop<TValue extends string = string>({
                   value={placeholder}
                   data-selected={selectedValues.length === 0}
                   className={cn(
-                    `w-full px-2 cp-selectdrop-item flex items-center justify-start text-[1.3rem] ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`,
+                    `w-full px-1 cp-selectdrop-item flex items-center justify-start text-[1.3rem] ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`,
                     selectedValues.length === 0
                       ? 'bg-[var(--color-primary-5,#f0f7ff)] text-[var(--color-primary-50,#006ff2)] font-medium'
                       : 'hover:bg-[var(--color-primary-5,#f0f7ff)]'
