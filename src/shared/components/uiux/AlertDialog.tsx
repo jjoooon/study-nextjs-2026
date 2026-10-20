@@ -134,8 +134,8 @@ function AlertDialogContent({ className, style, ...props }: React.ComponentProps
           data-[state=open]:fade-in-0 
           data-[state=closed]:zoom-out-95 
           data-[state=open]:zoom-in-95 
-          fixed top-[50%] left-[50%] grid w-full translate-x-[-50%] translate-y-[-50%] max-w-[calc(100vw-2rem)] 
-          gap-5 rounded-[1rem] border border-[var(--color-gray-15)] py-5 px-6  shadow-none duration-200 w-auto min-w-[28rem] tracking-[-0.08rem]`,
+          fixed top-[50%] left-[50%] flex flex-col w-full translate-x-[-50%] translate-y-[-50%] max-w-[calc(100vw-2rem)] max-h-[calc(100dvh-4rem)] 
+          gap-5 rounded-[1rem] border border-[var(--color-gray-15)] py-5 px-6 shadow-none duration-200 w-auto min-w-[28rem] tracking-[-0.08rem]`,
           className
         )}
         {...props}
@@ -148,7 +148,7 @@ function AlertDialogHeader({ className, ...props }: React.ComponentProps<'div'>)
   return (
     <div
       data-slot="alert-dialog-header"
-      className={cn('flex flex-col items-start gap-5 text-left', className)}
+      className={cn('flex flex-col items-start gap-5 text-left min-h-0 flex-1', className)}
       {...props}
     />
   );
@@ -158,7 +158,7 @@ function AlertDialogFooter({ className, ...props }: React.ComponentProps<'div'>)
   return (
     <div
       data-slot="alert-dialog-footer"
-      className={cn('flex flex-row justify-center items-center gap-2 text-[1.4rem] ', className)}
+      className={cn('flex flex-row justify-center items-center gap-2 text-[1.4rem] shrink-0', className)}
       {...props}
     />
   );
@@ -168,7 +168,7 @@ function AlertDialogTitle({ className, ...props }: React.ComponentProps<typeof A
   return (
     <AlertDialogPrimitive.Title
       data-slot="alert-dialog-title"
-      className={cn('text-[1.6rem] font-bold', className)}
+      className={cn('text-[1.6rem] font-bold shrink-0', className)}
       {...props}
     />
   );
@@ -183,7 +183,7 @@ function AlertDialogDescription({
     <AlertDialogPrimitive.Description
       asChild
       data-slot="alert-dialog-description"
-      className={cn('text-[1.4rem] w-full p-0', className)}
+      className={cn('text-[1.4rem] w-[calc(100%+1.8rem)] p-0 overflow-y-scroll min-h-0', className)}
       {...props}
     >
       <div>{children}</div>

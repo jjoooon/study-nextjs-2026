@@ -211,11 +211,11 @@ export function ConfirmDialog({
           {description ? (
             typeof description === 'string' ? (
               <AlertDialogDescription
-                className="whitespace-pre-wrap"
+                className="whitespace-pre-wrap break-words"
                 dangerouslySetInnerHTML={{ __html: description }}
               />
             ) : (
-              <AlertDialogDescription className="whitespace-pre-wrap">{description}</AlertDialogDescription>
+              <AlertDialogDescription className="whitespace-pre-wrap break-words">{description}</AlertDialogDescription>
             )
           ) : null}
         </AlertDialogHeader>

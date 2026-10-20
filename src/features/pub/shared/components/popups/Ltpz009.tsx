@@ -208,6 +208,16 @@ const Ltpz009 = () => {
                   resizable: true,
                   cellClass: 'text-center',
                 }}
+                rowSelection={{
+                  mode: 'multiRow',
+                  headerCheckbox: false,
+                  checkboxes: true,
+                }}
+                selectionColumnDef={{
+                  headerName: '선택',
+                  width: attributeColumnWidth(30),
+                  cellClass: 'editable-cell',
+                }}
                 domLayout="normal"
                 tooltipShowMode="whenTruncated"
                 tooltipShowDelay={0}
