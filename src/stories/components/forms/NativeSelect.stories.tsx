@@ -160,6 +160,18 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
                 </NativeSelect>
               </Grow>
             </Gcol>
+
+            <h2 className="mt-8">Masking</h2>
+            <p>masking 옵션을 활성화하면 셀렉트 박스 우측에 마스킹 토글(눈 아이콘) 버튼이 표시됩니다.</p>
+            <Grow
+              gap={4}
+              className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
+            >
+              <NativeSelect width="lg" masking defaultMasked defaultValue="1">
+                <NativeSelectOption value="1">김한화(000000-1******)</NativeSelectOption>
+                <NativeSelectOption value="2">박한화(000000-1******)</NativeSelectOption>
+              </NativeSelect>
+            </Grow>
           </StoryDocTemplate>
         );
       },
@@ -268,6 +280,28 @@ export const Default: Story = {
             {o.label}
           </NativeSelectOption>
         ))}
+      </NativeSelect>
+    );
+  },
+};
+
+export const Masking: Story = {
+  render: () => {
+    const [isMasked, setIsMasked] = React.useState(true);
+    return (
+      <NativeSelect
+        width={240}
+        masking
+        isMasked={isMasked}
+        onMaskToggle={setIsMasked}
+        defaultValue="opt1"
+      >
+        <NativeSelectOption value="opt1">
+          {isMasked ? '김한화 (000000-1******)' : '김한화 (000000-1234567)'}
+        </NativeSelectOption>
+        <NativeSelectOption value="opt2">
+          {isMasked ? '박한화 (000000-1******)' : '박한화 (000000-1234567)'}
+        </NativeSelectOption>
       </NativeSelect>
     );
   },

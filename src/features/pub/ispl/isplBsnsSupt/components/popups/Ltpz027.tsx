@@ -4,7 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef } from 'ag-grid-enterprise';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
@@ -21,6 +21,7 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
 
 // Grid2 dummy data
 type DummyDataType = {
@@ -55,7 +56,7 @@ const DummyData: DummyDataType[] = [
     field07: '',
   },
   {
-    id: 2,
+    id: 3,
     field01: '김한화',
     field02: '2',
     field03: '2026-02-12 12:22:55',
@@ -65,7 +66,7 @@ const DummyData: DummyDataType[] = [
     field07: '',
   },
   {
-    id: 2,
+    id: 4,
     field01: '김한화',
     field02: '2',
     field03: '2026-02-12 12:22:55',
@@ -75,7 +76,7 @@ const DummyData: DummyDataType[] = [
     field07: '',
   },
   {
-    id: 2,
+    id: 5,
     field01: '김한화',
     field02: '2',
     field03: '2026-02-12 12:22:55',
@@ -85,7 +86,7 @@ const DummyData: DummyDataType[] = [
     field07: '',
   },
   {
-    id: 2,
+    id: 6,
     field01: '김한화',
     field02: '2',
     field03: '2026-02-12 12:22:55',
@@ -95,7 +96,7 @@ const DummyData: DummyDataType[] = [
     field07: '',
   },
   {
-    id: 2,
+    id: 7,
     field01: '김한화',
     field02: '2',
     field03: '2026-02-12 12:22:55',
@@ -105,7 +106,7 @@ const DummyData: DummyDataType[] = [
     field07: '',
   },
   {
-    id: 2,
+    id: 8,
     field01: '김한화',
     field02: '2',
     field03: '2026-02-12 12:22:55',
@@ -132,6 +133,31 @@ const DummyData2: DummyData2Type[] = [
     field04: '진행중',
   },
 ];
+// 그리드 내 마스킹 입력 셀 개별 제어용 컴포넌트 (행/컬럼 단위 독립 토글)
+interface MaskInputCellProps {
+  value?: string | number;
+  maskedValue: string;
+  width?: number | string;
+  ariaLabel?: string;
+}
+
+const MaskInputCell = React.memo(({ value, maskedValue, width = 'full', ariaLabel = '' }: MaskInputCellProps) => {
+  const [isMasked, setIsMasked] = React.useState(true);
+
+  return (
+    <Input
+      className="[&_input]:bg-transparent! [&_input]:border-0!"
+      aria-label={ariaLabel}
+      width={width}
+      readOnly
+      masking
+      isMasked={isMasked}
+      value={isMasked ? maskedValue : String(value ?? '')}
+      onMaskToggle={setIsMasked}
+    />
+  );
+});
+MaskInputCell.displayName = 'MaskInputCell';
 
 const Ltpz027 = () => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
@@ -221,6 +247,9 @@ const Ltpz027 = () => {
         field: 'field02',
         cellClass: 'text-center px-0!',
         autoHeight: true,
+        cellRenderer: (params: ICellRendererParams<DummyData2Type>) => (
+          <MaskInputCell value={params.data?.field02} maskedValue="****-**-**" ariaLabel="생년월일" width={'full'} />
+        ),
       },
       {
         headerName: '휴대폰번호',
@@ -229,6 +258,9 @@ const Ltpz027 = () => {
         field: 'field03',
         cellClass: 'text-center px-0!',
         autoHeight: true,
+        cellRenderer: (params: ICellRendererParams<DummyData2Type>) => (
+          <MaskInputCell value={params.data?.field03} maskedValue="010-****-0000" ariaLabel="휴대폰번호" width={120} />
+        ),
       },
       {
         headerName: '발송구분',

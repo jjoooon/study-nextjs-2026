@@ -235,6 +235,8 @@ const Ltpz040 = () => {
     },
   ];
 
+  const [isResidentMasked, setIsResidentMasked] = React.useState(true);
+
   // rowSelection 사용시
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   return (
@@ -272,7 +274,20 @@ const Ltpz040 = () => {
             <TableFoldBody className="grid-rows-[auto_1fr] gap-2">
               <FormTable caption={'피보험자'} cols={['w-[14rem]', 'w-auto']}>
                 <FormRow>
-                  <FormCell title={'피보험자'}>김한화(000000-0******)</FormCell>
+                  <FormCell title={'피보험자'}>
+                    <Grow>
+                      <Input aria-label="피보험자명" width={70} value={'김한화'} readOnly />
+                      <Input
+                        aria-label="주민등록번호"
+                        width={130}
+                        readOnly
+                        masking
+                        isMasked={isResidentMasked}
+                        value={isResidentMasked ? '000000-1******' : '000000-1234567'}
+                        onMaskToggle={setIsResidentMasked}
+                      />
+                    </Grow>
+                  </FormCell>
                 </FormRow>
               </FormTable>
               <Gcol className="w-full" gap={2}>

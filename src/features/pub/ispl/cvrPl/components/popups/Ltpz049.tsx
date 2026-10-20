@@ -94,6 +94,7 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz049 = () => {
+  const [isResidentMasked, setIsResidentMasked] = React.useState(true);
   // AgGrid Column
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = useMemo(
@@ -187,7 +188,20 @@ const Ltpz049 = () => {
                   <Input value={'LA123123123123'} readOnly variant="info" />
                 </FormCell>
                 <FormCell title={'피보험자'}>
-                  <Input value={'김한화(000000-0000000)'} readOnly variant="info" />
+                  <Input className="text-[1.3rem]" width={130} value={'김한화'} readOnly variant="info" />
+                  <span className="font-bold text-[#000] text-[1.3rem] inline-flex items-center h-[2.8rem]">(</span>
+                  <Input
+                    aria-label="주민/법인번호"
+                    size="lg"
+                    readOnly
+                    variant="info"
+                    width="13rem"
+                    masking
+                    isMasked={isResidentMasked}
+                    value={isResidentMasked ? '000000-0******' : '000000-0123456'}
+                    onMaskToggle={setIsResidentMasked}
+                  />
+                  <span className="font-bold text-[#000] text-[1.3rem] inline-flex items-center h-[2.8rem]">)</span>
                 </FormCell>
               </FormRow>
             </FormTable>

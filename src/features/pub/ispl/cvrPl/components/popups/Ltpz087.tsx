@@ -85,6 +85,10 @@ const dummyData: DummyDataType[] = [
 
 const Ltpz087 = () => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
+
+  // 질권자 주소 마스킹 상태
+  const [isAddressMasked, setIsAddressMasked] = useState(true);
+
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
     () => [
       {
@@ -195,13 +199,28 @@ const Ltpz087 = () => {
                     <FormCell title={'질권자주소'}>
                       <Gcol placement="ss">
                         <Grow className="w-full">
-                          <Input aria-label="" width={120} value={''} readOnly />
+                          <Input aria-label="우편번호" width={120} value={'06236'} readOnly />
                           <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                             <SearchIcon color={'var(--color-primary-50)'} />
                           </Button>
-                          <Input aria-label="" width={'full'} value={''} readOnly />
+                          <Input
+                            aria-label="질권자 기본주소"
+                            width={'full'}
+                            readOnly
+                            masking
+                            isMasked={isAddressMasked}
+                            value={
+                              isAddressMasked ? '서울특별시 강남구 테헤란로 ***' : '서울특별시 강남구 테헤란로 123'
+                            }
+                            onMaskToggle={setIsAddressMasked}
+                          />
                         </Grow>
-                        <Input aria-label="" width={'full'} value={''} readOnly />
+                        <Input
+                          aria-label="질권자 상세주소"
+                          width={'full'}
+                          value={isAddressMasked ? '***************' : '(역삼동, 한화빌딩)'}
+                          readOnly
+                        />
                       </Gcol>
                     </FormCell>
                   </FormRow>

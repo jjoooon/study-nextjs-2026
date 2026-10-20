@@ -3,6 +3,7 @@
  */
 'use client';
 
+import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -33,6 +34,12 @@ const Ltpz047 = () => {
     type07: '',
     type08: '', // 2026-05-28 추가
   });
+
+  // 마스킹 상태 (주민/법인번호, 기본주소, 상세주소, 전체주소)
+  const [isResidentMasked, setIsResidentMasked] = React.useState(true);
+  const [isBaseAddressMasked, setIsBaseAddressMasked] = React.useState(true);
+  const [isDetailAddressMasked, setIsDetailAddressMasked] = React.useState(true);
+  const [isFullAddressMasked, setIsFullAddressMasked] = React.useState(true);
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="lg">
@@ -67,7 +74,17 @@ const Ltpz047 = () => {
                   <Input size="lg" value="" variant="default" width="13rem" readOnly />
                 </FormCell>
                 <FormCell title={'주민/법인번호'}>
-                  <Input size="lg" value="______-_______" variant="default" width="10rem" readOnly />
+                  <Input
+                    aria-label="주민/법인번호"
+                    size="lg"
+                    readOnly
+                    masking
+                    isMasked={isResidentMasked}
+                    value={isResidentMasked ? '000000-0******' : '000000-0123456'}
+                    onMaskToggle={setIsResidentMasked}
+                    variant="default"
+                    width="13rem"
+                  />
                   <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
                     의무가입대상조회
                   </Button>
@@ -75,17 +92,51 @@ const Ltpz047 = () => {
               </FormRow>
               <FormRow>
                 <FormCell title={'기본주소'} titleColSpan={2} colSpan={4}>
-                  <Input size="lg" value="" variant="default" width="full" readOnly />
+                  <Input
+                    aria-label="기본주소"
+                    size="lg"
+                    readOnly
+                    masking
+                    isMasked={isBaseAddressMasked}
+                    value={isBaseAddressMasked ? '서울특별시 강남구 테헤란로 ***' : '서울특별시 강남구 테헤란로 123'}
+                    onMaskToggle={setIsBaseAddressMasked}
+                    variant="default"
+                    width="full"
+                  />
                 </FormCell>
               </FormRow>
               <FormRow>
                 <FormCell title={'상세주소'} titleColSpan={2} colSpan={4}>
-                  <Input size="lg" value="" variant="default" width="full" readOnly />
+                  <Input
+                    aria-label="상세주소"
+                    size="lg"
+                    readOnly
+                    masking
+                    isMasked={isDetailAddressMasked}
+                    value={isDetailAddressMasked ? '***************' : '(역삼동, 한화빌딩)'}
+                    onMaskToggle={setIsDetailAddressMasked}
+                    variant="default"
+                    width="full"
+                  />
                 </FormCell>
               </FormRow>
               <FormRow>
                 <FormCell title={'전체주소'} titleColSpan={2} colSpan={4}>
-                  <Input size="lg" value="" variant="default" width="full" readOnly />
+                  <Input
+                    aria-label="전체주소"
+                    size="lg"
+                    readOnly
+                    masking
+                    isMasked={isFullAddressMasked}
+                    value={
+                      isFullAddressMasked
+                        ? '서울특별시 강남구 테헤란로 *******'
+                        : '서울특별시 강남구 테헤란로 123 (역삼동, 한화빌딩)'
+                    }
+                    onMaskToggle={setIsFullAddressMasked}
+                    variant="default"
+                    width="full"
+                  />
                 </FormCell>
               </FormRow>
               <FormRow>

@@ -5,6 +5,7 @@
 
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
+import React from 'react';
 import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
 import { Grid, Grow } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
@@ -87,6 +88,7 @@ export default function Ltpa250Section() {
   // 2026-06-01 width, flex 수정, animateRows 추가
   // 2026-06-04 flex, minWidth 수정
   // AgGrid Column
+  const [isResidentMasked, setIsResidentMasked] = React.useState(true);
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '',
@@ -366,8 +368,21 @@ export default function Ltpa250Section() {
                 cols={['w-1', 'w-auto', 'w-1', 'w-auto']}
               >
                 <FormRow>
-                  <FormCell title={'주민번호'}>
-                    <Input className="text-[1.3rem]" value={'김한화(000000-0******)'} readOnly variant="info" />
+                  <FormCell title={'주민번호'} className="gap-0">
+                    <Input className="text-[1.3rem]" width={130} value={'김한화'} readOnly variant="info" />
+                    <span className="font-bold text-[#000] text-[1.3rem] inline-flex items-center h-[2.8rem]">(</span>
+                    <Input
+                      className="text-[1.3rem] w-[11.1rem]"
+                      readOnly
+                      variant="info"
+                      masking
+                      isMasked={isResidentMasked}
+                      value={isResidentMasked ? '900101-1******' : '900101-1234567'}
+                      onMaskToggle={setIsResidentMasked}
+                    />
+                    <span className="ml-[-0.2rem] font-bold text-[#000] text-[1.3rem] inline-flex items-center h-[2.8rem]">
+                      )
+                    </span>
                   </FormCell>
                   <FormCell title={'담보건수'}>
                     <Input className="text-[1.3rem]" value={'32건'} readOnly variant="info" />

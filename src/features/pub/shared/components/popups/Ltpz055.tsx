@@ -31,14 +31,39 @@ type SendRowData = {
   id: string;
   category: string;
   oldPhone: string;
+  rawOldPhone?: string;
   newPhoneKey: 'number1' | 'number2' | 'number3';
 };
 
 const defaultRowData: SendRowData[] = [
-  { id: '1', category: '모집자', oldPhone: '010-****-0000', newPhoneKey: 'number1' },
-  { id: '2', category: '계약자', oldPhone: '010-****-5678', newPhoneKey: 'number2' },
-  { id: '3', category: '피보험자', oldPhone: '010-****-9876', newPhoneKey: 'number3' },
+  { id: '1', category: '모집자', oldPhone: '010-****-0000', rawOldPhone: '010-1234-0000', newPhoneKey: 'number1' },
+  { id: '2', category: '계약자', oldPhone: '010-****-5678', rawOldPhone: '010-1234-5678', newPhoneKey: 'number2' },
+  { id: '3', category: '피보험자', oldPhone: '010-****-9876', rawOldPhone: '010-1234-9876', newPhoneKey: 'number3' },
 ];
+
+// 기존발송번호 행별 독립 마스킹 셀 컴포넌트
+interface MaskPhoneCellProps {
+  value?: string;
+  maskedValue?: string;
+}
+
+const MaskPhoneCell = ({ value, maskedValue = '010-****-0000' }: MaskPhoneCellProps) => {
+  const [isMasked, setIsMasked] = useState(true);
+
+  return (
+    <Input
+      aria-label="기존발송번호"
+      readOnly
+      masking
+      isMasked={isMasked}
+      value={isMasked ? maskedValue : value || ''}
+      onMaskToggle={setIsMasked}
+      size="md"
+      variant="default"
+      width="full"
+    />
+  );
+};
 
 const Ltpz055 = () => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
@@ -80,19 +105,13 @@ const Ltpz055 = () => {
     {
       headerName: '기존발송번호',
       field: 'oldPhone',
-      minWidth: attributeColumnWidth(120),
-      flex: 1,
+      minWidth: attributeColumnWidth(140),
+      flex: 2,
       cellClass: 'text-center flex! items-center',
       cellRenderer: (params: ICellRendererParams<SendRowData>) => (
-        <Input
-          errorMsg="입력은 필수입니다."
-          errorPs="bl"
-          onChange={() => {}}
-          size="md"
-          value={params.value || ''}
-          variant="default"
-          width="full"
-          readOnly
+        <MaskPhoneCell
+          value={params.data?.rawOldPhone ?? '010-1234-5678'}
+          maskedValue={params.data?.oldPhone ?? '010-****-0000'}
         />
       ),
     },

@@ -418,6 +418,30 @@ const DummyData: DummyDataRow[] = [
   }),
 ];
 
+// 그리드 내 생년월일 마스킹 개별 제어용 컴포넌트 (행 단위 독립 토글)
+interface BirthDateMaskInputProps {
+  value?: string;
+  label: string;
+}
+
+const BirthDateMaskInput = React.memo(({ value, label }: BirthDateMaskInputProps) => {
+  const [isMasked, setIsMasked] = React.useState(true);
+
+  return (
+    <Input
+      className="[&_input]:bg-transparent! [&_input]:border-0! [&_input]:text-center! h-[3rem]!"
+      aria-label={label}
+      readOnly
+      masking
+      size="sm"
+      isMasked={isMasked}
+      value={isMasked ? '****-**-**' : (value ?? '')}
+      onMaskToggle={setIsMasked}
+    />
+  );
+});
+BirthDateMaskInput.displayName = 'BirthDateMaskInput';
+
 // Ltpa010Section: 통합가입설계조회 화면 섹션 컴포넌트
 
 /**
@@ -586,7 +610,7 @@ export default function Ltpa010Section() {
         'col'
       ),
     },
-    // 3. 계약자 & 생년월일: 두 필드를 하나의 컬럼에 상하로 배치
+    // 3. 계약자 & 생년월일: 두 필드를 하나의 컬럼에 상하로 배치 (생년월일 마스킹 적용)
     {
       colId: 'field05',
       field: 'field05',
@@ -595,10 +619,12 @@ export default function Ltpa010Section() {
       autoHeight: true,
       cellClass: 'text-center !px-0',
       flex: 1,
-      minWidth: attributeColumnWidth(70),
-      cellRenderer: createFieldRenderer<DummyDataRow>('field05', 'field06'),
+      minWidth: attributeColumnWidth(105),
+      cellRenderer: createFieldRenderer<DummyDataRow>('field05', (data?: DummyDataRow) => (
+        <BirthDateMaskInput value={data?.field06} label="계약자 생년월일" />
+      )),
     },
-    // 4. 피보험자 & 생년월일
+    // 4. 피보험자 & 생년월일 (생년월일 마스킹 적용)
     {
       colId: 'field20',
       field: 'field20',
@@ -608,8 +634,10 @@ export default function Ltpa010Section() {
       headerClass: '!px-0',
       autoHeight: true,
       flex: 1,
-      minWidth: attributeColumnWidth(70),
-      cellRenderer: createFieldRenderer<DummyDataRow>('field20', 'field21'),
+      minWidth: attributeColumnWidth(105),
+      cellRenderer: createFieldRenderer<DummyDataRow>('field20', (data?: DummyDataRow) => (
+        <BirthDateMaskInput value={data?.field21} label="피보험자 생년월일" />
+      )),
     },
     // 5. 보험료 & 환급률
     {

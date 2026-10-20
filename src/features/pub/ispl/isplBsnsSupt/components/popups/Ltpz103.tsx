@@ -28,6 +28,10 @@ const Ltpz103 = () => {
   const [isExistingCustomer, setIsExistingCustomer] = React.useState(false);
   const [isExistingGuardianCustomer, setIsExistingGuardianCustomer] = React.useState(false);
   const [isExistingParentCustomer, setIsExistingParentCustomer] = React.useState(false);
+  // 주민등록번호 마스킹 상태 (개별 독립 토글)
+  const [isResidentMasked, setIsResidentMasked] = React.useState(true);
+  const [isParentResidentMasked, setIsParentResidentMasked] = React.useState(true);
+  const [isGuardianResidentMasked, setIsGuardianResidentMasked] = React.useState(true);
 
   return (
     <Dialog open>
@@ -61,7 +65,14 @@ const Ltpz103 = () => {
             </FormRow>
             <FormRow>
               <FormCell title={'주민등록번호'}>
-                <Input aria-label="" width={120} placeholder="______-_______" />
+                <Input
+                  aria-label="주민등록번호"
+                  width={130}
+                  masking
+                  isMasked={isResidentMasked}
+                  value={isResidentMasked ? '900101-1******' : '900101-1234567'}
+                  onMaskToggle={setIsResidentMasked}
+                />
                 <Button
                   aria-label="검색"
                   variant={'outlined'}
@@ -85,7 +96,15 @@ const Ltpz103 = () => {
             </FormRow>
             <FormRow>
               <FormCell title={'친권자주민등록번호'}>
-                <Input aria-label="" width={120} placeholder="______-_______" value={''} readOnly />
+                <Input
+                  aria-label="친권자주민등록번호"
+                  width={130}
+                  readOnly
+                  masking
+                  isMasked={isParentResidentMasked}
+                  value={isParentResidentMasked ? '700101-1******' : '700101-1234567'}
+                  onMaskToggle={setIsParentResidentMasked}
+                />
                 <Button
                   aria-label="검색"
                   variant={'outlined'}
@@ -110,7 +129,15 @@ const Ltpz103 = () => {
             </FormRow>
             <FormRow>
               <FormCell title={'후견인주민등록번호'}>
-                <Input aria-label="" width={120} placeholder="______-_______" value={''} readOnly />
+                <Input
+                  aria-label="후견인주민등록번호"
+                  width={130}
+                  readOnly
+                  masking
+                  isMasked={isGuardianResidentMasked}
+                  value={isGuardianResidentMasked ? '650101-1******' : '650101-1234567'}
+                  onMaskToggle={setIsGuardianResidentMasked}
+                />
                 <Button
                   aria-label="검색"
                   variant={'outlined'}
