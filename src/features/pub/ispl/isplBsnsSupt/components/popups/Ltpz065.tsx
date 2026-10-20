@@ -76,7 +76,7 @@ const DummyData: DummyDataType[] = [
     field11: '9999999999',
   },
   {
-    id: 2,
+    id: 3,
     isCheck: false,
     field01: 'text',
     field02: 'text',
@@ -91,7 +91,7 @@ const DummyData: DummyDataType[] = [
     field11: '9999999999',
   },
   {
-    id: 2,
+    id: 4,
     isCheck: false,
     field01: 'text',
     field02: 'text',
@@ -106,7 +106,7 @@ const DummyData: DummyDataType[] = [
     field11: '9999999999',
   },
   {
-    id: 2,
+    id: 5,
     isCheck: false,
     field01: 'text',
     field02: 'text',
@@ -121,7 +121,7 @@ const DummyData: DummyDataType[] = [
     field11: '9999999999',
   },
   {
-    id: 2,
+    id: 6,
     isCheck: false,
     field01: 'text',
     field02: 'text',
@@ -327,7 +327,10 @@ const Ltpz065 = () => {
           <TableFold>
             <TableFoldHead title="단체실손의료비 전환대상" />
             <TableFoldBody className="gap-2 grid grid-rows-[auto_1fr]">
-              <FormTable caption="단체실손의료비 전환대상 테이블" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
+              <FormTable
+                caption="단체실손의료비 전환대상 테이블"
+                cols={['w-[8rem]', 'w-[18.6rem]', 'w-[8rem]', 'w-auto']}
+              >
                 {/* 2026-05-27 variant 추가 */}
                 <FormRow>
                   <FormCell title={'피보험자'}>

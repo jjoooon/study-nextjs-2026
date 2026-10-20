@@ -413,7 +413,7 @@ const Ltpz012 = () => {
                 >
                   <Input aria-label="피보험자명" width={80} value={'홍길순'} readOnly variant="info" />
                   <Input
-                    className="w-[11.1rem]"
+                    className="w-[12.4rem]"
                     aria-label="생년월일"
                     readOnly
                     variant="info"

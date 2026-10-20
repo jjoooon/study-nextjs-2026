@@ -101,7 +101,7 @@ const Ltpz053 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -176,7 +176,7 @@ const Ltpz053 = () => {
               {/* M1. 수정 */}
               <FormTable
                 caption="조회항목"
-                cols={['w-[6.8rem]', 'w-[10.4rem]', 'w-[9.2rem]', 'w-auto', 'w-[6.8rem]', 'w-auto']}
+                cols={['w-[8rem]', 'w-[10.4rem]', 'w-[11rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
               >
                 <FormRow>
                   <FormCell title={'구분'} colSpan={5}>
@@ -300,7 +300,7 @@ const Ltpz053 = () => {
           <TableFold variant="accordion">
             <TableFoldHead title="신원확인결과"></TableFoldHead>
             <TableFoldBody>
-              <FormTable caption="원클릭스켄" cols={['w-[7rem]', 'w-auto', 'w-[7rem]', 'w-auto']}>
+              <FormTable caption="원클릭스켄" cols={['w-[8rem]', 'w-auto', 'w-[7rem]', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'진위여부'}>
                     <Input aria-label="" value={'Y'} readOnly width={'4rem'} />

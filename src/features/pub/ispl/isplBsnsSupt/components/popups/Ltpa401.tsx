@@ -57,7 +57,7 @@ const Ltpa401 = () => {
               <TableFoldBody>
                 <FormTable
                   caption="피보험자의 위험정보 테이블"
-                  cols={['w-[12rem]', 'w-auto', 'w-[12rem]', 'w-auto', 'w-[12rem]', 'w-[12rem]']}
+                  cols={['w-[11rem]', 'w-auto', 'w-[13rem]', 'w-auto', 'w-[13rem]', 'w-[13rem]']}
                 >
                   <FormRow>
                     <FormCell title={'접수번호'}>26012723081</FormCell>
