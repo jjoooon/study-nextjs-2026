@@ -233,7 +233,7 @@ export const Gcol = ({
       data-variant={variant}
       data-group="col"
       className={cn(
-        'flex flex-col relative w-full tracking-[-0.13rem]',
+        'flex flex-col relative w-full tracking-[-0.05rem]',
         VARIANT_MAP[variant],
         COL_PLACEMENT_MAP[placement],
         `gap-${gap}`,
@@ -270,7 +270,7 @@ export const Grow = ({
       data-variant={variant}
       data-group="row"
       className={cn(
-        'flex flex-row relative tracking-[-0.13rem]',
+        'flex flex-row relative tracking-[-0.05rem]',
         VARIANT_MAP[variant],
         ROW_PLACEMENT_MAP[placement],
         `gap-${gap}`,
@@ -297,7 +297,7 @@ export const Grid = ({ children, variant = 'default', gap = 1, className, style,
     <div
       data-variant={variant}
       data-group="row"
-      className={cn('grid relative tracking-[-0.13rem]', `gap-${gap}`, VARIANT_MAP[variant], className)}
+      className={cn('grid relative tracking-[-0.05rem]', `gap-${gap}`, VARIANT_MAP[variant], className)}
       style={style}
       {...getClickableProps(onClick)}
       {...props}

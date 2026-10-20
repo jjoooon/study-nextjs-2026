@@ -187,7 +187,7 @@ function Checkbox({
       color === 'info' ? 'text-[var(--color-information-50, #006ff2)]' : 'text-[var(--color-primary-50)]';
 
     const labelClass = [
-      'text-[1.3rem] font-normal select-none cursor-pointer tracking-[-0.13rem] underline underline-offset-4',
+      'text-[1.3rem] font-normal select-none cursor-pointer tracking-[-0.05rem] underline underline-offset-4',
       checkedState === true && `underline underline-offset-4 font-bold! ${checkedColor}`,
     ]
       .filter(Boolean)
@@ -240,7 +240,7 @@ function Checkbox({
         onCheckedChange={handleChange}
         className={cn(
           'cp-checkbox',
-          `shrink-0 transition-none outline-none tracking-[-0.13rem] 
+          `shrink-0 transition-none outline-none tracking-[-0.05rem] 
 
           data-[required=true]:bg-[var(--color-warning-10)] 
           data-[required=true]:border-[var(--color-warning-30)] 
@@ -295,7 +295,7 @@ function Checkbox({
             )}
           />
         ) : isButton || isChipBox ? (
-          <Grow className={cn('tracking-[-0.13rem]', size === 'sm' ? 'gap-0' : 'gap-[0.2rem]')} placement="sc">
+          <Grow className={cn('tracking-[-0.05rem]', size === 'sm' ? 'gap-0' : 'gap-[0.2rem]')} placement="sc">
             {icon && variant !== 'noCheckButton' && isButton && (
               <span
                 aria-hidden="true"
@@ -332,7 +332,7 @@ function Checkbox({
         <label
           htmlFor={checkboxId}
           className={cn(
-            'text-[1.3rem] font-normal cursor-pointer select-none tracking-[-0.13rem]',
+            'text-[1.3rem] font-normal cursor-pointer select-none tracking-[-0.05rem]',
             hasErrorState && 'text-[var(--color-text-danger)]'
           )}
         >

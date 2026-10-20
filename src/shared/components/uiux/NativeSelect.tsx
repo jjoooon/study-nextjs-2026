@@ -156,7 +156,7 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
     const isInvalid = props['aria-invalid'] === 'true' || props['aria-invalid'] === true;
 
     const baseStyle = cn(
-      'w-full rounded-[0.4rem] px-2 pr-6 text-[1.3rem] border box-border tracking-[-0.13rem] appearance-none truncate',
+      'w-full rounded-[0.4rem] px-2 pr-6 text-[1.3rem] border box-border tracking-[-0.05rem] appearance-none truncate',
       isInvalid || isErrorActive
         ? 'text-[var(--color-danger-50)] bg-[var(--color-danger-5)] border-[var(--color-danger-50)] border-[0.2rem] ring-1 ring-[var(--color-danger-5)]'
         : required
@@ -271,7 +271,7 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
     return (
       <div className={cn('relative', showMaskToggle && 'inline-flex items-center gap-1', className)} style={widthStyle}>
         <div
-          className={cn('group/native-select relative tracking-[-0.13rem]', showMaskToggle && 'flex-1 min-w-0')}
+          className={cn('group/native-select relative tracking-[-0.05rem]', showMaskToggle && 'flex-1 min-w-0')}
           data-slot="native-select-wrapper"
         >
           {variant !== 'text' ? (

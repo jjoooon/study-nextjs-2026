@@ -135,7 +135,7 @@ function AlertDialogContent({ className, style, ...props }: React.ComponentProps
           data-[state=closed]:zoom-out-95 
           data-[state=open]:zoom-in-95 
           fixed top-[50%] left-[50%] flex flex-col w-full translate-x-[-50%] translate-y-[-50%] max-w-[calc(100vw-2rem)] max-h-[calc(100dvh-4rem)] 
-          gap-5 rounded-[1rem] border border-[var(--color-gray-15)] py-5 px-6 shadow-none duration-200 w-auto min-w-[28rem] tracking-[-0.08rem]`,
+          gap-5 rounded-[1rem] border border-[var(--color-gray-15)] py-5 px-6 shadow-none duration-200 w-auto min-w-[28rem] tracking-[-0.05rem]`,
           className
         )}
         {...props}

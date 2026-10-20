@@ -61,7 +61,7 @@ function TooltipContent({
 
   const contentStyles = {
     // 3. 내부 콘텐츠 박스 배경 수정 (필요 시)
-    default: 'tracking-[-0.08rem]',
+    default: 'tracking-[-0.05rem]',
     dark: 'bg-[var(--color-gray-90)] fill-[var(--color-gray-90)] rounded-[0.4rem] border border-[var(--color-gray-90)]',
     light: '',
     danger:

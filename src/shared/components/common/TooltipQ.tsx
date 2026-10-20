@@ -59,7 +59,7 @@ export function TooltipQ({
           align={align}
           sideOffset={sideOffset}
           variant="default"
-          className={cn('[&>span]:whitespace-auto! text-wrap tracking-[-0.08rem] break-keep', className)}
+          className={cn('[&>span]:whitespace-auto! text-wrap tracking-[-0.05rem] break-keep', className)}
         >
           {children}
         </TooltipContent>

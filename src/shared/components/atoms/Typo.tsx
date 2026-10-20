@@ -21,34 +21,34 @@ const typoVariants = cva('', {
   variants: {
     variant: {
       /** 제목 계열(Heading): 섹션/카드 타이틀 */
-      'heading-xl': 'heading-xl block text-[1.8rem] font-bold leading-[normal] tracking-[-0.08rem]',
-      'heading-lg': 'heading-lg block text-[1.6rem] font-bold leading-[normal] tracking-[-0.08rem]',
-      'heading-md': 'heading-md block text-[1.4rem] font-bold leading-[normal] tracking-[-0.08rem]',
-      'heading-sm': 'heading-sm block text-[1.3rem] font-bold leading-[normal] tracking-[-0.08rem]',
-      'heading-xs': 'heading-xs block text-[1.1rem] font-normal leading-[normal] tracking-[-0.08rem]',
+      'heading-xl': 'heading-xl block text-[1.8rem] font-bold leading-[normal] tracking-[-0.05rem]',
+      'heading-lg': 'heading-lg block text-[1.6rem] font-bold leading-[normal] tracking-[-0.05rem]',
+      'heading-md': 'heading-md block text-[1.4rem] font-bold leading-[normal] tracking-[-0.05rem]',
+      'heading-sm': 'heading-sm block text-[1.3rem] font-bold leading-[normal] tracking-[-0.05rem]',
+      'heading-xs': 'heading-xs block text-[1.1rem] font-normal leading-[normal] tracking-[-0.05rem]',
 
       /** 본문 계열(Body): 일반 텍스트/라벨 */
-      'body-xl': 'body-xl text-[1.5rem] leading-[normal] tracking-[-0.13rem]',
-      'body-lg': 'body-lg text-[1.4rem] leading-[normal] tracking-[-0.13rem]',
-      'body-md': 'body-md text-[1.3rem] leading-[normal] tracking-[-0.13rem]',
-      'body-sm': 'body-sm text-[1.2rem] leading-[normal] tracking-[-0.13rem]',
-      'body-xs': 'body-xs text-[1.1rem] leading-[normal] tracking-[-0.13rem]',
+      'body-xl': 'body-xl text-[1.5rem] leading-[normal] tracking-[-0.05rem]',
+      'body-lg': 'body-lg text-[1.4rem] leading-[normal] tracking-[-0.05rem]',
+      'body-md': 'body-md text-[1.3rem] leading-[normal] tracking-[-0.05rem]',
+      'body-sm': 'body-sm text-[1.2rem] leading-[normal] tracking-[-0.05rem]',
+      'body-xs': 'body-xs text-[1.1rem] leading-[normal] tracking-[-0.05rem]',
 
       /** 버튼 계열(Button): CTA/보조 버튼 텍스트 */
-      'button-lg': 'button-lg text-[1.4rem] leading-[normal] tracking-[-0.13rem]',
-      'button-md': 'button-md text-[1.3rem] leading-[normal] tracking-[-0.13rem]',
-      'button-sm': 'button-sm text-[1.2rem] leading-[normal] tracking-[-0.13rem]',
-      'button-xs': 'button-xs text-[1.1rem] leading-[normal] tracking-[-0.13rem]',
+      'button-lg': 'button-lg text-[1.4rem] leading-[normal] tracking-[-0.05rem]',
+      'button-md': 'button-md text-[1.3rem] leading-[normal] tracking-[-0.05rem]',
+      'button-sm': 'button-sm text-[1.2rem] leading-[normal] tracking-[-0.05rem]',
+      'button-xs': 'button-xs text-[1.1rem] leading-[normal] tracking-[-0.05rem]',
 
       /** 금액 강조 계열 */
       'amount-lg':
-        'block text-[1.5rem] font-bold leading-[normal] tracking-[-0.08rem] underline underline-offset-[0.3rem]',
+        'block text-[1.5rem] font-bold leading-[normal] tracking-[-0.05rem] underline underline-offset-[0.3rem]',
       'amount-md':
-        'block text-[1.3rem] font-bold leading-[normal] tracking-[-0.08rem] underline underline-offset-[0.3rem]',
+        'block text-[1.3rem] font-bold leading-[normal] tracking-[-0.05rem] underline underline-offset-[0.3rem]',
       'amount-sm':
-        'block text-[1.2rem] font-bold leading-[normal] tracking-[-0.08rem] underline underline-offset-[0.3rem]',
+        'block text-[1.2rem] font-bold leading-[normal] tracking-[-0.05rem] underline underline-offset-[0.3rem]',
       'amount-xs':
-        'block text-[1.1rem] font-bold leading-[normal] tracking-[-0.08rem] underline underline-offset-[0.3rem]',
+        'block text-[1.1rem] font-bold leading-[normal] tracking-[-0.05rem] underline underline-offset-[0.3rem]',
     },
 
     /** 아이콘 토큰 (실제 렌더링은 하단 분기에서 처리) */

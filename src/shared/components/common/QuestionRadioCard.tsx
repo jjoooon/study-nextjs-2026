@@ -82,7 +82,7 @@ export const QuestionRadioCard = React.forwardRef<HTMLDivElement, QuestionRadioC
       <div
         ref={ref}
         className={cn(
-          'flex flex-col relative w-full tracking-[-0.13rem] justify-start items-start overflow-hidden rounded-[1.2rem] gap-0 border border-solid border-[#D8D8D8] p-0',
+          'flex flex-col relative w-full tracking-[-0.05rem] justify-start items-start overflow-hidden rounded-[1.2rem] gap-0 border border-solid border-[#D8D8D8] p-0',
           className
         )}
         data-group="col"
