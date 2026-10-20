@@ -117,7 +117,7 @@ const Ltpz025 = () => {
           <Input
             className="[&_input]:bg-transparent! [&_input]:border-0!"
             aria-label=""
-            width={130}
+            width={120}
             readOnly
             masking
             isMasked={isPhoneMasked}

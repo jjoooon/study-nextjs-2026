@@ -372,7 +372,7 @@ export default function Ltpa250Section() {
                     <Input className="text-[1.3rem]" width={130} value={'김한화'} readOnly variant="info" />
                     <span className="font-bold text-[#000] text-[1.3rem] inline-flex items-center h-[2.8rem]">(</span>
                     <Input
-                      className="text-[1.3rem] w-[11.1rem]"
+                      className="text-[1.3rem] w-[12.5rem]"
                       readOnly
                       variant="info"
                       masking
@@ -380,7 +380,7 @@ export default function Ltpa250Section() {
                       value={isResidentMasked ? '900101-1******' : '900101-1234567'}
                       onMaskToggle={setIsResidentMasked}
                     />
-                    <span className="ml-[-0.2rem] font-bold text-[#000] text-[1.3rem] inline-flex items-center h-[2.8rem]">
+                    <span className="ml-[-0.1rem] font-bold text-[#000] text-[1.3rem] inline-flex items-center h-[2.8rem]">
                       )
                     </span>
                   </FormCell>
