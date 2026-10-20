@@ -9,6 +9,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
+import { ConfirmDialog } from '@common/ConfirmDialog';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
@@ -114,6 +115,7 @@ const dummyData: DummyDataType[] = [
 const Ltpz009 = () => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const [memoContent, setMemoContent] = useState('');
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const showSelectionLimitToast = () => {
     if (memoContent.trim().length > 0) {
@@ -160,114 +162,125 @@ const Ltpz009 = () => {
   ];
 
   return (
-    <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="xl" className="ltpz009-popup">
-        <DialogHeader>
-          <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>
-              설계메모
-            </Typo>
-            <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ009)
-            </Typo>
-          </DialogTitle>
-        </DialogHeader>
-
-        <DialogSection className="grid-rows-[auto_1fr]">
-          <Grow className="w-full" variant="box-round" placement={'ss'}>
-            <FormTable caption="보험정보" cols={['w-1', 'w-auto']} variant="head">
-              <FormRow className="grid grid-cols-[auto_1fr] w-full">
-                <FormCell title={'설계번호'}>
-                  <Input aria-label="" value={'LA123456789012'} readOnly variant="info" />
-                </FormCell>
-                <FormCell title={'설계별명'}>
-                  <Input
-                    width={280}
-                    placeholder="한글 20자 이내로 등록가능"
-                    value={'가나다라마가나다라마가나다라마가나다라마'}
-                  />
-                </FormCell>
-              </FormRow>
-            </FormTable>
-            <Grow>
-              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
-                저장
-              </Button>
-            </Grow>
-          </Grow>
-
-          <Gcol placement={'ss'} className="w-full gap-4">
-            <div className="ag-theme-alpine inner-scroll" data-row={dummyData.length}>
-              <AgGridReact<DummyDataType>
-                getRowId={(params) => String(params.data.id)}
-                noRowsOverlayComponent={AgGridEmptyComponent}
-                rowData={dummyData}
-                columnDefs={columnDefs}
-                defaultColDef={{
-                  sortable: true,
-                  resizable: true,
-                  cellClass: 'text-center',
-                }}
-                rowSelection={{
-                  mode: 'multiRow',
-                  headerCheckbox: false,
-                  checkboxes: true,
-                }}
-                selectionColumnDef={{
-                  headerName: '선택',
-                  width: attributeColumnWidth(30),
-                  cellClass: 'editable-cell',
-                }}
-                domLayout="normal"
-                tooltipShowMode="whenTruncated"
-                tooltipShowDelay={0}
-              />
-            </div>
-
-            <Gcol placement={'ss'} gap={2} className="w-full [&>div]:w-full">
-              <Typo tag={'h3'} variant={'heading-sm'}>
-                메모 입력
+    <>
+      <Dialog open>
+        <DialogContent showCloseButton resizable={true} size="xl" className="ltpz009-popup">
+          <DialogHeader>
+            <DialogTitle>
+              <Typo tag={'strong'} variant={'heading-lg'}>
+                설계메모
               </Typo>
-              <Textarea
-                className="w-full"
-                placeholder="제목을 입력해주세요."
-                maxLength={4000}
-                resize={false}
-                value={memoContent}
-                onChange={(event) => setMemoContent(event.target.value)}
-              />
-              <Gcol placement={'ss'} variant={'box-warning'}>
-                <Typo variant={'body-sm'} icon={'warning'}>
-                  정보보안을 위하여 <em>개인정보를 입력할 수 없음.</em> (예: 주민등록번호, 성별, 주소, 휴대폰)
+              <Typo tag={'p'} variant={'body-xl'}>
+                (LTPZ009)
+              </Typo>
+            </DialogTitle>
+          </DialogHeader>
+
+          <DialogSection className="grid-rows-[auto_1fr]">
+            <Grow className="w-full" variant="box-round" placement={'ss'}>
+              <FormTable caption="보험정보" cols={['w-1', 'w-auto']} variant="head">
+                <FormRow className="grid grid-cols-[auto_1fr] w-full">
+                  <FormCell title={'설계번호'}>
+                    <Input aria-label="" value={'LA123456789012'} readOnly variant="info" />
+                  </FormCell>
+                  <FormCell title={'설계별명'}>
+                    <Input
+                      width={280}
+                      placeholder="한글 20자 이내로 등록가능"
+                      value={'가나다라마가나다라마가나다라마가나다라마'}
+                    />
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+              <Grow>
+                <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                  저장
+                </Button>
+              </Grow>
+            </Grow>
+
+            <Gcol placement={'ss'} className="w-full gap-4">
+              <div className="ag-theme-alpine inner-scroll" data-row={dummyData.length}>
+                <AgGridReact<DummyDataType>
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={dummyData}
+                  columnDefs={columnDefs}
+                  defaultColDef={{
+                    sortable: true,
+                    resizable: true,
+                    cellClass: 'text-center',
+                  }}
+                  rowSelection={{
+                    mode: 'multiRow',
+                    headerCheckbox: false,
+                    checkboxes: true,
+                  }}
+                  selectionColumnDef={{
+                    headerName: '선택',
+                    width: attributeColumnWidth(30),
+                    cellClass: 'editable-cell',
+                  }}
+                  domLayout="normal"
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
+                />
+              </div>
+
+              <Gcol placement={'ss'} gap={2} className="w-full [&>div]:w-full">
+                <Typo tag={'h3'} variant={'heading-sm'}>
+                  메모 입력
                 </Typo>
+                <Textarea
+                  className="w-full"
+                  placeholder="제목을 입력해주세요."
+                  maxLength={4000}
+                  resize={false}
+                  value={memoContent}
+                  onChange={(event) => setMemoContent(event.target.value)}
+                />
+                <Gcol placement={'ss'} variant={'box-warning'}>
+                  <Typo variant={'body-sm'} icon={'warning'}>
+                    정보보안을 위하여 <em>개인정보를 입력할 수 없음.</em> (예: 주민등록번호, 성별, 주소, 휴대폰)
+                  </Typo>
+                </Gcol>
               </Gcol>
             </Gcol>
-          </Gcol>
-        </DialogSection>
+          </DialogSection>
 
-        <DialogFooter>
-          <DialogFooterArea>
-            <Grow>
-              <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                삭제
-              </Button>
-              <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                초기화
-              </Button>
-              <Button variant={'contained'} size={'xl'} onClick={showSelectionLimitToast}>
-                저장
-              </Button>
-              <DialogClose asChild>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                  닫기
+          <DialogFooter>
+            <DialogFooterArea>
+              <Grow>
+                <Button variant={'outlined'} size={'xl'} color={'gray'} onClick={() => setIsDeleteDialogOpen(true)}>
+                  삭제
                 </Button>
-              </DialogClose>
-            </Grow>
-          </DialogFooterArea>
-          <DialogBottomInfo />
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+                <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                  초기화
+                </Button>
+                <Button variant={'contained'} size={'xl'} onClick={showSelectionLimitToast}>
+                  저장
+                </Button>
+                <DialogClose asChild>
+                  <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                    닫기
+                  </Button>
+                </DialogClose>
+              </Grow>
+            </DialogFooterArea>
+            <DialogBottomInfo />
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <ConfirmDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+        title={''}
+        description="선택한 건을 삭제하시겠습니까?"
+        confirmLabel="예"
+        cancelLabel="아니오"
+      />
+    </>
   );
 };
 

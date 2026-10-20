@@ -7,22 +7,18 @@ import * as React from 'react';
 import { twMerge } from 'tailwind-merge';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Gcol, Grow, Grid, Typo } from '@atoms';
-import { CheckIcon, ExMarkIcon, BadgeCheckIcon } from '@icons';
+import { BadgeCheckIcon } from '@icons';
 import { Button } from '@uiux/Button';
 
 // TaskStatusBoard 입력 타입
 type TaskStatus = '정상' | '경고' | '중지' | '없음';
 
 const colorMap = {
-  정상: 'var(--color-success-50)',
-  경고: 'var(--color-warning-40)',
-  중지: 'var(--color-danger-50)',
-  없음: 'var(--color-gray-20)',
+  정상: '3',
+  중지: '2',
+  경고: '1',
+  없음: '0',
 };
-
-function getPieBackground(status: TaskStatus) {
-  return colorMap[status] || colorMap['없음'];
-}
 
 type TaskStatusBoardProps<
   T extends {
@@ -47,23 +43,18 @@ export function TaskStatusBoard<
   },
 >({ state, onItemClick }: TaskStatusBoardProps<T>) {
   return (
-    <Gcol
-      variant={'box'}
-      placement={'ss'}
-      className="bg-[var(--color-blue-gray-15)] rounded-[0.8rem] w-full gap-[0.2rem] px-2.5rem pt-1 pb-[0.6rem] min-h-[7.8rem]"
-    >
+    <Gcol placement={'bws'} className="w-full gap-[0.2rem] min-h-[7.8rem]">
       <Grow className="gap-[0.2rem]">
-        <BadgeCheckIcon />
         <Typo tag={'h4'} variant={'heading-sm'}>
           꼭 해야할 일
         </Typo>
+        <BadgeCheckIcon />
       </Grow>
 
-      <Grid className="grid-cols-4 gap-0 w-full h-[4.5rem] bg-[var(--color-gray-0)] px-1.5 rounded-[0.6rem]">
+      <Grid className="grid-cols-4 gap-0 w-full h-[5.4rem] bg-[var(--color-danger-5)] px-1.5 rounded-[0.6rem]">
         {state.map((item) => {
           const status = item.status;
           const isUnderline = status !== '없음';
-          const showIcon = status !== '없음';
 
           return (
             <Button
@@ -77,20 +68,16 @@ export function TaskStatusBoard<
               }}
             >
               <span className="flex items-center gap-1">
-                <Typo variant={'body-xs'} className={cn(isUnderline && 'underline underline-offset-4')}>
+                <Typo variant={'body-xs'} className={cn(isUnderline && 'underline underline-offset-3', 'font-bold')}>
                   {item.label}
                 </Typo>
               </span>
               <span
-                className={cn('w-[1.6rem] h-[1.6rem] shrink-0 rounded-full flex items-center justify-center')}
-                style={{
-                  background: getPieBackground(status),
-                }}
-              >
-                {/* 단일 상태일 때만 해당 아이콘 표시 */}
-                {showIcon && status === '정상' && <CheckIcon color={'#fff'} size={14} />}
-                {showIcon && (status === '경고' || status === '중지') && <ExMarkIcon color={'#fff'} size={14} />}
-              </span>
+                className={cn(
+                  'w-[1.6rem] h-[1.6rem] shrink-0 rounded-full flex items-center justify-center',
+                  `traffic-light-${colorMap[status]}`
+                )}
+              ></span>
             </Button>
           );
         })}
