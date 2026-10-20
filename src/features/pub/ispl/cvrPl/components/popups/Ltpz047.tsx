@@ -35,11 +35,6 @@ const Ltpz047 = () => {
     type08: '', // 2026-05-28 추가
   });
 
-  // 마스킹 상태 (주민/법인번호, 기본주소, 상세주소, 전체주소)
-  const [isResidentMasked, setIsResidentMasked] = React.useState(true);
-  const [isBaseAddressMasked, setIsBaseAddressMasked] = React.useState(true);
-  const [isDetailAddressMasked, setIsDetailAddressMasked] = React.useState(true);
-  const [isFullAddressMasked, setIsFullAddressMasked] = React.useState(true);
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="lg">
@@ -79,11 +74,9 @@ const Ltpz047 = () => {
                     size="lg"
                     readOnly
                     masking
-                    isMasked={isResidentMasked}
-                    value={isResidentMasked ? '000000-0******' : '000000-0123456'}
-                    onMaskToggle={setIsResidentMasked}
+                    value={'000000-0123456'}
                     variant="default"
-                    width="13rem"
+                    width={126}
                   />
                   <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
                     의무가입대상조회
@@ -97,9 +90,7 @@ const Ltpz047 = () => {
                     size="lg"
                     readOnly
                     masking
-                    isMasked={isBaseAddressMasked}
-                    value={isBaseAddressMasked ? '서울특별시 강남구 테헤란로 ***' : '서울특별시 강남구 테헤란로 123'}
-                    onMaskToggle={setIsBaseAddressMasked}
+                    value={'서울특별시 강남구 테헤란로 123'}
                     variant="default"
                     width="full"
                   />
@@ -112,9 +103,7 @@ const Ltpz047 = () => {
                     size="lg"
                     readOnly
                     masking
-                    isMasked={isDetailAddressMasked}
-                    value={isDetailAddressMasked ? '***************' : '(역삼동, 한화빌딩)'}
-                    onMaskToggle={setIsDetailAddressMasked}
+                    value={'(역삼동, 한화빌딩)'}
                     variant="default"
                     width="full"
                   />
@@ -127,13 +116,7 @@ const Ltpz047 = () => {
                     size="lg"
                     readOnly
                     masking
-                    isMasked={isFullAddressMasked}
-                    value={
-                      isFullAddressMasked
-                        ? '서울특별시 강남구 테헤란로 *******'
-                        : '서울특별시 강남구 테헤란로 123 (역삼동, 한화빌딩)'
-                    }
-                    onMaskToggle={setIsFullAddressMasked}
+                    value={'서울특별시 강남구 테헤란로 123 (역삼동, 한화빌딩)'}
                     variant="default"
                     width="full"
                   />

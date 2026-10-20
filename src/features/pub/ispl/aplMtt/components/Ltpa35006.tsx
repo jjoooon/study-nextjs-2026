@@ -122,15 +122,6 @@ export const Ltpa35006 = () => {
   const [selectedDepositCount, setSelectedDepositCount] = useState(0);
   const [selectedDepositAmount, setSelectedDepositAmount] = useState(0);
 
-  // 계약자 주민등록번호 마스킹 상태 관리
-  const [isContractorResidentMasked, setIsContractorResidentMasked] = useState<boolean>(true);
-
-  // 차량번호 마스킹 상태 관리
-  const [isCarNumberMasked, setIsCarNumberMasked] = useState<boolean>(true);
-
-  // 피보험자 주민등록번호 마스킹 상태 관리
-  const [isInsuredResidentMasked, setIsInsuredResidentMasked] = useState<boolean>(true);
-
   // ag-Grid 하단에 고정되어 실시간으로 선택 금액 합계를 나타낼 pinned 행 데이터 설정
   const depositSumRow = useMemo<Ltpa35006GridRow[]>(
     () => [
@@ -310,24 +301,14 @@ export const Ltpa35006 = () => {
                             width={'full'}
                             readOnly
                             masking
-                            isMasked={isContractorResidentMasked}
-                            value={isContractorResidentMasked ? '000000-0******' : '000000-0123456'}
-                            onMaskToggle={setIsContractorResidentMasked}
+                            value={'000000-0123456'}
                           />
                         </FormCell>
                         <FormCell title={'수금자'}>
                           <Input aria-label="수금자" width={'full'} value={'김한화(8098884)'} readOnly />
                         </FormCell>
                         <FormCell title={'차량번호'}>
-                          <Input
-                            aria-label="차량번호"
-                            width={'full'}
-                            readOnly
-                            masking
-                            isMasked={isCarNumberMasked}
-                            value={isCarNumberMasked ? '**가1234' : '12가1234'}
-                            onMaskToggle={setIsCarNumberMasked}
-                          />
+                          <Input aria-label="차량번호" width={'full'} readOnly masking value={'12가1234'} />
                         </FormCell>
                       </FormRow>
                       <FormRow>
@@ -349,9 +330,7 @@ export const Ltpa35006 = () => {
                             width={'full'}
                             readOnly
                             masking
-                            isMasked={isInsuredResidentMasked}
-                            value={isInsuredResidentMasked ? '000000-0******' : '000000-0123456'}
-                            onMaskToggle={setIsInsuredResidentMasked}
+                            value={'000000-0123456'}
                           />
                         </FormCell>
                         {/* 입금 주체 선택 라디오 버튼 */}
@@ -423,11 +402,13 @@ export const Ltpa35006 = () => {
                             <TableCell>
                               {/* 계좌번호 입력창 */}
                               <Input
+                                aria-label="계좌번호"
                                 size="lg"
                                 variant="default"
                                 placeholder="숫자만 입력"
-                                onChange={(e) => setFormField('type08', e.target.value)}
-                                value={form.type08}
+                                readOnly
+                                masking
+                                value={'123456789012'}
                               />
                             </TableCell>
                             <TableCell>
@@ -576,11 +557,13 @@ export const Ltpa35006 = () => {
                             </TableCell>
                             <TableCell>
                               <Input
+                                aria-label="계좌번호"
                                 size="lg"
                                 variant="default"
                                 placeholder="숫자만 입력"
-                                onChange={(e) => setFormField('type08', e.target.value)}
-                                value={form.type08}
+                                readOnly
+                                masking
+                                value={'123456789012'}
                               />
                             </TableCell>
                             <TableCell>

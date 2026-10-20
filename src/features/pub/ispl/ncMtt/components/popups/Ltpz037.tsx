@@ -31,12 +31,6 @@ interface Ltpz037Props {
 }
 
 const Ltpz037 = ({ type = 'customer', diseaseAgree = 'Y' }: Ltpz037Props) => {
-  const [isManagerPhoneMasked, setIsManagerPhoneMasked] = React.useState(true);
-  const [isResidentMasked, setIsResidentMasked] = React.useState(true);
-  const [isPhoneMasked, setIsPhoneMasked] = React.useState(true);
-  const [isParentResidentMasked, setIsParentResidentMasked] = React.useState(true);
-  const [isParentPhoneMasked, setIsParentPhoneMasked] = React.useState(true);
-
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md">
@@ -67,15 +61,7 @@ const Ltpz037 = ({ type = 'customer', diseaseAgree = 'Y' }: Ltpz037Props) => {
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button>
               <Input value={'김한화'} readOnly />
-              <Input
-                aria-label="취급자 전화번호"
-                width={130}
-                readOnly
-                masking
-                isMasked={isManagerPhoneMasked}
-                value={isManagerPhoneMasked ? '010-****-1234' : '010-1234-1234'}
-                onMaskToggle={setIsManagerPhoneMasked}
-              />
+              <Input aria-label="취급자 전화번호" width={120} readOnly masking value={'010-1234-1234'} />
             </Grid>
             <Gcol variant={'box-warning-line'} placement={'ss'} className="w-full">
               <Typo variant={'body-sm'} className="text-[var(--color-danger-50)]">
@@ -101,15 +87,7 @@ const Ltpz037 = ({ type = 'customer', diseaseAgree = 'Y' }: Ltpz037Props) => {
                     <Grow placement="bwc">
                       <Grow>
                         <Input width={76} value={'김한화화화'} readOnly />
-                        <Input
-                          aria-label="고객 주민등록번호"
-                          width={130}
-                          readOnly
-                          masking
-                          isMasked={isResidentMasked}
-                          value={isResidentMasked ? '900110-1******' : '900110-1234567'}
-                          onMaskToggle={setIsResidentMasked}
-                        />
+                        <Input aria-label="고객 주민등록번호" width={126} readOnly masking value={'900110-1234567'} />
                         <Button
                           aria-label="검색"
                           variant={'outlined'}
@@ -151,15 +129,7 @@ const Ltpz037 = ({ type = 'customer', diseaseAgree = 'Y' }: Ltpz037Props) => {
                             </NativeSelectOption>
                           ))}
                         </NativeSelect>
-                        <Input
-                          aria-label="고객 휴대폰번호"
-                          width={130}
-                          readOnly
-                          masking
-                          isMasked={isPhoneMasked}
-                          value={isPhoneMasked ? '010-****-0000' : '010-0000-0000'}
-                          onMaskToggle={setIsPhoneMasked}
-                        />
+                        <Input aria-label="고객 휴대폰번호" width={120} readOnly masking value={'010-0000-0000'} />
                         <Button size={'lg'}>인증번호 발송</Button>
                       </Grow>
                     </TableCell>
@@ -175,12 +145,10 @@ const Ltpz037 = ({ type = 'customer', diseaseAgree = 'Y' }: Ltpz037Props) => {
                             <Input width={76} value={'김한화화화'} readOnly />
                             <Input
                               aria-label="친권자 주민등록번호"
-                              width={130}
+                              width={126}
                               readOnly
                               masking
-                              isMasked={isParentResidentMasked}
-                              value={isParentResidentMasked ? '900110-1******' : '900110-1234567'}
-                              onMaskToggle={setIsParentResidentMasked}
+                              value={'900110-1234567'}
                             />
                             <Button
                               aria-label="검색"
@@ -216,15 +184,7 @@ const Ltpz037 = ({ type = 'customer', diseaseAgree = 'Y' }: Ltpz037Props) => {
                               </NativeSelectOption>
                             ))}
                           </NativeSelect>
-                          <Input
-                            aria-label="친권자 휴대폰번호"
-                            width={130}
-                            readOnly
-                            masking
-                            isMasked={isParentPhoneMasked}
-                            value={isParentPhoneMasked ? '010-****-0000' : '010-0000-0000'}
-                            onMaskToggle={setIsParentPhoneMasked}
-                          />
+                          <Input aria-label="친권자 휴대폰번호" width={120} readOnly masking value={'010-0000-0000'} />
                           <Button size={'lg'}>인증번호 발송</Button>
                         </Grow>
                       </TableCell>

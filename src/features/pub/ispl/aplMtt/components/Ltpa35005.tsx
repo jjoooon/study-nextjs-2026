@@ -258,7 +258,7 @@ export const Ltpa35005 = () => {
                             </NativeSelectOption>
                           ))}
                         </NativeSelect>
-                        <Input aria-label="만기수익자 주민등록번호" width={132} readOnly masking />
+                        <Input aria-label="만기수익자 주민등록번호" width={126} readOnly masking />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
@@ -296,6 +296,7 @@ export const Ltpa35005 = () => {
                             aria-label="우편물수령처 주소"
                             className="w-auto [&_span]:font-normal!"
                             readOnly
+                            value={'부산 사하구 경기도 남양주시 도농동 서울특별시 종로구 평창동(하단종)'}
                             variant="info"
                             masking
                           />

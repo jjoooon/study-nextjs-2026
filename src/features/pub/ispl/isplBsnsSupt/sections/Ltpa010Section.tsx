@@ -425,8 +425,6 @@ interface BirthDateMaskInputProps {
 }
 
 const BirthDateMaskInput = React.memo(({ value, label }: BirthDateMaskInputProps) => {
-  const [isMasked, setIsMasked] = React.useState(true);
-
   return (
     <Input
       className="[&_input]:bg-transparent! [&_input]:border-0! [&_input]:text-center! h-[3rem]!"
@@ -434,9 +432,7 @@ const BirthDateMaskInput = React.memo(({ value, label }: BirthDateMaskInputProps
       readOnly
       masking
       size="sm"
-      isMasked={isMasked}
-      value={isMasked ? '****-**-**' : (value ?? '')}
-      onMaskToggle={setIsMasked}
+      value={value ?? ''}
     />
   );
 });

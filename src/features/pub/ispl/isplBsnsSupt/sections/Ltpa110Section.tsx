@@ -377,8 +377,6 @@ export default function Ltpa110Section() {
 
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
 
-  const [isMasked, setIsMasked] = React.useState(true);
-
   // 두번째 agGrid 행삭제
   const handleDeleteRow = React.useCallback(() => {
     const gridApi = gridApiRef.current;
@@ -443,15 +441,7 @@ export default function Ltpa110Section() {
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input
-                      aria-label="임산부 주민등록번호"
-                      width={130}
-                      readOnly
-                      masking
-                      isMasked={isMasked}
-                      value={isMasked ? '900101-1******' : '900101-1234567'}
-                      onMaskToggle={setIsMasked}
-                    />
+                    <Input aria-label="임산부 주민등록번호" width={126} readOnly masking value={'900101-1234567'} />
                   </FormCell>
                   <FormCell title={'출산예정년월'}>
                     <DatePickerInput

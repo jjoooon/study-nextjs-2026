@@ -139,7 +139,6 @@ const DummyData: DummyDataType[] = [
 
 const Ltpz065 = () => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
-  const [isResidentMasked, setIsResidentMasked] = React.useState(true);
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
     () => [
       {
@@ -337,13 +336,11 @@ const Ltpz065 = () => {
                     <Input width={80} variant="info" value={'김한화'} readOnly />
                     <Input
                       aria-label="주민등록번호"
-                      width={130}
+                      width={126}
                       readOnly
                       variant="info"
                       masking
-                      isMasked={isResidentMasked}
-                      value={isResidentMasked ? '000000-0******' : '000000-0123456'}
-                      onMaskToggle={setIsResidentMasked}
+                      value={'000000-0123456'}
                     />
                   </FormCell>
                   <FormCell title={'조회건수'}>
