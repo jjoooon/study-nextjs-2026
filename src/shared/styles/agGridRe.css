@@ -1249,8 +1249,8 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 } */
 
 .ag-cell-value[role='presentation'] {
-  letter-spacing: -0.08rem !important;
-  padding-right: 0.08rem !important;
+  letter-spacing: -0.05rem !important;
+  padding-right: 0.05rem !important;
 }
 
 .ag-theme-alpine.inner-scroll .ag-root-wrapper-body {

@@ -88,7 +88,7 @@ const radioGroupItemVariants = cva(
         data-[state=checked]:border-r-[0.1rem]! data-[state=checked]:border-r-[var(--color-primary-50,#ff5c2e)]!
         data-[state=checked]:border-b-[0.1rem]! data-[state=checked]:border-b-white!
         data-[state=checked]:-mb-[0.1rem]! data-[state=checked]:z-10!`,
-        tabBadge: `h-[2.6rem] rounded-full border-transparent bg-[var(--color-gray-10)] px-[1rem] py-[0.4rem] text-[1.2rem] font-bold leading-normal tracking-[-0.13rem] text-[#000] inline-flex items-center gap-1 transition-all select-none
+        tabBadge: `h-[2.6rem] rounded-full border-transparent bg-[var(--color-gray-10)] px-[1rem] py-[0.4rem] text-[1.2rem] font-bold leading-normal tracking-[-0.05rem] text-[#000] inline-flex items-center gap-1 transition-all select-none
         data-[state=checked]:border-transparent! data-[state=checked]:bg-[#1f2429]! data-[state=checked]:text-white! [&_.count-badge]:shadow-[0px_2px_4px_0px_rgba(0,0,0,0.1)]!
         [&_.count-badge]:inline-flex [&_.count-badge]:px-[0.4rem] [&_.count-badge]:items-center [&_.count-badge]:justify-center [&_.count-badge]:min-w-[1.6rem] [&_.count-badge]:h-[1.6rem] [&_.count-badge]:rounded-full [&_.count-badge]:text-[1.2rem] [&_.count-badge]:font-bold [&_.count-badge]:leading-none [&_.count-badge]:tracking-normal [&_.count-badge]:pb-[0.25rem] [&_.count-badge]:text-center [&_.count-badge]:bg-white [&_.count-badge]:text-gray-100
         data-[state=checked]:[&_.count-badge]:bg-[#fbc02d]! data-[state=checked]:[&_.count-badge]:text-gray-100!
@@ -125,22 +125,22 @@ const radioGroupItemVariants = cva(
         variant: 'button',
         size: 'xl',
         className:
-          'min-h-[4.8rem] h-auto pl-[4.2rem] pr-[1.6rem] py-[1.2rem] text-[1.3rem] tracking-[-0.13rem] w-auto inline-flex items-center text-left whitespace-normal',
+          'min-h-[4.8rem] h-auto pl-[4.2rem] pr-[1.6rem] py-[1.2rem] text-[1.3rem] tracking-[-0.05rem] w-auto inline-flex items-center text-left whitespace-normal',
       },
       {
         variant: 'button',
         size: 'lg',
-        className: 'h-[2.8rem] px-[1rem] text-[1.3rem] tracking-[-0.13rem] w-auto',
+        className: 'h-[2.8rem] px-[1rem] text-[1.3rem] tracking-[-0.05rem] w-auto',
       },
       {
         variant: 'button',
         size: 'md',
-        className: 'h-[2.5rem] px-[1rem] text-[1.3rem] tracking-[-0.13rem] w-auto',
+        className: 'h-[2.5rem] px-[1rem] text-[1.3rem] tracking-[-0.05rem] w-auto',
       },
       {
         variant: 'button',
         size: 'sm',
-        className: 'h-[2.2rem] px-[1rem] text-[1.3rem] tracking-[-0.13rem] w-auto',
+        className: 'h-[2.2rem] px-[1rem] text-[1.3rem] tracking-[-0.05rem] w-auto',
       },
       {
         variant: 'button',
@@ -163,17 +163,17 @@ const radioGroupItemVariants = cva(
       {
         variant: 'noCheckButton',
         size: 'lg',
-        className: 'h-[2.8rem] px-[1rem] text-[1.3rem] tracking-[-0.13rem] w-auto justify-center items-center flex',
+        className: 'h-[2.8rem] px-[1rem] text-[1.3rem] tracking-[-0.05rem] w-auto justify-center items-center flex',
       },
       {
         variant: 'noCheckButton',
         size: 'md',
-        className: 'h-[2.5rem] px-[1rem] text-[1.3rem] tracking-[-0.13rem] w-auto justify-center items-center flex',
+        className: 'h-[2.5rem] px-[1rem] text-[1.3rem] tracking-[-0.05rem] w-auto justify-center items-center flex',
       },
       {
         variant: 'noCheckButton',
         size: 'sm',
-        className: 'h-[2.2rem] px-[1rem] text-[1.3rem] tracking-[-0.13rem] w-auto justify-center items-center flex',
+        className: 'h-[2.2rem] px-[1rem] text-[1.3rem] tracking-[-0.05rem] w-auto justify-center items-center flex',
       },
       {
         variant: 'noCheckButton',
@@ -540,7 +540,7 @@ const RadioGroupItem = React.forwardRef<
           {isButton ? (
             <div
               className={cn(
-                'border border-[var(--color-gray-15)]! rounded-full flex items-center justify-center bg-white focus:!outline-none tracking-[-0.13rem] shrink-0',
+                'border border-[var(--color-gray-15)]! rounded-full flex items-center justify-center bg-white focus:!outline-none tracking-[-0.05rem] shrink-0',
                 cn(
                   'absolute left-[0.6rem]',
                   resolvedSize === 'sm'
@@ -580,7 +580,7 @@ const RadioGroupItem = React.forwardRef<
           <label
             htmlFor={radioId}
             className={cn(
-              'text-[1.3rem] font-normal cursor-pointer select-none tracking-[-0.13rem]',
+              'text-[1.3rem] font-normal cursor-pointer select-none tracking-[-0.05rem]',
               isError && 'text-[var(--color-text-danger)]'
             )}
           >
