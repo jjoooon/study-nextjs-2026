@@ -939,7 +939,7 @@ export const Ltpa35001 = ({
                                       />
                                       <Input
                                         aria-label="주민등록번호 마스킹"
-                                        width={132}
+                                        width={126}
                                         readOnly
                                         masking
                                         value={'000000-0123456'}
@@ -1145,7 +1145,7 @@ export const Ltpa35001 = ({
                                   <Grow placement="ss">
                                     <Input
                                       aria-label="주민등록번호 마스킹"
-                                      width={132}
+                                      width={126}
                                       readOnly
                                       masking
                                       value={'000000-0000000'}
@@ -1250,7 +1250,7 @@ export const Ltpa35001 = ({
                                         <Input aria-label="소유자명" width={76} value={'김환화'} readOnly />
                                         <Input
                                           aria-label="주민등록번호 마스킹"
-                                          width={132}
+                                          width={126}
                                           required
                                           masking
                                           value={'000000-0123456'}
@@ -1552,7 +1552,7 @@ export const Ltpa35001 = ({
                                   <Input aria-label="피보험자명" width={76} value={'김환화'} readOnly />
                                   <Input
                                     aria-label="주민등록번호 마스킹"
-                                    width={132}
+                                    width={126}
                                     readOnly
                                     masking
                                     value={'000000-0123456'}
@@ -1646,7 +1646,8 @@ export const Ltpa35001 = ({
                             <Grow placement="bwc">
                               <Input
                                 aria-label="연락처"
-                                className="w-auto [&_span]:font-normal!"
+                                className="[&_span]:font-normal!"
+                                width={120}
                                 readOnly
                                 variant="info"
                                 masking

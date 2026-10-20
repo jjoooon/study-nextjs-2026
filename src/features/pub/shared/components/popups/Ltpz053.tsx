@@ -62,12 +62,6 @@ const Ltpz053 = () => {
     type02: '주민등록증',
   });
 
-  // 마스킹 상태 (주민등록번호, 생년월일, 면허번호, 외국인번호)
-  const [isResidentMasked, setIsResidentMasked] = React.useState(true);
-  const [isBirthDateMasked, setIsBirthDateMasked] = React.useState(true);
-  const [isLicenseMasked, setIsLicenseMasked] = React.useState(true);
-  const [isAlienResidentMasked, setIsAlienResidentMasked] = React.useState(true);
-
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
@@ -204,14 +198,7 @@ const Ltpz053 = () => {
                       <Input aria-label="" value={'김환화환하'} required />
                     </FormCell>
                     <FormCell title={'주민등록번호'}>
-                      <Input
-                        aria-label="주민등록번호"
-                        required
-                        masking
-                        isMasked={isResidentMasked}
-                        value={isResidentMasked ? '000000-0******' : '000000-0123456'}
-                        onMaskToggle={setIsResidentMasked}
-                      />
+                      <Input aria-label="주민등록번호" width={126} required masking value={'000000-0123456'} />
                     </FormCell>
                     <FormCell title={'발급일자'}>
                       <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" required />
@@ -227,24 +214,10 @@ const Ltpz053 = () => {
                       <Input aria-label="성명" value={'김환화환하'} required />
                     </FormCell>
                     <FormCell title={'생년월일'}>
-                      <Input
-                        aria-label="생년월일"
-                        required
-                        masking
-                        isMasked={isBirthDateMasked}
-                        value={isBirthDateMasked ? '****-**-**' : '1990-01-01'}
-                        onMaskToggle={setIsBirthDateMasked}
-                      />
+                      <Input aria-label="생년월일" required masking value={'1990-01-01'} />
                     </FormCell>
                     <FormCell title={'면허번호'}>
-                      <Input
-                        aria-label="면허번호"
-                        required
-                        masking
-                        isMasked={isLicenseMasked}
-                        value={isLicenseMasked ? '11-12-******-12' : '11-12-345678-00'}
-                        onMaskToggle={setIsLicenseMasked}
-                      />
+                      <Input aria-label="면허번호" required masking value={'11-12-345678-00'} />
                       <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
                         신원확인
                       </Button>
@@ -258,14 +231,7 @@ const Ltpz053 = () => {
                         <Input aria-label="성명" value={'김환화환하'} required />
                       </FormCell>
                       <FormCell title={'외국인번호'}>
-                        <Input
-                          aria-label="외국인번호"
-                          required
-                          masking
-                          isMasked={isAlienResidentMasked}
-                          value={isAlienResidentMasked ? '000000-5******' : '000000-5123456'}
-                          onMaskToggle={setIsAlienResidentMasked}
-                        />
+                        <Input aria-label="외국인번호" required masking value={'000000-5123456'} />
                       </FormCell>
                       <FormCell title={'발급일자'}>
                         <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" required />

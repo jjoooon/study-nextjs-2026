@@ -3,7 +3,6 @@
  */
 'use client';
 
-import { useState } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -23,9 +22,6 @@ import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
 const Ltpa401 = () => {
-  // 요청자 휴대폰번호 마스킹 상태
-  const [isRequesterPhoneMasked, setIsRequesterPhoneMasked] = useState(true);
-
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={false} size="lg">
@@ -70,13 +66,11 @@ const Ltpa401 = () => {
                     <FormCell title={'요청자 휴대폰번호'}>
                       <Input
                         aria-label="요청자 휴대폰번호"
-                        className="w-auto"
+                        width={120}
                         readOnly
                         variant="info"
                         masking
-                        isMasked={isRequesterPhoneMasked}
-                        value={isRequesterPhoneMasked ? '010-****-1234' : '010-1234-1234'}
-                        onMaskToggle={setIsRequesterPhoneMasked}
+                        value={'010-1234-1234'}
                       />
                     </FormCell>
                   </FormRow>

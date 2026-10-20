@@ -86,9 +86,6 @@ const dummyData: DummyDataType[] = [
 const Ltpz087 = () => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
-  // 질권자 주소 마스킹 상태
-  const [isAddressMasked, setIsAddressMasked] = useState(true);
-
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
     () => [
       {
@@ -208,19 +205,10 @@ const Ltpz087 = () => {
                             width={'full'}
                             readOnly
                             masking
-                            isMasked={isAddressMasked}
-                            value={
-                              isAddressMasked ? '서울특별시 강남구 테헤란로 ***' : '서울특별시 강남구 테헤란로 123'
-                            }
-                            onMaskToggle={setIsAddressMasked}
+                            value={'서울특별시 강남구 테헤란로 123'}
                           />
                         </Grow>
-                        <Input
-                          aria-label="질권자 상세주소"
-                          width={'full'}
-                          value={isAddressMasked ? '***************' : '(역삼동, 한화빌딩)'}
-                          readOnly
-                        />
+                        <Input aria-label="질권자 상세주소" width={'full'} value={'(역삼동, 한화빌딩)'} readOnly />
                       </Gcol>
                     </FormCell>
                   </FormRow>

@@ -6,7 +6,6 @@
 import '@/shared/lib/agGridPub';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
@@ -206,9 +205,6 @@ const Ltpz097 = () => {
     type03: '',
   });
 
-  // 피보험자정보 주민등록번호 마스킹 상태
-  const [isInsuredMasked, setIsInsuredMasked] = useState(true);
-
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
@@ -255,20 +251,18 @@ const Ltpz097 = () => {
                       aria-label="항목 선택"
                       value={form.type03}
                       masking
-                      isMasked={isInsuredMasked}
-                      onMaskToggle={setIsInsuredMasked}
                       onChange={(e) => setFormField('type03', e.target.value)}
                     >
                       {[
                         {
                           value: 'selection',
                           id: 'type03-1',
-                          label: isInsuredMasked ? '김한화(000000-1******)' : '김한화(000000-1234567)',
+                          label: '김한화(000000-1234567)',
                         },
                         {
                           value: 'selection2',
                           id: 'type03-2',
-                          label: isInsuredMasked ? '박한화(000000-1******)' : '박한화(000000-1234567)',
+                          label: '박한화(000000-1234567)',
                         },
                       ].map((option) => (
                         <NativeSelectOption key={option.id} value={option.value}>

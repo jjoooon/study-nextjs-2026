@@ -215,8 +215,6 @@ const Ltpz012 = () => {
     );
   };
 
-  const [isMasked, setIsMasked] = React.useState(true);
-
   /** 화면 해상도에 따른 동적 컬럼 너비 계산 훅 */
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
@@ -418,9 +416,7 @@ const Ltpz012 = () => {
                     readOnly
                     variant="info"
                     masking
-                    isMasked={isMasked}
-                    value={isMasked ? '900101-1******' : '900101-1234567'}
-                    onMaskToggle={setIsMasked}
+                    value={'900101-1234567'}
                   />
                 </FormCell>
               </FormRow>

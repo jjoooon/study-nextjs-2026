@@ -302,6 +302,7 @@ export const Ltpa35005 = () => {
                             aria-label="우편물수령처 주소"
                             className="w-auto [&_span]:font-normal!"
                             readOnly
+                            value={'부산 사하구 경기도 남양주시 도농동 서울특별시 종로구 평창동(하단종)'}
                             variant="info"
                             masking
                           />

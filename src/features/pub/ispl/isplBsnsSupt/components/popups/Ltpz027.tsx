@@ -141,9 +141,7 @@ interface MaskInputCellProps {
   ariaLabel?: string;
 }
 
-const MaskInputCell = React.memo(({ value, maskedValue, width = 'full', ariaLabel = '' }: MaskInputCellProps) => {
-  const [isMasked, setIsMasked] = React.useState(true);
-
+const MaskInputCell = React.memo(({ value, width = 'full', ariaLabel = '' }: MaskInputCellProps) => {
   return (
     <Input
       className="[&_input]:bg-transparent! [&_input]:border-0!"
@@ -151,9 +149,7 @@ const MaskInputCell = React.memo(({ value, maskedValue, width = 'full', ariaLabe
       width={width}
       readOnly
       masking
-      isMasked={isMasked}
-      value={isMasked ? maskedValue : String(value ?? '')}
-      onMaskToggle={setIsMasked}
+      value={String(value ?? '')}
     />
   );
 });

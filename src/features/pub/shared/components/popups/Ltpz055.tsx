@@ -44,24 +44,11 @@ const defaultRowData: SendRowData[] = [
 // 기존발송번호 행별 독립 마스킹 셀 컴포넌트
 interface MaskPhoneCellProps {
   value?: string;
-  maskedValue?: string;
 }
 
-const MaskPhoneCell = ({ value, maskedValue = '010-****-0000' }: MaskPhoneCellProps) => {
-  const [isMasked, setIsMasked] = useState(true);
-
+const MaskPhoneCell = ({ value }: MaskPhoneCellProps) => {
   return (
-    <Input
-      aria-label="기존발송번호"
-      readOnly
-      masking
-      isMasked={isMasked}
-      value={isMasked ? maskedValue : value || ''}
-      onMaskToggle={setIsMasked}
-      size="md"
-      variant="default"
-      width="full"
-    />
+    <Input aria-label="기존발송번호" readOnly masking value={value || ''} size="md" variant="default" width="full" />
   );
 };
 
@@ -109,10 +96,7 @@ const Ltpz055 = () => {
       flex: 2,
       cellClass: 'text-center flex! items-center',
       cellRenderer: (params: ICellRendererParams<SendRowData>) => (
-        <MaskPhoneCell
-          value={params.data?.rawOldPhone ?? '010-1234-5678'}
-          maskedValue={params.data?.oldPhone ?? '010-****-0000'}
-        />
+        <MaskPhoneCell value={params.data?.rawOldPhone ?? '010-1234-5678'} />
       ),
     },
     {

@@ -88,7 +88,6 @@ export default function Ltpa250Section() {
   // 2026-06-01 width, flex 수정, animateRows 추가
   // 2026-06-04 flex, minWidth 수정
   // AgGrid Column
-  const [isResidentMasked, setIsResidentMasked] = React.useState(true);
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '',
@@ -372,13 +371,12 @@ export default function Ltpa250Section() {
                     <Input className="text-[1.3rem]" width={130} value={'김한화'} readOnly variant="info" />
                     <span className="font-bold text-[#000] text-[1.3rem] inline-flex items-center h-[2.8rem]">(</span>
                     <Input
-                      className="text-[1.3rem] w-[12.5rem]"
+                      className="text-[1.3rem]"
+                      width={126}
                       readOnly
                       variant="info"
                       masking
-                      isMasked={isResidentMasked}
-                      value={isResidentMasked ? '900101-1******' : '900101-1234567'}
-                      onMaskToggle={setIsResidentMasked}
+                      value={'900101-1234567'}
                     />
                     <span className="ml-[-0.1rem] font-bold text-[#000] text-[1.3rem] inline-flex items-center h-[2.8rem]">
                       )

@@ -75,8 +75,6 @@ const DummyData2: DummyDataType2[] = [
 ];
 
 const Ltpz025 = () => {
-  const [isResidentMasked, setIsResidentMasked] = React.useState(true);
-  const [isPhoneMasked, setIsPhoneMasked] = React.useState(true);
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
     () => [
@@ -97,12 +95,10 @@ const Ltpz025 = () => {
           <Input
             className="[&_input]:bg-transparent! [&_input]:border-0!"
             aria-label=""
-            width={130}
+            width={126}
             readOnly
             masking
-            isMasked={isResidentMasked}
-            value={isResidentMasked ? '900101-1******' : '900101-1234567'}
-            onMaskToggle={setIsResidentMasked}
+            value={'900101-1234567'}
           />
         ),
       },
@@ -120,14 +116,12 @@ const Ltpz025 = () => {
             width={120}
             readOnly
             masking
-            isMasked={isPhoneMasked}
-            value={isPhoneMasked ? '010-****-5651' : '010-1234-5651'}
-            onMaskToggle={setIsPhoneMasked}
+            value={'010-1234-5651'}
           />
         ),
       },
     ],
-    [isResidentMasked, isPhoneMasked]
+    []
   );
 
   const columnDefs2 = React.useMemo<ColDef<DummyDataType2>[]>(

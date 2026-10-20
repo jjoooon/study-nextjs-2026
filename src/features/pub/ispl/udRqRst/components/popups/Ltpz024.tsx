@@ -24,10 +24,6 @@ import {
 import { Input } from '@uiux/Input';
 
 const Ltpz024 = () => {
-  const [isResidentMasked, setIsResidentMasked] = React.useState(true);
-  const [isPhoneMasked, setIsPhoneMasked] = React.useState(true);
-  const [isManagerPhoneMasked, setIsManagerPhoneMasked] = React.useState(true);
-
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={false} size="md">
@@ -65,15 +61,7 @@ const Ltpz024 = () => {
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
                     <Input value={'김한화'} readOnly />
-                    <Input
-                      aria-label="취급자 휴대폰번호"
-                      width={130}
-                      readOnly
-                      masking
-                      isMasked={isManagerPhoneMasked}
-                      value={isManagerPhoneMasked ? '010-****-1234' : '010-1234-1234'}
-                      onMaskToggle={setIsManagerPhoneMasked}
-                    />
+                    <Input aria-label="취급자 휴대폰번호" width={120} readOnly masking value={'010-1234-1234'} />
                   </FormCell>
                 </FormRow>
               </FormTable>
@@ -133,15 +121,7 @@ const Ltpz024 = () => {
                       <FormCell title={'고객명'}>
                         <Grid className="grid-cols-[1fr_auto_auto] items-center gap-1 w-full">
                           <Input placeholder="" value="김한화" readOnly />
-                          <Input
-                            aria-label="주민등록번호"
-                            width={130}
-                            readOnly
-                            masking
-                            isMasked={isResidentMasked}
-                            value={isResidentMasked ? '900101-1******' : '900101-1234567'}
-                            onMaskToggle={setIsResidentMasked}
-                          />
+                          <Input aria-label="주민등록번호" width={126} readOnly masking value={'900101-1234567'} />
                           {/* M1. 수정 */}
                           <Button
                             aria-label="검색"
@@ -158,15 +138,7 @@ const Ltpz024 = () => {
                     </FormRow>
                     <FormRow>
                       <FormCell title={'휴대폰번호'}>
-                        <Input
-                          aria-label="휴대폰번호"
-                          width={130}
-                          readOnly
-                          masking
-                          isMasked={isPhoneMasked}
-                          value={isPhoneMasked ? '010-****-8234' : '010-8234-8234'}
-                          onMaskToggle={setIsPhoneMasked}
-                        />
+                        <Input aria-label="휴대폰번호" width={120} readOnly masking value={'010-8234-8234'} />
                       </FormCell>
                     </FormRow>
                   </FormTable>

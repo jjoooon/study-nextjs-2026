@@ -35,18 +35,6 @@ const Ltpz045 = () => {
   // CDD 기타 값 상태
   const [cddEtcValue] = React.useState('');
 
-  // 마스킹 상태 (계약자, 고객, 연락처, 주소, 법인대표, 실소유자, 법정대리인)
-  const [isContractorResidentMasked, setIsContractorResidentMasked] = React.useState(true);
-  const [isResidentMasked, setIsResidentMasked] = React.useState(true);
-  const [isMobileMasked, setIsMobileMasked] = React.useState(true);
-  const [isPhoneMasked, setIsPhoneMasked] = React.useState(true);
-  const [isEmailMasked, setIsEmailMasked] = React.useState(true);
-  const [isWorkAddressMasked, setIsWorkAddressMasked] = React.useState(true);
-  const [isCorpPhoneMasked, setIsCorpPhoneMasked] = React.useState(true);
-  const [isCorpAddressMasked, setIsCorpAddressMasked] = React.useState(true);
-  const [isCeoBirthDateMasked, setIsCeoBirthDateMasked] = React.useState(true);
-  const [isRealOwnerBirthDateMasked, setIsRealOwnerBirthDateMasked] = React.useState(true);
-  const [isParentResidentMasked, setIsParentResidentMasked] = React.useState(true);
   return (
     // 2026-05-27
     <Dialog open>
@@ -76,13 +64,11 @@ const Ltpz045 = () => {
                     <Input width={76} value={'김한화'} readOnly variant="info" />
                     <Input
                       aria-label="계약자 주민등록번호"
-                      className="w-auto"
+                      width={126}
                       readOnly
                       variant="info"
                       masking
-                      isMasked={isContractorResidentMasked}
-                      value={isContractorResidentMasked ? '900315-1******' : '900315-1234567'}
-                      onMaskToggle={setIsContractorResidentMasked}
+                      value={'900315-1234567'}
                     />
                   </FormCell>
                 </FormRow>
@@ -101,13 +87,11 @@ const Ltpz045 = () => {
                     <FormCell title={'주민번호(여권번호)'}>
                       <Input
                         aria-label="주민번호(여권번호)"
-                        className="w-auto"
+                        width={126}
                         readOnly
                         variant="info"
                         masking
-                        isMasked={isResidentMasked}
-                        value={isResidentMasked ? '900315-1******' : '900315-1234567'}
-                        onMaskToggle={setIsResidentMasked}
+                        value={'900315-1234567'}
                       />
                     </FormCell>
                     <FormCell title={'국적'}>대한민국</FormCell>
@@ -116,25 +100,21 @@ const Ltpz045 = () => {
                     <FormCell title={'휴대폰'}>
                       <Input
                         aria-label="휴대폰"
-                        className="w-auto"
+                        width={120}
                         readOnly
                         variant="info"
                         masking
-                        isMasked={isMobileMasked}
-                        value={isMobileMasked ? '010-****-5678' : '010-1234-5678'}
-                        onMaskToggle={setIsMobileMasked}
+                        value={'010-1234-5678'}
                       />
                     </FormCell>
                     <FormCell title={'전화번호'}>
                       <Input
                         aria-label="전화번호"
-                        className="w-auto"
+                        width={120}
                         readOnly
                         variant="info"
                         masking
-                        isMasked={isPhoneMasked}
-                        value={isPhoneMasked ? '02-***-4567' : '02-123-4567'}
-                        onMaskToggle={setIsPhoneMasked}
+                        value={'02-123-4567'}
                       />
                     </FormCell>
                   </FormRow>
@@ -147,9 +127,7 @@ const Ltpz045 = () => {
                         readOnly
                         variant="info"
                         masking
-                        isMasked={isEmailMasked}
-                        value={isEmailMasked ? 'exa****************' : 'example@example.com'}
-                        onMaskToggle={setIsEmailMasked}
+                        value={'example@example.com'}
                       />
                     </FormCell>
                   </FormRow>
@@ -165,13 +143,7 @@ const Ltpz045 = () => {
                         readOnly
                         variant="info"
                         masking
-                        isMasked={isWorkAddressMasked}
-                        value={
-                          isWorkAddressMasked
-                            ? '서울특별시 강남구 테헤란로 *******'
-                            : '서울특별시 강남구 테헤란로 123 (역삼동, 한화빌딩)'
-                        }
-                        onMaskToggle={setIsWorkAddressMasked}
+                        value={'서울특별시 강남구 테헤란로 123 (역삼동, 한화빌딩)'}
                       />
                     </FormCell>
                   </FormRow>
@@ -201,13 +173,11 @@ const Ltpz045 = () => {
                     <FormCell title={'대표전화번호'}>
                       <Input
                         aria-label="대표전화번호"
-                        className="w-auto"
+                        width={120}
                         readOnly
                         variant="info"
                         masking
-                        isMasked={isCorpPhoneMasked}
-                        value={isCorpPhoneMasked ? '010-****-5678' : '010-1234-5678'}
-                        onMaskToggle={setIsCorpPhoneMasked}
+                        value={'010-1234-5678'}
                       />
                     </FormCell>
                     <FormCell title={'설립목적'}>02-123-4567</FormCell>
@@ -220,13 +190,7 @@ const Ltpz045 = () => {
                         readOnly
                         variant="info"
                         masking
-                        isMasked={isCorpAddressMasked}
-                        value={
-                          isCorpAddressMasked
-                            ? '서울특별시 강남구 테헤란로 *******'
-                            : '서울특별시 강남구 테헤란로 123 (역삼동, 한화빌딩)'
-                        }
-                        onMaskToggle={setIsCorpAddressMasked}
+                        value={'서울특별시 강남구 테헤란로 123 (역삼동, 한화빌딩)'}
                       />
                     </FormCell>
                   </FormRow>
@@ -242,9 +206,7 @@ const Ltpz045 = () => {
                         readOnly
                         variant="info"
                         masking
-                        isMasked={isCeoBirthDateMasked}
-                        value={isCeoBirthDateMasked ? '****-**-**' : '1990-01-01'}
-                        onMaskToggle={setIsCeoBirthDateMasked}
+                        value={'1990-01-01'}
                       />
                     </FormCell>
                     <FormCell title={'표준산업분류'}>TEXT</FormCell>
@@ -311,9 +273,7 @@ const Ltpz045 = () => {
                         readOnly
                         variant="info"
                         masking
-                        isMasked={isRealOwnerBirthDateMasked}
-                        value={isRealOwnerBirthDateMasked ? '****-**-**' : '1990-01-01'}
-                        onMaskToggle={setIsRealOwnerBirthDateMasked}
+                        value={'1990-01-01'}
                       />
                     </FormCell>
                     <FormCell title={'국적'}>대한민국</FormCell>
@@ -395,12 +355,10 @@ const Ltpz045 = () => {
                           </Button>
                           <Input
                             aria-label="법정대리인 주민번호"
-                            width={130}
+                            width={126}
                             readOnly
                             masking
-                            isMasked={isParentResidentMasked}
-                            value={isParentResidentMasked ? '900315-1******' : '900315-1234567'}
-                            onMaskToggle={setIsParentResidentMasked}
+                            value={'900315-1234567'}
                           />
                           김한화 와의 관계
                           <NativeSelect

@@ -49,14 +49,7 @@ interface MaskPhoneCellProps {
 }
 
 const MaskPhoneCell = ({ value }: MaskPhoneCellProps) => {
-  const [isMasked, setIsMasked] = React.useState(true);
-
   if (!value) return null;
-
-  const rawValue = String(value);
-  const maskedValue = /^(\d{3})-(\d{3,4})-(\d{4})$/.test(rawValue)
-    ? rawValue.replace(/^(\d{3})-(\d{3,4})-(\d{4})$/, '$1-****-$3')
-    : '010-****-0000';
 
   return (
     <Input
@@ -64,9 +57,7 @@ const MaskPhoneCell = ({ value }: MaskPhoneCellProps) => {
       aria-label="휴대폰"
       readOnly
       masking
-      isMasked={isMasked}
-      value={isMasked ? maskedValue : rawValue}
-      onMaskToggle={setIsMasked}
+      value={String(value)}
       size="md"
       width="full"
     />
