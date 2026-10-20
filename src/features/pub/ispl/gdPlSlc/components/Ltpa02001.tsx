@@ -557,7 +557,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
 
     return (
       <Grow className="w-full" placement="bwc">
-        <Grow className="overflow-hidden -tracking-[0.03rem]">
+        <Grow className="overflow-hidden">
           <Checkbox
             color="primary"
             onCheckedChange={handleFavoriteChange}

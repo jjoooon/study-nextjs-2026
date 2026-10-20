@@ -100,7 +100,7 @@ const Ltpz037 = ({ type = 'customer', diseaseAgree = 'Y' }: Ltpz037Props) => {
                   <TableCell>
                     <Grow placement="bwc">
                       <Grow>
-                        <Input width={84} value={'김한화화화'} readOnly />
+                        <Input width={76} value={'김한화화화'} readOnly />
                         <Input
                           aria-label="고객 주민등록번호"
                           width={130}
@@ -172,7 +172,7 @@ const Ltpz037 = ({ type = 'customer', diseaseAgree = 'Y' }: Ltpz037Props) => {
                       <TableCell>
                         <Grow placement="bwc">
                           <Grow>
-                            <Input width={84} value={'김한화화화'} readOnly />
+                            <Input width={76} value={'김한화화화'} readOnly />
                             <Input
                               aria-label="친권자 주민등록번호"
                               width={130}

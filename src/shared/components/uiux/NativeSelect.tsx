@@ -156,7 +156,7 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
     const isInvalid = props['aria-invalid'] === 'true' || props['aria-invalid'] === true;
 
     const baseStyle = cn(
-      'w-full rounded-[0.4rem] px-2 pr-6 text-[1.3rem] border box-border tracking-[-0.05rem] appearance-none truncate',
+      'w-full rounded-[0.4rem] px-1 pr-5 text-[1.3rem] border box-border tracking-[-0.05rem] appearance-none truncate',
       isInvalid || isErrorActive
         ? 'text-[var(--color-danger-50)] bg-[var(--color-danger-5)] border-[var(--color-danger-50)] border-[0.2rem] ring-1 ring-[var(--color-danger-5)]'
         : required
@@ -288,7 +288,7 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
               )}
               <SelectDropIcon
                 className={cn(
-                  'pointer-events-none absolute top-1/2 right-[0.8rem] select-none text-[var(--color-icon-basic)]',
+                  'pointer-events-none absolute top-1/2 right-[0.6rem] select-none text-[var(--color-icon-basic)]',
                   size === 'lg' ? 'size-[1.4rem] -translate-y-[0.6rem]' : 'size-[1.2rem] -translate-y-[0.5rem]'
                 )}
                 aria-hidden="true"

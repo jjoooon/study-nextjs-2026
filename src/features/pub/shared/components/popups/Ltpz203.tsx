@@ -243,7 +243,7 @@ function CardBox({ children, bottom, color }: { children: React.ReactNode; botto
         {children}
       </Grid>
       <Grow placement="bwc" className="px-[1.6rem] h-[4rem] text-white">
-        <b>예상보험료(환급률)</b>
+        <b>예상보험료</b>
         {bottom}
       </Grow>
     </Grid>
@@ -335,7 +335,7 @@ const Ltpz203 = () => {
               <CardBox
                 bottom={
                   <div>
-                    <b>70,000</b>원(39.4%)
+                    <b>70,000</b>원
                   </div>
                 }
               >
@@ -436,7 +436,7 @@ const Ltpz203 = () => {
                   color="var(--color-information-50)"
                   bottom={
                     <div>
-                      <b>70,000</b>원(39.4%)
+                      <b>70,000</b>원
                     </div>
                   }
                   key={i}

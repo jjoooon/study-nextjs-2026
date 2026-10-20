@@ -400,7 +400,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
   const shouldShowError = error && !isErrorDismissed;
 
   const baseStyle = cn(
-    'w-full rounded-[0.4rem] px-2 text-[1.3rem] border border-[0.1rem] box-border tracking-[-0.03rem] appearance-none truncate pb-[0.1rem]',
+    'w-full rounded-[0.4rem] px-[0.4rem] text-[1.3rem] border border-[0.1rem] box-border tracking-[-0.03rem] appearance-none truncate pb-[0.1rem]',
     isInvalid || shouldShowError
       ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] border-[0.2rem] hover:px-[0.7rem] px-[0.7rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]'
       : required

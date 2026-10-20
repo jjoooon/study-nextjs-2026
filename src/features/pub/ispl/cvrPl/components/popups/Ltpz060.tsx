@@ -157,7 +157,7 @@ const Ltpz060 = () => {
               </FormRow>
               <FormRow>
                 <FormCell title={'준공연도(사용승인연도)'}>
-                  <Input aria-label="" width={84} value={'1999-12-12'} required />
+                  <Input aria-label="" width={76} value={'1999-12-12'} required />
                 </FormCell>
               </FormRow>
             </FormTable>

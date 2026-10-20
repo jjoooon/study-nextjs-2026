@@ -254,7 +254,7 @@ export const FormCell = ({
       {!thNone && title !== null && (
         <TableHead
           data-variant={usedVariant}
-          className={cn(FormCellVariants({ variant: usedVariant }), 'text-left py-[0.4rem]', className)}
+          className={cn(FormCellVariants({ variant: usedVariant }), 'text-left py-[0.4rem]', 'pr-[0.2rem]!', className)}
           {...(titleColSpan && { colSpan: titleColSpan })}
           {...(titleRowSpan && { rowSpan: titleRowSpan })}
         >
@@ -271,7 +271,7 @@ export const FormCell = ({
       )}
       {!tdNone && (
         <TableCell
-          className={cn('border-b border-[#E5E5E5] px-[1rem] pt-[0.4rem] pb-[0.5rem] h-[3.8rem]', tdClassName)}
+          className={cn('border-b border-[#E5E5E5] pl-[1rem] pt-[0.4rem] pb-[0.5rem] h-[3.8rem]', tdClassName)}
           {...(colSpan && { colSpan })}
           {...(rowSpan && { rowSpan })}
           style={tdStyle}

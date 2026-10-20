@@ -237,48 +237,6 @@ export const Ltpa35005 = () => {
   const is노후실손자동재가입동의 = true;
   const is해지방지휴대폰결제 = true;
 
-  // 만기수익자 주민등록번호 마스킹 상태 관리
-  const [isMaturityResidentMasked, setIsMaturityResidentMasked] = React.useState<boolean>(true);
-
-  // 우편물수령처 주소 마스킹 상태 관리
-  const [isPostalAddressMasked, setIsPostalAddressMasked] = React.useState<boolean>(true);
-
-  // 사망수익자(법정상속인) 주민등록번호 마스킹 상태 관리
-  const [isLegalHeirResidentMasked, setIsLegalHeirResidentMasked] = React.useState<boolean>(true);
-
-  // 사망외수익자 주민등록번호 마스킹 상태 관리
-  const [isNonDeathBeneficiaryResidentMasked, setIsNonDeathBeneficiaryResidentMasked] = React.useState<boolean>(true);
-
-  // 지정대리인 주민등록번호 마스킹 상태 관리
-  const [isDesignatedProxyResidentMasked, setIsDesignatedProxyResidentMasked] = React.useState<boolean>(true);
-
-  // 법정대리인1 주민등록번호 마스킹 상태 관리
-  const [isLegalProxy1ResidentMasked, setIsLegalProxy1ResidentMasked] = React.useState<boolean>(true);
-
-  // 법정대리인2 주민등록번호 마스킹 상태 관리
-  const [isLegalProxy2ResidentMasked, setIsLegalProxy2ResidentMasked] = React.useState<boolean>(true);
-
-  // 지정대리인1 주민등록번호 마스킹 상태 관리
-  const [isDesignatedProxy1ResidentMasked, setIsDesignatedProxy1ResidentMasked] = React.useState<boolean>(true);
-
-  // 지정대리인2 주민등록번호 마스킹 상태 관리
-  const [isDesignatedProxy2ResidentMasked, setIsDesignatedProxy2ResidentMasked] = React.useState<boolean>(true);
-
-  // 초회납 계좌번호 마스킹 상태 관리
-  const [isFirstPayAccountMasked, setIsFirstPayAccountMasked] = React.useState<boolean>(true);
-
-  // 계속납 계좌번호 마스킹 상태 관리
-  const [isMorePayAccountMasked, setIsMorePayAccountMasked] = React.useState<boolean>(true);
-
-  // 가상계좌번호 마스킹 상태 관리
-  const [isVirtualAccountMasked, setIsVirtualAccountMasked] = React.useState<boolean>(true);
-
-  // 초회납 카드번호 마스킹 상태 관리
-  const [isFirstPayCardMasked, setIsFirstPayCardMasked] = React.useState<boolean>(true);
-
-  // 계속납 카드번호 마스킹 상태 관리
-  const [isMorePayCardMasked, setIsMorePayCardMasked] = React.useState<boolean>(true);
-
   return (
     <LayoutTemplateLTPA350MainBody
       mainBody={
@@ -290,7 +248,7 @@ export const Ltpa35005 = () => {
                   <FormTable cols={['w-[15.6rem]', 'w-[25rem]', 'w-[13.8rem]', 'w-[auto]']}>
                     <FormRow>
                       <FormCell title={'만기수익자'} colSpan={3}>
-                        <NativeSelect aria-label="주피와 관계 선택" width={100} className="ml-[0.4rem]">
+                        <NativeSelect aria-label="주피와 관계 선택" width={100}>
                           {[
                             { value: '본인', label: '본인' },
                             { value: '본인', label: '본인' },
@@ -300,20 +258,12 @@ export const Ltpa35005 = () => {
                             </NativeSelectOption>
                           ))}
                         </NativeSelect>
-                        <Input
-                          aria-label="만기수익자 주민등록번호"
-                          width={132}
-                          readOnly
-                          masking
-                          isMasked={isMaturityResidentMasked}
-                          value={isMaturityResidentMasked ? '000000-0******' : '000000-0123456'}
-                          onMaskToggle={setIsMaturityResidentMasked}
-                        />
+                        <Input aria-label="만기수익자 주민등록번호" width={132} readOnly masking />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
-                        <Input aria-label="만기수익자 이름" width={84} value={'김한화'} readOnly />
-                        <NativeSelect aria-label="만기수익자 은행선택" width={100} className="ml-[0.4rem]">
+                        <Input aria-label="만기수익자 이름" width={76} value={'김한화'} readOnly />
+                        <NativeSelect aria-label="만기수익자 은행선택" width={100}>
                           {[
                             { value: '은행선택', label: '은행선택' },
                             { value: '우리은행', label: '우리은행' },
@@ -348,13 +298,6 @@ export const Ltpa35005 = () => {
                             readOnly
                             variant="info"
                             masking
-                            isMasked={isPostalAddressMasked}
-                            value={
-                              isPostalAddressMasked
-                                ? '부산 사하구 경기도 남양주시 도농동 서울특별시 종로구 *******'
-                                : '부산 사하구 경기도 남양주시 도농동 서울특별시 종로구 평창동 (하단동)'
-                            }
-                            onMaskToggle={setIsPostalAddressMasked}
                           />
                         </Grow>
                       </FormCell>
@@ -488,7 +431,21 @@ export const Ltpa35005 = () => {
                       </FormCell>
                     </FormRow>
                     <FormRow>
-                      <FormCell title={'수익자 지정·변경 추가약정'}>
+                      <FormCell
+                        title={
+                          <>
+                            수익자 지정·변경 추가약정
+                            <TooltipQ
+                              onClick={() => {
+                                alert('수익자 지정·변경 추가약정 이동');
+                              }}
+                            >
+                              <b>수익자 지정·변경 추가약정이란?</b>
+                              <br /> 설명 알림톡전송
+                            </TooltipQ>
+                          </>
+                        }
+                      >
                         <Grow placement="bwc">
                           <RadioGroup defaultValue="약정함" required>
                             {[
@@ -500,9 +457,6 @@ export const Ltpa35005 = () => {
                               </RadioGroupItem>
                             ))}
                           </RadioGroup>
-                          <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                            알림톡발송
-                          </Button>
                         </Grow>
                       </FormCell>
                       <FormCell
@@ -532,9 +486,35 @@ export const Ltpa35005 = () => {
                         </Grow>
                       </FormCell>
                     </FormRow>
+
                     <FormRow>
-                      <FormCell title={'영수일자 (보험시기)'}>
-                        <DatePickerInput mode={'single'} required />
+                      <FormCell
+                        title={
+                          <>
+                            장애인보험 전환
+                            <TooltipQ
+                              onClick={() => {
+                                alert('장애인보험 전환 이동');
+                              }}
+                            >
+                              <b>장애인보험 전환이란?</b>
+                              <br /> 설명 알림톡전송
+                            </TooltipQ>
+                          </>
+                        }
+                      >
+                        <Grow placement="bwc">
+                          <CheckboxGroup color="primary" size="lg" width="auto" variant="default">
+                            {[
+                              { label: '피보험자장애인', value: '1' },
+                              { label: '수익자장애인', value: '2' },
+                            ].map((category) => (
+                              <CheckboxGroupItem key={category.value} value={category.value}>
+                                {category.label}
+                              </CheckboxGroupItem>
+                            ))}
+                          </CheckboxGroup>
+                        </Grow>
                       </FormCell>
                       <FormCell title={'실소유자 확인'}>
                         <Grow placement="bwc">
@@ -586,22 +566,8 @@ export const Ltpa35005 = () => {
                           ))}
                         </NativeSelect>
                       </FormCell>
-                      <FormCell title={'장애인보험 전환'}>
-                        <Grow placement="bwc">
-                          <CheckboxGroup color="primary" size="lg" width="auto" variant="default">
-                            {[
-                              { label: '피보험자장애인', value: '1' },
-                              { label: '수익자장애인', value: '2' },
-                            ].map((category) => (
-                              <CheckboxGroupItem key={category.value} value={category.value}>
-                                {category.label}
-                              </CheckboxGroupItem>
-                            ))}
-                          </CheckboxGroup>
-                          <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                            알림톡발송
-                          </Button>
-                        </Grow>
+                      <FormCell title={'영수일자 (보험시기)'}>
+                        <DatePickerInput mode={'single'} required />
                       </FormCell>
                     </FormRow>
 
@@ -1109,9 +1075,6 @@ export const Ltpa35005 = () => {
                                 placeholder="가상계좌번호"
                                 readOnly
                                 masking
-                                isMasked={isVirtualAccountMasked}
-                                value={isVirtualAccountMasked ? '1234567*****' : '123456789012'}
-                                onMaskToggle={setIsVirtualAccountMasked}
                               />
                               <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
                                 가상계좌
@@ -1120,16 +1083,7 @@ export const Ltpa35005 = () => {
                           )}
                           {firstPay === '카드납입' && (
                             <FormCell title="카드번호">
-                              <Input
-                                aria-label="카드번호"
-                                width={170}
-                                placeholder="카드번호"
-                                readOnly
-                                masking
-                                isMasked={isFirstPayCardMasked}
-                                value={isFirstPayCardMasked ? '****-****-****-3456' : '1234-5678-9012-3456'}
-                                onMaskToggle={setIsFirstPayCardMasked}
-                              />
+                              <Input aria-label="카드번호" width={170} placeholder="카드번호" readOnly masking />
                               <Input aria-label="카드기간" width={80} value={''} />
                               <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
                                 카드확인
@@ -1139,16 +1093,7 @@ export const Ltpa35005 = () => {
 
                           {morePay === '자동이체' && (
                             <FormCell title="계좌번호">
-                              <Input
-                                aria-label="계좌번호"
-                                width={200}
-                                placeholder="계좌번호"
-                                readOnly
-                                masking
-                                isMasked={isMorePayAccountMasked}
-                                value={isMorePayAccountMasked ? '1234567*****' : '123456789012'}
-                                onMaskToggle={setIsMorePayAccountMasked}
-                              />
+                              <Input aria-label="계좌번호" width={200} placeholder="계좌번호" readOnly masking />
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -1159,16 +1104,7 @@ export const Ltpa35005 = () => {
                           )}
                           {morePay === '카드이체' && (
                             <FormCell title="카드번호">
-                              <Input
-                                aria-label="카드번호"
-                                width={170}
-                                placeholder="카드번호"
-                                readOnly
-                                masking
-                                isMasked={isMorePayCardMasked}
-                                value={isMorePayCardMasked ? '1234-****-****-3456' : '1234-5678-9012-3456'}
-                                onMaskToggle={setIsMorePayCardMasked}
-                              />
+                              <Input aria-label="카드번호" width={170} placeholder="카드번호" readOnly masking />
                               <Input aria-label="카드기간" width={80} value={''} />
                               <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
                                 카드확인
@@ -1217,33 +1153,17 @@ export const Ltpa35005 = () => {
                       );
                     }}
                   >
-                    <FormTable lineTop={false} cols={['w-[10rem]', 'w-[40%]', 'w-[9rem]', 'w-[auto]']}>
+                    <FormTable lineTop={false} cols={['w-[9rem]', 'w-[40%]', 'w-[9rem]', 'w-[auto]']}>
                       {/* 기본 케이스 */}
                       <FormRow>
-                        <FormCell
-                          title={
-                            <div>
-                              사망수익자
-                              <TooltipQ>
-                                사망보험금 수익자를 특정하지 않거나 법정상속인으로 지정한 경우 피보험자 사망시
-                                법정상속인간보험급 지급에 관한 분쟁이 발생할 수 있습니다. <br />
-                                (예시)양육에 기여하지 않은 부모가 보험금에 대한 지분을 요구
-                                <br />
-                                *상품설명서의 &apos;보험금 수익자 지정&apos;에 관한 사항을 참고하여 계약자에게 안내해
-                                주시기 바랍니다.
-                              </TooltipQ>
-                            </div>
-                          }
-                        >
-                          <Input aria-label="법정상속인" width={84} value={'법정상속인'} readOnly />
+                        <FormCell title={'사망수익자'}>
+                          <Input aria-label="법정상속인" width={76} value={'법정상속인'} readOnly />
                           <Input
                             aria-label="법정상속인 주민등록번호"
-                            width={132}
+                            width={126}
+                            value={'000000-0000000'}
                             readOnly
                             masking
-                            isMasked={isLegalHeirResidentMasked}
-                            value={isLegalHeirResidentMasked ? '000000-0******' : '000000-0123456'}
-                            onMaskToggle={setIsLegalHeirResidentMasked}
                           />
                           <Button
                             aria-label="법정상속인 검색"
@@ -1255,24 +1175,30 @@ export const Ltpa35005 = () => {
                           >
                             <SearchIcon color={'var(--color-primary-50)'} />
                           </Button>
-                          <NativeSelect aria-label="법정상속인 선택" width={100} className="ml-[0.4rem]">
+                          <NativeSelect aria-label="법정상속인 선택" width={92}>
                             {[{ value: '법정상속인', label: '법정상속인' }].map((option) => (
                               <NativeSelectOption key={option.value} value={option.value}>
                                 {option.label}
                               </NativeSelectOption>
                             ))}
                           </NativeSelect>
+                          <TooltipQ>
+                            사망보험금 수익자를 특정하지 않거나 법정상속인으로 지정한 경우 피보험자 사망시
+                            법정상속인간보험급 지급에 관한 분쟁이 발생할 수 있습니다. <br />
+                            (예시)양육에 기여하지 않은 부모가 보험금에 대한 지분을 요구
+                            <br />
+                            *상품설명서의 &apos;보험금 수익자 지정&apos;에 관한 사항을 참고하여 계약자에게 안내해 주시기
+                            바랍니다.
+                          </TooltipQ>
                         </FormCell>
                         <FormCell title="사망외수익자">
-                          <Input aria-label="사망외수익자명" width={84} value={'김한화'} readOnly />
+                          <Input aria-label="사망외수익자명" width={76} value={'김한화'} readOnly />
                           <Input
                             aria-label="사망외수익자 주민등록번호"
-                            width={132}
+                            width={126}
+                            value={'000000-0000000'}
                             readOnly
                             masking
-                            isMasked={isNonDeathBeneficiaryResidentMasked}
-                            value={isNonDeathBeneficiaryResidentMasked ? '000000-0******' : '000000-0123456'}
-                            onMaskToggle={setIsNonDeathBeneficiaryResidentMasked}
                           />
                           <Button
                             aria-label="사망외수익자 검색"
@@ -1284,7 +1210,7 @@ export const Ltpa35005 = () => {
                           >
                             <SearchIcon color={'var(--color-primary-50)'} />
                           </Button>
-                          <NativeSelect aria-label="사망외수익자 선택" width={100} className="ml-[0.4rem]">
+                          <NativeSelect aria-label="사망외수익자 선택" width={92}>
                             {[{ value: '본인', label: '본인' }].map((option) => (
                               <NativeSelectOption key={option.value} value={option.value}>
                                 {option.label}
@@ -1297,16 +1223,8 @@ export const Ltpa35005 = () => {
                       {/* 기본 케이스 & 피보험자 미성년 */}
                       <FormRow>
                         <FormCell title="지정대리인" colSpan={3}>
-                          <Input aria-label="지정대리인" width={84} value={''} readOnly />
-                          <Input
-                            aria-label="지정대리인 주민등록번호"
-                            width={132}
-                            readOnly
-                            masking
-                            isMasked={isDesignatedProxyResidentMasked}
-                            value={isDesignatedProxyResidentMasked ? '000000-0******' : '000000-0123456'}
-                            onMaskToggle={setIsDesignatedProxyResidentMasked}
-                          />
+                          <Input aria-label="지정대리인" width={76} value={''} readOnly />
+                          <Input aria-label="지정대리인" width={114} value={''} readOnly />
                           <Button
                             aria-label="지정대리인 검색"
                             variant={'outlined'}
@@ -1317,7 +1235,7 @@ export const Ltpa35005 = () => {
                           >
                             <SearchIcon color={'var(--color-primary-50)'} />
                           </Button>
-                          <NativeSelect aria-label="지정대리인 선택" width={100} className="ml-[0.4rem]">
+                          <NativeSelect aria-label="지정대리인 선택" width={100}>
                             {[{ value: '선택', label: '선택' }].map((option) => (
                               <NativeSelectOption key={option.value} value={option.value}>
                                 {option.label}
@@ -1334,16 +1252,8 @@ export const Ltpa35005 = () => {
                       <FormRow>
                         <FormCell title="법정대리인1" colSpan={3} tdClassName="justify-between">
                           <Grow>
-                            <Input aria-label="법정대리인1" width={84} value={''} />
-                            <Input
-                              aria-label="법정대리인1 주민등록번호"
-                              width={132}
-                              readOnly
-                              masking
-                              isMasked={isLegalProxy1ResidentMasked}
-                              value={isLegalProxy1ResidentMasked ? '000000-0******' : '000000-0123456'}
-                              onMaskToggle={setIsLegalProxy1ResidentMasked}
-                            />
+                            <Input aria-label="법정대리인1" width={76} value={''} />
+                            <Input aria-label="법정대리인1" width={114} value={''} />
                             <Button
                               aria-label="법정대리인1 검색"
                               variant={'outlined'}
@@ -1353,7 +1263,7 @@ export const Ltpa35005 = () => {
                             >
                               <SearchIcon color={'var(--color-primary-50)'} />
                             </Button>
-                            <NativeSelect aria-label="법정대리인1 선택" width={100} className="ml-[0.4rem]">
+                            <NativeSelect aria-label="법정대리인1 선택" width={100}>
                               {[{ value: '선택', label: '선택' }].map((option) => (
                                 <NativeSelectOption key={option.value} value={option.value}>
                                   {option.label}
@@ -1376,16 +1286,8 @@ export const Ltpa35005 = () => {
                       </FormRow>
                       <FormRow>
                         <FormCell title="법정대리인2">
-                          <Input aria-label="법정대리인1" width={84} value={''} />
-                          <Input
-                            aria-label="법정대리인2 주민등록번호"
-                            width={132}
-                            readOnly
-                            masking
-                            isMasked={isLegalProxy2ResidentMasked}
-                            value={isLegalProxy2ResidentMasked ? '000000-0******' : '000000-0123456'}
-                            onMaskToggle={setIsLegalProxy2ResidentMasked}
-                          />
+                          <Input aria-label="법정대리인1" width={76} value={''} />
+                          <Input aria-label="법정대리인1" width={114} value={''} />
                           <Button
                             aria-label="법정대리인1 검색"
                             variant={'outlined'}
@@ -1405,16 +1307,8 @@ export const Ltpa35005 = () => {
                       {/* 지정대리인 케이스 */}
                       <FormRow>
                         <FormCell title="지정대리인1" colSpan={3}>
-                          <Input aria-label="지정대리인1" width={84} value={''} readOnly />
-                          <Input
-                            aria-label="지정대리인1 주민등록번호"
-                            width={132}
-                            readOnly
-                            masking
-                            isMasked={isDesignatedProxy1ResidentMasked}
-                            value={isDesignatedProxy1ResidentMasked ? '000000-0******' : '000000-0123456'}
-                            onMaskToggle={setIsDesignatedProxy1ResidentMasked}
-                          />
+                          <Input aria-label="지정대리인1" width={76} value={''} readOnly />
+                          <Input aria-label="지정대리인1" width={114} value={''} readOnly />
                           <Button
                             aria-label="지정대리인1 검색"
                             variant={'outlined'}
@@ -1425,7 +1319,7 @@ export const Ltpa35005 = () => {
                           >
                             <SearchIcon color={'var(--color-primary-50)'} />
                           </Button>
-                          <NativeSelect aria-label="지정대리인1 선택" width={100} className="ml-[0.4rem]">
+                          <NativeSelect aria-label="지정대리인1 선택" width={100}>
                             {[{ value: '선택', label: '선택' }].map((option) => (
                               <NativeSelectOption key={option.value} value={option.value}>
                                 {option.label}
@@ -1439,16 +1333,8 @@ export const Ltpa35005 = () => {
                       </FormRow>
                       <FormRow>
                         <FormCell title="지정대리인2" colSpan={3}>
-                          <Input aria-label="지정대리인2" width={84} value={''} readOnly />
-                          <Input
-                            aria-label="지정대리인2 주민등록번호"
-                            width={132}
-                            readOnly
-                            masking
-                            isMasked={isDesignatedProxy2ResidentMasked}
-                            value={isDesignatedProxy2ResidentMasked ? '000000-0******' : '000000-0123456'}
-                            onMaskToggle={setIsDesignatedProxy2ResidentMasked}
-                          />
+                          <Input aria-label="지정대리인2" width={76} value={''} readOnly />
+                          <Input aria-label="지정대리인2" width={114} value={'000000-0000000'} readOnly />
                           <Button
                             aria-label="지정대리인2 검색"
                             variant={'outlined'}
@@ -1459,7 +1345,7 @@ export const Ltpa35005 = () => {
                           >
                             <SearchIcon color={'var(--color-primary-50)'} />
                           </Button>
-                          <NativeSelect aria-label="지정대리인2 선택" width={100} className="ml-[0.4rem]">
+                          <NativeSelect aria-label="지정대리인2 선택" width={100}>
                             {[{ value: '선택', label: '선택' }].map((option) => (
                               <NativeSelectOption key={option.value} value={option.value}>
                                 {option.label}
@@ -1471,7 +1357,7 @@ export const Ltpa35005 = () => {
                       <FormRow>
                         <FormCell title="무기명지정">
                           <Checkbox variant="noneText"></Checkbox>
-                          <NativeSelect aria-label="무기명지정" width={'auto'} className="ml-[0.4rem]" readOnly>
+                          <NativeSelect aria-label="무기명지정" width={'auto'} readOnly>
                             {[
                               { value: '선택', label: '선택' },
                               { value: '배우자', label: '배우자' },
@@ -1490,7 +1376,7 @@ export const Ltpa35005 = () => {
                         </FormCell>
                         <FormCell title="미지정 사유">
                           <Checkbox variant="noneText"></Checkbox>
-                          <NativeSelect aria-label="미지정 사유" width={'auto'} className="ml-[0.4rem]" readOnly>
+                          <NativeSelect aria-label="미지정 사유" width={'auto'} readOnly>
                             {[
                               { value: '선택', label: '선택' },
                               { value: '대리인 자격자 부존재', label: '대리인 자격자 부존재' },
