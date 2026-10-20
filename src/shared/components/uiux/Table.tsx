@@ -37,11 +37,7 @@ function Table({ className, variant = 'default', ...props }: TableProps) {
   return (
     <TableVariantContext.Provider value={variant}>
       <div data-slot="table-container" className={cn(variantClass, className)}>
-        <table
-          data-slot="table"
-          className="w-full cp-thcontext table-fixed border-separate border-spacing-0"
-          {...props}
-        />
+        <table data-slot="table" className="w-full cp-thcontext border-separate border-spacing-0" {...props} />
       </div>
     </TableVariantContext.Provider>
   );

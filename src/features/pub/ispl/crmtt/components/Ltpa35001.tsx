@@ -184,7 +184,7 @@ export const Ltpa35001 = ({
                 <LayoutScrollItem>
                   <Gcol placement={'ss'} className="w-full overflow-x-hidden" gap={3}>
                     {/* 1.1 기본 보험정보 설정 테이블 */}
-                    <FormTable cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
+                    <FormTable className="formTable-fixed" cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
                       {/* 공통: 보험시기, 보험기간 */}
                       <FormRow>
                         <FormCell title={'보험시기'}>
@@ -845,7 +845,11 @@ export const Ltpa35001 = ({
                           );
                         }}
                       >
-                        <FormTable lineTop={false} cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
+                        <FormTable
+                          className="formTable-fixed"
+                          lineTop={false}
+                          cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}
+                        >
                           {(currentTab?.type === '일반' ||
                             currentTab?.type === '태아' ||
                             currentTab?.type === '재물피보험자') && (
@@ -1511,7 +1515,11 @@ export const Ltpa35001 = ({
 
                     {/* 계약자 정보 : 상세모드일때 / 간편모드&연금저축일때 */}
                     {(!_simpleMode || (_simpleMode && currentTab?.type === '연금저축')) && (
-                      <FormTable caption="계약자 정보" cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
+                      <FormTable
+                        className="formTable-fixed"
+                        caption="계약자 정보"
+                        cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}
+                      >
                         {_simpleMode ? (
                           <FormRow>
                             <FormCell title={'계약자'} titleVariant="section">

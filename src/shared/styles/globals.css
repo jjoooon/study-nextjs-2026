@@ -1590,3 +1590,5 @@
   background: url(../components/icons/trafficLight/light-3.png) no-repeat 50% 50% / cover;
 }
 .page-title table{width: auto !important;}
+.formTable-auto table{table-layout: auto;}
+.formTable-fixed table{table-layout: fixed;}

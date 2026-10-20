@@ -685,7 +685,7 @@ export function Ltpa35002b({
         <MainBottom variant="box">
           <MainBottomItem className="pl-0! pb-0! pt-0!">
             <FormTable
-              className="relative w-full! [&_tr]:justify-between [&_th]:overflow-hidden [&_th]:border-b [&_td]:border-b after:[content-['']! after:absolute after:top-[50%] after:left-0 after:w-[calc(100%+1.2rem)] after:h-px after:bg-[var(--color-gray-15)]"
+              className="formTable-fixed relative w-full! [&_tr]:justify-between [&_th]:overflow-hidden [&_th]:border-b [&_td]:border-b after:[content-['']! after:absolute after:top-[50%] after:left-0 after:w-[calc(100%+1.2rem)] after:h-px after:bg-[var(--color-gray-15)]"
               lineTop={false}
               variant={'bottom'}
               cols={[

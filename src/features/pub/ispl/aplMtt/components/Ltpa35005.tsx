@@ -245,7 +245,7 @@ export const Ltpa35005 = () => {
             <LayoutScrollWrap>
               <LayoutScrollItem>
                 <Gcol placement={'ss'} className="w-full overflow-x-hidden" gap={3}>
-                  <FormTable cols={['w-[17rem]', 'w-[24.8%]', 'w-[15.8rem]', 'w-[auto]']}>
+                  <FormTable className="formTable-fixed" cols={['w-[17rem]', 'w-[24.8%]', 'w-[15.8rem]', 'w-[auto]']}>
                     <FormRow>
                       <FormCell title={'만기수익자'} colSpan={3}>
                         <NativeSelect aria-label="주피와 관계 선택" width={100}>
@@ -679,7 +679,7 @@ export const Ltpa35005 = () => {
                     </FormRow>
                   </FormTable>
 
-                  <FormTable cols={['w-[9.6rem]', 'w-[40%]', 'w-[9rem]', 'w-[auto]']}>
+                  <FormTable className="formTable-fixed" cols={['w-[9.6rem]', 'w-[40%]', 'w-[9rem]', 'w-[auto]']}>
                     <FormRow>
                       <FormCell title="초회보험료" tdClassName="justify-between">
                         <NativeSelect
@@ -1186,7 +1186,11 @@ export const Ltpa35005 = () => {
                       );
                     }}
                   >
-                    <FormTable lineTop={false} cols={['w-[9.2rem]', 'w-[41%]', 'w-[9.6rem]', 'w-[auto]']}>
+                    <FormTable
+                      className="formTable-fixed"
+                      lineTop={false}
+                      cols={['w-[9.2rem]', 'w-[41%]', 'w-[9.6rem]', 'w-[auto]']}
+                    >
                       {/* 기본 케이스 */}
                       <FormRow>
                         <FormCell title={'사망수익자'}>

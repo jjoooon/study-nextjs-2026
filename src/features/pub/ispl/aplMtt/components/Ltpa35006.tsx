@@ -274,7 +274,10 @@ export const Ltpa35006 = () => {
                       ──────────────────────────────────────────────────────────────────────── */}
                   <Gcol placement={'ss'} className="w-full gap-1.5">
                     <Typo variant="heading-md">청약사항</Typo>
-                    <FormTable cols={['w-[8rem]', 'w-[25%]', 'w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
+                    <FormTable
+                      className="formTable-fixed"
+                      cols={['w-[8rem]', 'w-[25%]', 'w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
+                    >
                       <FormRow>
                         <FormCell title={'보험종목'}>
                           <Input
@@ -964,7 +967,10 @@ export const Ltpa35006 = () => {
                     <TableFoldHead title="수납사항" />
                     <TableFoldBody>
                       {/* M1. cols 크기 수정 */}
-                      <FormTable cols={['w-[9rem]', 'w-[auto]', 'w-[9rem]', 'w-[auto]', 'w-[9rem]', 'w-[auto]']}>
+                      <FormTable
+                        className="formTable-fixed"
+                        cols={['w-[9rem]', 'w-[auto]', 'w-[9rem]', 'w-[auto]', 'w-[9rem]', 'w-[auto]']}
+                      >
                         <FormRow>
                           <FormCell title={'영수할보험료'}>
                             <Input aria-label="영수할보험료" width={'full'} commaAmount value={'46500'} readOnly />원

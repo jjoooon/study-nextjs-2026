@@ -736,7 +736,7 @@ export function Ltpa35002d({
             {/* 금액 표 영역 */}
             <MainBottomItem className="pt-0! pb-0!">
               <FormTable
-                className="w-full! [&_tr]:justify-between"
+                className="w-full! [&_tr]:justify-between formTable-fixed"
                 lineTop={false}
                 variant={'bottom'}
                 cols={['w-[13rem]', 'w-[20%]', 'w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
