@@ -437,14 +437,14 @@ export function Ltpa35004({ onClose }: Ltpa35004Props = {}) {
                 </FormRow>
 
                 {/* M3. size md 삭제 */}
-                <FormRow>
+                <FormRow className="grid grid-cols-[1f]">
                   <FormCell
                     title={'심사구분'}
                     className="min-w-[6.4rem]"
                     tdStyle={{ width: '100%' }}
                     tdClassName="w-full"
                   >
-                    <Grid className="w-full grid-cols-[11.3rem_15rem_23.7rem_minmax(19.4rem,1fr)_9.8rem] gap-1">
+                    <Grid className="w-full grid-cols-[11.3rem_15rem_1fr_minmax(19rem,1fr)_11rem] gap-1">
                       <Input aria-label="심사구분1" width={'full'} value={'신계약'} size={'md'} readOnly />
                       <NativeSelect aria-label="심사구분2" width={'full'}>
                         {[
@@ -463,16 +463,16 @@ export function Ltpa35004({ onClose }: Ltpa35004Props = {}) {
                     </Grid>
                   </FormCell>
                 </FormRow>
-                <FormRow>
+                <FormRow className="grid grid-cols-[1fr_auto] gap-3">
                   <FormCell title={'심사처리자'} className="min-w-[6.4rem]" tdStyle={{ flex: 1 }} tdClassName="w-full">
-                    <Grid className="w-full grid-cols-[15rem_15rem_15rem_auto] gap-1">
+                    <Grid className="w-full grid-cols-[1fr_1fr_1fr] gap-1">
                       <Input aria-label="심사처리자1" width={'full'} value={''} readOnly />
                       <Input aria-label="심사처리자2" width={'full'} value={''} readOnly />
                       <Input aria-label="심사처리자3" width={'full'} value={''} readOnly />
                     </Grid>
                   </FormCell>
                   <FormCell title={'심사상태'} className="w-full" tdStyle={{ flex: 1 }} tdClassName="w-full">
-                    <Grid className="w-full grid-cols-[minmax(15.4rem,1fr)_9.8rem] gap-1">
+                    <Grid className="w-full grid-cols-[minmax(15.8rem,1fr)_11rem] gap-1">
                       <Input aria-label="심사상태" width={'full'} value={''} readOnly />
                       <Checkbox>심사자배정</Checkbox>
                     </Grid>

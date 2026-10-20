@@ -35,7 +35,7 @@ const Ltpz082 = () => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection>
-          <Gcol className="border border-[var(--color-gray-15)] rounded-[.8rem] gap-0">
+          <Gcol className="border border-[var(--color-gray-15)] rounded-[.8rem] gap-0" placement="ss">
             <Grow
               placement="ss"
               variant="default"

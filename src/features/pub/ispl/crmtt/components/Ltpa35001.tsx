@@ -596,7 +596,7 @@ export const Ltpa35001 = ({
                             <RadioGroup
                               width={'full'}
                               defaultValue="1형(일반고지형)"
-                              className="grid grid-cols-[auto_auto_1fr] gap-x-4 gap-y-2"
+                              className="grid grid-cols-[minmax(23rem,1fr)_minmax(23rem,1fr)_2fr] gap-x-4 gap-y-2"
                             >
                               {[
                                 {
@@ -994,10 +994,10 @@ export const Ltpa35001 = ({
                                       <Grow gap={1}>
                                         <TooltipQ
                                           onClick={() => {
-                                            alert('무기명지정 이동');
+                                            alert('상령일/동의종료일 이동');
                                           }}
                                         >
-                                          <b>무기명지정이란?</b>
+                                          <b>상령일/동의종료일이란?</b>
                                           <br /> 설명 알림톡전송
                                         </TooltipQ>
 
@@ -1393,9 +1393,14 @@ export const Ltpa35001 = ({
                                       )
                                     )}
                                   </NativeSelect>
-                                  <Button aria-label="알림톡발송" variant={'outlined'} size={'lg'} color={'gray-light'}>
-                                    알림톡발송
-                                  </Button>
+                                  <TooltipQ
+                                    onClick={() => {
+                                      alert('실손 전부(빌례)보상 이동');
+                                    }}
+                                  >
+                                    <b>실손 전부(빌례)보상이란?</b>
+                                    <br /> 설명 알림톡전송
+                                  </TooltipQ>
                                   <Checkbox color="primary">소화기 있음</Checkbox>
                                 </FormCell>
                                 <FormCell title="기타상세">
@@ -1506,7 +1511,7 @@ export const Ltpa35001 = ({
 
                     {/* 계약자 정보 : 상세모드일때 / 간편모드&연금저축일때 */}
                     {(!_simpleMode || (_simpleMode && currentTab?.type === '연금저축')) && (
-                      <FormTable caption="계약자 정보" cols={['w-[11rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
+                      <FormTable caption="계약자 정보" cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
                         {_simpleMode ? (
                           <FormRow>
                             <FormCell title={'계약자'} titleVariant="section">
@@ -1696,10 +1701,10 @@ export const Ltpa35001 = ({
                             </NativeSelect>
                             <TooltipQ
                               onClick={() => {
-                                alert('무기명지정 이동');
+                                alert('보험차익비과세 이동');
                               }}
                             >
-                              <b>무기명지정이란?</b>
+                              <b>보험차익비과세이란?</b>
                               <br /> 설명 알림톡전송
                             </TooltipQ>
                           </FormCell>

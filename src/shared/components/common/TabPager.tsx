@@ -219,66 +219,64 @@ export function TabPager<T>({
 
           <Grow gap={2.5} className="mb-[0.2rem]" placement={'es'}>
             {renderButtons}
-            {Math.ceil(safeData.length / visibleCount) > 1 && (
-              <Grow placement="cc" gap={1}>
-                <Grow className="gap-[0.1rem] pt-[0.1rem]">
-                  <Typo className="tracking-[0]!" color={'default'} weight={'bold'}>
-                    {Math.ceil((visibleStart + visibleCount) / visibleCount)}
-                  </Typo>
-                  <Typo className="tracking-[0]! text-[var(--color-gray-50)]" weight={'bold'}>
-                    /
-                  </Typo>
-                  <Typo className="tracking-[0]! text-[var(--color-gray-30)]" weight={'bold'}>
-                    {Math.ceil(safeData.length / visibleCount)}
-                  </Typo>
-                </Grow>
-                <Button
-                  variant={'outlined'}
-                  color={'gray'}
-                  only={'icon'}
-                  size={'md'}
-                  onClick={handlePrev}
-                  disabled={visibleStart === 0}
-                >
-                  <ArrowIcon />
-                </Button>
-                <Button
-                  variant={'outlined'}
-                  color={'gray'}
-                  only={'icon'}
-                  size={'md'}
-                  onClick={handleNext}
-                  disabled={isLastPage}
-                >
-                  <ArrowIcon className="rotate-180" />
-                </Button>
-                {renderDropdownItem && (
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button variant={'outlined'} color={'gray'} only={'icon'} size={'md'}>
-                        <ListIcon />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent
-                      className="w-auto p-[0.2rem] flex flex-col border border-[var(--color-gray-20)] shadow-md  "
-                      align={'end'}
-                      closeButton={true}
+            <Grow placement="cc" gap={1}>
+              <Grow className="gap-[0.1rem] pt-[0.1rem]">
+                <Typo className="tracking-[0]!" color={'default'} weight={'bold'}>
+                  {Math.ceil((visibleStart + visibleCount) / visibleCount)}
+                </Typo>
+                <Typo className="tracking-[0]! text-[var(--color-gray-50)]" weight={'bold'}>
+                  /
+                </Typo>
+                <Typo className="tracking-[0]! text-[var(--color-gray-30)]" weight={'bold'}>
+                  {Math.ceil(safeData.length / visibleCount)}
+                </Typo>
+              </Grow>
+              <Button
+                variant={'outlined'}
+                color={'gray'}
+                only={'icon'}
+                size={'md'}
+                onClick={handlePrev}
+                disabled={visibleStart === 0}
+              >
+                <ArrowIcon />
+              </Button>
+              <Button
+                variant={'outlined'}
+                color={'gray'}
+                only={'icon'}
+                size={'md'}
+                onClick={handleNext}
+                disabled={isLastPage}
+              >
+                <ArrowIcon className="rotate-180" />
+              </Button>
+              {renderDropdownItem && (
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant={'outlined'} color={'gray'} only={'icon'} size={'md'}>
+                      <ListIcon />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    className="w-auto p-[0.2rem] flex flex-col border border-[var(--color-gray-20)] shadow-md  "
+                    align={'end'}
+                    closeButton={true}
+                    onWheel={(e) => e.stopPropagation()}
+                  >
+                    <Gcol
+                      className="overflow-y-auto min-h-0 z-0 max-h-[20rem] gap-0"
+                      placement="ss"
                       onWheel={(e) => e.stopPropagation()}
                     >
-                      <Gcol
-                        className="overflow-y-auto min-h-0 z-0 max-h-[20rem] gap-0"
-                        placement="ss"
-                        onWheel={(e) => e.stopPropagation()}
-                      >
-                        {safeData.map((tab) =>
-                          renderDropdownItem(tab, setActive, setVisibleStart, safeData, visibleCount, active)
-                        )}
-                      </Gcol>
-                    </PopoverContent>
-                  </Popover>
-                )}
-              </Grow>
-            )}
+                      {safeData.map((tab) =>
+                        renderDropdownItem(tab, setActive, setVisibleStart, safeData, visibleCount, active)
+                      )}
+                    </Gcol>
+                  </PopoverContent>
+                </Popover>
+              )}
+            </Grow>
             {renderAfter}
           </Grow>
         </TabsLine>

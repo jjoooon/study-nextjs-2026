@@ -177,24 +177,26 @@ const Ltpz009 = () => {
           </DialogHeader>
 
           <DialogSection className="grid-rows-[auto_1fr]">
-            <Grow className="w-full" variant="box-round" placement={'ss'}>
-              <FormTable caption="보험정보" cols={['w-1', 'w-auto']} variant="head">
+            <Grow className="w-full" variant="box-round" placement={'bwc'}>
+              <FormTable caption="보험정보" cols={['w-1', 'w-auto']} variant="head" className="w-auto">
                 <FormRow className="grid grid-cols-[auto_1fr] w-full">
                   <FormCell title={'설계번호'}>
                     <Input aria-label="" value={'LA123456789012'} readOnly variant="info" />
                   </FormCell>
                   <FormCell title={'설계별명'}>
-                    <Input width={280} value={'가나다라마가나다라마가나다라마가나다라마'} variant="info" />
+                    <Input value={'가나다라마가나다라마가나다라마가나다라마'} readOnly variant="info" />
                   </FormCell>
                 </FormRow>
               </FormTable>
               <Grow>
-                입력
-                <Input
-                  width={280}
-                  placeholder="한글 20자 이내로 등록가능"
-                  value={'가나다라마가나다라마가나다라마가나다라마'}
-                />
+                <Grow>
+                  <div>입력</div>
+                  <Input
+                    width={280}
+                    placeholder="한글 20자 이내로 등록가능"
+                    value={'가나다라마가나다라마가나다라마가나다라마'}
+                  />
+                </Grow>
                 <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
                   저장
                 </Button>

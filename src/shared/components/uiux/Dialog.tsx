@@ -1020,7 +1020,7 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
   allowResize?: boolean;
   /**
    * allowResize의 별칭 (Alias)
-   * @default false
+   * @default true
    */
   enableResize?: boolean;
   /**
@@ -1131,7 +1131,7 @@ function DialogContent({
   disableMotion = false,
   showOverlay,
   overlayClassName,
-  allowResize,
+  allowResize = true,
   enableResize,
   resizable: _resizable = false,
   zIndex,
