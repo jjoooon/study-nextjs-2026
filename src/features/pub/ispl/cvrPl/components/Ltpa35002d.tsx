@@ -734,27 +734,17 @@ export function Ltpa35002d({
           {/* M1. variant="box" 추가 */}
           <MainBottom variant="box">
             {/* 금액 표 영역 */}
-            <MainBottomItem className="!py-0">
+            <MainBottomItem className="pt-0! pb-0!">
               <FormTable
                 className="w-full! [&_tr]:justify-between"
                 lineTop={false}
                 variant={'bottom'}
-                cols={[
-                  'min-w-[9rem]',
-                  'w-[25%]',
-                  'min-w-[8rem]',
-                  'w-[20%]',
-                  'min-w-[8rem]',
-                  'w-[20%]',
-                  'min-w-[8rem]',
-                  'w-auto',
-                ]}
+                cols={['w-[13rem]', 'w-[20%]', 'w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
               >
                 <FormRow>
-                  {/* 만기금 및 환급률 표시 셀 */}
                   <FormCell
                     title={
-                      <Grow placement="sc" className="whitespace-nowrap" gap={1}>
+                      <Grow placement="ec" className="whitespace-nowrap" gap={1}>
                         만기금(환급률)
                         <Button variant={'outlined'} color={'gray'} size={'sm'}>
                           예상
@@ -763,8 +753,7 @@ export function Ltpa35002d({
                     }
                     style={{ borderBottom: '0.1rem solid #ccc' }}
                   >
-                    <Grid className="grid-cols-[1fr_auto_auto] gap-1 w-full">
-                      {/* 예상 만기 환급금 수치 인풋 */}
+                    <Grid className="grid-cols-[1fr_auto] gap-1 place-items-center w-full">
                       <Input
                         type="tel"
                         commaAmount={true}
@@ -773,10 +762,9 @@ export function Ltpa35002d({
                         readOnly={true}
                         className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
                       />
-                      {/* 예상 환급률 비율 인풋 및 상세 팝오버(Popover) */}
                       <Popover>
                         <PopoverTrigger asChild>
-                          <>
+                          <span className="inline-flex items-center gap-1">
                             <Input
                               type="text"
                               commaAmount={true}
@@ -786,9 +774,8 @@ export function Ltpa35002d({
                               className="[&_input]:text-right shrink-0 cursor-pointer"
                             />
                             %
-                          </>
+                          </span>
                         </PopoverTrigger>
-                        {/* 환급률 관련 총 납입/환급금 상세 명세 팝업 내용 */}
                         <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
                           <KeyValueList
                             direction="col"
@@ -804,9 +791,7 @@ export function Ltpa35002d({
                       </Popover>
                     </Grid>
                   </FormCell>
-
-                  {/* 보장보험료 표시 셀 */}
-                  <FormCell title="보장보험료">
+                  <FormCell title="보장보험료" className="text-right">
                     <Popover>
                       <PopoverTrigger className="w-full">
                         <Input
@@ -814,11 +799,11 @@ export function Ltpa35002d({
                           commaAmount={true}
                           value={Number(100000).toLocaleString()}
                           size={'md'}
+                          width={'full'}
                           readOnly={true}
                           className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
                         />
                       </PopoverTrigger>
-                      {/* 보장보험료 상세 명세 (일시납보험료 등) 팝업 내용 */}
                       <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
                         <KeyValueList
                           direction="col"
@@ -829,9 +814,7 @@ export function Ltpa35002d({
                       </PopoverContent>
                     </Popover>
                   </FormCell>
-
-                  {/* 적립보험료 표시 셀 */}
-                  <FormCell title="적립보험료">
+                  <FormCell title="적립보험료" className="text-right">
                     <Input
                       type="tel"
                       commaAmount={true}
@@ -843,8 +826,7 @@ export function Ltpa35002d({
                     />
                   </FormCell>
 
-                  {/* 합계보험료 표시 셀 (최소/최대 가이드라인 표시 팝업 연동) */}
-                  <FormCell title="합계보험료">
+                  <FormCell title="합계보험료" className="text-right">
                     <Popover>
                       <PopoverTrigger asChild>
                         <Input
@@ -852,7 +834,7 @@ export function Ltpa35002d({
                           commaAmount={true}
                           value={0}
                           clear={true}
-                          width={113}
+                          width={'full'}
                           size={'md'}
                           required={true}
                           error={false}
@@ -861,7 +843,6 @@ export function Ltpa35002d({
                           className="text-right font-bold"
                         />
                       </PopoverTrigger>
-                      {/* 합계보험료 가이드라인 (최소/최대 기준 보험료) 팝업 내용 */}
                       <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
                         <KeyValueList
                           direction="col"

@@ -178,7 +178,7 @@ export const Ltpa35001 = ({
     <>
       <LayoutTemplateLTPA350MainBody
         mainBody={
-          <LayoutMain className="grid grid-rows-[1fr] gap-[1rem] h-full w-full">
+          <LayoutMain className="grid grid-rows-[minmax(0,1fr)_auto] gap-[1rem] h-full w-full">
             <LayoutMainBody>
               <LayoutScrollWrap>
                 <LayoutScrollItem>
@@ -1106,7 +1106,7 @@ export const Ltpa35001 = ({
                                   </FormCell>
                                 )}
                                 {(currentTab?.type === '태아' || currentTab?.type === '일반') && (
-                                  <FormCell title="임신주수" colSpan={currentTab?.type === '태아' ? 3 : undefined}>
+                                  <FormCell title="임신주수">
                                     <Input aria-label="임신주수" width={32} align="right" value={''} required />
                                     주 (출산예정일
                                     <DatePickerInput mode={'single'} value={''} required />)

@@ -152,7 +152,13 @@ export function PageTitleProduct({
         </Button>
 
         {/* `FormTable`을 사용해 레이블과 입력 필드를 정렬된 형태로 구성한다. */}
-        <FormTable caption="계약자 관련 정보 입력하세요." cols={['', '']} variant="none" lineTop={false}>
+        <FormTable
+          caption="계약자 관련 정보 입력하세요."
+          cols={['', '']}
+          variant="none"
+          lineTop={false}
+          className="page-title"
+        >
           <FormRow>
             <FormCell title="설계번호" className="pr-[0.4rem]!">
               {/* 설계번호 앞자리는 드롭다운 + 직접 입력이 가능한 콤보 형태로 제공한다. */}

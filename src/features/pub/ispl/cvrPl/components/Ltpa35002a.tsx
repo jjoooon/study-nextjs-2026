@@ -323,8 +323,6 @@ export function Ltpa35002a({
     [setRowData]
   );
 
-  const [cellWidth, setCellWidth] = useState([30, 70, 74, 70, 84, 68, 50, 30]);
-
   // --- 그리드 컬럼 정의 (인보험 뷰) ---
   // M5. 순서변경
   const columnDefs: ColDef<AgGridRow>[] = useMemo(
@@ -491,7 +489,7 @@ export function Ltpa35002a({
       {
         headerName: '중복',
         field: 'rowCopy',
-        width: attributeColumnWidth(cellWidth[7]),
+        width: attributeColumnWidth(30),
         cellRenderer: duplicateRenderer,
         resizable: false,
         sortable: false,
@@ -715,21 +713,12 @@ export function Ltpa35002a({
               className="w-full! [&_tr]:justify-between"
               lineTop={false}
               variant={'bottom'}
-              cols={[
-                'min-w-[9rem]',
-                'w-[25%]',
-                'min-w-[8rem]',
-                'w-[20%]',
-                'min-w-[8rem]',
-                'w-[20%]',
-                'min-w-[8rem]',
-                'w-auto',
-              ]}
+              cols={['w-[13rem]', 'w-[20%]', 'w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
             >
               <FormRow>
                 <FormCell
                   title={
-                    <Grow placement="sc" className="whitespace-nowrap" gap={1}>
+                    <Grow placement="ec" className="whitespace-nowrap" gap={1}>
                       만기금(환급률)
                       <Button variant={'outlined'} color={'gray'} size={'sm'}>
                         예상
@@ -738,7 +727,7 @@ export function Ltpa35002a({
                   }
                   style={{ borderBottom: '0.1rem solid #ccc' }}
                 >
-                  <Grid className="grid-cols-[1fr_auto_auto] gap-1 w-full place-items-center">
+                  <Grid className="grid-cols-[1fr_auto] gap-1 place-items-center w-full">
                     <Input
                       type="tel"
                       commaAmount={true}
@@ -776,7 +765,7 @@ export function Ltpa35002a({
                     </Popover>
                   </Grid>
                 </FormCell>
-                <FormCell title="보장보험료">
+                <FormCell title="보장보험료" className="text-right">
                   <Popover>
                     <PopoverTrigger className="w-full">
                       <Input
@@ -784,6 +773,7 @@ export function Ltpa35002a({
                         commaAmount={true}
                         value={'121,375'}
                         size={'md'}
+                        width={'full'}
                         readOnly={true}
                         className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
                       />
@@ -798,7 +788,7 @@ export function Ltpa35002a({
                     </PopoverContent>
                   </Popover>
                 </FormCell>
-                <FormCell title="적립보험료">
+                <FormCell title="적립보험료" className="text-right">
                   <Input
                     type="tel"
                     commaAmount={true}
@@ -810,7 +800,7 @@ export function Ltpa35002a({
                   />
                 </FormCell>
 
-                <FormCell title="합계보험료">
+                <FormCell title="합계보험료" className="text-right">
                   <Popover>
                     <PopoverTrigger asChild>
                       <Input
@@ -818,7 +808,7 @@ export function Ltpa35002a({
                         commaAmount={true}
                         value={totalPremium}
                         clear={true}
-                        width={113}
+                        width={'full'}
                         size={'md'}
                         required={true}
                         error={false}

@@ -1589,3 +1589,4 @@
   height: 2.6rem;
   background: url(../components/icons/trafficLight/light-3.png) no-repeat 50% 50% / cover;
 }
+.page-title table{width: auto !important;}

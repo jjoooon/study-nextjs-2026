@@ -163,7 +163,7 @@ export const Ltpa35006 = () => {
         headerName: '금액',
         field: 'field3',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(120),
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter, // 금액 세자리마다 천단위 콤마 포맷 적용
       },
@@ -217,7 +217,7 @@ export const Ltpa35006 = () => {
   return (
     <LayoutTemplateLTPA350MainBody
       mainBody={
-        <LayoutMain className="grid grid-rows-[1fr_auto] gap-[1rem] h-full w-full">
+        <LayoutMain className="grid grid-rows-[minmax(0,1fr)_auto] gap-[1rem] h-full w-full">
           <LayoutMainBody>
             <LayoutScrollWrap>
               <LayoutScrollItem>
@@ -274,7 +274,7 @@ export const Ltpa35006 = () => {
                       ──────────────────────────────────────────────────────────────────────── */}
                   <Gcol placement={'ss'} className="w-full gap-1.5">
                     <Typo variant="heading-md">청약사항</Typo>
-                    <FormTable cols={['min-w-[8rem]', 'w-[30%]', 'min-w-[8rem]', 'w-[30%]', 'min-w-[8rem]', 'w-[30%]']}>
+                    <FormTable cols={['w-[8rem]', 'w-[25%]', 'w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
                       <FormRow>
                         <FormCell title={'보험종목'}>
                           <Input
@@ -334,7 +334,7 @@ export const Ltpa35006 = () => {
                           />
                         </FormCell>
                         {/* 입금 주체 선택 라디오 버튼 */}
-                        <FormCell title={'입금선택'} colSpan={4}>
+                        <FormCell title={'입금선택'} colSpan={3}>
                           <RadioGroup defaultValue="계약자">
                             {[
                               { value: '계약자', id: 'contractor', label: '계약자' },
@@ -357,13 +357,13 @@ export const Ltpa35006 = () => {
                     <TableFoldBody className="gap-1">
                       <Table variant="default">
                         <colgroup>
-                          <col style={{ width: '5rem' }} />
+                          <col style={{ width: '4rem' }} />
                           <col style={{ width: '10rem' }} />
-                          <col style={{ width: '14rem' }} />
+                          <col style={{ width: '13rem' }} />
                           <col style={{ width: 'auto' }} />
-                          <col style={{ width: 'auto' }} />
+                          <col style={{ width: '29rem' }} />
                           <col style={{ width: '10rem' }} />
-                          <col style={{ width: '5rem' }} />
+                          <col style={{ width: '6rem' }} />
                         </colgroup>
                         <TableHeader>
                           <TableRow>
@@ -683,6 +683,18 @@ export const Ltpa35006 = () => {
                     <TableFoldHead title="카드"></TableFoldHead>
                     <TableFoldBody>
                       <Table variant="default">
+                        <colgroup>
+                          <col style={{ width: '4rem' }} />
+                          <col style={{ width: '10rem' }} />
+                          <col style={{ width: '21rem' }} />
+                          <col style={{ width: '10rem' }} />
+                          <col style={{ width: '6rem' }} />
+                          <col style={{ width: 'auto' }} />
+                          <col style={{ width: '5rem' }} />
+                          <col style={{ width: '8rem' }} />
+                          <col style={{ width: '8rem' }} />
+                          <col style={{ width: '6rem' }} />
+                        </colgroup>
                         <TableHeader>
                           <TableRow>
                             <TableHead className="w-[4.5rem] min-w-[4.5rem]">구분</TableHead>
@@ -952,7 +964,7 @@ export const Ltpa35006 = () => {
                     <TableFoldHead title="수납사항" />
                     <TableFoldBody>
                       {/* M1. cols 크기 수정 */}
-                      <FormTable cols={['w-[10rem]', 'w-[auto]', 'w-[10rem]', 'w-[auto]', 'w-[10rem]', 'w-[auto]']}>
+                      <FormTable cols={['w-[9rem]', 'w-[auto]', 'w-[9rem]', 'w-[auto]', 'w-[9rem]', 'w-[auto]']}>
                         <FormRow>
                           <FormCell title={'영수할보험료'}>
                             <Input aria-label="영수할보험료" width={'full'} commaAmount value={'46500'} readOnly />원

@@ -240,7 +240,7 @@ export const Ltpa35005 = () => {
   return (
     <LayoutTemplateLTPA350MainBody
       mainBody={
-        <LayoutMain className="grid grid-rows-[1fr_auto] gap-[1rem] h-full w-full [&_th]:break-keep">
+        <LayoutMain className="grid grid-rows-[minmax(0,1fr)_auto] gap-[1rem] h-full w-full [&_th]:break-keep">
           <LayoutMainBody>
             <LayoutScrollWrap>
               <LayoutScrollItem>
@@ -339,6 +339,8 @@ export const Ltpa35005 = () => {
                           <RadioGroup defaultValue="문서서명">
                             {[
                               { value: '문서서명', label: '문서서명' },
+                              { value: '음성녹음', label: '음성녹음' },
+                              { value: '공인인증서', label: '공인인증서' },
                               { value: '태블릿', label: '태블릿' },
                               { value: '휴대폰', label: '휴대폰' },
                             ].map((option) => (
@@ -347,7 +349,9 @@ export const Ltpa35005 = () => {
                               </RadioGroupItem>
                             ))}
                           </RadioGroup>
-                          <Checkbox color="primary">조회동일여부</Checkbox>
+                          <Grow className="min-w-[10rem]">
+                            <Checkbox color="primary">조회동일여부</Checkbox>
+                          </Grow>
                         </Grow>
                       </FormCell>
                     </FormRow>

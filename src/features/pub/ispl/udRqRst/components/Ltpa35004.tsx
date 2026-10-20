@@ -336,7 +336,7 @@ export function Ltpa35004({ onClose }: Ltpa35004Props = {}) {
   return (
     <LayoutTemplateLTPA350MainBody
       mainBody={
-        <LayoutMain className="grid grid-rows-[auto_1fr_auto] gap-[1rem] w-full h-full">
+        <LayoutMain className="grid grid-rows-[auto_minmax(0,1fr)_auto] gap-[1rem] w-full h-full">
           <TabPager
             data={Tabs}
             active={TabActive}

@@ -689,14 +689,14 @@ export function Ltpa35002b({
               lineTop={false}
               variant={'bottom'}
               cols={[
-                'min-w-[9.3rem]',
-                'min-w-[14.4rem]',
-                'w-[25%]',
-                'min-w-[8rem]',
-                'w-[20%]',
-                'min-w-[8rem]',
-                'w-[20%]',
-                'min-w-[8rem]',
+                'w-[9.3rem]',
+                'w-[14.4rem]',
+                'w-[15%]',
+                'w-[8rem]',
+                'w-auto',
+                'w-[8rem]',
+                'w-auto',
+                'w-[8rem]',
                 'w-auto',
               ]}
             >
@@ -715,7 +715,7 @@ export function Ltpa35002b({
                     <Input type="tel" commaAmount={true} size={'md'} value={100000} width={'full'} readOnly={true} />
                   </Grow>
                 </FormCell>
-                <FormCell title="보장보험료">
+                <FormCell title="보장보험료" className="text-right">
                   <Popover>
                     <PopoverTrigger className="w-full">
                       <Input
@@ -737,7 +737,7 @@ export function Ltpa35002b({
                     </PopoverContent>
                   </Popover>
                 </FormCell>
-                <FormCell title="적립보험료">
+                <FormCell title="적립보험료" className="text-right">
                   <Input
                     type="tel"
                     commaAmount={true}
@@ -748,7 +748,7 @@ export function Ltpa35002b({
                     className="text-right"
                   />
                 </FormCell>
-                <FormCell title="합계보험료">
+                <FormCell title="합계보험료" className="text-right">
                   <Popover>
                     <PopoverTrigger asChild>
                       <Input
@@ -756,7 +756,7 @@ export function Ltpa35002b({
                         commaAmount={true}
                         value={0}
                         clear={true}
-                        width={113}
+                        width={'full'}
                         size={'md'}
                         required={true}
                         error={false}
@@ -795,7 +795,7 @@ export function Ltpa35002b({
                   }
                 />
                 <FormCell
-                  className="pl-3! "
+                  className="pl-3!"
                   title={
                     <Grow placement="sc">
                       만기금(환급률)
@@ -823,7 +823,7 @@ export function Ltpa35002b({
                             commaAmount={true}
                             value={39.4}
                             size={'md'}
-                            width={60}
+                            width={40}
                             className="[&_input]:text-right shrink-0 cursor-pointer"
                           />
                           %
@@ -844,7 +844,7 @@ export function Ltpa35002b({
                     </Popover>
                   </Grid>
                 </FormCell>
-                <FormCell title="보장보험료">
+                <FormCell title="보장보험료" className="text-right">
                   <Popover>
                     <PopoverTrigger className="w-full">
                       <Input
@@ -866,7 +866,7 @@ export function Ltpa35002b({
                     </PopoverContent>
                   </Popover>
                 </FormCell>
-                <FormCell title="적립보험료">
+                <FormCell title="적립보험료" className="text-right">
                   <Input
                     type="tel"
                     commaAmount={true}
@@ -878,7 +878,7 @@ export function Ltpa35002b({
                   />
                 </FormCell>
 
-                <FormCell title="합계보험료">
+                <FormCell title="합계보험료" className="text-right">
                   <Popover>
                     <PopoverTrigger asChild>
                       <Input
@@ -887,7 +887,7 @@ export function Ltpa35002b({
                         value={0}
                         clear={true}
                         size={'md'}
-                        width={113}
+                        width={'full'}
                         required={true}
                         error={false}
                         errorMsg={'계약자 입력은 필수입니다.'}
