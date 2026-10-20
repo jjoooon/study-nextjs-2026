@@ -46,7 +46,7 @@ export function TooltipQ({
 
   const buttonClassName = cn(
     'aspect-auto translate-y-[0.2rem] ml-[0.2rem] h-[1.4rem] w-[1.4rem] p-0 rounded-full transition-colors text-[#61554F]',
-    isClickable ? 'cursor-pointer hover:bg-[#61554F] hover:text-white active:bg-[#4a413c]' : 'cursor-default'
+    isClickable ? 'cursor-pointer' : 'cursor-default'
   );
 
   // 안내 텍스트(children) 없이 클릭 콜백(onClick)만 있는 경우 순수 아이콘 버튼으로 렌더링
