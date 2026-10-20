@@ -184,15 +184,17 @@ const Ltpz009 = () => {
                     <Input aria-label="" value={'LA123456789012'} readOnly variant="info" />
                   </FormCell>
                   <FormCell title={'설계별명'}>
-                    <Input
-                      width={280}
-                      placeholder="한글 20자 이내로 등록가능"
-                      value={'가나다라마가나다라마가나다라마가나다라마'}
-                    />
+                    <Input width={280} value={'가나다라마가나다라마가나다라마가나다라마'} variant="info" />
                   </FormCell>
                 </FormRow>
               </FormTable>
               <Grow>
+                입력
+                <Input
+                  width={280}
+                  placeholder="한글 20자 이내로 등록가능"
+                  value={'가나다라마가나다라마가나다라마가나다라마'}
+                />
                 <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
                   저장
                 </Button>

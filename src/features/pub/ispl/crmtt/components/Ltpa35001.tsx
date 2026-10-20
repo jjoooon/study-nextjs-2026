@@ -161,30 +161,6 @@ export const Ltpa35001 = ({
   // 태아 '가입' 체크박스 상태 관리 (체크 시 다태아, 다태아연계, 수수료선지급 표시)
   const [isFetusSubscribed, setIsFetusSubscribed] = useState<boolean>(false);
 
-  // 피보험자 주민등록번호 마스킹 상태 관리
-  const [isInsuredResidentMasked, setIsInsuredResidentMasked] = useState<boolean>(true);
-
-  // 임신부 주민등록번호 마스킹 상태 관리
-  const [isPregnantResidentMasked, setIsPregnantResidentMasked] = useState<boolean>(true);
-
-  // 소유자 주민등록번호 마스킹 상태 관리
-  const [isOwnerResidentMasked, setIsOwnerResidentMasked] = useState<boolean>(true);
-
-  // 계약자 주민등록번호 마스킹 상태 관리
-  const [isContractorResidentMasked, setIsContractorResidentMasked] = useState<boolean>(true);
-
-  // 계약자 연락처 마스킹 상태 관리
-  const [isContractorPhoneMasked, setIsContractorPhoneMasked] = useState<boolean>(true);
-
-  // 계약자 이메일 마스킹 상태 관리
-  const [isContractorEmailMasked, setIsContractorEmailMasked] = useState<boolean>(true);
-
-  // 자택(소재지) 주소 마스킹 상태 관리
-  const [isHomeAddressMasked, setIsHomeAddressMasked] = useState<boolean>(true);
-
-  // 직장(본사) 주소 마스킹 상태 관리
-  const [isWorkAddressMasked, setIsWorkAddressMasked] = useState<boolean>(true);
-
   // Ltpa35001Popup 팝업 열림 상태 관리
   const [isLtpa35001PopupOpen, setIsLtpa35001PopupOpen] = useState<boolean>(false);
 
@@ -608,19 +584,19 @@ export const Ltpa35001 = ({
                         <FormRow>
                           <FormCell
                             title={
-                              <Grow placement="sc">
+                              <>
                                 고지유형
                                 <TooltipQ align="start" className="max-w-[36rem]">
                                   {tooltipContents2[0]}
                                 </TooltipQ>
-                              </Grow>
+                              </>
                             }
                             colSpan={3}
                           >
                             <RadioGroup
                               width={'full'}
                               defaultValue="1형(일반고지형)"
-                              className="grid grid-cols-[1fr_1fr_1fr] gap-y-2"
+                              className="grid grid-cols-[auto_auto_1fr] gap-x-4 gap-y-2"
                             >
                               {[
                                 {
@@ -869,7 +845,7 @@ export const Ltpa35001 = ({
                           );
                         }}
                       >
-                        <FormTable lineTop={false} cols={['w-[11rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
+                        <FormTable lineTop={false} cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
                           {(currentTab?.type === '일반' ||
                             currentTab?.type === '태아' ||
                             currentTab?.type === '재물피보험자') && (
@@ -966,9 +942,7 @@ export const Ltpa35001 = ({
                                         width={132}
                                         readOnly
                                         masking
-                                        isMasked={isInsuredResidentMasked}
-                                        value={isInsuredResidentMasked ? '000000-0******' : '000000-0123456'}
-                                        onMaskToggle={setIsInsuredResidentMasked}
+                                        value={'000000-0123456'}
                                       />
                                       <Button
                                         aria-label="피보험자 검색"
@@ -1018,9 +992,14 @@ export const Ltpa35001 = ({
                                         </KeyValueItem>
                                       )}
                                       <Grow gap={1}>
-                                        <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                                          알림톡발송
-                                        </Button>
+                                        <TooltipQ
+                                          onClick={() => {
+                                            alert('무기명지정 이동');
+                                          }}
+                                        >
+                                          <b>무기명지정이란?</b>
+                                          <br /> 설명 알림톡전송
+                                        </TooltipQ>
 
                                         {/* dev: 260903 - 고객등록 */}
                                         <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
@@ -1169,9 +1148,7 @@ export const Ltpa35001 = ({
                                       width={132}
                                       readOnly
                                       masking
-                                      isMasked={isPregnantResidentMasked}
-                                      value={isPregnantResidentMasked ? '000000-0*****' : '000000-0000000'}
-                                      onMaskToggle={setIsPregnantResidentMasked}
+                                      value={'000000-0000000'}
                                     />
                                     <Button
                                       aria-label="피보험자 검색"
@@ -1276,9 +1253,7 @@ export const Ltpa35001 = ({
                                           width={132}
                                           required
                                           masking
-                                          isMasked={isOwnerResidentMasked}
-                                          value={isOwnerResidentMasked ? '000000-0******' : '000000-0123456'}
-                                          onMaskToggle={setIsOwnerResidentMasked}
+                                          value={'000000-0123456'}
                                         />
                                         <Button
                                           aria-label="소유자 검색"
@@ -1575,9 +1550,7 @@ export const Ltpa35001 = ({
                                     width={132}
                                     readOnly
                                     masking
-                                    isMasked={isContractorResidentMasked}
-                                    value={isContractorResidentMasked ? '000000-0******' : '000000-0123456'}
-                                    onMaskToggle={setIsContractorResidentMasked}
+                                    value={'000000-0123456'}
                                   />
                                   <Button
                                     aria-label="피보험자 검색"
@@ -1646,13 +1619,7 @@ export const Ltpa35001 = ({
                               readOnly
                               variant="info"
                               masking
-                              isMasked={isHomeAddressMasked}
-                              value={
-                                isHomeAddressMasked
-                                  ? '경상남도 진주시 경기도 부천시 원미구 역곡동 경기도 평택시 *******'
-                                  : '경상남도 진주시 경기도 부천시 원미구 역곡동 경기도 평택시 팽성읍 (하대동)'
-                              }
-                              onMaskToggle={setIsHomeAddressMasked}
+                              value={'경상남도 진주시 경기도 부천시 원미구 역곡동 경기도 평택시 팽성읍 (하대동)'}
                             />
                           </FormCell>
                         </FormRow>
@@ -1664,13 +1631,7 @@ export const Ltpa35001 = ({
                               readOnly
                               variant="info"
                               masking
-                              isMasked={isWorkAddressMasked}
-                              value={
-                                isWorkAddressMasked
-                                  ? '서울특별시 강남구 테헤란로 *******'
-                                  : '서울특별시 강남구 테헤란로 123 (역삼동, 한화빌딩)'
-                              }
-                              onMaskToggle={setIsWorkAddressMasked}
+                              value={'서울특별시 강남구 테헤란로 123 (역삼동, 한화빌딩)'}
                             />
                           </FormCell>
                         </FormRow>
@@ -1684,9 +1645,7 @@ export const Ltpa35001 = ({
                                 readOnly
                                 variant="info"
                                 masking
-                                isMasked={isContractorPhoneMasked}
-                                value={isContractorPhoneMasked ? '010-****-0000' : '010-0000-0000'}
-                                onMaskToggle={setIsContractorPhoneMasked}
+                                value={'010-0000-0000'}
                               />
                               <KeyValueItem label="전자적안내동의">
                                 <Grow placement="sc">
@@ -1708,9 +1667,7 @@ export const Ltpa35001 = ({
                               readOnly
                               variant="info"
                               masking
-                              isMasked={isContractorEmailMasked}
-                              value={isContractorEmailMasked ? 'exa****************' : 'example@example.com'}
-                              onMaskToggle={setIsContractorEmailMasked}
+                              value={'example@example.com'}
                             />
                           </FormCell>
                         </FormRow>
@@ -1737,9 +1694,14 @@ export const Ltpa35001 = ({
                                 </NativeSelectOption>
                               ))}
                             </NativeSelect>
-                            <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
-                              알림톡발송
-                            </Button>
+                            <TooltipQ
+                              onClick={() => {
+                                alert('무기명지정 이동');
+                              }}
+                            >
+                              <b>무기명지정이란?</b>
+                              <br /> 설명 알림톡전송
+                            </TooltipQ>
                           </FormCell>
                           <FormCell title="설계금액/잔여한도">
                             <Input aria-label="설계금액" width={70} value={12033} commaAmount readOnly />

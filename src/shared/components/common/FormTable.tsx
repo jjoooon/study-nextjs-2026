@@ -254,7 +254,12 @@ export const FormCell = ({
       {!thNone && title !== null && (
         <TableHead
           data-variant={usedVariant}
-          className={cn(FormCellVariants({ variant: usedVariant }), 'text-left py-[0.4rem]', 'pr-[0.4rem]!', className)}
+          className={cn(
+            FormCellVariants({ variant: usedVariant }),
+            'text-left py-[0.4rem]',
+            'pr-[0.4rem]! pl-[0.6rem]!',
+            className
+          )}
           {...(titleColSpan && { colSpan: titleColSpan })}
           {...(titleRowSpan && { rowSpan: titleRowSpan })}
         >
@@ -271,7 +276,7 @@ export const FormCell = ({
       )}
       {!tdNone && (
         <TableCell
-          className={cn('border-b border-[#E5E5E5] pl-[1rem] pt-[0.4rem] pb-[0.5rem] h-[3.8rem]', tdClassName)}
+          className={cn('border-b border-[#E5E5E5] pl-[0.4rem] pt-[0.4rem] pb-[0.5rem] h-[4rem]', tdClassName)}
           {...(colSpan && { colSpan })}
           {...(rowSpan && { rowSpan })}
           style={tdStyle}
@@ -469,7 +474,7 @@ export const FormRow = ({ children, vertical: propVertical, cols: _cols, classNa
             ? `grid grid-rows-2 grid-flow-col overflow-x-auto border-b-0! 
             [&>*]:flex [&>*]:items-center [&>*]:justify-center [&>*]:py-1 
             [&>th+td]:border-t-0! [&>td~*]:border-l-0! [&>th>span]:leading-[1.1] 
-            [&>td]:min-h-[3.8rem]! [&>td]:leading-[1.1] [&>td>div]:text-left [&>td]:whitespace-nowrap [&>td]:overflow-hidden [&>td]:h-[3.8rem]! [&>td]:px-1 [&>td]:text-center [&>td]:first-of-type:border-l-0! [&>td]:last-of-type:border-r-0! 
+            [&>td]:min-h-[4rem]! [&>td]:leading-[1.1] [&>td>div]:text-left [&>td]:whitespace-nowrap [&>td]:overflow-hidden [&>td]:h-[4rem]! [&>td]:px-1 [&>td]:text-center [&>td]:first-of-type:border-l-0! [&>td]:last-of-type:border-r-0! 
             [&>th]:text-center [&>th]:py-[0.4rem]! [&>th]:first-of-type:border-l-0! [&>th]:last-of-type:border-r-0! `
             : '[&>th]:first:border-l-0! [&>td]:last:border-r-0!',
           className
