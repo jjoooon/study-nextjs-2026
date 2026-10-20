@@ -3,6 +3,7 @@
  */
 'use client';
 
+import { useState } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -22,6 +23,9 @@ import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
 const Ltpa401 = () => {
+  // 요청자 휴대폰번호 마스킹 상태
+  const [isRequesterPhoneMasked, setIsRequesterPhoneMasked] = useState(true);
+
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={false} size="lg">
@@ -53,7 +57,7 @@ const Ltpa401 = () => {
               <TableFoldBody>
                 <FormTable
                   caption="피보험자의 위험정보 테이블"
-                  cols={['w-[12rem]', 'w-auto', 'w-[12rem]', 'w-auto', 'w-[12rem]', 'w-auto']}
+                  cols={['w-[12rem]', 'w-auto', 'w-[12rem]', 'w-auto', 'w-[12rem]', 'w-[12rem]']}
                 >
                   <FormRow>
                     <FormCell title={'접수번호'}>26012723081</FormCell>
@@ -63,7 +67,18 @@ const Ltpa401 = () => {
                   <FormRow>
                     <FormCell title={'요청자사번'}>8012345</FormCell>
                     <FormCell title={'요청자명'}>김한화</FormCell>
-                    <FormCell title={'요청자 휴대폰번호'}>010-1234-1234</FormCell>
+                    <FormCell title={'요청자 휴대폰번호'}>
+                      <Input
+                        aria-label="요청자 휴대폰번호"
+                        className="w-auto"
+                        readOnly
+                        variant="info"
+                        masking
+                        isMasked={isRequesterPhoneMasked}
+                        value={isRequesterPhoneMasked ? '010-****-1234' : '010-1234-1234'}
+                        onMaskToggle={setIsRequesterPhoneMasked}
+                      />
+                    </FormCell>
                   </FormRow>
                   <FormRow>
                     <FormCell title={'상품(상품유형)'}>운전자보험</FormCell>

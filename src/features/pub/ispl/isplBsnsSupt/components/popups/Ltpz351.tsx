@@ -13,7 +13,7 @@ import {
   AgGridEmptyComponent,
   PortalErrorTooltipCellEditor,
 } from '@aggrid';
-import { Grid, Gcol, Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -27,6 +27,7 @@ import {
   DialogTitle,
   DialogClose,
 } from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
 
 import '@/shared/lib/agGridPub';
 
@@ -41,6 +42,36 @@ const DummyData: DummyDataType[] = [
   { id: 1, isChecked: true, field1: '취급자', field2: '안손보', field3: '010-0000-0000' },
   { id: 2, isChecked: false, field1: '계약자', field2: '', field3: '' },
 ];
+
+// 휴대폰 번호 행별 독립 마스킹 셀 컴포넌트
+interface MaskPhoneCellProps {
+  value?: string | number;
+}
+
+const MaskPhoneCell = ({ value }: MaskPhoneCellProps) => {
+  const [isMasked, setIsMasked] = React.useState(true);
+
+  if (!value) return null;
+
+  const rawValue = String(value);
+  const maskedValue = /^(\d{3})-(\d{3,4})-(\d{4})$/.test(rawValue)
+    ? rawValue.replace(/^(\d{3})-(\d{3,4})-(\d{4})$/, '$1-****-$3')
+    : '010-****-0000';
+
+  return (
+    <Input
+      className="[&_input]:bg-transparent! [&_input]:border-0! [&_input]:text-center!"
+      aria-label="휴대폰"
+      readOnly
+      masking
+      isMasked={isMasked}
+      value={isMasked ? maskedValue : rawValue}
+      onMaskToggle={setIsMasked}
+      size="md"
+      width="full"
+    />
+  );
+};
 
 export type NoticeType = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I';
 
@@ -94,9 +125,14 @@ const Ltpz351 = ({ noticeType = 'B', isPayExempt = true }: Ltpz351Props) => {
       {
         headerName: '휴대폰',
         field: 'field3',
-        flex: 1,
-        cellClass: isPayExemptState ? 'text-center editable-cell' : 'text-center',
+        flex: 1.2,
+        minWidth: attributeColumnWidth(120),
+        cellClass: isPayExemptState ? 'text-center editable-cell px-0!' : 'text-center px-0!',
         editable: isPayExemptState,
+        cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+          if (!params.value) return '';
+          return <MaskPhoneCell value={params.value} />;
+        },
         cellEditor: PortalErrorTooltipCellEditor,
         cellEditorParams: {
           maxLength: 13,
