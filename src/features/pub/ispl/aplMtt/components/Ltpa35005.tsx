@@ -425,7 +425,21 @@ export const Ltpa35005 = () => {
                       </FormCell>
                     </FormRow>
                     <FormRow>
-                      <FormCell title={'수익자 지정·변경 추가약정'}>
+                      <FormCell
+                        title={
+                          <>
+                            수익자 지정·변경 추가약정
+                            <TooltipQ
+                              onClick={() => {
+                                alert('수익자 지정·변경 추가약정 이동');
+                              }}
+                            >
+                              <b>수익자 지정·변경 추가약정이란?</b>
+                              <br /> 설명 알림톡전송
+                            </TooltipQ>
+                          </>
+                        }
+                      >
                         <Grow placement="bwc">
                           <RadioGroup defaultValue="약정함" required>
                             {[
@@ -437,9 +451,6 @@ export const Ltpa35005 = () => {
                               </RadioGroupItem>
                             ))}
                           </RadioGroup>
-                          <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                            알림톡발송
-                          </Button>
                         </Grow>
                       </FormCell>
                       <FormCell
@@ -469,9 +480,35 @@ export const Ltpa35005 = () => {
                         </Grow>
                       </FormCell>
                     </FormRow>
+
                     <FormRow>
-                      <FormCell title={'영수일자 (보험시기)'}>
-                        <DatePickerInput mode={'single'} required />
+                      <FormCell
+                        title={
+                          <>
+                            장애인보험 전환
+                            <TooltipQ
+                              onClick={() => {
+                                alert('장애인보험 전환 이동');
+                              }}
+                            >
+                              <b>장애인보험 전환이란?</b>
+                              <br /> 설명 알림톡전송
+                            </TooltipQ>
+                          </>
+                        }
+                      >
+                        <Grow placement="bwc">
+                          <CheckboxGroup color="primary" size="lg" width="auto" variant="default">
+                            {[
+                              { label: '피보험자장애인', value: '1' },
+                              { label: '수익자장애인', value: '2' },
+                            ].map((category) => (
+                              <CheckboxGroupItem key={category.value} value={category.value}>
+                                {category.label}
+                              </CheckboxGroupItem>
+                            ))}
+                          </CheckboxGroup>
+                        </Grow>
                       </FormCell>
                       <FormCell title={'실소유자 확인'}>
                         <Grow placement="bwc">
@@ -523,22 +560,8 @@ export const Ltpa35005 = () => {
                           ))}
                         </NativeSelect>
                       </FormCell>
-                      <FormCell title={'장애인보험 전환'}>
-                        <Grow placement="bwc">
-                          <CheckboxGroup color="primary" size="lg" width="auto" variant="default">
-                            {[
-                              { label: '피보험자장애인', value: '1' },
-                              { label: '수익자장애인', value: '2' },
-                            ].map((category) => (
-                              <CheckboxGroupItem key={category.value} value={category.value}>
-                                {category.label}
-                              </CheckboxGroupItem>
-                            ))}
-                          </CheckboxGroup>
-                          <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                            알림톡발송
-                          </Button>
-                        </Grow>
+                      <FormCell title={'영수일자 (보험시기)'}>
+                        <DatePickerInput mode={'single'} required />
                       </FormCell>
                     </FormRow>
 
@@ -1111,24 +1134,10 @@ export const Ltpa35005 = () => {
                       );
                     }}
                   >
-                    <FormTable lineTop={false} cols={['w-[9.6rem]', 'w-[40%]', 'w-[9rem]', 'w-[auto]']}>
+                    <FormTable lineTop={false} cols={['w-[8.6rem]', 'w-[40%]', 'w-[8rem]', 'w-[auto]']}>
                       {/* 기본 케이스 */}
                       <FormRow>
-                        <FormCell
-                          title={
-                            <div>
-                              사망수익자
-                              <TooltipQ>
-                                사망보험금 수익자를 특정하지 않거나 법정상속인으로 지정한 경우 피보험자 사망시
-                                법정상속인간보험급 지급에 관한 분쟁이 발생할 수 있습니다. <br />
-                                (예시)양육에 기여하지 않은 부모가 보험금에 대한 지분을 요구
-                                <br />
-                                *상품설명서의 &apos;보험금 수익자 지정&apos;에 관한 사항을 참고하여 계약자에게 안내해
-                                주시기 바랍니다.
-                              </TooltipQ>
-                            </div>
-                          }
-                        >
+                        <FormCell title={'사망수익자'}>
                           <Input aria-label="법정상속인" width={84} value={'법정상속인'} readOnly />
                           <Input aria-label="법정상속인명" width={114} value={''} readOnly />
                           <Button
@@ -1141,13 +1150,21 @@ export const Ltpa35005 = () => {
                           >
                             <SearchIcon color={'var(--color-primary-50)'} />
                           </Button>
-                          <NativeSelect aria-label="법정상속인 선택" width={100} className="ml-[0.4rem]">
+                          <NativeSelect aria-label="법정상속인 선택" width={80} className="ml-[0.4rem]">
                             {[{ value: '법정상속인', label: '법정상속인' }].map((option) => (
                               <NativeSelectOption key={option.value} value={option.value}>
                                 {option.label}
                               </NativeSelectOption>
                             ))}
                           </NativeSelect>
+                          <TooltipQ>
+                            사망보험금 수익자를 특정하지 않거나 법정상속인으로 지정한 경우 피보험자 사망시
+                            법정상속인간보험급 지급에 관한 분쟁이 발생할 수 있습니다. <br />
+                            (예시)양육에 기여하지 않은 부모가 보험금에 대한 지분을 요구
+                            <br />
+                            *상품설명서의 &apos;보험금 수익자 지정&apos;에 관한 사항을 참고하여 계약자에게 안내해 주시기
+                            바랍니다.
+                          </TooltipQ>
                         </FormCell>
                         <FormCell title="사망외수익자">
                           <Input aria-label="사망외수익자명" width={84} value={'김한화'} readOnly />

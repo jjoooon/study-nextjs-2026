@@ -225,7 +225,7 @@ function Checkbox({
   }
 
   return (
-    <div className={cn('relative', `flex items-start gap-x-1 gap-y-[0.2rem] ${isFavorite ? 'h-full' : ''}`)}>
+    <div className={cn('relative', `flex items-center gap-x-1 gap-y-[0.2rem] ${isFavorite ? 'h-full' : ''}`)}>
       <CheckboxPrimitive.Root
         data-slot="checkbox"
         data-variant={variant}
