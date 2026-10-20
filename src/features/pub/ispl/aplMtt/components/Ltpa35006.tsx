@@ -122,6 +122,15 @@ export const Ltpa35006 = () => {
   const [selectedDepositCount, setSelectedDepositCount] = useState(0);
   const [selectedDepositAmount, setSelectedDepositAmount] = useState(0);
 
+  // 계약자 주민등록번호 마스킹 상태 관리
+  const [isContractorResidentMasked, setIsContractorResidentMasked] = useState<boolean>(true);
+
+  // 차량번호 마스킹 상태 관리
+  const [isCarNumberMasked, setIsCarNumberMasked] = useState<boolean>(true);
+
+  // 피보험자 주민등록번호 마스킹 상태 관리
+  const [isInsuredResidentMasked, setIsInsuredResidentMasked] = useState<boolean>(true);
+
   // ag-Grid 하단에 고정되어 실시간으로 선택 금액 합계를 나타낼 pinned 행 데이터 설정
   const depositSumRow = useMemo<Ltpa35006GridRow[]>(
     () => [
@@ -296,13 +305,29 @@ export const Ltpa35006 = () => {
                       <FormRow>
                         <FormCell title={'계약자'}>
                           <Input aria-label="계약자명" width={170} value={'김한화(00)'} readOnly />
-                          <Input aria-label="계약자 주민등록번호" width={'full'} value={'000000-0******'} readOnly />
+                          <Input
+                            aria-label="계약자 주민등록번호"
+                            width={'full'}
+                            readOnly
+                            masking
+                            isMasked={isContractorResidentMasked}
+                            value={isContractorResidentMasked ? '000000-0******' : '000000-0123456'}
+                            onMaskToggle={setIsContractorResidentMasked}
+                          />
                         </FormCell>
                         <FormCell title={'수금자'}>
                           <Input aria-label="수금자" width={'full'} value={'김한화(8098884)'} readOnly />
                         </FormCell>
                         <FormCell title={'차량번호'}>
-                          <Input aria-label="차량번호" width={'full'} value={''} readOnly />
+                          <Input
+                            aria-label="차량번호"
+                            width={'full'}
+                            readOnly
+                            masking
+                            isMasked={isCarNumberMasked}
+                            value={isCarNumberMasked ? '**가1234' : '12가1234'}
+                            onMaskToggle={setIsCarNumberMasked}
+                          />
                         </FormCell>
                       </FormRow>
                       <FormRow>
@@ -318,8 +343,16 @@ export const Ltpa35006 = () => {
                       </FormRow>
                       <FormRow>
                         <FormCell title={'피보험자'}>
-                          <Input aria-label="계약자명" width={170} value={'김한화(00)'} readOnly />
-                          <Input aria-label="계약자 주민등록번호" width={'full'} value={'000000-0******'} readOnly />
+                          <Input aria-label="피보험자명" width={170} value={'김한화(00)'} readOnly />
+                          <Input
+                            aria-label="피보험자 주민등록번호"
+                            width={'full'}
+                            readOnly
+                            masking
+                            isMasked={isInsuredResidentMasked}
+                            value={isInsuredResidentMasked ? '000000-0******' : '000000-0123456'}
+                            onMaskToggle={setIsInsuredResidentMasked}
+                          />
                         </FormCell>
                         {/* 입금 주체 선택 라디오 버튼 */}
                         <FormCell title={'입금선택'} colSpan={4}>

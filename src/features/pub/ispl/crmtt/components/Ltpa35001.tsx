@@ -161,6 +161,30 @@ export const Ltpa35001 = ({
   // 태아 '가입' 체크박스 상태 관리 (체크 시 다태아, 다태아연계, 수수료선지급 표시)
   const [isFetusSubscribed, setIsFetusSubscribed] = useState<boolean>(false);
 
+  // 피보험자 주민등록번호 마스킹 상태 관리
+  const [isInsuredResidentMasked, setIsInsuredResidentMasked] = useState<boolean>(true);
+
+  // 임신부 주민등록번호 마스킹 상태 관리
+  const [isPregnantResidentMasked, setIsPregnantResidentMasked] = useState<boolean>(true);
+
+  // 소유자 주민등록번호 마스킹 상태 관리
+  const [isOwnerResidentMasked, setIsOwnerResidentMasked] = useState<boolean>(true);
+
+  // 계약자 주민등록번호 마스킹 상태 관리
+  const [isContractorResidentMasked, setIsContractorResidentMasked] = useState<boolean>(true);
+
+  // 계약자 연락처 마스킹 상태 관리
+  const [isContractorPhoneMasked, setIsContractorPhoneMasked] = useState<boolean>(true);
+
+  // 계약자 이메일 마스킹 상태 관리
+  const [isContractorEmailMasked, setIsContractorEmailMasked] = useState<boolean>(true);
+
+  // 자택(소재지) 주소 마스킹 상태 관리
+  const [isHomeAddressMasked, setIsHomeAddressMasked] = useState<boolean>(true);
+
+  // 직장(본사) 주소 마스킹 상태 관리
+  const [isWorkAddressMasked, setIsWorkAddressMasked] = useState<boolean>(true);
+
   // Ltpa35001Popup 팝업 열림 상태 관리
   const [isLtpa35001PopupOpen, setIsLtpa35001PopupOpen] = useState<boolean>(false);
 
@@ -939,9 +963,12 @@ export const Ltpa35001 = ({
                                       />
                                       <Input
                                         aria-label="주민등록번호 마스킹"
-                                        width={114}
-                                        value={'000000-0******'}
+                                        width={132}
                                         readOnly
+                                        masking
+                                        isMasked={isInsuredResidentMasked}
+                                        value={isInsuredResidentMasked ? '000000-0******' : '000000-0123456'}
+                                        onMaskToggle={setIsInsuredResidentMasked}
                                       />
                                       <Button
                                         aria-label="피보험자 검색"
@@ -1137,7 +1164,15 @@ export const Ltpa35001 = ({
                               <FormRow>
                                 <FormCell title={'임신부'} colSpan={3}>
                                   <Grow placement="ss">
-                                    <Input aria-label="주민등록번호 마스킹" width={114} value={'_____-______'} />
+                                    <Input
+                                      aria-label="주민등록번호 마스킹"
+                                      width={132}
+                                      readOnly
+                                      masking
+                                      isMasked={isPregnantResidentMasked}
+                                      value={isPregnantResidentMasked ? '000000-0*****' : '000000-0000000'}
+                                      onMaskToggle={setIsPregnantResidentMasked}
+                                    />
                                     <Button
                                       aria-label="피보험자 검색"
                                       variant={'outlined'}
@@ -1238,9 +1273,12 @@ export const Ltpa35001 = ({
                                         <Input aria-label="소유자명" width={84} value={'김환화'} readOnly />
                                         <Input
                                           aria-label="주민등록번호 마스킹"
-                                          width={114}
-                                          value={'000000-0******'}
+                                          width={132}
                                           required
+                                          masking
+                                          isMasked={isOwnerResidentMasked}
+                                          value={isOwnerResidentMasked ? '000000-0******' : '000000-0123456'}
+                                          onMaskToggle={setIsOwnerResidentMasked}
                                         />
                                         <Button
                                           aria-label="소유자 검색"
@@ -1534,9 +1572,12 @@ export const Ltpa35001 = ({
                                   <Input aria-label="피보험자명" width={84} value={'김환화'} readOnly />
                                   <Input
                                     aria-label="주민등록번호 마스킹"
-                                    width={114}
-                                    value={'000000-0******'}
+                                    width={132}
                                     readOnly
+                                    masking
+                                    isMasked={isContractorResidentMasked}
+                                    value={isContractorResidentMasked ? '000000-0******' : '000000-0123456'}
+                                    onMaskToggle={setIsContractorResidentMasked}
                                   />
                                   <Button
                                     aria-label="피보험자 검색"
@@ -1599,17 +1640,54 @@ export const Ltpa35001 = ({
 
                         <FormRow>
                           <FormCell title="자택(소재지)" colSpan={3}>
-                            경상남도 진주시 경기도 부천시 원미구 역곡동 경기도 평택시 팽성읍 (하대동)
+                            <Input
+                              aria-label="자택(소재지)"
+                              className="w-auto [&_span]:font-normal!"
+                              readOnly
+                              variant="info"
+                              masking
+                              isMasked={isHomeAddressMasked}
+                              value={
+                                isHomeAddressMasked
+                                  ? '경상남도 진주시 경기도 부천시 원미구 역곡동 경기도 평택시 *******'
+                                  : '경상남도 진주시 경기도 부천시 원미구 역곡동 경기도 평택시 팽성읍 (하대동)'
+                              }
+                              onMaskToggle={setIsHomeAddressMasked}
+                            />
                           </FormCell>
                         </FormRow>
                         <FormRow>
-                          <FormCell title="직장(본사)" colSpan={3}></FormCell>
+                          <FormCell title="직장(본사)" colSpan={3}>
+                            <Input
+                              aria-label="직장(본사)"
+                              className="w-auto [&_span]:font-normal!"
+                              readOnly
+                              variant="info"
+                              masking
+                              isMasked={isWorkAddressMasked}
+                              value={
+                                isWorkAddressMasked
+                                  ? '서울특별시 강남구 테헤란로 *******'
+                                  : '서울특별시 강남구 테헤란로 123 (역삼동, 한화빌딩)'
+                              }
+                              onMaskToggle={setIsWorkAddressMasked}
+                            />
+                          </FormCell>
                         </FormRow>
 
                         <FormRow>
                           <FormCell title="연락처">
                             <Grow placement="bwc">
-                              <Grow>010-0000-0000</Grow>
+                              <Input
+                                aria-label="연락처"
+                                className="w-auto [&_span]:font-normal!"
+                                readOnly
+                                variant="info"
+                                masking
+                                isMasked={isContractorPhoneMasked}
+                                value={isContractorPhoneMasked ? '010-****-0000' : '010-0000-0000'}
+                                onMaskToggle={setIsContractorPhoneMasked}
+                              />
                               <KeyValueItem label="전자적안내동의">
                                 <Grow placement="sc">
                                   <Badge color="green" size="md">
@@ -1623,7 +1701,18 @@ export const Ltpa35001 = ({
                               </KeyValueItem>
                             </Grow>
                           </FormCell>
-                          <FormCell title="이메일">example@example.com</FormCell>
+                          <FormCell title="이메일">
+                            <Input
+                              aria-label="이메일"
+                              className="w-auto [&_span]:font-normal!"
+                              readOnly
+                              variant="info"
+                              masking
+                              isMasked={isContractorEmailMasked}
+                              value={isContractorEmailMasked ? 'exa****************' : 'example@example.com'}
+                              onMaskToggle={setIsContractorEmailMasked}
+                            />
+                          </FormCell>
                         </FormRow>
 
                         <FormRow>

@@ -237,6 +237,48 @@ export const Ltpa35005 = () => {
   const is노후실손자동재가입동의 = true;
   const is해지방지휴대폰결제 = true;
 
+  // 만기수익자 주민등록번호 마스킹 상태 관리
+  const [isMaturityResidentMasked, setIsMaturityResidentMasked] = React.useState<boolean>(true);
+
+  // 우편물수령처 주소 마스킹 상태 관리
+  const [isPostalAddressMasked, setIsPostalAddressMasked] = React.useState<boolean>(true);
+
+  // 사망수익자(법정상속인) 주민등록번호 마스킹 상태 관리
+  const [isLegalHeirResidentMasked, setIsLegalHeirResidentMasked] = React.useState<boolean>(true);
+
+  // 사망외수익자 주민등록번호 마스킹 상태 관리
+  const [isNonDeathBeneficiaryResidentMasked, setIsNonDeathBeneficiaryResidentMasked] = React.useState<boolean>(true);
+
+  // 지정대리인 주민등록번호 마스킹 상태 관리
+  const [isDesignatedProxyResidentMasked, setIsDesignatedProxyResidentMasked] = React.useState<boolean>(true);
+
+  // 법정대리인1 주민등록번호 마스킹 상태 관리
+  const [isLegalProxy1ResidentMasked, setIsLegalProxy1ResidentMasked] = React.useState<boolean>(true);
+
+  // 법정대리인2 주민등록번호 마스킹 상태 관리
+  const [isLegalProxy2ResidentMasked, setIsLegalProxy2ResidentMasked] = React.useState<boolean>(true);
+
+  // 지정대리인1 주민등록번호 마스킹 상태 관리
+  const [isDesignatedProxy1ResidentMasked, setIsDesignatedProxy1ResidentMasked] = React.useState<boolean>(true);
+
+  // 지정대리인2 주민등록번호 마스킹 상태 관리
+  const [isDesignatedProxy2ResidentMasked, setIsDesignatedProxy2ResidentMasked] = React.useState<boolean>(true);
+
+  // 초회납 계좌번호 마스킹 상태 관리
+  const [isFirstPayAccountMasked, setIsFirstPayAccountMasked] = React.useState<boolean>(true);
+
+  // 계속납 계좌번호 마스킹 상태 관리
+  const [isMorePayAccountMasked, setIsMorePayAccountMasked] = React.useState<boolean>(true);
+
+  // 가상계좌번호 마스킹 상태 관리
+  const [isVirtualAccountMasked, setIsVirtualAccountMasked] = React.useState<boolean>(true);
+
+  // 초회납 카드번호 마스킹 상태 관리
+  const [isFirstPayCardMasked, setIsFirstPayCardMasked] = React.useState<boolean>(true);
+
+  // 계속납 카드번호 마스킹 상태 관리
+  const [isMorePayCardMasked, setIsMorePayCardMasked] = React.useState<boolean>(true);
+
   return (
     <LayoutTemplateLTPA350MainBody
       mainBody={
@@ -258,7 +300,15 @@ export const Ltpa35005 = () => {
                             </NativeSelectOption>
                           ))}
                         </NativeSelect>
-                        <Input aria-label="만기수익자 주민등록번호" width={114} value={'000000-0******'} readOnly />
+                        <Input
+                          aria-label="만기수익자 주민등록번호"
+                          width={132}
+                          readOnly
+                          masking
+                          isMasked={isMaturityResidentMasked}
+                          value={isMaturityResidentMasked ? '000000-0******' : '000000-0123456'}
+                          onMaskToggle={setIsMaturityResidentMasked}
+                        />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
@@ -292,7 +342,20 @@ export const Ltpa35005 = () => {
                           ))}
                         </RadioGroup>
                         <Grow className="pl-2">
-                          부산 사하구 경기도 남양주시 도농동 서울특별시 종로구 평창동 (하단동)
+                          <Input
+                            aria-label="우편물수령처 주소"
+                            className="w-auto [&_span]:font-normal!"
+                            readOnly
+                            variant="info"
+                            masking
+                            isMasked={isPostalAddressMasked}
+                            value={
+                              isPostalAddressMasked
+                                ? '부산 사하구 경기도 남양주시 도농동 서울특별시 종로구 *******'
+                                : '부산 사하구 경기도 남양주시 도농동 서울특별시 종로구 평창동 (하단동)'
+                            }
+                            onMaskToggle={setIsPostalAddressMasked}
+                          />
                         </Grow>
                       </FormCell>
                     </FormRow>
@@ -1022,7 +1085,14 @@ export const Ltpa35005 = () => {
                           {firstPay === '선택' && <FormCell title=""></FormCell>}
                           {(firstPay === '즉시이체' || firstPay === '예약이체') && (
                             <FormCell title="계좌번호">
-                              <Input aria-label="계좌번호" width={200} value={''} placeholder="계좌번호" />
+                              <Input
+                                aria-label="계좌번호"
+                                width={130}
+                                placeholder="계좌번호"
+                                readOnly
+                                masking
+                                value={'123456789012'}
+                              />
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -1033,7 +1103,16 @@ export const Ltpa35005 = () => {
                           )}
                           {firstPay === '현금' && (
                             <FormCell title="가상계좌번호">
-                              <Input aria-label="가상계좌번호" width={200} value={''} placeholder="가상계좌번호" />
+                              <Input
+                                aria-label="가상계좌번호"
+                                width={200}
+                                placeholder="가상계좌번호"
+                                readOnly
+                                masking
+                                isMasked={isVirtualAccountMasked}
+                                value={isVirtualAccountMasked ? '1234567*****' : '123456789012'}
+                                onMaskToggle={setIsVirtualAccountMasked}
+                              />
                               <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
                                 가상계좌
                               </Button>
@@ -1041,7 +1120,16 @@ export const Ltpa35005 = () => {
                           )}
                           {firstPay === '카드납입' && (
                             <FormCell title="카드번호">
-                              <Input aria-label="카드번호" width={170} value={''} />
+                              <Input
+                                aria-label="카드번호"
+                                width={170}
+                                placeholder="카드번호"
+                                readOnly
+                                masking
+                                isMasked={isFirstPayCardMasked}
+                                value={isFirstPayCardMasked ? '****-****-****-3456' : '1234-5678-9012-3456'}
+                                onMaskToggle={setIsFirstPayCardMasked}
+                              />
                               <Input aria-label="카드기간" width={80} value={''} />
                               <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
                                 카드확인
@@ -1051,7 +1139,16 @@ export const Ltpa35005 = () => {
 
                           {morePay === '자동이체' && (
                             <FormCell title="계좌번호">
-                              <Input aria-label="계좌번호" width={200} value={''} placeholder="계좌번호" />
+                              <Input
+                                aria-label="계좌번호"
+                                width={200}
+                                placeholder="계좌번호"
+                                readOnly
+                                masking
+                                isMasked={isMorePayAccountMasked}
+                                value={isMorePayAccountMasked ? '1234567*****' : '123456789012'}
+                                onMaskToggle={setIsMorePayAccountMasked}
+                              />
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -1062,7 +1159,16 @@ export const Ltpa35005 = () => {
                           )}
                           {morePay === '카드이체' && (
                             <FormCell title="카드번호">
-                              <Input aria-label="카드번호" width={170} value={''} />
+                              <Input
+                                aria-label="카드번호"
+                                width={170}
+                                placeholder="카드번호"
+                                readOnly
+                                masking
+                                isMasked={isMorePayCardMasked}
+                                value={isMorePayCardMasked ? '1234-****-****-3456' : '1234-5678-9012-3456'}
+                                onMaskToggle={setIsMorePayCardMasked}
+                              />
                               <Input aria-label="카드기간" width={80} value={''} />
                               <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
                                 카드확인
@@ -1111,7 +1217,7 @@ export const Ltpa35005 = () => {
                       );
                     }}
                   >
-                    <FormTable lineTop={false} cols={['w-[9.6rem]', 'w-[40%]', 'w-[9rem]', 'w-[auto]']}>
+                    <FormTable lineTop={false} cols={['w-[10rem]', 'w-[40%]', 'w-[9rem]', 'w-[auto]']}>
                       {/* 기본 케이스 */}
                       <FormRow>
                         <FormCell
@@ -1130,7 +1236,15 @@ export const Ltpa35005 = () => {
                           }
                         >
                           <Input aria-label="법정상속인" width={84} value={'법정상속인'} readOnly />
-                          <Input aria-label="법정상속인명" width={114} value={''} readOnly />
+                          <Input
+                            aria-label="법정상속인 주민등록번호"
+                            width={132}
+                            readOnly
+                            masking
+                            isMasked={isLegalHeirResidentMasked}
+                            value={isLegalHeirResidentMasked ? '000000-0******' : '000000-0123456'}
+                            onMaskToggle={setIsLegalHeirResidentMasked}
+                          />
                           <Button
                             aria-label="법정상속인 검색"
                             variant={'outlined'}
@@ -1151,7 +1265,15 @@ export const Ltpa35005 = () => {
                         </FormCell>
                         <FormCell title="사망외수익자">
                           <Input aria-label="사망외수익자명" width={84} value={'김한화'} readOnly />
-                          <Input aria-label="사망외수익자 주민등록번호" width={114} value={'000000-0000000'} readOnly />
+                          <Input
+                            aria-label="사망외수익자 주민등록번호"
+                            width={132}
+                            readOnly
+                            masking
+                            isMasked={isNonDeathBeneficiaryResidentMasked}
+                            value={isNonDeathBeneficiaryResidentMasked ? '000000-0******' : '000000-0123456'}
+                            onMaskToggle={setIsNonDeathBeneficiaryResidentMasked}
+                          />
                           <Button
                             aria-label="사망외수익자 검색"
                             variant={'outlined'}
@@ -1176,7 +1298,15 @@ export const Ltpa35005 = () => {
                       <FormRow>
                         <FormCell title="지정대리인" colSpan={3}>
                           <Input aria-label="지정대리인" width={84} value={''} readOnly />
-                          <Input aria-label="지정대리인" width={114} value={''} readOnly />
+                          <Input
+                            aria-label="지정대리인 주민등록번호"
+                            width={132}
+                            readOnly
+                            masking
+                            isMasked={isDesignatedProxyResidentMasked}
+                            value={isDesignatedProxyResidentMasked ? '000000-0******' : '000000-0123456'}
+                            onMaskToggle={setIsDesignatedProxyResidentMasked}
+                          />
                           <Button
                             aria-label="지정대리인 검색"
                             variant={'outlined'}
@@ -1205,7 +1335,15 @@ export const Ltpa35005 = () => {
                         <FormCell title="법정대리인1" colSpan={3} tdClassName="justify-between">
                           <Grow>
                             <Input aria-label="법정대리인1" width={84} value={''} />
-                            <Input aria-label="법정대리인1" width={114} value={''} />
+                            <Input
+                              aria-label="법정대리인1 주민등록번호"
+                              width={132}
+                              readOnly
+                              masking
+                              isMasked={isLegalProxy1ResidentMasked}
+                              value={isLegalProxy1ResidentMasked ? '000000-0******' : '000000-0123456'}
+                              onMaskToggle={setIsLegalProxy1ResidentMasked}
+                            />
                             <Button
                               aria-label="법정대리인1 검색"
                               variant={'outlined'}
@@ -1239,7 +1377,15 @@ export const Ltpa35005 = () => {
                       <FormRow>
                         <FormCell title="법정대리인2">
                           <Input aria-label="법정대리인1" width={84} value={''} />
-                          <Input aria-label="법정대리인1" width={114} value={''} />
+                          <Input
+                            aria-label="법정대리인2 주민등록번호"
+                            width={132}
+                            readOnly
+                            masking
+                            isMasked={isLegalProxy2ResidentMasked}
+                            value={isLegalProxy2ResidentMasked ? '000000-0******' : '000000-0123456'}
+                            onMaskToggle={setIsLegalProxy2ResidentMasked}
+                          />
                           <Button
                             aria-label="법정대리인1 검색"
                             variant={'outlined'}
@@ -1260,7 +1406,15 @@ export const Ltpa35005 = () => {
                       <FormRow>
                         <FormCell title="지정대리인1" colSpan={3}>
                           <Input aria-label="지정대리인1" width={84} value={''} readOnly />
-                          <Input aria-label="지정대리인1" width={114} value={''} readOnly />
+                          <Input
+                            aria-label="지정대리인1 주민등록번호"
+                            width={132}
+                            readOnly
+                            masking
+                            isMasked={isDesignatedProxy1ResidentMasked}
+                            value={isDesignatedProxy1ResidentMasked ? '000000-0******' : '000000-0123456'}
+                            onMaskToggle={setIsDesignatedProxy1ResidentMasked}
+                          />
                           <Button
                             aria-label="지정대리인1 검색"
                             variant={'outlined'}
@@ -1286,7 +1440,15 @@ export const Ltpa35005 = () => {
                       <FormRow>
                         <FormCell title="지정대리인2" colSpan={3}>
                           <Input aria-label="지정대리인2" width={84} value={''} readOnly />
-                          <Input aria-label="지정대리인2" width={114} value={'000000-0000000'} readOnly />
+                          <Input
+                            aria-label="지정대리인2 주민등록번호"
+                            width={132}
+                            readOnly
+                            masking
+                            isMasked={isDesignatedProxy2ResidentMasked}
+                            value={isDesignatedProxy2ResidentMasked ? '000000-0******' : '000000-0123456'}
+                            onMaskToggle={setIsDesignatedProxy2ResidentMasked}
+                          />
                           <Button
                             aria-label="지정대리인2 검색"
                             variant={'outlined'}
