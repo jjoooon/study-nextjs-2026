@@ -88,6 +88,7 @@ export const TableFoldBody = ({ children, variant, className }: TableFoldHeadPro
   const isHidden = v === 'accordion' && !context?.open;
   return (
     <div
+      data-slot="table-fold-body"
       className={cn('grid w-full cp-tablecontext', className)}
       style={isHidden ? { height: 0, overflow: 'hidden' } : undefined}
     >

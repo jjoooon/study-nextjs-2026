@@ -1,12 +1,14 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
+import { Loader2 as SpinnerIcon } from 'lucide-react';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { UIUXsize } from '@/shared/types/uiTypes';
 import { Typo } from '@atoms';
 import { ErrorMsg } from '@common/ErrorMsg';
-import { SelectDropIcon } from '@icons';
+import { MaskingOff, MaskingOn, SelectDropIcon } from '@icons';
+import { Button } from '@uiux/Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 /**
@@ -56,6 +58,16 @@ interface UINativeSelectProps extends Omit<React.ComponentProps<'select'>, 'size
   errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
   /** 읽기 전용(readOnly) 상태일 때 텍스트 툴팁 노출 여부 @default true */
   showTooltipOnReadOnly?: boolean;
+  /** 마스킹 토글 버튼(눈 아이콘) 표시 여부 */
+  masking?: boolean;
+  /** 외부에서 마스킹 상태를 직접 제어할 때 사용 (true: 마스킹/숨김 상태, false: 마스킹 해제/표시 상태) */
+  isMasked?: boolean;
+  /** 비제어 마스킹 상태의 초기 마스킹(숨김) 여부 @default true */
+  defaultMasked?: boolean;
+  /** 마스킹 토글 버튼 클릭 시 호출되는 콜백. 다음 마스킹 상태(nextMasked)를 전달 */
+  onMaskToggle?: (nextMasked: boolean, e: React.MouseEvent<HTMLButtonElement>) => void;
+  /** 마스킹 데이터 조회/갱신 중 로딩 인디케이터 표시 여부 @default false */
+  isMaskLoading?: boolean;
 }
 
 type NativeSelectOptGroupProps = React.HTMLAttributes<HTMLOptGroupElement> & {
@@ -80,10 +92,28 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
       errorMsg = '입력은 필수입니다.',
       errorPs = 'bl',
       showTooltipOnReadOnly = true,
+      masking = false,
+      isMasked,
+      defaultMasked = true,
+      onMaskToggle,
+      isMaskLoading = false,
       ...props
     },
     ref
   ) => {
+    const [internalMasked, setInternalMasked] = React.useState(defaultMasked);
+    const isMaskControlled = isMasked !== undefined;
+    const currentMasked = isMaskControlled ? isMasked : internalMasked;
+    const showMaskToggle = masking;
+
+    const handleToggleMask = (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      const nextMasked = !currentMasked;
+      if (!isMaskControlled) {
+        setInternalMasked(nextMasked);
+      }
+      onMaskToggle?.(nextMasked, e);
+    };
     const localRef = React.useRef<HTMLSelectElement>(null);
     React.useImperativeHandle(ref, () => localRef.current!);
 
@@ -239,8 +269,11 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
     const shouldRenderTooltip = readOnly && showTooltipOnReadOnly && Boolean(selectedLabel) && isOverflow;
 
     return (
-      <div className={cn('relative', className)} style={widthStyle}>
-        <div className="group/native-select relative tracking-[-0.05rem]" data-slot="native-select-wrapper">
+      <div className={cn('relative', showMaskToggle && 'inline-flex items-center gap-1', className)} style={widthStyle}>
+        <div
+          className={cn('group/native-select relative tracking-[-0.05rem]', showMaskToggle && 'flex-1 min-w-0')}
+          data-slot="native-select-wrapper"
+        >
           {variant !== 'text' ? (
             <>
               {shouldRenderTooltip ? (
@@ -268,6 +301,28 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
             </Typo>
           )}
         </div>
+        {showMaskToggle && (
+          <Button
+            type="button"
+            variant="none"
+            only="icon"
+            size="xs"
+            disabled={props.disabled || isMaskLoading}
+            className="text-[var(--color-gray-60)] hover:text-[var(--color-gray-90)] cursor-pointer shrink-0"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={handleToggleMask}
+            aria-label={currentMasked ? '마스킹 해제 (정보 조회)' : '마스킹 적용 (정보 숨김)'}
+            title={currentMasked ? '마스킹 해제' : '마스킹 적용'}
+          >
+            {isMaskLoading ? (
+              <SpinnerIcon size={size === 'lg' ? 20 : 18} className="animate-spin stroke-[1.8]" />
+            ) : currentMasked ? (
+              <MaskingOn size={size === 'lg' ? 20 : 18} />
+            ) : (
+              <MaskingOff size={size === 'lg' ? 20 : 18} />
+            )}
+          </Button>
+        )}
         {isErrorActive && (
           <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
             {errorMsg}

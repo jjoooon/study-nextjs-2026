@@ -22,6 +22,7 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
 
 type DummyDataType = {
   id: number;
@@ -74,6 +75,8 @@ const DummyData2: DummyDataType2[] = [
 ];
 
 const Ltpz025 = () => {
+  const [isResidentMasked, setIsResidentMasked] = React.useState(true);
+  const [isPhoneMasked, setIsPhoneMasked] = React.useState(true);
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
     () => [
@@ -87,16 +90,44 @@ const Ltpz025 = () => {
         headerName: '생년월일',
         flex: 1,
         field: 'field02',
-        cellClass: 'text-center px-0!',
+        cellClass:
+          'text-center px-0! [&_.ag-cell-value]:flex! [&_.ag-cell-value]:justify-center! [&_.ag-cell-value]:items-center!',
+        autoHeight: true,
+        cellRenderer: () => (
+          <Input
+            className="[&_input]:bg-transparent! [&_input]:border-0!"
+            aria-label=""
+            width={130}
+            readOnly
+            masking
+            isMasked={isResidentMasked}
+            value={isResidentMasked ? '900101-1******' : '900101-1234567'}
+            onMaskToggle={setIsResidentMasked}
+          />
+        ),
       },
       {
         headerName: '휴대폰번호',
         flex: 1,
         field: 'field03',
-        cellClass: 'text-center px-0!',
+        cellClass:
+          'text-center px-0! [&_.ag-cell-value]:flex! [&_.ag-cell-value]:justify-center! [&_.ag-cell-value]:items-center!',
+        autoHeight: true,
+        cellRenderer: () => (
+          <Input
+            className="[&_input]:bg-transparent! [&_input]:border-0!"
+            aria-label=""
+            width={130}
+            readOnly
+            masking
+            isMasked={isPhoneMasked}
+            value={isPhoneMasked ? '010-****-5651' : '010-1234-5651'}
+            onMaskToggle={setIsPhoneMasked}
+          />
+        ),
       },
     ],
-    []
+    [isResidentMasked, isPhoneMasked]
   );
 
   const columnDefs2 = React.useMemo<ColDef<DummyDataType2>[]>(

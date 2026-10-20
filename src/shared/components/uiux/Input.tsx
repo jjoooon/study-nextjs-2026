@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Loader2 as SpinnerIcon } from 'lucide-react';
 import { useState } from 'react';
 import * as React from 'react';
 
@@ -192,7 +192,6 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
     isFocused,
     onErrorChange,
     className,
-    e2eType = 0,
     charFilter,
     maxLength,
     minLength,
@@ -519,14 +518,18 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
       onBlur={handleBlur}
       style={mergedInputStyle}
       placeholder={resolvedPlaceholder}
-      e2e_type={e2eType}
       {...inputProps}
     />
   );
 
   return (
     <div
-      className={cn('relative cp-input min-w-0 box-border', className)}
+      className={cn(
+        'relative cp-input min-w-0 box-border',
+        variant === 'info' && 'inline-flex items-center',
+        showMaskToggle && 'masking',
+        className
+      )}
       data-comma-amount={commaAmount ? 'true' : undefined}
       style={variant !== 'info' ? widthStyle : undefined}
     >
@@ -571,7 +574,6 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                     onBlur={handleBlur}
                     style={mergedInputStyle}
                     placeholder={resolvedPlaceholder}
-                    e2e_type={e2eType}
                     {...inputProps}
                   />
                 </TooltipTrigger>
@@ -610,7 +612,6 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                 onBlur={handleBlur}
                 style={mergedInputStyle}
                 placeholder={resolvedPlaceholder}
-                e2e_type={e2eType}
                 {...inputProps}
               />
             )}
@@ -643,14 +644,19 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                 only="icon"
                 size="xs"
                 disabled={disabled || isMaskLoading}
-                className="absolute! right-0 top-1/2 -translate-y-1/2 text-[var(--color-gray-60)] hover:text-[var(--color-gray-90)] cursor-pointer"
+                className={cn(
+                  'text-[var(--color-gray-60)] hover:text-[var(--color-gray-90)] cursor-pointer',
+                  variant === 'info' && readOnly
+                    ? 'relative! ml-1! inline-flex items-center self-center'
+                    : 'absolute! right-0 top-1/2 -translate-y-1/2'
+                )}
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={handleToggleMask}
                 aria-label={currentMasked ? '마스킹 해제 (정보 조회)' : '마스킹 적용 (정보 숨김)'}
                 title={currentMasked ? '마스킹 해제' : '마스킹 적용'}
               >
                 {isMaskLoading ? (
-                  <Loader2 size={size === 'lg' ? 20 : 18} className="animate-spin stroke-[1.8]" />
+                  <SpinnerIcon size={size === 'lg' ? 20 : 18} className="animate-spin stroke-[1.8]" />
                 ) : currentMasked ? (
                   <MaskingOn size={size === 'lg' ? 20 : 18} />
                 ) : (
@@ -733,14 +739,19 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
               only="icon"
               size="xs"
               disabled={disabled || isMaskLoading}
-              className="absolute! right-[0.3rem] top-1/2 -translate-y-1/2 h-[calc(100%-0.5rem)] text-[var(--color-gray-60)] hover:text-[var(--color-gray-90)] cursor-pointer"
+              className={cn(
+                'text-[var(--color-gray-60)] hover:text-[var(--color-gray-90)] cursor-pointer',
+                variant === 'info' && readOnly
+                  ? 'relative! ml-1! inline-flex items-center self-center'
+                  : 'absolute! right-[0.3rem] top-1/2 -translate-y-1/2'
+              )}
               onMouseDown={(e) => e.preventDefault()}
               onClick={handleToggleMask}
               aria-label={currentMasked ? '마스킹 해제 (정보 조회)' : '마스킹 적용 (정보 숨김)'}
               title={currentMasked ? '마스킹 해제' : '마스킹 적용'}
             >
               {isMaskLoading ? (
-                <Loader2 size={size === 'lg' ? 16 : 14} className="animate-spin stroke-[1.8]" />
+                <SpinnerIcon size={size === 'lg' ? 16 : 14} className="animate-spin stroke-[1.8]" />
               ) : currentMasked ? (
                 <MaskingOn size={size === 'lg' ? 20 : 18} />
               ) : (

@@ -390,6 +390,10 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
     setRowData((prev) => prev.map((row) => (row.id === data.id ? { ...row, isCheck: isSelected } : row)));
   }, []);
 
+  // 피보험자 / 계약자 주민번호 마스킹 상태
+  const [isInsuredMasked, setIsInsuredMasked] = React.useState(true);
+  const [isContractorMasked, setIsContractorMasked] = React.useState(true);
+
   // ==========================================
   // [4] 다이얼로그 및 마크업 렌더링 (UI)
   // ==========================================
@@ -535,7 +539,15 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
                         <Grow placement={'bwc'}>
                           <Grow>
                             <Input aria-label="" width={70} value={'김한화화'} readOnly />
-                            <Input aria-label="" width={114} value={'000000-0******'} readOnly />
+                            <Input
+                              aria-label="피보험자 주민등록번호"
+                              width={130}
+                              readOnly
+                              masking
+                              isMasked={isInsuredMasked}
+                              value={isInsuredMasked ? '900101-1******' : '900101-1234567'}
+                              onMaskToggle={setIsInsuredMasked}
+                            />
                           </Grow>
                         </Grow>
                       </FormCell>
@@ -559,7 +571,15 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
                     <FormRow>
                       <FormCell title={'계약자'}>
                         <Input aria-label="" width={70} value={'김한화'} readOnly />
-                        <Input aria-label="" width={114} value={'910101-1******'} readOnly />
+                        <Input
+                          aria-label="계약자 주민등록번호"
+                          width={130}
+                          readOnly
+                          masking
+                          isMasked={isContractorMasked}
+                          value={isContractorMasked ? '900101-1******' : '900101-1234567'}
+                          onMaskToggle={setIsContractorMasked}
+                        />
                       </FormCell>
                       <FormCell title={'주피와관계'} colSpan={3}>
                         주피보험자(김한화)는 계약자(김한화)의

@@ -34,6 +34,19 @@ const Ltpz045 = () => {
   });
   // CDD 기타 값 상태
   const [cddEtcValue] = React.useState('');
+
+  // 마스킹 상태 (계약자, 고객, 연락처, 주소, 법인대표, 실소유자, 법정대리인)
+  const [isContractorResidentMasked, setIsContractorResidentMasked] = React.useState(true);
+  const [isResidentMasked, setIsResidentMasked] = React.useState(true);
+  const [isMobileMasked, setIsMobileMasked] = React.useState(true);
+  const [isPhoneMasked, setIsPhoneMasked] = React.useState(true);
+  const [isEmailMasked, setIsEmailMasked] = React.useState(true);
+  const [isWorkAddressMasked, setIsWorkAddressMasked] = React.useState(true);
+  const [isCorpPhoneMasked, setIsCorpPhoneMasked] = React.useState(true);
+  const [isCorpAddressMasked, setIsCorpAddressMasked] = React.useState(true);
+  const [isCeoBirthDateMasked, setIsCeoBirthDateMasked] = React.useState(true);
+  const [isRealOwnerBirthDateMasked, setIsRealOwnerBirthDateMasked] = React.useState(true);
+  const [isParentResidentMasked, setIsParentResidentMasked] = React.useState(true);
   return (
     // 2026-05-27
     <Dialog open>
@@ -61,7 +74,16 @@ const Ltpz045 = () => {
                   </FormCell>
                   <FormCell title={'계약자'}>
                     <Input width={84} value={'김한화'} readOnly variant="info" />
-                    <Input width={114} value={'000000-0******'} readOnly variant="info" />
+                    <Input
+                      aria-label="계약자 주민등록번호"
+                      className="w-auto"
+                      readOnly
+                      variant="info"
+                      masking
+                      isMasked={isContractorResidentMasked}
+                      value={isContractorResidentMasked ? '900315-1******' : '900315-1234567'}
+                      onMaskToggle={setIsContractorResidentMasked}
+                    />
                   </FormCell>
                 </FormRow>
               </FormTable>
@@ -76,21 +98,60 @@ const Ltpz045 = () => {
                     <FormCell title={'영문명'}>Kim Hanhwa</FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'주민번호(여권번호)'}>000000-0******</FormCell>
+                    <FormCell title={'주민번호(여권번호)'}>
+                      <Input
+                        aria-label="주민번호(여권번호)"
+                        className="w-auto"
+                        readOnly
+                        variant="info"
+                        masking
+                        isMasked={isResidentMasked}
+                        value={isResidentMasked ? '900315-1******' : '900315-1234567'}
+                        onMaskToggle={setIsResidentMasked}
+                      />
+                    </FormCell>
                     <FormCell title={'국적'}>대한민국</FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'직장주소'} colSpan={3}>
-                      주소 값 전체 노출 영역
+                    <FormCell title={'휴대폰'}>
+                      <Input
+                        aria-label="휴대폰"
+                        className="w-auto"
+                        readOnly
+                        variant="info"
+                        masking
+                        isMasked={isMobileMasked}
+                        value={isMobileMasked ? '010-****-5678' : '010-1234-5678'}
+                        onMaskToggle={setIsMobileMasked}
+                      />
+                    </FormCell>
+                    <FormCell title={'전화번호'}>
+                      <Input
+                        aria-label="전화번호"
+                        className="w-auto"
+                        readOnly
+                        variant="info"
+                        masking
+                        isMasked={isPhoneMasked}
+                        value={isPhoneMasked ? '02-***-4567' : '02-123-4567'}
+                        onMaskToggle={setIsPhoneMasked}
+                      />
                     </FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'휴대폰'}>010-0000-0000</FormCell>
-                    <FormCell title={'전화번호'}>02-123-4567</FormCell>
-                  </FormRow>
-                  <FormRow>
                     <FormCell title={'직업'}>TEXT</FormCell>
-                    <FormCell title={'이메일'}>example@example.com</FormCell>
+                    <FormCell title={'이메일'}>
+                      <Input
+                        aria-label="이메일"
+                        className="w-auto"
+                        readOnly
+                        variant="info"
+                        masking
+                        isMasked={isEmailMasked}
+                        value={isEmailMasked ? 'exa****************' : 'example@example.com'}
+                        onMaskToggle={setIsEmailMasked}
+                      />
+                    </FormCell>
                   </FormRow>
                   <FormRow>
                     <FormCell title={'직장명'}>TEXT</FormCell>
@@ -98,7 +159,20 @@ const Ltpz045 = () => {
                   </FormRow>
                   <FormRow>
                     <FormCell title={'직장주소'} colSpan={3}>
-                      주소 값 전체 노출 영역
+                      <Input
+                        aria-label="직장주소"
+                        className="w-auto"
+                        readOnly
+                        variant="info"
+                        masking
+                        isMasked={isWorkAddressMasked}
+                        value={
+                          isWorkAddressMasked
+                            ? '서울특별시 강남구 테헤란로 *******'
+                            : '서울특별시 강남구 테헤란로 123 (역삼동, 한화빌딩)'
+                        }
+                        onMaskToggle={setIsWorkAddressMasked}
+                      />
                     </FormCell>
                   </FormRow>
                 </FormTable>
@@ -124,12 +198,36 @@ const Ltpz045 = () => {
                     <FormCell title={'설립일'}>2025-01-01</FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'대표전화번호'}>010-0000-0000</FormCell>
+                    <FormCell title={'대표전화번호'}>
+                      <Input
+                        aria-label="대표전화번호"
+                        className="w-auto"
+                        readOnly
+                        variant="info"
+                        masking
+                        isMasked={isCorpPhoneMasked}
+                        value={isCorpPhoneMasked ? '010-****-5678' : '010-1234-5678'}
+                        onMaskToggle={setIsCorpPhoneMasked}
+                      />
+                    </FormCell>
                     <FormCell title={'설립목적'}>02-123-4567</FormCell>
                   </FormRow>
                   <FormRow>
                     <FormCell title={'주소'} colSpan={3}>
-                      주소 값 전체 노출 영역
+                      <Input
+                        aria-label="주소"
+                        className="w-auto"
+                        readOnly
+                        variant="info"
+                        masking
+                        isMasked={isCorpAddressMasked}
+                        value={
+                          isCorpAddressMasked
+                            ? '서울특별시 강남구 테헤란로 *******'
+                            : '서울특별시 강남구 테헤란로 123 (역삼동, 한화빌딩)'
+                        }
+                        onMaskToggle={setIsCorpAddressMasked}
+                      />
                     </FormCell>
                   </FormRow>
                   <FormRow>
@@ -137,7 +235,18 @@ const Ltpz045 = () => {
                     <FormCell title={'국적'}>TEXT</FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'생년월일'}>1990-01-01</FormCell>
+                    <FormCell title={'생년월일'}>
+                      <Input
+                        aria-label="생년월일"
+                        className="w-auto"
+                        readOnly
+                        variant="info"
+                        masking
+                        isMasked={isCeoBirthDateMasked}
+                        value={isCeoBirthDateMasked ? '****-**-**' : '1990-01-01'}
+                        onMaskToggle={setIsCeoBirthDateMasked}
+                      />
+                    </FormCell>
                     <FormCell title={'표준산업분류'}>TEXT</FormCell>
                   </FormRow>
                 </FormTable>
@@ -195,7 +304,18 @@ const Ltpz045 = () => {
                     <FormCell title={'영문명'}>KIM HANHWA</FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'생년월일'}>1990-01-01</FormCell>
+                    <FormCell title={'생년월일'}>
+                      <Input
+                        aria-label="생년월일"
+                        className="w-auto"
+                        readOnly
+                        variant="info"
+                        masking
+                        isMasked={isRealOwnerBirthDateMasked}
+                        value={isRealOwnerBirthDateMasked ? '****-**-**' : '1990-01-01'}
+                        onMaskToggle={setIsRealOwnerBirthDateMasked}
+                      />
+                    </FormCell>
                     <FormCell title={'국적'}>대한민국</FormCell>
                   </FormRow>
                 </FormTable>
@@ -273,7 +393,15 @@ const Ltpz045 = () => {
                           <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                             <SearchIcon color={'var(--color-primary-50)'} />
                           </Button>
-                          <Input aria-label="주민번호" width={114} value={'000000-0******'} readOnly />
+                          <Input
+                            aria-label="법정대리인 주민번호"
+                            width={130}
+                            readOnly
+                            masking
+                            isMasked={isParentResidentMasked}
+                            value={isParentResidentMasked ? '900315-1******' : '900315-1234567'}
+                            onMaskToggle={setIsParentResidentMasked}
+                          />
                           김한화 와의 관계
                           <NativeSelect
                             aria-label="선택"

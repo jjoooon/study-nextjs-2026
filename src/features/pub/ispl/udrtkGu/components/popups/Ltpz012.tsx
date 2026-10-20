@@ -215,6 +215,8 @@ const Ltpz012 = () => {
     );
   };
 
+  const [isMasked, setIsMasked] = React.useState(true);
+
   /** 화면 해상도에 따른 동적 컬럼 너비 계산 훅 */
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
@@ -410,7 +412,16 @@ const Ltpz012 = () => {
                   className="whitespace-nowrap"
                 >
                   <Input aria-label="피보험자명" width={80} value={'홍길순'} readOnly variant="info" />
-                  <Input aria-label="생년월일" width={120} value={'000000-0******'} readOnly variant="info" />
+                  <Input
+                    className="w-[11.1rem]"
+                    aria-label="생년월일"
+                    readOnly
+                    variant="info"
+                    masking
+                    isMasked={isMasked}
+                    value={isMasked ? '900101-1******' : '900101-1234567'}
+                    onMaskToggle={setIsMasked}
+                  />
                 </FormCell>
               </FormRow>
             </FormTable>
