@@ -400,9 +400,9 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
   const shouldShowError = error && !isErrorDismissed;
 
   const baseStyle = cn(
-    'w-full rounded-[0.4rem] px-[0.4rem] text-[1.3rem] border border-[0.1rem] box-border tracking-[-0.03rem] appearance-none truncate pb-[0.1rem]',
+    'w-full rounded-[0.4rem] px-[0.4rem] text-[1.3rem] border border-[0.1rem] box-border tracking-[-0.03rem] appearance-none truncate pb-[0.1rem] focus:px-[0.3rem]',
     isInvalid || shouldShowError
-      ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] border-[0.2rem] hover:px-[0.7rem] px-[0.7rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]'
+      ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] border-[0.2rem] hover:px-[0.3rem] px-[0.3rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]'
       : required
         ? 'text-[var(--color-text-basic)] bg-[var(--color-input-surface-highlight)] border-[var(--color-input-border-highlight)]'
         : 'text-[var(--color-text-basic)] border-[var(--color-input-border)] bg-white'
@@ -436,7 +436,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
   const infoStyle = cn(
     'rounded-[0.4rem] px-2 text-[1.3rem] border border-[0.1rem] box-border tracking-[-0.03rem] appearance-none truncate',
     isInvalid || shouldShowError
-      ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] border-[0.2rem] hover:px-[0.7rem] px-[0.7rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]'
+      ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] border-[0.2rem] hover:px-[0.3rem] px-[0.3rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]'
       : required
         ? 'text-[var(--color-text-basic)] bg-[var(--color-input-surface-highlight)] border-[var(--color-input-border-highlight)]'
         : 'text-[var(--color-text-basic)] border-[var(--color-input-border)] bg-white'
@@ -496,14 +496,14 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
             : align === 'center'
               ? 'text-center'
               : 'text-left',
-        'w-full min-w-0 box-border [:focus]:pl-[0.7rem] [&::-ms-reveal]:hidden [&::-ms-clear]:hidden',
+        'w-full min-w-0 box-border [:focus]:pl-[0.3rem] [&::-ms-reveal]:hidden [&::-ms-clear]:hidden',
         showClearButton && showMaskToggle
           ? 'pr-[4.4rem] [:focus]:pr-[4.4rem]'
           : showClearButton
             ? 'pr-[2rem] [:focus]:pr-[2rem]'
             : showMaskToggle
               ? 'pr-[2.4rem] [:focus]:pr-[2.4rem]'
-              : '[:focus]:pr-[0.7rem]'
+              : '[:focus]:pr-[0.3rem]'
       )}
       required={required}
       readOnly={readOnly}
@@ -537,7 +537,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
         <div
           className={cn(
             variantStyles[variant],
-            'flex items-center has-[:hover]:border-primary-500 has-[:focus]:outline-[.2rem] has-[:focus]:-outline-offset-[0.2rem] has-[:focus]:px-[0.7rem] gap-[0.2rem]'
+            'flex items-center has-[:hover]:border-primary-500 has-[:focus]:outline-[.2rem] has-[:focus]:-outline-offset-[0.2rem] has-[:focus]:px-[0.3rem] gap-[0.2rem]'
           )}
         >
           {before && <div>{before}</div>}

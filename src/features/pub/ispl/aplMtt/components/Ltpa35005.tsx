@@ -232,7 +232,7 @@ export const Ltpa35005 = () => {
   const [firstPay, setFirstPay] = React.useState<string>('선택');
   const [morePay, setMorePay] = React.useState<string>('선택');
   const [morePayCustomerType, setMorePayCustomerType] = React.useState<string>('개인');
-  const isSimilarContractCheckRequired = true; //4-1 특정조건인 경우 문구 노출
+  // const isSimilarContractCheckRequired = true; //4-1 특정조건인 경우 문구 노출
 
   const is노후실손자동재가입동의 = true;
   const is해지방지휴대폰결제 = true;
@@ -245,7 +245,7 @@ export const Ltpa35005 = () => {
             <LayoutScrollWrap>
               <LayoutScrollItem>
                 <Gcol placement={'ss'} className="w-full overflow-x-hidden" gap={3}>
-                  <FormTable cols={['w-[15.6rem]', 'w-[25rem]', 'w-[13.8rem]', 'w-[auto]']}>
+                  <FormTable cols={['w-[17rem]', 'w-[23.8rem]', 'w-[15.8rem]', 'w-[auto]']}>
                     <FormRow>
                       <FormCell title={'만기수익자'} colSpan={3}>
                         <NativeSelect aria-label="주피와 관계 선택" width={100}>
@@ -258,7 +258,13 @@ export const Ltpa35005 = () => {
                             </NativeSelectOption>
                           ))}
                         </NativeSelect>
-                        <Input aria-label="만기수익자 주민등록번호" width={126} readOnly masking />
+                        <Input
+                          aria-label="만기수익자 주민등록번호"
+                          width={128}
+                          value={'000000-0000000'}
+                          readOnly
+                          masking
+                        />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
@@ -435,7 +441,8 @@ export const Ltpa35005 = () => {
                       <FormCell
                         title={
                           <>
-                            수익자 지정·변경 추가약정
+                            수익자 지정·변경
+                            <br /> 추가약정
                             <TooltipQ
                               onClick={() => {
                                 alert('수익자 지정·변경 추가약정 이동');
@@ -593,7 +600,22 @@ export const Ltpa35005 = () => {
                     )}
 
                     <FormRow>
-                      <FormCell title={'당월해지 자동이체 신청'} colSpan={is해지방지휴대폰결제 ? 1 : 3}>
+                      <FormCell
+                        title={
+                          <>
+                            당월해지 자동이체 신청
+                            <TooltipQ
+                              onClick={() => {
+                                alert('당월해지 자동이체 신청 이동');
+                              }}
+                            >
+                              <b>당월해지 자동이체 신청이란?</b>
+                              <br /> 설명 알림톡전송
+                            </TooltipQ>
+                          </>
+                        }
+                        colSpan={is해지방지휴대폰결제 ? 1 : 3}
+                      >
                         {/* <FormCell title={'당월해지 자동이체 신청'}> */}
                         <Grow placement="sc" gap={2}>
                           <RadioGroup defaultValue="동의함" required>
@@ -606,13 +628,24 @@ export const Ltpa35005 = () => {
                               </RadioGroupItem>
                             ))}
                           </RadioGroup>
-                          <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                            알림톡발송
-                          </Button>
                         </Grow>
                       </FormCell>
                       {is해지방지휴대폰결제 && (
-                        <FormCell title={'해지 방지 휴대폰 결제'}>
+                        <FormCell
+                          title={
+                            <>
+                              해지 방지 휴대폰 결제
+                              <TooltipQ
+                                onClick={() => {
+                                  alert('해지 방지 휴대폰 결제 이동');
+                                }}
+                              >
+                                <b>해지 방지 휴대폰 결제이란?</b>
+                                <br /> 설명 알림톡전송
+                              </TooltipQ>
+                            </>
+                          }
+                        >
                           <Grow placement="bwc">
                             <Grow placement="sc" gap={2}>
                               <RadioGroup defaultValue="동의함" required>
@@ -635,11 +668,6 @@ export const Ltpa35005 = () => {
                                   </NativeSelectOption>
                                 ))}
                               </NativeSelect>
-                            </Grow>
-                            <Grow>
-                              <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                                알림톡발송
-                              </Button>
                             </Grow>
                           </Grow>
                         </FormCell>
@@ -1154,14 +1182,14 @@ export const Ltpa35005 = () => {
                       );
                     }}
                   >
-                    <FormTable lineTop={false} cols={['w-[9rem]', 'w-[40%]', 'w-[9.6rem]', 'w-[auto]']}>
+                    <FormTable lineTop={false} cols={['w-[9.2rem]', 'w-[40%]', 'w-[9.6rem]', 'w-[auto]']}>
                       {/* 기본 케이스 */}
                       <FormRow>
                         <FormCell title={'사망수익자'}>
                           <Input aria-label="법정상속인" width={76} value={'법정상속인'} readOnly />
                           <Input
                             aria-label="법정상속인 주민등록번호"
-                            width={126}
+                            width={128}
                             value={'000000-0000000'}
                             readOnly
                             masking
@@ -1196,7 +1224,7 @@ export const Ltpa35005 = () => {
                           <Input aria-label="사망외수익자명" width={76} value={'김한화'} readOnly />
                           <Input
                             aria-label="사망외수익자 주민등록번호"
-                            width={126}
+                            width={128}
                             value={'000000-0000000'}
                             readOnly
                             masking
@@ -1221,142 +1249,22 @@ export const Ltpa35005 = () => {
                         </FormCell>
                       </FormRow>
 
-                      {/* 기본 케이스 & 피보험자 미성년 */}
                       <FormRow>
-                        <FormCell title="지정대리인" colSpan={3}>
-                          <Input aria-label="지정대리인" width={76} value={''} readOnly />
-                          <Input aria-label="지정대리인" width={114} value={''} readOnly />
-                          <Button
-                            aria-label="지정대리인 검색"
-                            variant={'outlined'}
-                            only="icon"
-                            size={'lg'}
-                            color={'gray-light'}
-                            disabled
-                          >
-                            <SearchIcon color={'var(--color-primary-50)'} />
-                          </Button>
-                          <NativeSelect aria-label="지정대리인 선택" width={100}>
-                            {[{ value: '선택', label: '선택' }].map((option) => (
-                              <NativeSelectOption key={option.value} value={option.value}>
-                                {option.label}
-                              </NativeSelectOption>
-                            ))}
-                          </NativeSelect>
-                          <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                            알림톡발송
-                          </Button>
-                        </FormCell>
-                      </FormRow>
-
-                      {/* 피보험자 미성년 */}
-                      <FormRow>
-                        <FormCell title="법정대리인1" colSpan={3} tdClassName="justify-between">
-                          <Grow>
-                            <Input aria-label="법정대리인1" width={76} value={''} />
-                            <Input aria-label="법정대리인1" width={114} value={''} />
-                            <Button
-                              aria-label="법정대리인1 검색"
-                              variant={'outlined'}
-                              only="icon"
-                              size={'lg'}
-                              color={'gray-light'}
-                            >
-                              <SearchIcon color={'var(--color-primary-50)'} />
-                            </Button>
-                            <NativeSelect aria-label="법정대리인1 선택" width={100}>
-                              {[{ value: '선택', label: '선택' }].map((option) => (
-                                <NativeSelectOption key={option.value} value={option.value}>
-                                  {option.label}
-                                </NativeSelectOption>
-                              ))}
-                            </NativeSelect>
-                          </Grow>
-                          <Grow placement="ec">
-                            <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                              법정대리인등록
-                            </Button>
-                            <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                              수정
-                            </Button>
-                            <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                              재조회
-                            </Button>
-                          </Grow>
-                        </FormCell>
-                      </FormRow>
-                      <FormRow>
-                        <FormCell title="법정대리인2">
-                          <Input aria-label="법정대리인1" width={76} value={''} />
-                          <Input aria-label="법정대리인1" width={114} value={''} />
-                          <Button
-                            aria-label="법정대리인1 검색"
-                            variant={'outlined'}
-                            only="icon"
-                            size={'lg'}
-                            color={'gray-light'}
-                          >
-                            <SearchIcon color={'var(--color-primary-50)'} />
-                          </Button>
-                        </FormCell>
-                        <FormCell title="1인 사유">
-                          <Input value={''} />
-                        </FormCell>
-                      </FormRow>
-                      {/* 피보험자 미성년 */}
-
-                      {/* 지정대리인 케이스 */}
-                      <FormRow>
-                        <FormCell title="지정대리인1" colSpan={3}>
-                          <Input aria-label="지정대리인1" width={76} value={''} readOnly />
-                          <Input aria-label="지정대리인1" width={114} value={''} readOnly />
-                          <Button
-                            aria-label="지정대리인1 검색"
-                            variant={'outlined'}
-                            only="icon"
-                            size={'lg'}
-                            color={'gray-light'}
-                            disabled
-                          >
-                            <SearchIcon color={'var(--color-primary-50)'} />
-                          </Button>
-                          <NativeSelect aria-label="지정대리인1 선택" width={100}>
-                            {[{ value: '선택', label: '선택' }].map((option) => (
-                              <NativeSelectOption key={option.value} value={option.value}>
-                                {option.label}
-                              </NativeSelectOption>
-                            ))}
-                          </NativeSelect>
-                          <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                            알림톡발송
-                          </Button>
-                        </FormCell>
-                      </FormRow>
-                      <FormRow>
-                        <FormCell title="지정대리인2" colSpan={3}>
-                          <Input aria-label="지정대리인2" width={76} value={''} readOnly />
-                          <Input aria-label="지정대리인2" width={114} value={'000000-0000000'} readOnly />
-                          <Button
-                            aria-label="지정대리인2 검색"
-                            variant={'outlined'}
-                            only="icon"
-                            size={'lg'}
-                            color={'gray-light'}
-                            disabled
-                          >
-                            <SearchIcon color={'var(--color-primary-50)'} />
-                          </Button>
-                          <NativeSelect aria-label="지정대리인2 선택" width={100}>
-                            {[{ value: '선택', label: '선택' }].map((option) => (
-                              <NativeSelectOption key={option.value} value={option.value}>
-                                {option.label}
-                              </NativeSelectOption>
-                            ))}
-                          </NativeSelect>
-                        </FormCell>
-                      </FormRow>
-                      <FormRow>
-                        <FormCell title="무기명지정">
+                        <FormCell
+                          title={
+                            <>
+                              무기명지정
+                              <TooltipQ
+                                onClick={() => {
+                                  alert('무기명지정 이동');
+                                }}
+                              >
+                                <b>무기명지정이란?</b>
+                                <br /> 설명 알림톡전송
+                              </TooltipQ>
+                            </>
+                          }
+                        >
                           <Checkbox variant="noneText"></Checkbox>
                           <NativeSelect aria-label="무기명지정" width={'auto'} readOnly>
                             {[
@@ -1391,6 +1299,182 @@ export const Ltpa35005 = () => {
                           </NativeSelect>
                         </FormCell>
                       </FormRow>
+
+                      {/* 기본 케이스 & 피보험자 미성년 */}
+                      <FormRow>
+                        <FormCell title="지정대리인" colSpan={3}>
+                          <Input aria-label="지정대리인" width={76} value={''} readOnly />
+                          <Input
+                            aria-label="지정대리인 주민등록번호"
+                            width={128}
+                            value={'000000-0000000'}
+                            readOnly
+                            masking
+                          />
+                          <Button
+                            aria-label="지정대리인 검색"
+                            variant={'outlined'}
+                            only="icon"
+                            size={'lg'}
+                            color={'gray-light'}
+                            disabled
+                          >
+                            <SearchIcon color={'var(--color-primary-50)'} />
+                          </Button>
+                          <NativeSelect aria-label="지정대리인 선택" width={100}>
+                            {[{ value: '선택', label: '선택' }].map((option) => (
+                              <NativeSelectOption key={option.value} value={option.value}>
+                                {option.label}
+                              </NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                          <TooltipQ
+                            onClick={() => {
+                              alert('지정대리인 이동');
+                            }}
+                          >
+                            <b>지정대리인이란?</b>
+                            <br /> 설명 알림톡전송
+                          </TooltipQ>
+                        </FormCell>
+                      </FormRow>
+
+                      {/* 피보험자 미성년 */}
+                      <FormRow>
+                        <FormCell title="법정대리인1" colSpan={3} tdClassName="justify-between">
+                          <Grow>
+                            <Input aria-label="법정대리인1" width={76} value={''} />
+                            <Input
+                              aria-label="법정대리인1 주민등록번호"
+                              width={128}
+                              value={'000000-0000000'}
+                              readOnly
+                              masking
+                            />
+                            <Button
+                              aria-label="법정대리인1 검색"
+                              variant={'outlined'}
+                              only="icon"
+                              size={'lg'}
+                              color={'gray-light'}
+                            >
+                              <SearchIcon color={'var(--color-primary-50)'} />
+                            </Button>
+                            <NativeSelect aria-label="법정대리인1 선택" width={100}>
+                              {[{ value: '선택', label: '선택' }].map((option) => (
+                                <NativeSelectOption key={option.value} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
+                              ))}
+                            </NativeSelect>
+                          </Grow>
+                          <Grow placement="ec">
+                            <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+                              법정대리인등록
+                            </Button>
+                            <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+                              수정
+                            </Button>
+                            <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+                              재조회
+                            </Button>
+                          </Grow>
+                        </FormCell>
+                      </FormRow>
+                      <FormRow>
+                        <FormCell title="법정대리인2">
+                          <Input aria-label="법정대리인2" width={76} value={''} />
+                          <Input
+                            aria-label="법정대리인2 주민등록번호"
+                            width={128}
+                            value={'000000-0000000'}
+                            readOnly
+                            masking
+                          />
+                          <Button
+                            aria-label="법정대리인1 검색"
+                            variant={'outlined'}
+                            only="icon"
+                            size={'lg'}
+                            color={'gray-light'}
+                          >
+                            <SearchIcon color={'var(--color-primary-50)'} />
+                          </Button>
+                        </FormCell>
+                        <FormCell title="1인 사유">
+                          <Input value={''} />
+                        </FormCell>
+                      </FormRow>
+                      {/* 피보험자 미성년 */}
+
+                      {/* 지정대리인 케이스 */}
+                      <FormRow>
+                        <FormCell title="지정대리인1" colSpan={3}>
+                          <Input aria-label="지정대리인1" width={76} value={''} readOnly />
+                          <Input
+                            aria-label="지정대리인1 주민등록번호"
+                            width={128}
+                            value={'000000-0000000'}
+                            readOnly
+                            masking
+                          />
+                          <Button
+                            aria-label="지정대리인1 검색"
+                            variant={'outlined'}
+                            only="icon"
+                            size={'lg'}
+                            color={'gray-light'}
+                            disabled
+                          >
+                            <SearchIcon color={'var(--color-primary-50)'} />
+                          </Button>
+                          <NativeSelect aria-label="지정대리인1 선택" width={100}>
+                            {[{ value: '선택', label: '선택' }].map((option) => (
+                              <NativeSelectOption key={option.value} value={option.value}>
+                                {option.label}
+                              </NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                          <TooltipQ
+                            onClick={() => {
+                              alert('지정대리인 이동');
+                            }}
+                          >
+                            <b>지정대리인이란?</b>
+                            <br /> 설명 알림톡전송
+                          </TooltipQ>
+                        </FormCell>
+                      </FormRow>
+                      <FormRow>
+                        <FormCell title="지정대리인2" colSpan={3}>
+                          <Input aria-label="지정대리인2" width={76} value={''} readOnly />
+                          <Input
+                            aria-label="지정대리인2 주민등록번호"
+                            width={128}
+                            value={'000000-0000000'}
+                            readOnly
+                            masking
+                          />
+                          <Button
+                            aria-label="지정대리인2 검색"
+                            variant={'outlined'}
+                            only="icon"
+                            size={'lg'}
+                            color={'gray-light'}
+                            disabled
+                          >
+                            <SearchIcon color={'var(--color-primary-50)'} />
+                          </Button>
+                          <NativeSelect aria-label="지정대리인2 선택" width={100}>
+                            {[{ value: '선택', label: '선택' }].map((option) => (
+                              <NativeSelectOption key={option.value} value={option.value}>
+                                {option.label}
+                              </NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                        </FormCell>
+                      </FormRow>
+
                       {/* 지정대리인 케이스 */}
                     </FormTable>
                   </TabPager>

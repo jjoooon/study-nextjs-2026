@@ -584,19 +584,19 @@ export const Ltpa35001 = ({
                         <FormRow>
                           <FormCell
                             title={
-                              <Grow placement="sc">
+                              <>
                                 고지유형
                                 <TooltipQ align="start" className="max-w-[36rem]">
                                   {tooltipContents2[0]}
                                 </TooltipQ>
-                              </Grow>
+                              </>
                             }
                             colSpan={3}
                           >
                             <RadioGroup
                               width={'full'}
                               defaultValue="1형(일반고지형)"
-                              className="grid grid-cols-[1fr_1fr_1fr] gap-y-2"
+                              className="grid grid-cols-[auto_auto_1fr] gap-x-4 gap-y-2"
                             >
                               {[
                                 {
@@ -845,7 +845,7 @@ export const Ltpa35001 = ({
                           );
                         }}
                       >
-                        <FormTable lineTop={false} cols={['w-[11rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
+                        <FormTable lineTop={false} cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
                           {(currentTab?.type === '일반' ||
                             currentTab?.type === '태아' ||
                             currentTab?.type === '재물피보험자') && (
@@ -992,9 +992,14 @@ export const Ltpa35001 = ({
                                         </KeyValueItem>
                                       )}
                                       <Grow gap={1}>
-                                        <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                                          알림톡발송
-                                        </Button>
+                                        <TooltipQ
+                                          onClick={() => {
+                                            alert('무기명지정 이동');
+                                          }}
+                                        >
+                                          <b>무기명지정이란?</b>
+                                          <br /> 설명 알림톡전송
+                                        </TooltipQ>
 
                                         {/* dev: 260903 - 고객등록 */}
                                         <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
@@ -1690,9 +1695,14 @@ export const Ltpa35001 = ({
                                 </NativeSelectOption>
                               ))}
                             </NativeSelect>
-                            <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
-                              알림톡발송
-                            </Button>
+                            <TooltipQ
+                              onClick={() => {
+                                alert('무기명지정 이동');
+                              }}
+                            >
+                              <b>무기명지정이란?</b>
+                              <br /> 설명 알림톡전송
+                            </TooltipQ>
                           </FormCell>
                           <FormCell title="설계금액/잔여한도">
                             <Input aria-label="설계금액" width={70} value={12033} commaAmount readOnly />
