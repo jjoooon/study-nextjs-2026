@@ -258,7 +258,7 @@ export const Ltpa35005 = () => {
                             </NativeSelectOption>
                           ))}
                         </NativeSelect>
-                        <Input aria-label="만기수익자 주민등록번호" width={114} value={'000000-0******'} readOnly />
+                        <Input aria-label="만기수익자 주민등록번호" width={132} readOnly masking />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
@@ -292,7 +292,13 @@ export const Ltpa35005 = () => {
                           ))}
                         </RadioGroup>
                         <Grow className="pl-2">
-                          부산 사하구 경기도 남양주시 도농동 서울특별시 종로구 평창동 (하단동)
+                          <Input
+                            aria-label="우편물수령처 주소"
+                            className="w-auto [&_span]:font-normal!"
+                            readOnly
+                            variant="info"
+                            masking
+                          />
                         </Grow>
                       </FormCell>
                     </FormRow>
@@ -1045,7 +1051,14 @@ export const Ltpa35005 = () => {
                           {firstPay === '선택' && <FormCell title=""></FormCell>}
                           {(firstPay === '즉시이체' || firstPay === '예약이체') && (
                             <FormCell title="계좌번호">
-                              <Input aria-label="계좌번호" width={200} value={''} placeholder="계좌번호" />
+                              <Input
+                                aria-label="계좌번호"
+                                width={130}
+                                placeholder="계좌번호"
+                                readOnly
+                                masking
+                                value={'123456789012'}
+                              />
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -1056,7 +1069,13 @@ export const Ltpa35005 = () => {
                           )}
                           {firstPay === '현금' && (
                             <FormCell title="가상계좌번호">
-                              <Input aria-label="가상계좌번호" width={200} value={''} placeholder="가상계좌번호" />
+                              <Input
+                                aria-label="가상계좌번호"
+                                width={200}
+                                placeholder="가상계좌번호"
+                                readOnly
+                                masking
+                              />
                               <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
                                 가상계좌
                               </Button>
@@ -1064,7 +1083,7 @@ export const Ltpa35005 = () => {
                           )}
                           {firstPay === '카드납입' && (
                             <FormCell title="카드번호">
-                              <Input aria-label="카드번호" width={170} value={''} />
+                              <Input aria-label="카드번호" width={170} placeholder="카드번호" readOnly masking />
                               <Input aria-label="카드기간" width={80} value={''} />
                               <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
                                 카드확인
@@ -1074,7 +1093,7 @@ export const Ltpa35005 = () => {
 
                           {morePay === '자동이체' && (
                             <FormCell title="계좌번호">
-                              <Input aria-label="계좌번호" width={200} value={''} placeholder="계좌번호" />
+                              <Input aria-label="계좌번호" width={200} placeholder="계좌번호" readOnly masking />
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -1085,7 +1104,7 @@ export const Ltpa35005 = () => {
                           )}
                           {morePay === '카드이체' && (
                             <FormCell title="카드번호">
-                              <Input aria-label="카드번호" width={170} value={''} />
+                              <Input aria-label="카드번호" width={170} placeholder="카드번호" readOnly masking />
                               <Input aria-label="카드기간" width={80} value={''} />
                               <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
                                 카드확인
