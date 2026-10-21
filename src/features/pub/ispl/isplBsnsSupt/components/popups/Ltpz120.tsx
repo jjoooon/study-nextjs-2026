@@ -212,6 +212,8 @@ const Ltpz120 = () => {
                 {/* NativeSelect 형태 */}
                 <NativeSelect width={'12rem'} value={meetDuration} onChange={(e) => setMeetDuration(e.target.value)}>
                   {[
+                    { value: '10분', label: '10분' },
+                    { value: '20분', label: '20분' },
                     { value: '30분', label: '30분' },
                     { value: '60분', label: '60분' },
                     { value: '90분', label: '90분' },
