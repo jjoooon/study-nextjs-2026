@@ -98,24 +98,10 @@ const Ltpz045 = () => {
                   </FormRow>
                   <FormRow>
                     <FormCell title={'휴대폰'}>
-                      <Input
-                        aria-label="휴대폰"
-                        width={120}
-                        readOnly
-                        variant="info"
-                        masking
-                        value={'010-1234-5678'}
-                      />
+                      <Input aria-label="휴대폰" width={120} readOnly variant="info" masking value={'010-1234-5678'} />
                     </FormCell>
                     <FormCell title={'전화번호'}>
-                      <Input
-                        aria-label="전화번호"
-                        width={120}
-                        readOnly
-                        variant="info"
-                        masking
-                        value={'02-123-4567'}
-                      />
+                      <Input aria-label="전화번호" width={120} readOnly variant="info" masking value={'02-123-4567'} />
                     </FormCell>
                   </FormRow>
                   <FormRow>
