@@ -66,7 +66,7 @@ const Ltpz120 = () => {
 
           {/* 대면 정보 입력 FormTable */}
           <Typo variant={'body-lg'} weight={'bold'}>
-            고객과 직접만난 일시, 장소, 설명방법을 기재하시기 바랍니다.
+            고객과 직접 통화한 사항에 대하여 기재하시기 바랍니다.
           </Typo>
           <FormTable lineTop cols={['w-[10rem]', 'w-[22rem]', 'w-[12rem]', 'w-auto']} variant="default">
             <FormRow>

@@ -94,7 +94,7 @@ const Ltpz121 = () => {
               </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                  취소
+                  닫기
                 </Button>
               </DialogClose>
             </Grow>

@@ -61,20 +61,21 @@ const Ltpz120 = () => {
         <DialogSection>
           {/* 상단 안내 문구 */}
           <Typo variant={'body-lg'} className="pb-2">
-            보험 모집자는 보험계약 체결 전 계약자 및 피보험자를 직접 만나 다음 사항을 고객님께 설명 하여야 합니다.
+            보험 모집자는 보험계약 체결 전 <strong>계약자 및 피보험자를 직접 만나</strong> 다음 사항을 고객님께 설명
+            하여야 합니다.
           </Typo>
 
           {/* 질문 1 ~ 5 */}
           <Gcol placement="ss" className="w-full" gap={2}>
             {/* 1번 질문 */}
             <Gcol placement="ss" className="w-full" gap={1}>
-              <Typo variant={'body-md'} weight={'bold'} className="flex items-center gap-[0.6rem]">
+              <Typo variant={'body-md'} className="flex items-center gap-[0.6rem]">
                 <Badge color="secondary" size="md" variant="contained" className="w-[1.8rem] h-[1.8rem]">
                   1
                 </Badge>
                 <span>
-                  전자서명 요청 전 계약자 및 피보험자를 직접 만나 계약자가 보험계약에 동의하는{' '}
-                  <span className="underline font-bold">본인임을 확인</span> 하셨습니까?
+                  전자서명 요청 전 <strong>계약자 및 피보험자를 직접 만나</strong> 계약자가 보험계약에 동의하는{' '}
+                  <strong className="underline ">본인임을 확인</strong> 하셨습니까?
                 </span>
               </Typo>
               <RadioGroup
@@ -96,12 +97,12 @@ const Ltpz120 = () => {
 
             {/* 2번 질문 */}
             <Gcol placement="ss" className="w-full" gap={1}>
-              <Typo variant={'body-md'} weight={'bold'} className="flex items-center gap-[0.6rem]">
+              <Typo variant={'body-md'} className="flex items-center gap-[0.6rem]">
                 <Badge color="secondary" size="md" variant="contained" className="w-[1.8rem] h-[1.8rem]">
                   2
                 </Badge>
                 <span>
-                  계약자 및 피보험자를 직접 만나 보험약관 및 보험계약의{' '}
+                  <strong>계약자 및 피보험자를 직접 만나</strong> 보험약관 및 보험계약의{' '}
                   <span className="underline font-bold">중요사항을 설명</span> 하셨습니까?
                 </span>
               </Typo>
@@ -124,12 +125,12 @@ const Ltpz120 = () => {
 
             {/* 3번 질문 */}
             <Gcol placement="ss" className="w-full" gap={1}>
-              <Typo variant={'body-md'} weight={'bold'} className="flex items-center gap-[0.6rem]">
+              <Typo variant={'body-md'} className="flex items-center gap-[0.6rem]">
                 <Badge color="secondary" size="md" variant="contained" className="w-[1.8rem] h-[1.8rem]">
                   3
                 </Badge>
                 <span>
-                  보험계약자 및 피보험자가 청약서에 <span className="underline font-bold">자필서명</span>을 하여야
+                  보험 계약자 및 피보험자가 청약서에 <span className="underline font-bold">자필서명</span>을 하여야
                   한다는 사실을 설명하셨습니까?
                 </span>
               </Typo>
@@ -152,7 +153,7 @@ const Ltpz120 = () => {
 
             {/* 4번 질문 */}
             <Gcol placement="ss" className="w-full" gap={1}>
-              <Typo variant={'body-md'} weight={'bold'} className="flex items-center gap-[0.6rem]">
+              <Typo variant={'body-md'} className="flex items-center gap-[0.6rem]">
                 <Badge color="secondary" size="md" variant="contained" className="w-[1.8rem] h-[1.8rem]">
                   4
                 </Badge>
@@ -179,7 +180,7 @@ const Ltpz120 = () => {
 
             {/* 5번 항목 */}
             <Gcol placement="ss" className="w-full" gap={1}>
-              <Typo variant={'body-md'} weight={'bold'} className="flex items-center gap-[0.6rem]">
+              <Typo variant={'body-md'} className="flex items-center gap-[0.6rem]">
                 <Badge color="secondary" size="md" variant="contained" className="w-[1.8rem] h-[1.8rem]">
                   5
                 </Badge>
@@ -212,8 +213,6 @@ const Ltpz120 = () => {
                 {/* NativeSelect 형태 */}
                 <NativeSelect width={'12rem'} value={meetDuration} onChange={(e) => setMeetDuration(e.target.value)}>
                   {[
-                    { value: '10분', label: '10분' },
-                    { value: '20분', label: '20분' },
                     { value: '30분', label: '30분' },
                     { value: '60분', label: '60분' },
                     { value: '90분', label: '90분' },
@@ -239,11 +238,7 @@ const Ltpz120 = () => {
             <FormRow>
               <FormCell title={'대면설명방법'} colSpan={3}>
                 <NativeSelect width={'24rem'} value={meetMethod} onChange={(e) => setMeetMethod(e.target.value)}>
-                  {[
-                    { value: '문서출력물 사용하여 대면설명', label: '문서출력물 사용하여 대면설명' },
-                    { value: '태블릿PC 사용하여 대면설명', label: '태블릿PC 사용하여 대면설명' },
-                    { value: '화상통화 사용하여 대면설명', label: '화상통화 사용하여 대면설명' },
-                  ].map((option) => (
+                  {[{ value: '문서출력물 사용하여 대면설명', label: '문서출력물 사용하여 대면설명' }].map((option) => (
                     <NativeSelectOption key={option.value} value={option.value}>
                       {option.label}
                     </NativeSelectOption>
@@ -283,7 +278,7 @@ const Ltpz120 = () => {
             </Typo>
             <BulletList position="col">
               <BulletListItem className="whitespace-nowrap" type="dot" size="sm">
-                계약자 : 김한화 010-2345-6789 / hanhwa@gmail.com(법정대리인:김한화 010-1234-5678)
+                계약자 : 김한화 010-2345-6789 / hanhwa@gmail.com (법정대리인:김한화 010-1234-5678)
               </BulletListItem>
               <BulletListItem className="whitespace-nowrap" type="dot" size="sm">
                 취급자 : 김한화 010-2345-6789 (6012345)
