@@ -491,13 +491,13 @@ const Ltpz026 = () => {
       headerName: '원사고발생일',
       field: 'field03',
       flex: 1,
-      minWidth: attributeColumnWidth(80),
+      minWidth: attributeColumnWidth(82),
     },
     {
       headerName: '최종사고발생일',
       field: 'field04',
       flex: 1,
-      minWidth: attributeColumnWidth(80),
+      minWidth: attributeColumnWidth(96),
     },
     {
       headerName: '입원',

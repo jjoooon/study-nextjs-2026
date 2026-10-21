@@ -304,7 +304,7 @@ const Ltpz012 = () => {
       {
         headerName: '가입금액(만원)',
         field: 'field5',
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(90),
         flex: 1,
         cellClass: 'text-right',
         colSpan: (params) => {

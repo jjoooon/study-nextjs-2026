@@ -187,7 +187,7 @@ const Ltpz055 = () => {
               <BulletList className="w-full [&>li>div:first-child]:h-full">
                 <BulletListItem size="sm">
                   <Grow placement="ss" className="gap-1 flex items-center justify-between">
-                    <span className="w-[6.8rem] shrink-0">모집자URL :</span>
+                    <span className="w-[7.8rem] shrink-0">모집자URL :</span>
                     <Input
                       className="inline-block w-[calc(100%-6rem)]!"
                       readOnly
@@ -201,7 +201,7 @@ const Ltpz055 = () => {
               <BulletList className="w-full [&>li>div:first-child]:h-full">
                 <BulletListItem size="sm">
                   <Grow placement="ss" className="gap-1 flex items-center justify-between">
-                    <span className="w-[6.8rem] shrink-0">계약자URL :</span>
+                    <span className="w-[7.8rem] shrink-0">계약자URL :</span>
                     <Input
                       className="inline-block w-[calc(100%-6rem)]!"
                       readOnly
@@ -215,7 +215,7 @@ const Ltpz055 = () => {
               <BulletList className="w-full [&>li>div:first-child]:h-full">
                 <BulletListItem size="sm">
                   <Grow placement="ss" className="gap-1 flex items-center justify-between">
-                    <span className="w-[6.8rem] shrink-0">피보험자URL :</span>
+                    <span className="w-[7.8rem] shrink-0">피보험자URL :</span>
                     <Input
                       className="inline-block w-[calc(100%-6rem)]!"
                       readOnly

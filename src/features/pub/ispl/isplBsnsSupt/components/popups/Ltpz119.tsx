@@ -124,7 +124,7 @@ export const Ltpz119 = () => {
       field: 'field01',
       flex: 1,
       cellClass: 'text-center',
-      minWidth: attributeColumnWidth(150),
+      minWidth: attributeColumnWidth(170),
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field01' }),
     },
     {
@@ -160,7 +160,7 @@ export const Ltpz119 = () => {
       field: 'field06',
       flex: 1,
       cellClass: 'text-center',
-      minWidth: attributeColumnWidth(120),
+      minWidth: attributeColumnWidth(124),
     },
     {
       headerName: '문서번호',

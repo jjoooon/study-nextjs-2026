@@ -32,7 +32,7 @@ import {
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@uiux/Table';
 
 import '@/shared/lib/agGridPub';
 
@@ -463,6 +463,9 @@ const Ltpz059 = () => {
   // 사용승인년도 확인불가 체크박스 상태
   const [isUnknownApprovalYear, setIsUnknownApprovalYear] = React.useState<boolean>(false);
 
+  // 목적물 사용유형 팝업 열림/닫힘 상태
+  const [isUsageTypeOpen, setIsUsageTypeOpen] = React.useState<boolean>(false);
+
   // 이미지 선택 모드 시, 각 섹션(기둥/지붕/외벽)별 현재 캐러셀 페이지 번호 저장
   const [imagePageBySection, setImagePageBySection] = React.useState<Record<ImageSectionType, number>>({
     기둥: 0,
@@ -833,392 +836,424 @@ const Ltpz059 = () => {
   // 건물구조 선택 유형 ('건물구조선택' | '이미지로선택')
   const [buildingSelectType, setBuildingSelectType] = React.useState<string>('건물구조선택');
   return (
-    <Dialog open>
-      <DialogContent showCloseButton resizable={true} className="w-[110.4rem] ltpz059-popup">
-        {/* 팝업 상단 타이틀 */}
-        <DialogHeader>
-          <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>
-              건물구조입력
-            </Typo>
-            <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ059)
-            </Typo>
-          </DialogTitle>
-        </DialogHeader>
+    <>
+      <Dialog open>
+        <DialogContent showCloseButton resizable={true} className="w-[110.4rem] ltpz059-popup">
+          {/* 팝업 상단 타이틀 */}
+          <DialogHeader>
+            <DialogTitle>
+              <Typo tag={'strong'} variant={'heading-lg'}>
+                건물구조입력
+              </Typo>
+              <Typo tag={'p'} variant={'body-xl'}>
+                (LTPZ059)
+              </Typo>
+            </DialogTitle>
+          </DialogHeader>
 
-        {/* 팝업 본문 영역 */}
-        <DialogSection className="w-full grid-rows-[1fr_auto]">
-          {/* 아코디언 섹션 1: 건물구조입력 */}
-          <TableFold variant="accordion" className="grid grid-rows-[auto_1fr]">
-            <TableFoldHead title="건물구조입력">
-              <Grow>
-                <Button variant={'outlined'} color={'secondary'} onClick={() => {}}>
-                  건축물대장조회
-                </Button>
-                <Button variant={'outlined'} color={'secondary'} onClick={() => {}}>
-                  다음지도
-                </Button>
-                <Button variant={'outlined'} color={'secondary'} onClick={() => {}}>
-                  전자정부
-                </Button>
-              </Grow>
-            </TableFoldHead>
-            <TableFoldBody className="gap-3 flex flex-col">
-              {/* 입력 선택 라디오 그룹 */}
-              <Grow placement="bwc" className="w-full" variant={'box-round'}>
-                <RadioGroup
-                  defaultValue="건물구조선택"
-                  onValueChange={(value) => setBuildingSelectType(value)}
-                  className="gap-3"
-                >
-                  {[
-                    { value: '건물구조선택', label: '건물구조선택' },
-                    { value: '이미지로선택', label: '이미지로선택' },
-                  ].map((option) => (
-                    <RadioGroupItem key={option.value} value={option.value}>
-                      {option.label}
-                    </RadioGroupItem>
-                  ))}
-                </RadioGroup>
-              </Grow>
+          {/* 팝업 본문 영역 */}
+          <DialogSection className="w-full grid-rows-[1fr_auto]">
+            {/* 아코디언 섹션 1: 건물구조입력 */}
+            <TableFold variant="accordion" className="grid grid-rows-[auto_1fr]">
+              <TableFoldHead title="건물구조입력">
+                <Grow>
+                  <Button variant={'outlined'} color={'secondary'} onClick={() => {}}>
+                    건축물대장조회
+                  </Button>
+                  <Button variant={'outlined'} color={'secondary'} onClick={() => {}}>
+                    다음지도
+                  </Button>
+                  <Button variant={'outlined'} color={'secondary'} onClick={() => {}}>
+                    전자정부
+                  </Button>
+                </Grow>
+              </TableFoldHead>
+              <TableFoldBody className="gap-3 flex flex-col">
+                {/* 입력 선택 라디오 그룹 */}
+                <Grow placement="bwc" className="w-full" variant={'box-round'}>
+                  <RadioGroup
+                    defaultValue="건물구조선택"
+                    onValueChange={(value) => setBuildingSelectType(value)}
+                    className="gap-3"
+                  >
+                    {[
+                      { value: '건물구조선택', label: '건물구조선택' },
+                      { value: '이미지로선택', label: '이미지로선택' },
+                    ].map((option) => (
+                      <RadioGroupItem key={option.value} value={option.value}>
+                        {option.label}
+                      </RadioGroupItem>
+                    ))}
+                  </RadioGroup>
+                </Grow>
 
-              {/* [분기 1] 텍스트 목록 그리드로 선택할 경우 */}
-              {buildingSelectType === '건물구조선택' && (
-                <Grid className="w-full h-full grid-cols-[1fr_1fr_1fr_1fr] gap-3">
-                  {/* 기둥 그리드 */}
-                  <div className="ag-theme-alpine radio-mode">
-                    <AgGridReact<DummyDataType>
-                      getRowId={(params) => String(params.data.id)}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      rowData={DummyData}
-                      columnDefs={columnDefs}
-                      defaultColDef={{
-                        sortable: true,
-                        resizable: true,
-                      }}
-                      rowSelection={{
-                        mode: 'singleRow',
-                        checkboxes: true,
-                        enableClickSelection: 'enableSelection',
-                      }}
-                      suppressRowDeselection={true}
-                      selectionColumnDef={{
-                        headerName: '선택',
-                        width: 30,
-                        cellClass: 'editable-cell',
-                      }}
-                      domLayout="normal"
-                      tooltipShowMode="whenTruncated"
-                      tooltipShowDelay={0}
-                      onCellClicked={handleStructureLabelCellClicked}
-                    />
-                  </div>
-                  {/* 지붕 그리드 */}
-                  <div className="ag-theme-alpine radio-mode">
-                    <AgGridReact<DummyDataType2>
-                      getRowId={(params) => String(params.data.id)}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      rowData={DummyData2}
-                      columnDefs={columnDefs2}
-                      defaultColDef={{
-                        sortable: true,
-                        resizable: true,
-                      }}
-                      rowSelection={{
-                        mode: 'singleRow',
-                        checkboxes: true,
-                        enableClickSelection: false,
-                      }}
-                      suppressRowDeselection={true}
-                      selectionColumnDef={{
-                        headerName: '선택',
-                        width: 30,
-                        cellClass: 'editable-cell',
-                      }}
-                      domLayout="normal"
-                      tooltipShowMode="whenTruncated"
-                      tooltipShowDelay={0}
-                      onCellClicked={handleStructureLabelCellClicked}
-                    />
-                  </div>
-                  {/* 외벽 그리드 */}
-                  <div className="ag-theme-alpine radio-mode">
-                    <AgGridReact<DummyDataType3>
-                      getRowId={(params) => String(params.data.id)}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      rowData={DummyData3}
-                      columnDefs={columnDefs3}
-                      defaultColDef={{
-                        sortable: true,
-                        resizable: true,
-                      }}
-                      rowSelection={{
-                        mode: 'singleRow',
-                        checkboxes: true,
-                        enableClickSelection: false,
-                      }}
-                      suppressRowDeselection={true}
-                      selectionColumnDef={{
-                        headerName: '선택',
-                        width: 30,
-                        cellClass: 'editable-cell',
-                      }}
-                      domLayout="normal"
-                      tooltipShowMode="whenTruncated"
-                      tooltipShowDelay={0}
-                      onCellClicked={handleStructureLabelCellClicked}
-                    />
-                  </div>
-                  {/* 건축물대장 그리드 및 주의사항 */}
-                  <Grid className="grid-rows-[1fr_auto]">
-                    <div className="ag-theme-alpine">
-                      <AgGridReact<DummyDataType4>
+                {/* [분기 1] 텍스트 목록 그리드로 선택할 경우 */}
+                {buildingSelectType === '건물구조선택' && (
+                  <Grid className="w-full h-full grid-cols-[1fr_1fr_1fr_1fr] gap-3">
+                    {/* 기둥 그리드 */}
+                    <div className="ag-theme-alpine radio-mode">
+                      <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowData={DummyData4}
-                        columnDefs={columnDefs4}
+                        rowData={DummyData}
+                        columnDefs={columnDefs}
                         defaultColDef={{
                           sortable: true,
                           resizable: true,
                         }}
-                        groupHeaderHeight={30}
-                        headerHeight={0}
-                        getRowHeight={(params) => (params.data?.rowType === 'spacer' ? 30 : 30)}
-                        singleClickEdit={true}
-                        domLayout="autoHeight"
+                        rowSelection={{
+                          mode: 'singleRow',
+                          checkboxes: true,
+                          enableClickSelection: 'enableSelection',
+                        }}
+                        suppressRowDeselection={true}
+                        selectionColumnDef={{
+                          headerName: '선택',
+                          width: 30,
+                          cellClass: 'editable-cell',
+                        }}
+                        domLayout="normal"
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
+                        onCellClicked={handleStructureLabelCellClicked}
                       />
                     </div>
-                    {/* 하단 주의사항 경고 박스 */}
-                    <Gcol className="w-full" placement="ss" variant="box-warning">
-                      <Typo icon="warning" variant="body-sm">
-                        <b>주의사항</b>
-                      </Typo>
-                      <BulletList position="col">
-                        <BulletListItem type="dotBig">
-                          조회결과를 참고하여 건물구조를 선택하시기 바랍니다.
-                        </BulletListItem>
-                        <BulletListItem type="dotBig">조회결과는 저장되지 않습니다.</BulletListItem>
-                      </BulletList>
-                    </Gcol>
-                  </Grid>
-                </Grid>
-              )}
-
-              {/* [분기 2] 시각 자료 이미지 카드로 선택할 경우 */}
-              {buildingSelectType === '이미지로선택' && (
-                <Gcol className="w-full h-full" placement="ss">
-                  <FormTable caption="사업자" cols={['w-[6rem]', 'w-auto']}>
-                    <FormRow>
-                      <FormCell title={'기둥'} className="h-auto">
-                        {renderImageSelectorRow('기둥')}
-                      </FormCell>
-                    </FormRow>
-                    <FormRow>
-                      <FormCell title={'지붕'} className="h-72">
-                        {renderImageSelectorRow('지붕')}
-                      </FormCell>
-                    </FormRow>
-                    <FormRow>
-                      <FormCell title={'외벽'} className="h-72">
-                        {renderImageSelectorRow('외벽')}
-                      </FormCell>
-                    </FormRow>
-                  </FormTable>
-                </Gcol>
-              )}
-            </TableFoldBody>
-          </TableFold>
-
-          {/* 아코디언 섹션 2: 소재지 상세 입력 */}
-          <TableFold variant="accordion">
-            <TableFoldHead title="소재지">
-              <Grow>
-                <Button variant={'contained'} color={'primary'} onClick={() => {}}>
-                  층/면적반영
-                </Button>
-                {/* 2026-05-22 button 추가 */}
-                <Button variant={'outlined'} color={'secondary'} onClick={() => {}}>
-                  복합건물
-                </Button>
-              </Grow>
-            </TableFoldHead>
-            <TableFoldBody>
-              <FormTable
-                className="formTable-fixed"
-                caption="사업자"
-                cols={['w-[10rem]', 'w-[25rem]', 'w-[10rem]', 'w-auto', 'w-[7rem]', 'w-auto']}
-              >
-                {/* 소재지 텍스트 노출 행 */}
-                <FormRow>
-                  <FormCell
-                    title={
-                      <Grow placement="sc">
-                        소재지
-                        <EssentialIcon />
-                      </Grow>
-                    }
-                    colSpan={5}
-                  >
-                    소재지정보 text text text
-                  </FormCell>
-                </FormRow>
-                {/* 건물급수 및 적용년도 입력 행 */}
-                <FormRow>
-                  <FormCell title={'건물급수'}>
-                    <Grid className="w-full grid-flow-col items-center justify-start">
-                      <Input value={'11'} width={50} readOnly />
-                      <Typo variant="body-sm">급(적용급수)</Typo>
-                      <NativeSelect aria-label="조회구분 선택" value={'선택'} width={60} required onChange={() => ''}>
-                        {[
-                          { value: 'selection', id: 'type01', label: '선택' },
-                          { value: 'selection2', id: 'type02', label: '1급' },
-                          { value: 'selection3', id: 'type03', label: '2급' },
-                          { value: 'selection4', id: 'type04', label: '3급' },
-                          { value: 'selection5', id: 'type05', label: '4급' },
-                        ].map((option) => (
-                          <NativeSelectOption key={option.id} value={option.value}>
-                            {option.label}
-                          </NativeSelectOption>
-                        ))}
-                      </NativeSelect>
-                    </Grid>
-                  </FormCell>
-                  <FormCell title={'사용승인년도'}>
-                    <Input width={50} required={!isUnknownApprovalYear} readOnly={isUnknownApprovalYear} />
-                    <Checkbox
-                      checked={isUnknownApprovalYear}
-                      onCheckedChange={(checked) => setIsUnknownApprovalYear(Boolean(checked))}
-                    >
-                      확인불가
-                    </Checkbox>
-                  </FormCell>
-
-                  <FormCell
-                    title={
-                      <>
-                        소유자
-                        <br /> 사용유형
-                        <TooltipQ>
-                          <b>목적물 사용유형</b>
-                          <Table variant="default">
-                            <colgroup>
-                              <col style={{ width: '10rem' }} />
-                              <col style={{ width: 'auto' }} />
-                            </colgroup>
-                            <TableBody>
-                              {/* 첫 번째 즉시집금 행 설정 */}
-                              <TableRow>
-                                <TableHead>건물주(직접사용)</TableHead>
-                                <TableCell>
-                                  건물주가 직접 사용하는 면적
-                                  <br />
-                                  (건물주: 아파트 등 집합건물의 개별호실 소유자 포함)
-                                </TableCell>
-                              </TableRow>
-                            </TableBody>
-                          </Table>
-                        </TooltipQ>
-                      </>
-                    }
-                    titleRowSpan={4}
-                    rowSpan={4}
-                  >
-                    <RadioGroup className="gap-3 flex-col items-start">
-                      {[
-                        { value: '0', label: '건물주(전체사용)' },
-                        { value: '1', label: '건물주(전체임대)' },
-                        { value: '2', label: '건물주(일부사용일부임대)' },
-                        { value: '3', label: '임차인' },
-                      ].map((option) => (
-                        <RadioGroupItem key={option.value} value={option.value} required>
-                          {option.label}
-                        </RadioGroupItem>
-                      ))}
-                    </RadioGroup>
-                  </FormCell>
-                </FormRow>
-                {/* 지상/지하 전체층수 입력 행 */}
-                <FormRow>
-                  <FormCell title={'전체층수'}>
-                    지상
-                    <Input width={40} align="right" required />
-                    층 / 지하
-                    <Input width={32} align="right" required />층
-                  </FormCell>
-                  <FormCell title={'전체면적'} className="has-r-border">
-                    <Input width={60} align="right" required />㎡
-                  </FormCell>
-                </FormRow>
-                {/* 보험가입층수 라디오 및 가입면적 노출 행 */}
-                <FormRow>
-                  <FormCell title={'보험가입층수'}>
-                    <RadioGroup
-                      className="gap-3"
-                      value={insuredFloorType ?? ''}
-                      onValueChange={(value) => {
-                        if (value === '전체' || value === '일부') {
-                          setInsuredFloorType(value);
-                          if (value === '일부') {
-                            setDetailPlace('');
-                          }
-                        }
-                      }}
-                    >
-                      {[
-                        { value: '전체', label: '전체' },
-                        { value: '일부', label: '일부' },
-                      ].map((option) => (
-                        <RadioGroupItem key={option.value} value={option.value}>
-                          {option.label}
-                        </RadioGroupItem>
-                      ))}
-                    </RadioGroup>
-                  </FormCell>
-                  <FormCell title={'가입면적'} className="has-r-border">
-                    <Input width={70} align="right" readOnly />
-                    ㎡ ↔
-                    <Input width={70} align="right" readOnly />평
-                  </FormCell>
-                </FormRow>
-                {/* 세부장소 입력 행 */}
-                <FormRow>
-                  <FormCell title={'세부장소'} colSpan={3} className="has-r-border">
-                    <Grid className="w-full grid-cols-[1fr_auto] place-items-center">
-                      <Input
-                        value={detailPlace}
-                        onChange={(e) => setDetailPlace(e.target.value)}
-                        // 가입층수가 '전체'일 경우 읽기 전용 및 플레이스홀더 제공
-                        readOnly={insuredFloorType === '전체'}
-                        placeholder={insuredFloorType === '전체' ? '건물전체' : undefined}
+                    {/* 지붕 그리드 */}
+                    <div className="ag-theme-alpine radio-mode">
+                      <AgGridReact<DummyDataType2>
+                        getRowId={(params) => String(params.data.id)}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        rowData={DummyData2}
+                        columnDefs={columnDefs2}
+                        defaultColDef={{
+                          sortable: true,
+                          resizable: true,
+                        }}
+                        rowSelection={{
+                          mode: 'singleRow',
+                          checkboxes: true,
+                          enableClickSelection: false,
+                        }}
+                        suppressRowDeselection={true}
+                        selectionColumnDef={{
+                          headerName: '선택',
+                          width: 30,
+                          cellClass: 'editable-cell',
+                        }}
+                        domLayout="normal"
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
+                        onCellClicked={handleStructureLabelCellClicked}
                       />
-                      <p>입력예시: 2층 201호</p>
+                    </div>
+                    {/* 외벽 그리드 */}
+                    <div className="ag-theme-alpine radio-mode">
+                      <AgGridReact<DummyDataType3>
+                        getRowId={(params) => String(params.data.id)}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        rowData={DummyData3}
+                        columnDefs={columnDefs3}
+                        defaultColDef={{
+                          sortable: true,
+                          resizable: true,
+                        }}
+                        rowSelection={{
+                          mode: 'singleRow',
+                          checkboxes: true,
+                          enableClickSelection: false,
+                        }}
+                        suppressRowDeselection={true}
+                        selectionColumnDef={{
+                          headerName: '선택',
+                          width: 30,
+                          cellClass: 'editable-cell',
+                        }}
+                        domLayout="normal"
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
+                        onCellClicked={handleStructureLabelCellClicked}
+                      />
+                    </div>
+                    {/* 건축물대장 그리드 및 주의사항 */}
+                    <Grid className="grid-rows-[1fr_auto]">
+                      <div className="ag-theme-alpine">
+                        <AgGridReact<DummyDataType4>
+                          getRowId={(params) => String(params.data.id)}
+                          noRowsOverlayComponent={AgGridEmptyComponent}
+                          rowData={DummyData4}
+                          columnDefs={columnDefs4}
+                          defaultColDef={{
+                            sortable: true,
+                            resizable: true,
+                          }}
+                          groupHeaderHeight={30}
+                          headerHeight={0}
+                          getRowHeight={(params) => (params.data?.rowType === 'spacer' ? 30 : 30)}
+                          singleClickEdit={true}
+                          domLayout="autoHeight"
+                        />
+                      </div>
+                      {/* 하단 주의사항 경고 박스 */}
+                      <Gcol className="w-full" placement="ss" variant="box-warning">
+                        <Typo icon="warning" variant="body-sm">
+                          <b>주의사항</b>
+                        </Typo>
+                        <BulletList position="col">
+                          <BulletListItem type="dotBig">
+                            조회결과를 참고하여 건물구조를 선택하시기 바랍니다.
+                          </BulletListItem>
+                          <BulletListItem type="dotBig">조회결과는 저장되지 않습니다.</BulletListItem>
+                        </BulletList>
+                      </Gcol>
                     </Grid>
-                  </FormCell>
-                </FormRow>
-              </FormTable>
-            </TableFoldBody>
-          </TableFold>
-        </DialogSection>
+                  </Grid>
+                )}
 
-        {/* 팝업 하단 푸터 영역 */}
-        <DialogFooter>
-          <DialogFooterArea>
-            <Grow>
-              <Button variant={'contained'} size={'xl'}>
-                저장
-              </Button>
-              <DialogClose asChild>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                  닫기
+                {/* [분기 2] 시각 자료 이미지 카드로 선택할 경우 */}
+                {buildingSelectType === '이미지로선택' && (
+                  <Gcol className="w-full h-full" placement="ss">
+                    <FormTable caption="사업자" cols={['w-[6rem]', 'w-auto']}>
+                      <FormRow>
+                        <FormCell title={'기둥'} className="h-auto">
+                          {renderImageSelectorRow('기둥')}
+                        </FormCell>
+                      </FormRow>
+                      <FormRow>
+                        <FormCell title={'지붕'} className="h-72">
+                          {renderImageSelectorRow('지붕')}
+                        </FormCell>
+                      </FormRow>
+                      <FormRow>
+                        <FormCell title={'외벽'} className="h-72">
+                          {renderImageSelectorRow('외벽')}
+                        </FormCell>
+                      </FormRow>
+                    </FormTable>
+                  </Gcol>
+                )}
+              </TableFoldBody>
+            </TableFold>
+
+            {/* 아코디언 섹션 2: 소재지 상세 입력 */}
+            <TableFold variant="accordion">
+              <TableFoldHead title="소재지">
+                <Grow>
+                  <Button variant={'contained'} color={'primary'} onClick={() => {}}>
+                    층/면적반영
+                  </Button>
+                  {/* 2026-05-22 button 추가 */}
+                  <Button variant={'outlined'} color={'secondary'} onClick={() => {}}>
+                    복합건물
+                  </Button>
+                </Grow>
+              </TableFoldHead>
+              <TableFoldBody>
+                <FormTable
+                  className="formTable-fixed"
+                  caption="사업자"
+                  cols={['w-[10rem]', 'w-[25rem]', 'w-[10rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
+                >
+                  {/* 소재지 텍스트 노출 행 */}
+                  <FormRow>
+                    <FormCell
+                      title={
+                        <Grow placement="sc">
+                          소재지
+                          <EssentialIcon />
+                        </Grow>
+                      }
+                      colSpan={5}
+                    >
+                      소재지정보 text text text
+                    </FormCell>
+                  </FormRow>
+                  {/* 건물급수 및 적용년도 입력 행 */}
+                  <FormRow>
+                    <FormCell title={'건물급수'}>
+                      <Grid className="w-full grid-flow-col items-center justify-start">
+                        <Input value={'11'} width={50} readOnly />
+                        <Typo variant="body-sm">급(적용급수)</Typo>
+                        <NativeSelect aria-label="조회구분 선택" value={'선택'} width={60} required onChange={() => ''}>
+                          {[
+                            { value: 'selection', id: 'type01', label: '선택' },
+                            { value: 'selection2', id: 'type02', label: '1급' },
+                            { value: 'selection3', id: 'type03', label: '2급' },
+                            { value: 'selection4', id: 'type04', label: '3급' },
+                            { value: 'selection5', id: 'type05', label: '4급' },
+                          ].map((option) => (
+                            <NativeSelectOption key={option.id} value={option.value}>
+                              {option.label}
+                            </NativeSelectOption>
+                          ))}
+                        </NativeSelect>
+                      </Grid>
+                    </FormCell>
+                    <FormCell title={'사용승인년도'}>
+                      <Input width={50} required={!isUnknownApprovalYear} readOnly={isUnknownApprovalYear} />
+                      <Checkbox
+                        checked={isUnknownApprovalYear}
+                        onCheckedChange={(checked) => setIsUnknownApprovalYear(Boolean(checked))}
+                      >
+                        확인불가
+                      </Checkbox>
+                    </FormCell>
+
+                    <FormCell
+                      title={
+                        <>
+                          목적물
+                          <br /> 사용유형
+                          <TooltipQ onClick={() => setIsUsageTypeOpen(true)} />
+                        </>
+                      }
+                      titleRowSpan={4}
+                      rowSpan={4}
+                    >
+                      <RadioGroup className="gap-3 flex-col items-start">
+                        {[
+                          { value: '0', label: '건물주(전체사용)' },
+                          { value: '1', label: '건물주(전체임대)' },
+                          { value: '2', label: '건물주(일부사용일부임대)' },
+                          { value: '3', label: '임차인' },
+                        ].map((option) => (
+                          <RadioGroupItem key={option.value} value={option.value} required>
+                            {option.label}
+                          </RadioGroupItem>
+                        ))}
+                      </RadioGroup>
+                    </FormCell>
+                  </FormRow>
+                  {/* 지상/지하 전체층수 입력 행 */}
+                  <FormRow>
+                    <FormCell title={'전체층수'}>
+                      지상
+                      <Input width={40} align="right" required />
+                      층 / 지하
+                      <Input width={32} align="right" required />층
+                    </FormCell>
+                    <FormCell title={'전체면적'} className="has-r-border">
+                      <Input width={60} align="right" required />㎡
+                    </FormCell>
+                  </FormRow>
+                  {/* 보험가입층수 라디오 및 가입면적 노출 행 */}
+                  <FormRow>
+                    <FormCell title={'보험가입층수'}>
+                      <RadioGroup
+                        className="gap-3"
+                        value={insuredFloorType ?? ''}
+                        onValueChange={(value) => {
+                          if (value === '전체' || value === '일부') {
+                            setInsuredFloorType(value);
+                            if (value === '일부') {
+                              setDetailPlace('');
+                            }
+                          }
+                        }}
+                      >
+                        {[
+                          { value: '전체', label: '전체' },
+                          { value: '일부', label: '일부' },
+                        ].map((option) => (
+                          <RadioGroupItem key={option.value} value={option.value}>
+                            {option.label}
+                          </RadioGroupItem>
+                        ))}
+                      </RadioGroup>
+                    </FormCell>
+                    <FormCell title={'가입면적'} className="has-r-border">
+                      <Input width={70} align="right" readOnly />
+                      ㎡ ↔
+                      <Input width={70} align="right" readOnly />평
+                    </FormCell>
+                  </FormRow>
+                  {/* 세부장소 입력 행 */}
+                  <FormRow>
+                    <FormCell title={'세부장소'} colSpan={3} className="has-r-border">
+                      <Grid className="w-full grid-cols-[1fr_auto] place-items-center">
+                        <Input
+                          value={detailPlace}
+                          onChange={(e) => setDetailPlace(e.target.value)}
+                          // 가입층수가 '전체'일 경우 읽기 전용 및 플레이스홀더 제공
+                          readOnly={insuredFloorType === '전체'}
+                          placeholder={insuredFloorType === '전체' ? '건물전체' : undefined}
+                        />
+                        <p>입력예시: 2층 201호</p>
+                      </Grid>
+                    </FormCell>
+                  </FormRow>
+                </FormTable>
+              </TableFoldBody>
+            </TableFold>
+          </DialogSection>
+
+          {/* 팝업 하단 푸터 영역 */}
+          <DialogFooter>
+            <DialogFooterArea>
+              <Grow>
+                <Button variant={'contained'} size={'xl'}>
+                  저장
                 </Button>
-              </DialogClose>
-            </Grow>
-          </DialogFooterArea>
-          <DialogBottomInfo />
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+                <DialogClose asChild>
+                  <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                    닫기
+                  </Button>
+                </DialogClose>
+              </Grow>
+            </DialogFooterArea>
+            <DialogBottomInfo />
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* 목적물 사용유형 안내 서브 팝업 */}
+      <Dialog open={isUsageTypeOpen} onOpenChange={setIsUsageTypeOpen}>
+        <DialogContent showCloseButton resizable={false} size="lg">
+          <DialogHeader>
+            <DialogTitle>
+              <Typo tag={'strong'} variant={'heading-lg'}>
+                목적물 사용유형
+              </Typo>
+            </DialogTitle>
+          </DialogHeader>
+          <DialogSection>
+            <Table variant="default">
+              <colgroup>
+                <col style={{ width: '18rem' }} />
+                <col style={{ width: 'auto' }} />
+              </colgroup>
+              <TableBody>
+                <TableRow>
+                  <TableHead className="text-left">건물주(직접사용)</TableHead>
+                  <TableCell>
+                    건물주가 직접 사용하는 면적
+                    <br /> (건물주: 아파트 등 집합건물의 개별호실 소유자 포함)
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableHead className="text-left">건물주(임대)</TableHead>
+                  <TableCell>
+                    건물주가 임대(월세/전세) 준 면적
+                    <br /> (건물주: 아파트 등 집합건물의 개별호실 소유자 포함)
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableHead className="text-left">건물주(일부사용일부임대)</TableHead>
+                  <TableCell>
+                    건물주 직접사용 면적과 임대면적 혼합
+                    <br />※ 목적물분리방법:
+                    <br /> 직접사용면적 → [건물주(직접사용)] / 임대준면적 → [건물주(임대)]
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableHead className="text-left">임차인</TableHead>
+                  <TableCell>임차인 가입 시(임차인: 월세/전세 세입자)</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </DialogSection>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 

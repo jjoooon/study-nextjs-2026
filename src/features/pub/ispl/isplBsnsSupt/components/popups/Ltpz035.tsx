@@ -84,7 +84,7 @@ const Ltpz035 = () => {
     {
       headerName: '상품 코드',
       field: 'field01',
-      width: attributeColumnWidth(70),
+      width: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
@@ -98,7 +98,7 @@ const Ltpz035 = () => {
       headerName: '동시가입 담보코드',
       field: 'field03',
       flex: 1,
-      minWidth: attributeColumnWidth(100),
+      minWidth: attributeColumnWidth(120),
       cellClass: 'text-center',
     },
     {
@@ -114,7 +114,7 @@ const Ltpz035 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="md">
+      <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

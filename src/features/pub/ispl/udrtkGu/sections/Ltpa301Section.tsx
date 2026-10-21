@@ -311,7 +311,7 @@ export default function Ltpa301Section() {
                   <FormTable caption="정액담보점검관리 테이블" cols={['w-[10rem]', 'flex-1']}>
                     <FormRow>
                       <FormCell title={'처리구분'}>
-                        <NativeSelect aria-label="처리구분 선택" width={140}>
+                        <NativeSelect aria-label="처리구분 선택" width={160}>
                           {[
                             { value: 'selection', label: '선택' },
                             { value: 'selection2', label: '활성(한도초과)' },
