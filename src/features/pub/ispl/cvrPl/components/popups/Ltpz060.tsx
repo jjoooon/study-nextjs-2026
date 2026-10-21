@@ -119,7 +119,7 @@ const Ltpz060 = () => {
       headerName: '목적물가입금액',
       field: 'field04',
       flex: 1,
-      minWidth: attributeColumnWidth(90),
+      minWidth: attributeColumnWidth(100),
       cellClass: 'text-right h-full',
       valueFormatter: numberValueFormatter, // 천단위 콤마 표시
     },
@@ -190,7 +190,7 @@ const Ltpz060 = () => {
                 tooltipShowDelay={0}
               />
             </div>
-            <FormTable caption={'계약기본사항'} cols={['w-[6rem]', 'w-auto', 'w-[7rem]', 'w-[13rem]']}>
+            <FormTable caption={'계약기본사항'} cols={['w-[6rem]', 'w-auto', 'w-[7rem]', 'w-[15rem]']}>
               <FormRow>
                 <FormCell title={'담보명'}>
                   <Input value={'풍수재손해(실손전부보상비)'} readOnly />

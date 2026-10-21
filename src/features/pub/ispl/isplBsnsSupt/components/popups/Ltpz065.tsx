@@ -189,7 +189,7 @@ const Ltpz065 = () => {
         headerName: '담보상태 변경일자',
         field: 'field05',
         flex: 1,
-        minWidth: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(120),
         sortable: false,
         filter: false,
         suppressMovable: true,

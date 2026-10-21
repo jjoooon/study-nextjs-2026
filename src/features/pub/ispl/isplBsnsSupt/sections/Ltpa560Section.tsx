@@ -511,6 +511,7 @@ export default function Ltpa560Section() {
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
                     <Input
+                      width={'28rem'}
                       aria-label=""
                       value={'한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601'}
                       readOnly

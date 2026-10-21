@@ -7,14 +7,8 @@ import '@/shared/lib/agGridPub';
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import Link from 'next/link';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {
-  AgGridEmptyComponent,
-  createTooltipValueGetter,
-  numberValueFormatter,
-  useAgGridInfiniteAppend,
-  useDynamicColumnWidths,
-} from '@aggrid';
+import { useCallback, useRef, useState } from 'react';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -186,7 +180,6 @@ const Ltpz038 = () => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const [searchCategory, setSearchCategory] = useState('selection');
   const gridRef = useRef<AgGridReact<DummyDataType>>(null);
-  const [pendingScrollIndex, setPendingScrollIndex] = useState<number | null>(null);
   const isInputOnlyCategory = searchCategory === 'selection4' || searchCategory === 'selection5';
 
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
@@ -208,7 +201,7 @@ const Ltpz038 = () => {
       headerName: '설계번호',
       flex: 1,
       field: 'field04',
-      minWidth: attributeColumnWidth(100),
+      minWidth: attributeColumnWidth(110),
       cellClass: 'text-center',
       cellRenderer: (params: { value: string | number }) => (
         <Button asChild color="link" only="default" size="lg" variant="text">

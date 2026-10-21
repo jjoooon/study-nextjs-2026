@@ -189,7 +189,7 @@ export default function Ltpa490Section() {
         headerName: '설계시작~유효일자',
         field: 'field08',
         flex: 1,
-        minWidth: attributeColumnWidth(150),
+        minWidth: attributeColumnWidth(170),
         cellClass: 'text-center',
         autoHeight: true,
       },

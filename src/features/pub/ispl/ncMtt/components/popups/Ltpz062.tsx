@@ -216,7 +216,7 @@ const Ltpz062 = () => {
         headerName: '최종사고발생일',
         field: 'field4',
         flex: 1,
-        minWidth: attributeColumnWidth(84),
+        minWidth: attributeColumnWidth(92),
         cellClass: 'text-center',
       },
       {

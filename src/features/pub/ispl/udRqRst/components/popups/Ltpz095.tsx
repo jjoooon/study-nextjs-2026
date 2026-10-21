@@ -195,7 +195,7 @@ const Ltpz095 = () => {
       headerName: '표준체보험료(원)',
       field: 'field03',
       flex: 1,
-      minWidth: attributeColumnWidth(95),
+      minWidth: attributeColumnWidth(100),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
