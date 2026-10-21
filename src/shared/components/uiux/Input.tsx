@@ -256,7 +256,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
         : width === 'auto'
           ? 'auto'
           : width === 'quoteNo'
-            ? '12rem'
+            ? '11.6rem'
             : width;
   const widthStyle = resolvedWidth ? { width: resolvedWidth } : undefined;
 
@@ -537,8 +537,10 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
         <div
           className={cn(
             variantStyles[variant],
+            shouldShowError && 'is-invalid',
             'flex items-center has-[:hover]:border-primary-500 has-[:focus]:outline-[.2rem] has-[:focus]:-outline-offset-[0.2rem] has-[:focus]:px-[0.3rem] gap-[0.2rem]'
           )}
+          data-invalid={shouldShowError || undefined}
         >
           {before && <div>{before}</div>}
           <div className="relative w-full min-w-0 [&>input]:w-full [&>input]:min-w-0 [&>input]:box-border [&>input]:bg-transparent [&>input]:border-0 [&>input]:tracking-[-0.03rem] [&>input]:p-0 [&>input]:m-0 [&>input]:focus:ring-0 [&>input]:focus:outline-none">
@@ -550,7 +552,11 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                     type={resolvedType}
                     data-slot="input"
                     className={cn(
-                      align === 'right' ? 'text-right' : align === 'center' ? 'text-center' : 'text-left',
+                      align === 'right'
+                        ? 'text-right'
+                        : align === 'center' || width === 'quoteNo'
+                          ? 'text-center'
+                          : 'text-left',
                       dateColorStyle,
                       '[&::-ms-reveal]:hidden [&::-ms-clear]:hidden',
                       showClearButton && showMaskToggle

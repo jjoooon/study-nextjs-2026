@@ -26,7 +26,7 @@ import { Input } from '@uiux/Input';
 const Ltpz057 = () => {
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="2xl">
+      <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -89,7 +89,7 @@ const Ltpz057 = () => {
                     }
                   >
                     <CheckboxGroup defaultValue={['Industry2', 'Industry4']}>
-                      <Grid className="grid-cols-[1.2fr_1fr_1fr_1fr_1fr] gap-x-4 gap-y-2 w-full">
+                      <Grid className="grid-cols-[minmax(19rem,1fr)_minmax(16rem,1fr)_minmax(15rem,1fr)_minmax(10rem,1fr)_1fr] gap-x-4 gap-y-2 w-full">
                         {[
                           { value: 'Industry1', label: '이용원, 미용원, 기타미용실' },
                           { value: 'Industry2', label: '학원(기관 및 교육목적)' },

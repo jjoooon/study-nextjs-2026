@@ -345,7 +345,7 @@ export function Ltpa35002a({
         },
         field: 'field4',
         flex: 1,
-        minWidth: attributeColumnWidth(76),
+        minWidth: attributeColumnWidth(86),
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter<AgGridRow>,
       },
@@ -359,7 +359,7 @@ export function Ltpa35002a({
         sortable: true,
         field: 'insuredAmount',
         flex: 1,
-        minWidth: attributeColumnWidth(76),
+        minWidth: attributeColumnWidth(86),
         cellClass: 'text-right editable-cell [&_input]:text-right [&_input]:tracking-normal',
         valueFormatter: numberValueFormatter<AgGridRow>,
         cellClassRules: {

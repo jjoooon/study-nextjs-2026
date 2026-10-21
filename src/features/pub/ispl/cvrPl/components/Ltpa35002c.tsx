@@ -219,7 +219,7 @@ export function Ltpa35002c({
         sortable: true,
         field: 'insuredAmount',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(88),
         cellClass: 'text-right editable-cell [&_input]:text-right',
         valueFormatter: numberValueFormatter<AgGridRow>,
         cellClassRules: {
@@ -299,7 +299,7 @@ export function Ltpa35002c({
         headerName: '수용장소상세',
         field: 'field5',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(84),
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: 'editable-cell text-center',
         editable: true,
@@ -420,7 +420,7 @@ export function Ltpa35002c({
         sortable: true,
         field: 'insuredAmount',
         flex: 1,
-        minWidth: attributeColumnWidth(74),
+        minWidth: attributeColumnWidth(86),
         cellClass: 'text-right editable-cell [&_input]:text-right',
         valueFormatter: numberValueFormatter<AgGridRow2>,
         cellClassRules: {

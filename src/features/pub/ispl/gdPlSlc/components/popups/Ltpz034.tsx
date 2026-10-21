@@ -555,7 +555,7 @@ const Ltpz034 = ({
       {
         headerName: 'N년이내',
         field: 'field03',
-        width: attributeColumnWidth(64),
+        width: attributeColumnWidth(74),
         headerClass: 'bg-[#FFCCBE]',
         cellClass: 'text-center !flex !justify-center',
       },

@@ -208,7 +208,7 @@ const Ltpz038 = () => {
       headerName: '설계번호',
       flex: 1,
       field: 'field04',
-      minWidth: attributeColumnWidth(100),
+      minWidth: attributeColumnWidth(120),
       cellClass: 'text-center',
       cellRenderer: (params: { value: string | number }) => (
         <Button asChild color="link" only="default" size="lg" variant="text">

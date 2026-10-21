@@ -400,14 +400,15 @@ export default function Ltpa570Section() {
                 cols={['w-[1rem]', 'w-[60rem] ', 'w-[1rem]', 'min-w-[4.8rem] w-auto']}
               >
                 <FormRow>
-                  <FormCell title={'조직구분'} tdClassName="grid grid-cols-[repeat(5,auto)]" colSpan={3}>
+                  <FormCell title={'조직구분'} colSpan={3}>
                     <NativeSelect
                       aria-label="조직구분"
+                      width={'auto'}
                       value={form.type01}
                       onChange={(e) => setFormField('type01', e.target.value)}
                     >
                       {[
-                        { value: 'selection0101', label: '채널1' },
+                        { value: 'selection0101', label: '채널1채널1채널1채널1채널1채널1' },
                         { value: 'selection0102', label: '채널2' },
                       ].map((option) => (
                         <NativeSelectOption key={option.value} value={option.value}>
@@ -417,6 +418,7 @@ export default function Ltpa570Section() {
                     </NativeSelect>
                     <NativeSelect
                       aria-label="본부"
+                      width={'auto'}
                       value={form.type02}
                       onChange={(e) => setFormField('type02', e.target.value)}
                     >
@@ -431,6 +433,7 @@ export default function Ltpa570Section() {
                     </NativeSelect>
                     <NativeSelect
                       aria-label="지역단1구분"
+                      width={'auto'}
                       value={form.type03}
                       onChange={(e) => setFormField('type03', e.target.value)}
                     >
@@ -445,6 +448,7 @@ export default function Ltpa570Section() {
                     </NativeSelect>
                     <NativeSelect
                       aria-label="지점구분"
+                      width={'auto'}
                       value={form.type04}
                       onChange={(e) => setFormField('type04', e.target.value)}
                     >
@@ -465,7 +469,6 @@ export default function Ltpa570Section() {
                         }
                       }}
                       value={groupBy}
-                      width="full"
                     >
                       {[
                         { value: 'option1', label: '채널' },

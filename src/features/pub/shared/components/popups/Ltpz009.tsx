@@ -178,29 +178,31 @@ const Ltpz009 = () => {
 
           <DialogSection className="grid-rows-[auto_1fr]">
             <Grow className="w-full" variant="box-round" placement={'bwc'}>
-              <FormTable caption="보험정보" cols={['w-1', 'w-auto']} variant="head" className="w-auto">
-                <FormRow className="grid grid-cols-[auto_1fr] w-full">
+              <FormTable caption="보험정보" variant="head" className="w-full">
+                <FormRow className="grid grid-cols-[auto_auto_1fr] w-full">
                   <FormCell title={'설계번호'}>
                     <Input aria-label="" value={'LA123456789012'} readOnly variant="info" />
                   </FormCell>
                   <FormCell title={'설계별명'}>
-                    <Input value={'가나다라마가나다라마가나다라마가나다라마'} readOnly variant="info" />
+                    <Input
+                      value={'가나다라마가나다라마가나다라마가나다라마'}
+                      width={280}
+                      readOnly
+                      placeholder={' 별명을 등록해주세요'}
+                    />
+                  </FormCell>
+                  <FormCell title={'입력'} tdClassName="flex-1">
+                    <Input
+                      width={'full'}
+                      placeholder="한글 20자 이내로 등록가능"
+                      value={'가나다라마가나다라마가나다라마가나다라마'}
+                    />
+                    <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                      저장
+                    </Button>
                   </FormCell>
                 </FormRow>
               </FormTable>
-              <Grow>
-                <Grow>
-                  <div>입력</div>
-                  <Input
-                    width={280}
-                    placeholder="한글 20자 이내로 등록가능"
-                    value={'가나다라마가나다라마가나다라마가나다라마'}
-                  />
-                </Grow>
-                <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
-                  저장
-                </Button>
-              </Grow>
             </Grow>
 
             <Gcol placement={'ss'} className="w-full gap-4">

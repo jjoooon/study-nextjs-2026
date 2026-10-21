@@ -93,16 +93,24 @@
 /* 병합 셀(Row Span) 수직 중앙 정렬 및 배경색 지정 */
 .ag-row .ag-cell.row-span-cell,
 .ag-cell.row-span-cell,
-.ag-theme-alpine .ag-cell.row-span-cell {
+.ag-theme-alpine .ag-cell.row-span-cell,
+.ag-theme-alpine .ag-spanned-cell-wrapper,
+.ag-theme-alpine .ag-spanned-cell {
+  background-color: #fff !important;
+}
+
+.ag-row .ag-cell.row-span-cell,
+.ag-cell.row-span-cell,
+.ag-theme-alpine .ag-cell.row-span-cell,
+.ag-theme-alpine .ag-spanned-cell {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  background-color: #fff;
   z-index: 2 !important;
 }
 .ag-row.ag-row-even .ag-cell.row-span-cell,
 .ag-row.ag-row-odd .ag-cell.row-span-cell {
-  background-color: #fff;
+  background-color: #fff !important;
 }
 
 /* header */
@@ -229,8 +237,11 @@
 .ag-row-selected {
   background-color: var(--color-warning-10);
 } */
-.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell *:not(button) {
+.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell {
   color: var(--color-gray-50);
+}
+.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell button {
+  color: initial;
 }
 .ag-theme-alpine .ag-row.ag-row-state-true .ag-cell button[data-variant='outlined'] span {
   color: var(--color-primary-50);
@@ -1073,8 +1084,6 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
  * ========================================================================== */
 
 /* 1. 드롭다운 팝업 컨테이너 (배경, 테두리, 그림자, 라운딩, 스크롤바, 콘텐츠 크기 맞춤) */
-.ag-popup-child:has(.ag-select-list),
-.ag-popup-child:has(.ag-rich-select-popup),
 .ag-select-list,
 .ag-rich-select-popup,
 .v109 .ag-select-list,
@@ -1913,25 +1922,21 @@ html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked
 /* AG Grid 툴팁 마우스 오버/이탈 시 CSS 트랜지션 및 모션 애니메이션 즉시 제거 */
 .ag-tooltip,
 .ag-tooltip-showing,
-.ag-tooltip-hiding,
-.ag-popup-child:has(.ag-tooltip) {
+.ag-tooltip-hiding {
   transition: none !important;
   animation: none !important;
 }
 
-/* 빠른 마우스 이동 시 이전 툴팁 DOM이 겹쳐 보이는 현상 방지 (마지막 툴팁 1개만 표시) */
-.ag-popup-child:has(.ag-tooltip):not(:last-child),
-.ag-tooltip:not(:last-child) {
-  display: none !important;
-}
-
-/* 마우스가 셀(ag-cell / ag-header-cell)을 벗어나는 즉시 툴팁 강제 제거(숨김) */
-body:not(:has(.ag-cell:hover, .ag-header-cell:hover)) .ag-tooltip,
-body:not(:has(.ag-cell:hover, .ag-header-cell:hover)) .ag-popup-child:has(.ag-tooltip) {
+/* 툴팁 숨김(hiding) 시 잔상 없이 즉시 제거 및 이전 툴팁 DOM 중복 방지 */
+.ag-tooltip-hiding {
   display: none !important;
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;
+}
+
+.ag-tooltip:not(:last-of-type) {
+  display: none !important;
 }
 
 .link-cell .ag-cell-value {
@@ -2007,15 +2012,7 @@ body:not(:has(.ag-cell:hover, .ag-header-cell:hover)) .ag-popup-child:has(.ag-to
   background-color: var(--color-information-15) !important;
 }
 
-/* AG-Grid 전역 모션/애니메이션/트랜지션 끄기 */
-.ag-theme-alpine *,
-.ag-theme-alpine *::before,
-.ag-theme-alpine *::after {
-  transition: none !important;
-  animation: none !important;
-}
-
-/* Ltpz204 보장패키지 선택 팝업 구분선 스타일 */
+/* Ltpz204 보장패키지 선택 팝업 구분선 스타일 (상단 border 덮어쓰기 및 음수 마진으로 이전 행의 border-bottom 자연 상쇄) */
 .ltpz204-style .ag-theme-alpine .ag-row.package-group-divider,
 .ag-theme-alpine .ag-row.package-group-divider {
   border-top: 1px solid #6B7280 !important;
@@ -2025,8 +2022,4 @@ body:not(:has(.ag-cell:hover, .ag-header-cell:hover)) .ag-popup-child:has(.ag-to
 .ltpz204-style .ag-theme-alpine .ag-row.package-group-divider .ag-cell,
 .ag-theme-alpine .ag-row.package-group-divider .ag-cell {
   border-top: none !important;
-}
-.ltpz204-style .ag-theme-alpine .ag-row:has(+ .package-group-divider),
-.ag-theme-alpine .ag-row:has(+ .package-group-divider) {
-  border-bottom: none !important;
 }

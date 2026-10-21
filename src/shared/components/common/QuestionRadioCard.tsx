@@ -65,7 +65,7 @@ export const QuestionRadioCardContents = ({
   children: ReactNode;
   className?: string;
 }) => {
-  return <Grid className={cn('w-full p-2.5 gap-2', className)}>{children}</Grid>;
+  return <Grid className={cn('w-full p-2.5 pr-[2rem] gap-2', className)}>{children}</Grid>;
 };
 
 type QuestionRadioCardProps = {} & React.HTMLAttributes<HTMLDivElement> & {

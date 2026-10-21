@@ -2084,12 +2084,13 @@
   background-color: var(--ag-input-background-color);
 }
 /* InputGroup Required state (Chrome 109 호환) */
-.v109 [data-slot='input-group']:has([data-slot='input-group-control'][required]) {
+.v109 [data-slot='input-group'][data-required='true'],
+.v109 [data-slot='input-group'].is-required {
   border-color: var(--color-input-border-highlight);
   background-color: var(--color-input-surface-highlight);
 }
-/* InputGroup Focus state */
-.v109 [data-slot='input-group']:has([data-slot='input-group-control']:focus-visible) {
+/* InputGroup Focus state (초고속 :focus-within 표준 적용) */
+.v109 [data-slot='input-group']:focus-within {
   border-width: 0.2rem;
   border-color: var(--color-input-border-hover);
   box-shadow: 0 0 0 0.1rem var(--color-gray-5);
@@ -2365,9 +2366,11 @@
   border-width: 0.2rem !important;
 }
 
-/* 2. before/after가 포함된 Input 래퍼 div 에러 스타일 */
-.v109 .cp-input > div:has(input[aria-invalid='true']),
-.v109 .cp-input > div:has(input[aria-invalid='true']):focus-within {
+/* 2. before/after가 포함된 Input 래퍼 div 에러 스타일 (고비용 :has 대신 data-invalid 및 is-invalid 직접 매칭) */
+.v109 .cp-input > div[data-invalid='true'],
+.v109 .cp-input > div.is-invalid,
+.v109 .cp-input > div[data-invalid='true']:focus-within,
+.v109 .cp-input > div.is-invalid:focus-within {
   background-color: var(--color-input-surface-error) !important;
   color: var(--color-text-danger) !important;
   border-color: var(--color-input-border-error) !important;
@@ -2375,7 +2378,8 @@
 }
 
 /* 래퍼 div 내부의 input은 투명 배경 유지 */
-.v109 .cp-input > div:has(input[aria-invalid='true']) input {
+.v109 .cp-input > div[data-invalid='true'] input,
+.v109 .cp-input > div.is-invalid input {
   background-color: transparent !important;
   border-width: 0 !important;
 }

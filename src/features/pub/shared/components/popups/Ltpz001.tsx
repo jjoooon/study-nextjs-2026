@@ -423,6 +423,7 @@ const Ltpz001 = () => {
                 data={scrIdcInfoData.tabInfo}
                 active={tabActive}
                 setActive={setTabActive}
+                showPagination={false}
                 visibleCount={5}
                 getValue={(tab) => String(tab.value)}
                 contentClass="overflow-y-auto relative bg-[var(--color-blue-gray-10)] rounded-b-[0.6rem] gray-scroll"

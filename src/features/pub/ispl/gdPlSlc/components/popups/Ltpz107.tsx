@@ -23,7 +23,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 const Ltpz107 = () => {
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="sm" title="테스트">
+      <DialogContent showCloseButton resizable={true} size="sm">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

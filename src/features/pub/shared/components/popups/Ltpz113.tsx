@@ -184,7 +184,7 @@ const Ltpz113 = () => {
     {
       headerName: '설계번호',
       field: 'field01',
-      width: attributeColumnWidth(105),
+      width: attributeColumnWidth(110),
       cellClass: 'text-center',
     },
     {
@@ -205,7 +205,7 @@ const Ltpz113 = () => {
       headerName: '보험료(원)',
       field: 'field04',
       flex: 1,
-      minWidth: attributeColumnWidth(80),
+      minWidth: attributeColumnWidth(86),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -231,7 +231,7 @@ const Ltpz113 = () => {
     {
       headerName: '청약서류',
       flex: 1,
-      minWidth: attributeColumnWidth(140),
+      minWidth: attributeColumnWidth(146),
       field: 'field07',
       cellClass: 'text-center',
       autoHeight: true,
@@ -249,7 +249,7 @@ const Ltpz113 = () => {
     {
       headerName: '삭제',
       flex: 1,
-      minWidth: attributeColumnWidth(50),
+      minWidth: attributeColumnWidth(56),
       field: 'field08',
       cellClass: 'text-center',
       autoHeight: true,

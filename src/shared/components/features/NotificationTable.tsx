@@ -72,14 +72,14 @@ export default function NotificationTable<
       {colSpan === 1 ? (
         <colgroup>
           <col style={{ width: 'auto' }} />
-          <col style={{ width: '3.6rem' }} />
+          <col style={{ width: '4rem' }} />
         </colgroup>
       ) : (
         <colgroup>
           <col style={{ width: 'auto' }} />
           <col style={{ width: 'auto' }} />
           <col style={{ width: 'auto' }} />
-          <col style={{ width: '3.6rem' }} />
+          <col style={{ width: '4rem' }} />
         </colgroup>
       )}
       <TableHeader>

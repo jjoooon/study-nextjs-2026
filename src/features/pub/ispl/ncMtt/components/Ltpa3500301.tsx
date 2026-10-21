@@ -10,7 +10,7 @@ import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { Gcol, Grid, Grow, Typo, Divider } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
@@ -434,7 +434,7 @@ export const Ltpa3500301 = ({
               </RadioGroup>
             </QuestionRadioCardHeader>
             <QuestionRadioCardContents>
-              <Grid className="w-full grid-cols-4 gap-[0.8rem] px-[1rem]">
+              <Grid className="w-full grid-cols-4 gap-[0.8rem] pl-6">
                 {['질병확정진단', '질병의심소견', '치료', '입원', '수술(제왕절개포함)', '투약'].map((label) => (
                   <Checkbox
                     key={label}
@@ -450,12 +450,12 @@ export const Ltpa3500301 = ({
                   </Checkbox>
                 ))}
               </Grid>
-              <Gcol className="w-full" placement="ss" variant="box-detail">
-                <Typo icon="detail" variant="body-sm">
+              <Gcol className="w-full pl-6 py-2" placement="ss">
+                <Typo icon="ref" variant="body-sm">
                   <b>질병의심소견</b>이란 의사가 진단서나 소견서 또는 진료의뢰서 등을 포함하여 서면(전자문서 포함)으로
                   교부한 경우를 말합니다.
                 </Typo>
-                <Typo icon="detail" variant="body-sm">
+                <Typo icon="ref" variant="body-sm">
                   <b>투약이란</b> 의사가 환자에게 약을 처방하는 행위를 말하는 것으로 실제로 약을 구입하지 않았어도
                   기재해야 합니다.
                 </Typo>
@@ -495,8 +495,8 @@ export const Ltpa3500301 = ({
               </RadioGroup>
             </QuestionRadioCardHeader>
             <QuestionRadioCardContents>
-              <Gcol className="w-full" placement="ss" variant="box-detail">
-                <Typo icon="detail" variant="body-sm">
+              <Gcol className="w-full pl-6 py-2" placement="ss">
+                <Typo icon="ref" variant="body-sm">
                   <b>혈압강하제</b>란 혈압을 내리게 하는 의약품을 말하며, 각성제란 신경계를 흥분시켜 잠이 오는 것을
                   억제하는 의약품을 말합니다.
                 </Typo>
@@ -535,8 +535,8 @@ export const Ltpa3500301 = ({
               </RadioGroup>
             </QuestionRadioCardHeader>
             <QuestionRadioCardContents>
-              <Gcol className="w-full" placement="ss" variant="box-detail">
-                <Typo icon="detail" variant="body-sm">
+              <Gcol className="w-full pl-6 py-2" placement="ss">
+                <Typo icon="ref" variant="body-sm">
                   <b>추가검사(재검사)</b>란 검사 결과 이상 소견이 확인되어 보다 정확한 진단을 위해 시행한 검사를
                   의미하며, 병증에 대한 치료 필요 없이 유지되는 상태에서 시행하는 정기검사 또는 추적관찰은 포함하지
                   않습니다.
@@ -576,7 +576,7 @@ export const Ltpa3500301 = ({
               </RadioGroup>
             </QuestionRadioCardHeader>
             <QuestionRadioCardContents>
-              <Grid className="w-full grid-cols-4 gap-[0.8rem] px-[1rem]">
+              <Grid className="w-full grid-cols-4 gap-[0.8rem] pl-6">
                 {['입원', '수술(제왕제갤포함)', '계속하여 7일이상 치료', '계속하여 30일이상 투약'].map((label) => (
                   <Checkbox
                     key={label}
@@ -592,8 +592,8 @@ export const Ltpa3500301 = ({
                   </Checkbox>
                 ))}
               </Grid>
-              <Gcol className="w-full" placement="ss" variant="box-detail">
-                <Typo icon="detail" variant="body-sm">
+              <Gcol className="w-full pl-6 py-2" placement="ss">
+                <Typo icon="ref" variant="body-sm">
                   여기서 <b>‘계속하여’</b>란 같은 원인으로 치료 시작 후 완료일까지 실제 치료, 투약 받은 일수를 말합니다.
                 </Typo>
               </Gcol>
@@ -632,7 +632,7 @@ export const Ltpa3500301 = ({
               </RadioGroup>
             </QuestionRadioCardHeader>
             <QuestionRadioCardContents>
-              <Grid className="w-full grid-cols-4 gap-[0.8rem] px-[1rem]">
+              <Grid className="w-full grid-cols-4 gap-[0.8rem] pl-6">
                 <Checkbox
                   color="primary"
                   errorMsg="선택은 필수입니다."
@@ -744,9 +744,10 @@ export const Ltpa3500301 = ({
                   에이즈(AIDS) 및 HIV보균
                 </Checkbox>
               </Grid>
-              <Gcol placement="ss">
-                <Gcol className="w-[18.1rem]" placement="ss" variant="box-detail">
-                  <Typo icon="detail" variant="body-sm">
+              <Gcol placement="ss" className="pl-6 pt-2">
+                <Divider dir="row" className="w-full" color="gray-light" />
+                <Gcol className="w-auto py-2" placement="ss">
+                  <Typo icon="ref" variant="body-sm">
                     <b>실손의료보험</b> 가입시에만 체크
                   </Typo>
                 </Gcol>
@@ -757,82 +758,36 @@ export const Ltpa3500301 = ({
                   onCheckedChange={() => {}}
                   size="lg"
                   variant="default"
-                  className="ml-2.5"
+                  className=""
                   disabled={simpleMode}
                 >
                   직장 또는 항문 관련 질환(치질, 치루(누공), 치열(찢어짐), 항문 농양(고름집), 직장 또는 항문탈출,
                   항문출혈, 항문궤양)
                 </Checkbox>
 
-                <FormTable
-                  caption="FormTable 예시"
-                  className="border-t border-solid border-[#D8D8D8] pt-2.5 mt-[1rem]"
-                  cols={['w-[5.4rem]', 'w-auto']}
-                  lineTop
-                  variant="none"
+                <Grow
+                  className="rounded-[0.6rem] py-2 px-6 mt-[1rem] w-full gap-6 bg-[var(--color-gray-5)]"
+                  placement="sc"
                 >
-                  <FormRow>
-                    <FormCell className="" title={<b className="text-[#000] pl-2.5">의료행위</b>} variant="default">
-                      <Grid className="grid-cols-5 w-full">
-                        <Grow placement="ss">
-                          <Checkbox
-                            onCheckedChange={() => {}}
-                            size="lg"
-                            variant="default"
-                            value="a"
-                            disabled={simpleMode}
-                          >
-                            질병확정진단
-                          </Checkbox>
-                        </Grow>
-                        <Grow placement="ss">
-                          <Checkbox
-                            onCheckedChange={() => {}}
-                            size="lg"
-                            variant="default"
-                            value="b"
-                            disabled={simpleMode}
-                          >
-                            치료
-                          </Checkbox>
-                        </Grow>
-                        <Grow placement="ss">
-                          <Checkbox
-                            onCheckedChange={() => {}}
-                            size="lg"
-                            variant="default"
-                            value="c"
-                            disabled={simpleMode}
-                          >
-                            입원
-                          </Checkbox>
-                        </Grow>
-                        <Grow placement="ss">
-                          <Checkbox
-                            onCheckedChange={() => {}}
-                            size="lg"
-                            variant="default"
-                            value="d"
-                            disabled={simpleMode}
-                          >
-                            수술
-                          </Checkbox>
-                        </Grow>
-                        <Grow placement="ss">
-                          <Checkbox
-                            onCheckedChange={() => {}}
-                            size="lg"
-                            variant="default"
-                            value="e"
-                            disabled={simpleMode}
-                          >
-                            투약
-                          </Checkbox>
-                        </Grow>
-                      </Grid>
-                    </FormCell>
-                  </FormRow>
-                </FormTable>
+                  <b className="text-[#000]">의료행위</b>
+                  <Grow className="gap-3" placement="sc">
+                    <Checkbox onCheckedChange={() => {}} size="lg" variant="default" value="a" disabled={simpleMode}>
+                      질병확정진단
+                    </Checkbox>
+                    <Checkbox onCheckedChange={() => {}} size="lg" variant="default" value="b" disabled={simpleMode}>
+                      치료
+                    </Checkbox>
+                    <Checkbox onCheckedChange={() => {}} size="lg" variant="default" value="c" disabled={simpleMode}>
+                      입원
+                    </Checkbox>
+                    <Checkbox onCheckedChange={() => {}} size="lg" variant="default" value="d" disabled={simpleMode}>
+                      수술
+                    </Checkbox>
+                    <Checkbox onCheckedChange={() => {}} size="lg" variant="default" value="e" disabled={simpleMode}>
+                      투약
+                    </Checkbox>
+                  </Grow>
+                </Grow>
               </Gcol>
             </QuestionRadioCardContents>
           </QuestionRadioCard>
@@ -842,17 +797,17 @@ export const Ltpa3500301 = ({
           >
             <QuestionRadioCardHeader>
               <QuestionRadioCardHeaderTitle badgeLabel="6">
-                <Grid className="gap-0.5 grid-flow-col items-baseline gap-0.5">
-                  (여성의 경우) 현재 임신중입니까?(임신
+                (여성의 경우) 현재 임신중입니까?(임신
+                <div className="inline-block h-[2rem] relative w-[3.5rem]">
                   <Input
                     size="xl"
                     variant="default"
                     width="3.3rem"
-                    className="w-[3.3rem] [&>input]:!w-[3.3rem]"
+                    className="absolute top-[-0.3rem] left-[0.1rem] w-[3.3rem] [&>input]:!w-[3.3rem]"
                     readOnly={simpleMode}
-                  />{' '}
-                  주)
-                </Grid>
+                  />
+                </div>{' '}
+                주)
               </QuestionRadioCardHeaderTitle>
               <RadioGroup
                 className={'gap-[1.2rem] w-[11rem]'}
@@ -884,7 +839,7 @@ export const Ltpa3500301 = ({
           >
             <QuestionRadioCardHeader>
               <QuestionRadioCardHeaderTitle badgeLabel="6-1">
-                <Grid className="gap-0.5 grid-flow-col items-baseline gap-0.5">
+                <Grid className="gap-0.5 grid-flow-col items-baseline">
                   (태아의 경우) 임신과정 또는 산전검사에서 아래와 같은 태아 이상 가능성이 발견되었거나 진단을 받은 적이
                   있습니까?
                 </Grid>
@@ -913,7 +868,7 @@ export const Ltpa3500301 = ({
               </RadioGroup>
             </QuestionRadioCardHeader>
             <QuestionRadioCardContents>
-              <Grid className="w-full grid-cols-5 gap-[0.8rem] px-[1rem]">
+              <Grid className="w-full grid-cols-5 gap-[0.8rem] pl-6">
                 {[
                   '선천성기형,장애',
                   '신경학적결손',
@@ -989,7 +944,7 @@ export const Ltpa3500301 = ({
                 </Grow>
               </Grow>
             </QuestionRadioCardHeader>
-            <QuestionRadioCardContents>
+            <QuestionRadioCardContents className="pr-[1rem]">
               <Grid className="w-full">
                 <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType>
@@ -1053,34 +1008,39 @@ export const Ltpa3500301 = ({
                 ))}
               </RadioGroup>
             </QuestionRadioCardHeader>
-            <QuestionRadioCardContents>
+            <QuestionRadioCardContents className="pl-[3.4rem]">
               <FormTable
                 caption="FormTable 예시"
-                className=""
-                cols={['w-[5.3rem]', 'w-[auto]', 'w-[5.3rem]', 'w-[auto]', 'w-[5.3rem]', 'w-[auto]']}
+                className="formTable-fixed"
+                cols={['w-[6rem]', 'w-[auto]', 'w-[5.6rem]', 'w-[auto]', 'w-[5.6rem]', 'w-[auto]']}
                 lineTop
                 variant="none"
               >
                 <FormRow>
-                  <FormCell className="" title={<b className="text-[#000]">직업정보</b>} variant="default" colSpan={5}>
+                  <FormCell
+                    className="pl-0!"
+                    title={<b className="text-[#000]">직업정보</b>}
+                    variant="default"
+                    colSpan={5}
+                  >
                     <Input onChange={() => {}} width={100} value={'23511'} readOnly />
                     <Input onChange={() => {}} width={'100%'} value={'전기공학 개발자 및 연구원'} readOnly />
                   </FormCell>
                 </FormRow>
                 <FormRow>
-                  <FormCell className="" title={<b className="text-[#000]">직장명</b>} variant="default">
+                  <FormCell className="pl-0!" title={<b className="text-[#000]">직장명</b>} variant="default">
                     <Input onChange={() => {}} width={'100%'} value={'전기공학 개발자 및 연구원'} readOnly />
                   </FormCell>
-                  <FormCell className="" title={<b className="text-[#000]">직장명</b>} variant="default">
+                  <FormCell className="text-right" title={<b className="text-[#000]">직장명</b>} variant="default">
                     <Input onChange={() => {}} width={'100%'} value={'전기공학 개발자 및 연구원'} readOnly />
                   </FormCell>
-                  <FormCell className="" title={<b className="text-[#000]">직장명</b>} variant="default">
+                  <FormCell className="text-right" title={<b className="text-[#000]">직장명</b>} variant="default">
                     <Input onChange={() => {}} width={'100%'} value={'전기공학 개발자 및 연구원'} readOnly />
                   </FormCell>
                 </FormRow>
               </FormTable>
-              <Gcol className="w-full" placement="ss" variant="box-detail">
-                <Typo icon="detail" variant="body-sm">
+              <Gcol className="w-full py-2" placement="ss">
+                <Typo icon="ref" variant="body-sm">
                   보험계약 체결 당시 <b>직업*</b> 또는 <b>직무*</b>를 사실대로 알리지 않거나 보험계약 체결 후{' '}
                   <b>직업*</b> 또는 <b>직무*</b>가 <b>변경*</b>된 사실(예:사무관리 ↔ 현장관리)을 지체없이 회사에 알리지
                   않은 경우 계약 해지 등 알릴 의무 위반에 따른 <b>불이익*</b>이 발생할 수 있습니다.{' '}
@@ -1095,8 +1055,7 @@ export const Ltpa3500301 = ({
           >
             <QuestionRadioCardHeader>
               <QuestionRadioCardHeaderTitle className="items-center" badgeLabel="8">
-                현재 운전을 하고 있습니까? 운전하고 계신다면 다음 중 어느 것입니까? (해당하는 것에{' '}
-                <CheckIcon color="#FF5C2E" />표 하세요.)
+                현재 운전을 하고 있습니까? 운전하고 계신다면 다음 중 어느 것입니까? (해당하는 것에 ✓표 하세요.)
               </QuestionRadioCardHeaderTitle>
               <RadioGroup
                 className={'gap-[1.2rem] w-[11rem]'}
@@ -1121,7 +1080,7 @@ export const Ltpa3500301 = ({
                 ))}
               </RadioGroup>
             </QuestionRadioCardHeader>
-            <QuestionRadioCardContents>
+            <QuestionRadioCardContents className="pl-[3.4rem]">
               <Table variant="default">
                 <colgroup>
                   <col style={{ width: '6rem' }} />
@@ -1197,8 +1156,8 @@ export const Ltpa3500301 = ({
                   </TableRow>
                 </TableBody>
               </Table>
-              <Gcol className="w-full" placement="ss" variant="box-detail">
-                <Typo icon="detail" variant="body-sm">
+              <Gcol className="w-full py-2" placement="ss">
+                <Typo icon="ref" variant="body-sm">
                   기타에 해당하는 경우 차종을 구체적으로 기재하고, 둘 이상의 차량을 운전하거나 하나의 차량을 둘 이상의
                   목적으로 사용하는 경우 해당되는 사항을 모두 기재하십시오.
                 </Typo>
@@ -1238,12 +1197,12 @@ export const Ltpa3500301 = ({
               </RadioGroup>
             </QuestionRadioCardHeader>
             <QuestionRadioCardContents>
-              <Gcol className="w-full" placement="ss" variant="box-detail">
-                <Typo icon="detail" variant="body-sm">
+              <Gcol className="w-full pl-6 py-2" placement="ss">
+                <Typo icon="ref" variant="body-sm">
                   계속적으로 사용(직업, 직무 또는 동호회 활동과 출퇴근용도 등으로 주로 사용하는 경우에 한함)하는 경우
                   기재
                 </Typo>
-                <Typo icon="detail" variant="body-sm">
+                <Typo icon="ref" variant="body-sm">
                   본 질문에 ‘아니오’로 기재하고 보험계약 체결 후 <b>이륜자동차*</b> 또는 전동킥보드 등{' '}
                   <b>개인형이동장치*</b>를 포함한 <b>원동기장치 자전거*</b>를 사용하게 된 사실을 지체없이 회사에 알리지
                   않은 경우 계약해지 등 알릴 의무 위반에 따른 <b>불이익*</b>이 발생할 수 있습니다.{' '}
@@ -1259,7 +1218,7 @@ export const Ltpa3500301 = ({
             <QuestionRadioCardHeader>
               <QuestionRadioCardHeaderTitle badgeLabel="10">
                 최근 1년 이내에 다음과 같은 취미를 자주 반복적으로 하고 있거나 관련 자격증을 가지고 있습니까? (해당하는
-                것에 <CheckIcon color="#FF5C2E" />표 하세요.)
+                것에 ✓표 하세요.)
               </QuestionRadioCardHeaderTitle>
               <RadioGroup
                 className={'gap-[1.2rem] w-[11rem]'}
@@ -1284,8 +1243,8 @@ export const Ltpa3500301 = ({
                 ))}
               </RadioGroup>
             </QuestionRadioCardHeader>
-            <QuestionRadioCardContents>
-              <Grid className="w-full grid-cols-4 gap-[0.8rem] px-[1rem]">
+            <QuestionRadioCardContents className="pl-[3.4rem]">
+              <Grid className="w-full grid-cols-4 gap-[0.8rem] pb-1">
                 {[
                   '스쿠버다이바이',
                   '행글라이딩, 패러글라이딩',
@@ -1312,26 +1271,28 @@ export const Ltpa3500301 = ({
                 ))}
               </Grid>
 
-              <Grid className="w-full gap-[0.8rem] px-[1rem] flex items-center flex-row">
-                <RadioGroup
-                  className="gap-2 flex w-[11rem]"
-                  errorMsg="하나를 선택해주세요."
-                  errorPs="bl"
-                  value={periodType}
-                  onValueChange={setPeriodType}
-                  disabled={simpleMode}
-                >
-                  {[
-                    { value: 'option1', label: '년간' },
-                    { value: 'option2', label: '월간' },
-                  ].map((item) => (
-                    <RadioGroupItem key={item.value} value={item.value}>
-                      {item.label}
-                    </RadioGroupItem>
-                  ))}
-                </RadioGroup>
+              <Divider dir="row" color="gray-light" className="w-full" />
 
-                <Grid className="grid-flow-col gap-3">
+              <Grow className="w-full gap-[0.8rem]" placement="bwc">
+                <Grow gap={3}>
+                  <RadioGroup
+                    className="gap-2 w-[11rem]"
+                    errorMsg="하나를 선택해주세요."
+                    errorPs="bl"
+                    value={periodType}
+                    onValueChange={setPeriodType}
+                    disabled={simpleMode}
+                  >
+                    {[
+                      { value: 'option1', label: '년간' },
+                      { value: 'option2', label: '월간' },
+                    ].map((item) => (
+                      <RadioGroupItem key={item.value} value={item.value}>
+                        {item.label}
+                      </RadioGroupItem>
+                    ))}
+                  </RadioGroup>
+                  <Divider color="gray-light" />
                   <Grow className="justify-start items-center">
                     <Checkbox onCheckedChange={() => {}} size="lg" variant="default" disabled={!periodType} value="c">
                       횟수
@@ -1345,21 +1306,22 @@ export const Ltpa3500301 = ({
                       readOnly={!periodType}
                     />
                   </Grow>
-                  <Grow className="justify-start items-center">
-                    <Checkbox onCheckedChange={() => {}} size="lg" variant="default" disabled={simpleMode} value="d">
-                      자격증명칭
-                    </Checkbox>
-                    <Input
-                      onChange={(e) => setFormField('type03', e.target.value)}
-                      size="lg"
-                      value={form.type03}
-                      variant="default"
-                      width={312}
-                      readOnly={simpleMode}
-                    />
-                  </Grow>
-                </Grid>
-              </Grid>
+                </Grow>
+
+                <Grow placement="ec">
+                  <Checkbox onCheckedChange={() => {}} size="lg" variant="default" disabled={simpleMode} value="d">
+                    자격증명칭
+                  </Checkbox>
+                  <Input
+                    onChange={(e) => setFormField('type03', e.target.value)}
+                    size="lg"
+                    width={300}
+                    value={form.type03}
+                    variant="default"
+                    readOnly={simpleMode}
+                  />
+                </Grow>
+              </Grow>
             </QuestionRadioCardContents>
           </QuestionRadioCard>
           <QuestionRadioCard
@@ -1393,8 +1355,8 @@ export const Ltpa3500301 = ({
                 ))}
               </RadioGroup>
             </QuestionRadioCardHeader>
-            <QuestionRadioCardContents>
-              <Grow gap={4} placement="sc" className="px-2.5">
+            <QuestionRadioCardContents className="pl-[3.4rem]">
+              <Grow gap={4} placement="sc">
                 <Typo variant="body-lg" weight={'bold'}>
                   “예”인 경우 업무명{' '}
                 </Typo>
@@ -1435,7 +1397,7 @@ export const Ltpa3500301 = ({
               </RadioGroup>
             </QuestionRadioCardHeader>
             <QuestionRadioCardContents>
-              <Grid className="w-full grid-cols-2 gap-[0.8rem] px-[1rem]">
+              <Grid className="w-full grid-cols-2 gap-[0.8rem] pl-6">
                 <Grid className="grid-cols-[auto_1fr] items-center">
                   <Checkbox onCheckedChange={() => {}} size="lg" variant="default" disabled={simpleMode}>
                     해외출국기간
@@ -1505,7 +1467,7 @@ export const Ltpa3500301 = ({
               </RadioGroup>
             </QuestionRadioCardHeader>
             <QuestionRadioCardContents>
-              <Grid className="w-full grid-cols-[1fr_1fr] px-2.5">
+              <Grid className="w-full grid-cols-[auto_1fr] gap-6 pl-6">
                 <Grow className="justify-start" gap={2}>
                   <Typo variant="body-lg" weight={'bold'}>
                     음주횟수
@@ -1575,7 +1537,7 @@ export const Ltpa3500301 = ({
               </RadioGroup>
             </QuestionRadioCardHeader>
             <QuestionRadioCardContents>
-              <Grid className="w-full grid-cols-[1fr_1fr] px-2.5">
+              <Grid className="w-full grid-cols-[auto_1fr] gap-6 pl-6">
                 <Grow className="justify-start" gap={2}>
                   <Typo variant="body-lg" weight={'bold'}>
                     흡연량
@@ -1645,7 +1607,7 @@ export const Ltpa3500301 = ({
               </RadioGroup>
             </QuestionRadioCardHeader>
             <QuestionRadioCardContents>
-              <Grid className="w-full gap-3 px-2.5 grid-cols-[1fr_1fr_1fr]">
+              <Grid className="w-full gap-3 pl-6 grid-cols-[1fr_1fr_1fr]">
                 <Grid className="grid-cols-[auto_1fr] items-center">
                   <Checkbox
                     color="primary"
@@ -1739,7 +1701,7 @@ export const Ltpa3500301 = ({
               </RadioGroup>
             </QuestionRadioCardHeader>
             <QuestionRadioCardContents>
-              <Grid className="w-full grid-cols-[1fr_1fr] px-2.5">
+              <Grid className="w-full grid-cols-[auto_1fr] gap-6  pl-6">
                 <Grow className="justify-start" gap={2}>
                   <Typo variant="body-lg" weight={'bold'}>
                     키

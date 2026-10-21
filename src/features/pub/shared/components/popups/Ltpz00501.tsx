@@ -297,10 +297,16 @@ const Ltpz00501 = ({ onClose }: Ltpz00501Props) => {
             <Gcol gap={3} placement="ss">
               {/* 1. 청약완료 전 필수 확인사항 영역 */}
               <Gcol placement="ss">
-                <Typo tag={'strong'} variant={'body-lg'}>
-                  청약완료 전 필수 확인사항
-                </Typo>
-                <FormTable cols={['w-[20.4rem]', 'w-auto']}>
+                <Grow className="w-full" placement="bwc">
+                  <Typo tag={'strong'} variant={'body-lg'}>
+                    청약완료 전 필수 확인사항
+                  </Typo>
+
+                  <Typo tag={'span'} icon={'info'}>
+                    다음 단계로 넘어가기 위해 꼭 필요한 사항입니다. 항목별 버튼 등을 통해 편리하게 입력하세요.
+                  </Typo>
+                </Grow>
+                <FormTable cols={['w-[22rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={<b>유사계약현황 확인</b>}>
                       <Grow gap={2}>
@@ -414,7 +420,7 @@ const Ltpz00501 = ({ onClose }: Ltpz00501Props) => {
                 <Typo tag={'strong'} variant={'body-lg'}>
                   청약완료 불가사항
                 </Typo>
-                <FormTable cols={['w-[20.4rem]', 'w-auto']}>
+                <FormTable cols={['w-[22rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={<b>타인의 사망보험 동의 확인 강화</b>}>
                       <Grow gap={1}>
@@ -445,7 +451,7 @@ const Ltpz00501 = ({ onClose }: Ltpz00501Props) => {
                   <FormRow>
                     <FormCell
                       title={
-                        <Grow placement="sc">
+                        <>
                           전환대상 계약 변경/해약 확인
                           <TooltipQ>
                             전환용 실손의료비 청약완료 가능한 조건은 아래와 같습니다.
@@ -458,7 +464,7 @@ const Ltpz00501 = ({ onClose }: Ltpz00501Props) => {
                               </BulletListItem>
                             </BulletList>
                           </TooltipQ>
-                        </Grow>
+                        </>
                       }
                     >
                       <Typo variant={'body-md'}>전환전 계약 : LA123456789012</Typo>
@@ -503,7 +509,7 @@ const Ltpz00501 = ({ onClose }: Ltpz00501Props) => {
                 <Typo tag={'strong'} variant={'body-lg'}>
                   참고사항
                 </Typo>
-                <FormTable cols={['w-[20.4rem]', 'w-auto']}>
+                <FormTable cols={['w-[22rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={<b>유의승환</b>}>13회차, 25회차, 37회차</FormCell>
                   </FormRow>
@@ -528,7 +534,6 @@ const Ltpz00501 = ({ onClose }: Ltpz00501Props) => {
                       }}
                       rowClassRules={{}}
                       enableCellSpan={true}
-                      suppressRowTransform={true}
                       onGridReady={onGridReady}
                       domLayout="autoHeight"
                       animateRows={false}

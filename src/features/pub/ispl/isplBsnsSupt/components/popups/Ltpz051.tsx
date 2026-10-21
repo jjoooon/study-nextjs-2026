@@ -156,7 +156,7 @@ const Ltpz051 = ({ data, loading }: Ltpz051Props) => {
       headerName: '증권번호',
       field: 'policyNumber',
       flex: 1,
-      minWidth: attributeColumnWidth(100),
+      minWidth: attributeColumnWidth(126),
       cellClass: 'text-center',
     },
     {
@@ -236,7 +236,7 @@ const Ltpz051 = ({ data, loading }: Ltpz051Props) => {
     {
       headerName: '증권번호',
       field: 'field02',
-      minWidth: attributeColumnWidth(120),
+      minWidth: attributeColumnWidth(126),
       flex: 1,
       // 2026-05-27 링크로 변경
       cellClass: 'text-center',

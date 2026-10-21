@@ -61,7 +61,7 @@ const Ltpz101 = () => {
       headerName: '피보험자',
       field: 'field1',
       flex: 1,
-      minWidth: attributeColumnWidth(70),
+      minWidth: attributeColumnWidth(78),
       cellClass: 'text-center',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
     },

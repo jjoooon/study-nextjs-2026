@@ -80,7 +80,7 @@ const Ltpz079 = ({ data, loading }: Ltpz079Props) => {
     {
       headerName: '순번',
       field: 'field03',
-      minWidth: attributeColumnWidth(30),
+      minWidth: attributeColumnWidth(40),
       flex: 1,
       cellClass: 'text-center',
       // 툴팁은 문서명에만 적용되므로 여기서는 제거
@@ -88,7 +88,7 @@ const Ltpz079 = ({ data, loading }: Ltpz079Props) => {
     {
       headerName: '피보험자',
       field: 'field04',
-      minWidth: attributeColumnWidth(70),
+      minWidth: attributeColumnWidth(74),
       flex: 1,
       cellClass: 'text-center',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
@@ -96,7 +96,7 @@ const Ltpz079 = ({ data, loading }: Ltpz079Props) => {
     {
       headerName: '소재지(목적물순번)',
       field: 'field05',
-      minWidth: attributeColumnWidth(100),
+      minWidth: attributeColumnWidth(114),
       flex: 1,
       cellClass: 'text-center',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field05' }),
@@ -112,14 +112,14 @@ const Ltpz079 = ({ data, loading }: Ltpz079Props) => {
     {
       headerName: '스캔일시',
       field: 'field06',
-      minWidth: attributeColumnWidth(120),
+      minWidth: attributeColumnWidth(130),
       flex: 1,
       cellClass: 'text-center',
     },
     {
       headerName: '스캔처리자',
       field: 'field07',
-      minWidth: attributeColumnWidth(70),
+      minWidth: attributeColumnWidth(74),
       flex: 1,
       cellClass: 'text-center',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field07' }),
@@ -170,7 +170,7 @@ const Ltpz079 = ({ data, loading }: Ltpz079Props) => {
             <FormTable caption="보험정보" cols={['w-auto', 'w-auto']} variant="head">
               <FormRow>
                 <FormCell title={'가입설계번호'}>
-                  <Input aria-label="" width={131} value={'LA12345678901234'} required />
+                  <Input aria-label="" width={'quoteNo'} value={'LA12345678901234'} required />
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>

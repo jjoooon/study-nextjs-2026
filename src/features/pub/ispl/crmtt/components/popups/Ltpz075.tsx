@@ -49,7 +49,7 @@ const Ltpz075 = () => {
           </Grow>
           <Table variant="default">
             <colgroup>
-              <col style={{ width: '14rem' }} />
+              <col style={{ width: '15rem' }} />
               <col style={{ width: 'auto' }} />
               <col style={{ width: 'auto' }} />
               <col style={{ width: 'auto' }} />

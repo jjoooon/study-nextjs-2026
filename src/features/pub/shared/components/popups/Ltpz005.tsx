@@ -94,15 +94,6 @@ const Ltpz005 = ({
                   <Typo tag="span" variant={'body-lg'} color={'gray'}>
                     납입 후 50%해약환급금지급형
                   </Typo>
-                  <Divider variant={'dot'} className="bg-[#6B7280] rounded-full" />
-                  <Typo tag="span" variant={'body-lg'} color={'gray'}>
-                    간편고지형
-                  </Typo>
-                </Grow>
-                <Grow>
-                  <Typo tag="span" variant={'body-lg'} color={'gray'}>
-                    9형(365간편고지형)(올인원플랜)(5~12형)(15-80세)
-                  </Typo>
                 </Grow>
               </Gcol>
               <Grow>
@@ -120,7 +111,7 @@ const Ltpz005 = ({
             {/* 왼쪽: 세로형 탭 메뉴 영역 */}
             <Gcol
               placement="ss"
-              className="w-[6.4rem] overflow-hidden pb-[0.8rem] h-full max-h-[calc(100dvh-29rem)] mr-[-1px]"
+              className="w-[6.4rem] overflow-hidden pb-[10rem] h-full max-h-[calc(100dvh-29rem)] mr-[-1px]"
               gap={0}
             >
               {tabs.map((tab, index) => {

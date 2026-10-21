@@ -252,6 +252,11 @@ const handleRemoveTab = (value: string) => {
                   <td>boolean (기본값: true)</td>
                   <td>좌우 버튼으로 페이지 이동 시 이동한 페이지의 첫 번째 탭 자동 선택 여부</td>
                 </tr>
+                <tr>
+                  <td>showPagination</td>
+                  <td>boolean (기본값: true)</td>
+                  <td>페이지네이션 컨트롤(페이지 번호, 화살표 버튼, 전체 목록 드롭다운) 표시 여부</td>
+                </tr>
               </tbody>
             </table>
           </>
@@ -280,6 +285,11 @@ const handleRemoveTab = (value: string) => {
     autoSelectFirstTab: {
       control: 'boolean',
       description: '좌우 버튼 이동 시 해당 페이지의 첫 번째 탭 자동 선택 여부',
+      table: { category: '설정 props' },
+    },
+    showPagination: {
+      control: 'boolean',
+      description: '페이지네이션 컨트롤(페이지 번호, 화살표 버튼 등) 표시 여부',
       table: { category: '설정 props' },
     },
     visibleCount: {

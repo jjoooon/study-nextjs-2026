@@ -493,7 +493,7 @@ export const Ltpa35005 = () => {
                           </RadioGroup>
                           {/* M5. 버튼명 수정 */}
                           <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                            FATCA/CRA정보
+                            FATCA/CRS정보
                           </Button>
                         </Grow>
                       </FormCell>

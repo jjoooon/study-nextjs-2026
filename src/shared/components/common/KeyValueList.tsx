@@ -2,7 +2,7 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 import { cn } from '@/shared/lib/shadcn/utils';
-import { Grow, Typo } from '@atoms';
+import { Grow, Typo, Divider } from '@atoms';
 
 /**
  * KeyValueList 내에 들어가는 개별 Key-Value 아이템 타입입니다.
@@ -108,7 +108,7 @@ interface KeyValueItemProps {
    * - `error`: 빨간색 텍스트의 경고 스타일
    * @default 'default'
    */
-  variant?: 'default' | 'info' | 'error';
+  variant?: 'default' | 'info' | 'error' | 'plan';
 }
 
 /**
@@ -117,13 +117,29 @@ interface KeyValueItemProps {
 export const KeyValueItem = ({ label, children, className, variant = 'default' }: KeyValueItemProps) => {
   const variantStyles = {
     default: '',
-    info: '[&>div]:text-[1.3rem] [&>div]:text-[var(--color-gray-70)] flex gap-2 items-center [&>div+div]:text-[var(--color-gray-100)] [&>div+div]:font-bold',
+    info: 'flex gap-2 items-center [&>div+div]:text-[var(--color-gray-100)] [&>div+div]:font-bold',
     error: '[&>div]:text-[var(--color-text-danger)]',
+    plan: 'flex gap-2 ',
+  };
+  const dtStyle = {
+    default: '',
+    info: 'text-[1.3rem] text-[var(--color-gray-70)]',
+    error: '[&>div]:text-[var(--color-text-danger)]',
+    plan: 'text-[1.2rem] text-[var(--color-gray-70)] font-bold shrink-0',
+  };
+  const ddStyle = {
+    default: '',
+    info: 'text-[var(--color-gray-100)] font-bold',
+    error: '[&>div]:text-[var(--color-text-danger)]',
+    plan: 'text-[1.2rem]',
   };
   return (
-    <Grow className={cn(className, variantStyles[variant])}>
-      <Typo tag="div">{label}</Typo>
-      <Grow>{children}</Grow>
+    <Grow className={cn(className, variantStyles[variant])} placement="sc">
+      <Typo tag="div" className={cn(className, dtStyle[variant])}>
+        {label}
+      </Typo>
+      {variant === 'plan' && <Divider />}
+      <Grow className={cn(className, ddStyle[variant])}>{children}</Grow>
     </Grow>
   );
 };

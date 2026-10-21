@@ -131,7 +131,7 @@ const Ltpz116 = () => {
     {
       headerName: '구분',
       field: 'field1',
-      width: attributeColumnWidth(80),
+      width: attributeColumnWidth(86),
     },
     {
       headerName: '설계번호',

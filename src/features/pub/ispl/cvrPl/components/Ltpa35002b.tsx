@@ -199,7 +199,7 @@ export function Ltpa35002b({
     onSelectedIdsChange: (selectedIds) => {
       prevSelectedIdsRef.current = selectedIds;
     },
-    refreshColumns: ['field5', 'field6', 'rowCopy'],
+    refreshColumns: ['field5', 'field5b', 'field6', 'rowCopy'],
   });
 
   // 셀 클릭 시 선택 토글(입력/버튼 클릭은 유지) 공통 핸들러
@@ -253,13 +253,16 @@ export function Ltpa35002b({
     [gridReadyHandler]
   );
 
-  const handleCellValueChanged = useCallback((params: CellValueChangedEvent<AgGridRow>) => {
-    const { data, colDef, newValue } = params;
-    if (!colDef.field) return;
-    setRowData((prev) =>
-      prev.map((row) => (row.id === data.id ? { ...row, [colDef.field as string]: newValue } : row))
-    );
-  }, []);
+  const handleCellValueChanged = useCallback(
+    (params: CellValueChangedEvent<AgGridRow>) => {
+      const { data, colDef, newValue } = params;
+      if (!colDef.field) return;
+      setRowData((prev) =>
+        prev.map((row) => (row.id === data.id ? { ...row, [colDef.field as string]: newValue } : row))
+      );
+    },
+    [setRowData]
+  );
 
   // ---------------------------------------------------
   // ColDef 태아
@@ -365,15 +368,16 @@ export function Ltpa35002b({
         children: [
           {
             headerName: '출생전',
+            field: 'field5',
             flex: 1,
-            minWidth: attributeColumnWidth(60),
+            minWidth: attributeColumnWidth(70),
             cellClassRules: editableCellClassRules<AgGridRow>(),
             cellClass: (params: CellClassParams<AgGridRow>) => {
               const base = 'tracking-tighter';
-              return params.data?.isEditedField5 === true ? base : `${base} no-edited`;
+              return params.data?.isEditedField5b === true ? `${base} editable-cell` : `${base} no-edited`;
             },
             editable: (params: EditableCallbackParams) => {
-              return params.data?.isEditedField5 === true;
+              return params.data?.isEditedField5b === true;
             },
             cellEditor: 'agRichSelectCellEditor',
             cellEditorParams: {
@@ -404,10 +408,10 @@ export function Ltpa35002b({
             cellClassRules: editableCellClassRules<AgGridRow>(),
             cellClass: (params: CellClassParams<AgGridRow>) => {
               const base = 'tracking-tighter';
-              return params.data?.isEditedField5 === true ? `${base} editable-cell` : `${base} no-edited`;
+              return params.data?.isEditedField5b === true ? `${base} editable-cell` : `${base} no-edited`;
             },
             editable: (params: EditableCallbackParams) => {
-              return params.data?.isEditedField5 === true;
+              return params.data?.isEditedField5b === true;
             },
             cellEditor: 'agRichSelectCellEditor',
             cellEditorParams: {
@@ -454,7 +458,7 @@ export function Ltpa35002b({
         },
         field: 'field8',
         flex: 1,
-        minWidth: attributeColumnWidth(50),
+        minWidth: attributeColumnWidth(46),
         cellClass: 'text-center px-0! tracking-tighter',
         cellRenderer: uwIconRenderer,
       },

@@ -127,7 +127,7 @@ const Ltpz00504 = ({ onClose, recommendData: propRecommendData }: Ltpz00504Props
       headerName: '가입금액(원)',
       field: 'amount',
       flex: 1,
-      minWidth: attributeColumnWidth(70),
+      minWidth: attributeColumnWidth(78),
       cellClass: 'text-right',
       cellRenderer: (params: { value: string | number }) => {
         const value = String(params.value ?? '');
@@ -165,7 +165,7 @@ const Ltpz00504 = ({ onClose, recommendData: propRecommendData }: Ltpz00504Props
       headerName: '기간',
       field: 'date',
       flex: 1,
-      minWidth: attributeColumnWidth(60),
+      minWidth: attributeColumnWidth(64),
       cellClass: 'text-center',
       cellRenderer: (params: { value: string | number }) => {
         const value = String(params.value ?? '');

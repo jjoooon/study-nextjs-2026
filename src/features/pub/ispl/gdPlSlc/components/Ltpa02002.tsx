@@ -309,7 +309,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
       headerName: '가입금액(만원)',
       field: 'field2',
       flex: 1,
-      minWidth: attributeColumnWidth(70),
+      minWidth: attributeColumnWidth(78),
       cellClass: 'text-right',
       headerClass: '!text-[1.1rem] leading-[2.6rem]',
       valueFormatter: numberValueFormatter<DummyDataListDetailType>,

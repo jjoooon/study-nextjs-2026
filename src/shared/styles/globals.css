@@ -659,7 +659,7 @@
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
+    text-rendering: auto;
   }
 
   /* 2. 브라우저 기본 스타일로 인해 상속이 끊기는 폼/인터랙션 요소 강제 상속 */
@@ -689,6 +689,9 @@
     border-right: 1px solid #ccc;
     overflow-x: auto;
     height: 100%;
+  }
+  [role="dialog"]   [data-layout='main'] {
+    min-width: 0;
   }
   [data-layout='main'] {
     min-width: 119.5rem;
@@ -790,10 +793,6 @@
 
   svg,
   .svg-icon {
-    /* 3D 렌더링 컨텍스트 활성화로 서브픽셀 뭉개짐 완화 */
-    transform: translateZ(0);
-    backface-visibility: hidden;
-
     /* 확대/축소 시 리샘플링 품질 유지 */
     image-rendering: -webkit-optimize-contrast;
   }

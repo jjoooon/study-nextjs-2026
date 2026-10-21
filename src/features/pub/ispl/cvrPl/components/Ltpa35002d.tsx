@@ -369,7 +369,7 @@ export function Ltpa35002d({
         },
         field: 'insuredAmount',
         flex: 1,
-        minWidth: attributeColumnWidth(74),
+        minWidth: attributeColumnWidth(86),
         cellClass: 'text-right editable-cell [&_input]:text-right',
         cellClassRules: {
           // 셀 조건에 따라 다르게 지정할 CSS 스타일 규칙 매핑
