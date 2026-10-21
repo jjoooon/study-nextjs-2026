@@ -210,7 +210,9 @@ const Ltpz067 = () => {
         headerName: '할인명',
         field: 'field01',
         width: attributeColumnWidth(200),
+        cellClass: '!leading-[1.4] !py-1 break-all text-center',
         autoHeight: true,
+        wrapText: true,
       },
       {
         headerName: '할인상세',
@@ -238,7 +240,7 @@ const Ltpz067 = () => {
         </DialogHeader>
 
         <DialogSection>
-          <Grid className="w-full grid-rows-[auto_auto_auto]" gap={3}>
+          <Grid className="w-full grid-rows-[auto_auto_minmax(0,1fr)]" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'ss'}>
               <FormTable variant="head">
                 {/* 2026-05-27 variant 추가 */}
@@ -283,7 +285,7 @@ const Ltpz067 = () => {
             <TableFold>
               <TableFoldHead title="할인종류" />
               <TableFoldBody>
-                <div className="ag-theme-alpine inner-scroll" data-row={DummyData2.length}>
+                <div className="ag-theme-alpine min-h-[20rem]">
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -294,6 +296,7 @@ const Ltpz067 = () => {
                       resizable: true,
                     }}
                     animateRows={false}
+                    domLayout="normal"
                   />
                 </div>
               </TableFoldBody>

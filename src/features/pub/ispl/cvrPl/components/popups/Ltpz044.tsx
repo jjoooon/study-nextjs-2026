@@ -78,7 +78,7 @@ const Ltpz044 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = useMemo(
     () => [
       {
-        headerName: '구문',
+        headerName: '구분',
         field: 'field01',
         flex: 1,
         minWidth: attributeColumnWidth(70),
@@ -139,7 +139,7 @@ const Ltpz044 = () => {
         valueFormatter: (params) => formatNumericValue(params.value),
       },
       {
-        headerName: '합계보험료(=적용보험료)',
+        headerName: '납입할보험료(=적용보험료)',
         field: 'field07',
         flex: 2,
         minWidth: attributeColumnWidth(90),

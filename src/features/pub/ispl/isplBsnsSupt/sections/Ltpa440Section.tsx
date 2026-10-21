@@ -302,25 +302,33 @@ export default function Ltpa440Section() {
                 <TableFoldHead title="이관사항 및 결과"></TableFoldHead>
                 <TableFoldBody>
                   <FormTable
+                    className="formTable-fixed"
                     caption="계약자 관련 정보 입력하세요."
-                    cols={['w-[6%]', 'w-[6%]', 'w-auto', 'w-[6%]', 'w-[6%]', 'w-auto', 'w-[6%]', 'w-auto']}
+                    cols={['w-[6rem]', 'w-[7rem]', 'w-auto', 'w-[8.4rem]', 'w-[7rem]', 'w-auto', 'w-[7rem]', 'w-auto']}
                   >
                     <FormRow>
                       <FormCell title="변경전" titleRowSpan={2} tdNone />
                       <FormCell title="취급지점">
-                        <Input width={100} value="" readOnly />
-                        <Input width="full" value="" readOnly />
+                        <Grid className="w-full grid-cols-[auto_1fr]">
+                          <Input width={80} value="" readOnly />
+                          <Input width="full" value="" readOnly />
+                        </Grid>
                       </FormCell>
                       <FormCell title="변경후" tdNone />
-                      <FormCell title="취급지점" colSpan={1}>
-                        <Input width={100} value="1231234" readOnly />
-                        <Input width="full" value="" readOnly />
+                      <FormCell title="취급지점" tdClassName="border-r-[0]!">
+                        <Grid className="w-full grid-cols-[auto_1fr]">
+                          <Input width={80} value="" readOnly />
+                          <Input width="full" value="" readOnly />
+                        </Grid>
                       </FormCell>
+                      <FormCell title="" className="bg-[#fff] border-r-[0]!" />
                     </FormRow>
                     <FormRow>
                       <FormCell title="취급직원">
-                        <Input width={100} value="1231234" readOnly />
-                        <Input width="full" value="" readOnly />
+                        <Grid className="w-full grid-cols-[auto_1fr]">
+                          <Input width={80} value="" readOnly />
+                          <Input width="full" value="" readOnly />
+                        </Grid>
                       </FormCell>
                       <FormCell
                         title={
@@ -331,12 +339,16 @@ export default function Ltpa440Section() {
                         tdNone
                       />
                       <FormCell title="취급직원">
-                        <Input width={100} value="1231234" readOnly />
-                        <Input width={'full'} value="" readOnly />
+                        <Grid className="w-full grid-cols-[auto_1fr]">
+                          <Input width={80} value="" readOnly />
+                          <Input width="full" value="" readOnly />
+                        </Grid>
                       </FormCell>
                       <FormCell title="사용인">
-                        <Input width={100} value="1231234" readOnly />
-                        <Input width={'full'} value="" readOnly />
+                        <Grid className="w-full grid-cols-[auto_1fr]">
+                          <Input width={80} value="" readOnly />
+                          <Input width="full" value="" readOnly />
+                        </Grid>
                       </FormCell>
                     </FormRow>
                   </FormTable>
