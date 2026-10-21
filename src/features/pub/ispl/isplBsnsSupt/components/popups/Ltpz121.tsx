@@ -45,45 +45,47 @@ const Ltpz121 = () => {
         </DialogHeader>
 
         {/* 팝업 본문 */}
-        <DialogSection className="flex flex-col gap-4">
-          {/* 상단 안내 문구 */}
+        <DialogSection>
           <Gcol placement="ss">
-            <Typo variant={'body-md'}>
-              모바일 약관 전달 대상이나 계약자 미확인 상태입니다.<br></br> 모바일 외 방법으로 어떻게 계약자에게
-              전달하셨는지 선택하시기 바랍니다.<br></br> (약관 미전달 시 청약완료 불가)
-            </Typo>
-          </Gcol>
+            {/* 상단 안내 문구 */}
+            <Gcol placement="ss">
+              <Typo variant={'body-md'}>
+                모바일 약관 전달 대상이나 계약자 미확인 상태입니다.<br></br> 모바일 외 방법으로 어떻게 계약자에게
+                전달하셨는지 선택하시기 바랍니다.<br></br> (약관 미전달 시 청약완료 불가)
+              </Typo>
+            </Gcol>
 
-          {/* 라디오 그룹 (전달 방법 선택) */}
-          <RadioGroup
-            value={deliveryMethod}
-            onValueChange={setDeliveryMethod}
-            className="flex flex-col items-start gap-2 w-full pt-1"
-          >
-            <RadioGroupItem value="직접전달">직접전달</RadioGroupItem>
-            <RadioGroupItem value="우편전달">우편전달</RadioGroupItem>
-            <Grow className="w-full items-center gap-2">
-              <RadioGroupItem value="기타방법으로 전달" className="shrink-0">
-                기타방법으로 전달
-              </RadioGroupItem>
-              <Input
-                aria-label="기타방법 상세 내용"
-                className="flex-1"
-                value={etcDetail}
-                onChange={(e) => {
-                  setEtcDetail(e.target.value);
-                  if (deliveryMethod !== '기타방법으로 전달') {
-                    setDeliveryMethod('기타방법으로 전달');
-                  }
-                }}
-                onFocus={() => {
-                  if (deliveryMethod !== '기타방법으로 전달') {
-                    setDeliveryMethod('기타방법으로 전달');
-                  }
-                }}
-              />
-            </Grow>
-          </RadioGroup>
+            {/* 라디오 그룹 (전달 방법 선택) */}
+            <RadioGroup
+              value={deliveryMethod}
+              onValueChange={setDeliveryMethod}
+              className="flex flex-col items-start gap-2 w-full pt-1"
+            >
+              <RadioGroupItem value="직접전달">직접전달</RadioGroupItem>
+              <RadioGroupItem value="우편전달">우편전달</RadioGroupItem>
+              <Grow className="w-full items-center gap-2">
+                <RadioGroupItem value="기타방법으로 전달" className="shrink-0">
+                  기타방법으로 전달
+                </RadioGroupItem>
+                <Input
+                  aria-label="기타방법 상세 내용"
+                  className="flex-1"
+                  value={etcDetail}
+                  onChange={(e) => {
+                    setEtcDetail(e.target.value);
+                    if (deliveryMethod !== '기타방법으로 전달') {
+                      setDeliveryMethod('기타방법으로 전달');
+                    }
+                  }}
+                  onFocus={() => {
+                    if (deliveryMethod !== '기타방법으로 전달') {
+                      setDeliveryMethod('기타방법으로 전달');
+                    }
+                  }}
+                />
+              </Grow>
+            </RadioGroup>
+          </Gcol>
         </DialogSection>
 
         <DialogFooter>
