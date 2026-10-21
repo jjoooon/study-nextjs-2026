@@ -2023,3 +2023,8 @@ html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked
 .ag-theme-alpine .ag-row.package-group-divider .ag-cell {
   border-top: none !important;
 }
+
+.v109 .ag-cell-value .masking [data-slot="input"]{
+  background: none;
+  border: none;
+}
