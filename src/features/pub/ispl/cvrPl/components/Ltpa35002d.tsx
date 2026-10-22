@@ -441,7 +441,7 @@ export function Ltpa35002d({
         headerName: '만기',
         field: 'field5',
         flex: 1,
-        minWidth: attributeColumnWidth(64),
+        minWidth: attributeColumnWidth(88),
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           const base = 'tracking-tighter';
@@ -462,7 +462,7 @@ export function Ltpa35002d({
         headerName: '납기',
         field: 'field6',
         flex: 1,
-        minWidth: attributeColumnWidth(64),
+        minWidth: attributeColumnWidth(68),
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           const base = 'tracking-tighter';

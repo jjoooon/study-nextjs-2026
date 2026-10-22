@@ -480,7 +480,7 @@ export function Ltpa35002c({
         headerName: '만기',
         field: 'field5',
         flex: 1,
-        minWidth: attributeColumnWidth(70),
+        minWidth: attributeColumnWidth(88),
         cellClassRules: editableCellClassRules<AgGridRow2>(),
         cellClass: (params: CellClassParams<AgGridRow2>) => {
           // 편집 가능 여부를 class로 시각화(no-edited)
@@ -492,7 +492,7 @@ export function Ltpa35002c({
         },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
-          values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
+          values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세만기', '무제한'],
         },
         cellRenderer: getExpiryRenderer('center'),
       },

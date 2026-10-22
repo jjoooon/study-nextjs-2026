@@ -58,7 +58,7 @@
   {
     "id": "LTPZ007",
     "title": "담보전환",
-    "width": 560,
+    "width": 760,
     "height": 376,
     "isIframe": false
   },
@@ -904,7 +904,7 @@
   },
   {
     "id": "LTPZ122",
-    "title": "대안설계 상세보기",
+    "title": "취급자 설명확인 전자서명 전 유의사항",
     "width": 760,
     "height": 564,
     "isIframe": true

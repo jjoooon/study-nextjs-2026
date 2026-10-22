@@ -96,7 +96,10 @@ const SelectionClearHeader = () => (
       </Button>
     </TooltipTrigger>
     <TooltipContent variant="default" side="top" align="start" sideOffset={-4}>
-      선택 담보를 전체 해제합니다.
+      <Gcol placement="ss" className="gap-1 py-1">
+        선택 담보를 전체 해제합니다.
+        <Button size="sm">전체 해제</Button>
+      </Gcol>
     </TooltipContent>
   </Tooltip>
 );
@@ -447,7 +450,7 @@ export function Ltpa35002a({
           values: ['05년만기', '20세만기', '100세만기', '무제한'],
           valueListMaxWidth: 90,
         },
-        cellRenderer: getExpiryRenderer('left'),
+        cellRenderer: getExpiryRenderer('right'),
       },
       {
         headerName: '납기',
@@ -467,7 +470,7 @@ export function Ltpa35002a({
           values: ['5년납', '10년납', '15년납', '20년납', '25년납', '30년납', '35년납', '전기납'],
           valueListMaxWidth: 90,
         },
-        cellRenderer: getExpiryRenderer('left'),
+        cellRenderer: getExpiryRenderer('right'),
       },
 
       {

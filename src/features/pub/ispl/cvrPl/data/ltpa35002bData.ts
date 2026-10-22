@@ -141,9 +141,9 @@ export const dummyData: DummyDataType[] = [
     field4: 4500,
     field4b: 100,
 
-    field5: '05개월',
-    field5b: '80세',
-    isEditedField5b: true,
+    field5: '80개월만기',
+    field5b: '80세납',
+    isEditedField5b: false,
 
     field6: '20년',
     isEditedField6: true,

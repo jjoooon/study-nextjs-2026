@@ -1635,13 +1635,13 @@ export function editableSelectCellRenderer<RowType>(
 
   if (align === 'left') {
     textClass = 'text-left';
-    defaultPaddingClass = 'pr-[1.6rem]';
+    defaultPaddingClass = 'pr-[1.4rem]';
   } else if (align === 'center') {
     textClass = 'text-center';
-    defaultPaddingClass = 'pr-[1.2rem]';
+    defaultPaddingClass = 'pr-[1.4rem]';
   } else if (align === 'right') {
     textClass = 'text-right';
-    defaultPaddingClass = 'pr-[1.2rem]';
+    defaultPaddingClass = 'pr-[1.4rem]';
   }
 
   const paddingClass = params.paddingClass ?? defaultPaddingClass;

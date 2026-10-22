@@ -6,6 +6,7 @@
 import '@/shared/lib/agGridPub';
 import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
+import { cn } from '@/shared/lib/shadcn/utils';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -65,9 +66,10 @@ const Ltpz005 = ({
   }, [initialActiveTab, setActive]);
 
   const getStateIcon = (state: CheckTab['state']) => {
-    if (state === 'green') return <CircleCheckIcon size={26} />;
-    if (state === 'red') return <InfoToastIcon size={26} color={'#E43939'} />;
-    return <InfoToastIcon size={26} color={'#FFB800'} />;
+    if (state === 'green') return '3';
+    if (state === 'red') return '1';
+    if (state === 'yellow') return '2';
+    return '0';
   };
 
   return (
@@ -130,7 +132,12 @@ const Ltpz005 = ({
                     onClick={() => setActive(tab.value)}
                   >
                     <Gcol className="items-center justify-center gap-1.5">
-                      {getStateIcon(tab.state)}
+                      <span
+                        className={cn(
+                          'w-[2.6rem] h-[2.6rem] shrink-0 rounded-full flex items-center justify-center',
+                          `traffic-light-${getStateIcon(tab.state)}`
+                        )}
+                      ></span>
                       <Typo tag="strong" variant={'body-lg'} weight="bold" className="text-gray-50">
                         {tab.label}
                       </Typo>
