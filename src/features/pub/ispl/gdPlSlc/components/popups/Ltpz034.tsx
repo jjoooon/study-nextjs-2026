@@ -7,6 +7,7 @@ import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterpris
 import { AgGridReact } from 'ag-grid-react';
 import React, { useMemo } from 'react';
 
+import { Input } from '@/shared/components/uiux/Input';
 import { createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
@@ -600,9 +601,13 @@ const Ltpz034 = ({
                         김한화 41세(여)
                       </Typo>
                     ) : (
-                      <Typo tag={'span'} weight={'bold'} variant={'body-sm'} className="text-[#FFF]">
-                        41세(1994-02-12) / 여
-                      </Typo>
+                      <Input
+                        width={170}
+                        readOnly
+                        masking
+                        value={'41세(1994-02-12) / 여'}
+                        className="[&_input]:bg-transparent! [&_input]:bg-none! [&_input]:border-none! [&_input]:text-[#FFF]! [&_input]:font-bold [&_button]:text-[#FFF]!"
+                      />
                     )}
                   </FormCell>
                   {isRegistered && (
