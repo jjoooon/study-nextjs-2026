@@ -281,9 +281,9 @@ export default function Ltpa010Section() {
                         title={'설계번호'}
                         tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full"
                       >
-                        <Input aria-label="" width={130} value={'LA123456789012'} readOnly />
+                        <Input aria-label="" width={130} value={'LA123456789012'} readOnly variant={'info'} />
                         -
-                        <Input aria-label="" width={30} value={'1'} readOnly />
+                        <Input aria-label="" width={30} value={'1'} readOnly variant={'info'} />
                         <Input
                           aria-label=""
                           variant={'info'}

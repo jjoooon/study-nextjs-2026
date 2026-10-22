@@ -93,9 +93,9 @@ const Ltpz101 = () => {
             <FormTable variant={'head'} lineTop={false} caption="설계번호">
               <FormRow>
                 <FormCell title={'설계번호'}>
-                  <Input readOnly value={'LA123456789012'} width={'quoteNo'} />
+                  <Input readOnly value={'LA123456789012'} width={'quoteNo'} variant={'info'} />
                   -
-                  <Input aria-label="" width={26} value={'1'} readOnly />
+                  <Input aria-label="" width={26} value={'1'} readOnly variant={'info'} />
                 </FormCell>
               </FormRow>
             </FormTable>

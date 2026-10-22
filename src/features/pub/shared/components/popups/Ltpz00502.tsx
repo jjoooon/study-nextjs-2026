@@ -541,7 +541,7 @@ const Ltpz00502 = ({ onClose }: Ltpz00502Props) => {
                   ))}
                 </RadioGroup>
 
-                <KeyValueItem label={'고지유형/플랜명'} variant="plan">
+                <KeyValueItem label={'플랜명/고지유형'} variant="plan">
                   <Typo tag="span" variant={'body-sm'} color={'gray'}>
                     3.10.5간편고지형(고당지뇌심과(통풍포함)폐추가고지)(프리미엄올인원플랜)(1,7,8,9형)(15-80세){' '}
                     <b className="inline-block px-1 font-[900] text-[var(--color-gray-60)]">•</b>
