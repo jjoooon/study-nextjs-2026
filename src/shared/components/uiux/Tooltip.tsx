@@ -77,7 +77,7 @@ function TooltipContent({
         alignOffset={alignOffset ?? 0}
         arrowPadding={arrowPadding}
         className={cn(
-          'relative group zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-1 z-9999 w-auto rounded-[0.6rem] text-[1.2rem] leading-[1.45] text-balance max-w-[24rem] text-(--color-gray-70) px-[1rem] py-[0.4rem]',
+          'relative group zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-1 z-9999 w-auto rounded-[0.6rem] text-[1.2rem] leading-[1.45] text-balance text-(--color-gray-70) px-[1rem] py-[0.4rem]',
           variantStyles[variant],
           className
         )}
