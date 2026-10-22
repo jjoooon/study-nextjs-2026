@@ -454,7 +454,7 @@ const Ltpz206 = () => {
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>
-                  <Input aria-label="" width={120} value={'000000-0******'} readOnly />
+                  <Input aria-label="" width={120} value={'000000-0******'} readOnly masking />
                 </FormCell>
                 <FormCell title={'출산예정년월'}>
                   <DatePickerInput

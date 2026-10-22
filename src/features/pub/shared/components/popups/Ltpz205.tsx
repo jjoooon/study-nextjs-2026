@@ -18,6 +18,7 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
 
 const Ltpz205 = () => {
   return (
@@ -47,8 +48,9 @@ const Ltpz205 = () => {
                 <FormCell title={'예금주(카드주)'}>김한화</FormCell>
               </FormRow>
               <FormRow>
-                <FormCell title={'계좌/카드번호'}>
-                  행복은행<br></br> 111-222-333-113
+                <FormCell title={'계좌/카드번호'} tdClassName="gap-0 flex-col items-start">
+                  행복은행
+                  <Input value={'111-222-333-113'} variant="info" readOnly masking />
                 </FormCell>
               </FormRow>
               <FormRow>

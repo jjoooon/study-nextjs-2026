@@ -208,7 +208,13 @@ const Ltpz087 = () => {
                             value={'서울특별시 강남구 테헤란로 123'}
                           />
                         </Grow>
-                        <Input aria-label="질권자 상세주소" width={'full'} value={'(역삼동, 한화빌딩)'} readOnly />
+                        <Input
+                          aria-label="질권자 상세주소"
+                          width={'full'}
+                          value={'(역삼동, 한화빌딩)'}
+                          readOnly
+                          masking
+                        />
                       </Gcol>
                     </FormCell>
                   </FormRow>

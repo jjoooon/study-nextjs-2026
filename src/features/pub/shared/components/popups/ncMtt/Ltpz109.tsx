@@ -45,7 +45,7 @@ const Ltpz109 = () => {
               <FormTable caption="FormTable 예시" className="" cols={['w-[20%]', 'w-auto']} lineTop variant="default">
                 <FormRow>
                   <FormCell className="" title={'피보험자'} variant="default">
-                    <Input aria-label="" width={'12rem'} value={'000000-0000000'} readOnly />
+                    <Input aria-label="" width={'12rem'} value={'000000-0000000'} readOnly masking />
                     <Input aria-label="" width={'8rem'} value={'이한화'} readOnly />
                   </FormCell>
                 </FormRow>

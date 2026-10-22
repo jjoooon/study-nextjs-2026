@@ -81,12 +81,32 @@ const Ltpa401 = () => {
                   </FormRow>
                   <FormRow>
                     <FormCell title={'계약자명'}>박한화</FormCell>
-                    <FormCell title={'계약자 생년월일'}>2000-01-01</FormCell>
+                    <FormCell title={'계약자 생년월일'}>
+                      {' '}
+                      <Input
+                        aria-label="요청자 휴대폰번호"
+                        width={120}
+                        readOnly
+                        variant="info"
+                        masking
+                        value={'2000-01-01'}
+                      />
+                    </FormCell>
                     <FormCell title={''}></FormCell>
                   </FormRow>
                   <FormRow>
                     <FormCell title={'피보험자명'}>박한화</FormCell>
-                    <FormCell title={'피보험자 생년월일'}>2000-01-01</FormCell>
+                    <FormCell title={'피보험자 생년월일'}>
+                      {' '}
+                      <Input
+                        aria-label="요청자 휴대폰번호"
+                        width={120}
+                        readOnly
+                        variant="info"
+                        masking
+                        value={'2000-01-01'}
+                      />
+                    </FormCell>
                     <FormCell title={'상해급수'}>3급</FormCell>
                   </FormRow>
                   <FormRow>

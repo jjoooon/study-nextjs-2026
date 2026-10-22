@@ -170,7 +170,7 @@ const Ltpz079 = ({ data, loading }: Ltpz079Props) => {
             <FormTable caption="보험정보" cols={['w-auto', 'w-auto']} variant="head">
               <FormRow>
                 <FormCell title={'가입설계번호'}>
-                  <Input aria-label="" width={'quoteNo'} value={'LA12345678901234'} required />
+                  <Input aria-label="" width={'quoteNo'} value={'LA123456789012'} required />
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>
