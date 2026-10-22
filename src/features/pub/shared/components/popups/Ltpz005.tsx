@@ -37,6 +37,7 @@ type Ltpz005Props = PopupBaseProps & {
   onOpenChange?: (open: boolean) => void;
   hasRecommendData?: boolean;
   expectedUwRecommendData?: Parameters<typeof Ltpz00504>[0]['recommendData'];
+  isNonTarget?: boolean;
 };
 
 /** 탭 메뉴 구성 데이터: 상태(state)에 따라 아이콘 색상이 결정됨 */
@@ -54,6 +55,7 @@ const Ltpz005 = ({
   initialActiveTab = 'common',
   hasRecommendData,
   expectedUwRecommendData,
+  isNonTarget = false,
 }: Ltpz005Props) => {
   const { tabs, active, setActive } = useTabs(CHECK_TABS);
 
@@ -149,6 +151,7 @@ const Ltpz005 = ({
               <Ltpz00504
                 onClose={() => onOpenChange?.(false)}
                 recommendData={hasRecommendData === false ? [] : expectedUwRecommendData}
+                isNonTarget={isNonTarget}
               />
             )}
           </Grid>

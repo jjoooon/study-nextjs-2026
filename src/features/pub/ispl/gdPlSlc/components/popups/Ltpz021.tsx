@@ -366,7 +366,7 @@ const Ltpz021 = () => {
                 </FormCell> */}
 
                 <FormCell title={'피보험자'}>
-                  <Input value={'41세(1994-02-12) / 여 / 1급'} variant="info" readOnly />
+                  <Input value={'41세(1994-02-12) / 여 / 1급'} variant="info" readOnly masking />
                 </FormCell>
               </FormRow>
             </FormTable>

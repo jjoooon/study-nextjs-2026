@@ -9,6 +9,11 @@ const meta: Meta<typeof Ltpz005> = {
   title: 'app/popup/LTPZ005',
   component: Ltpz005,
   argTypes: {
+    isNonTarget: {
+      name: '비대상인 케이스 유무',
+      control: 'boolean',
+      description: 'true: 예상 UW 안내 미운영 대상 / false: 정상 대상',
+    },
     hasRecommendData: {
       name: '대안설계 데이터 유무 (recommendData)',
       control: 'boolean',
@@ -35,6 +40,7 @@ export const Default: Story = {
   args: {
     open: true,
     initialActiveTab: 'expected-uw',
+    isNonTarget: false,
     hasRecommendData: true,
   },
   render: (args) => (
@@ -48,6 +54,7 @@ export const ExpectedUwHasData: Story = {
   args: {
     open: true,
     initialActiveTab: 'expected-uw',
+    isNonTarget: false,
     hasRecommendData: true,
   },
   render: (args) => (
@@ -61,7 +68,21 @@ export const ExpectedUwNoData: Story = {
   args: {
     open: true,
     initialActiveTab: 'expected-uw',
+    isNonTarget: false,
     hasRecommendData: false,
+  },
+  render: (args) => (
+    <LayoutDoc>
+      <Ltpz005 {...args} />
+    </LayoutDoc>
+  ),
+};
+
+export const ExpectedUwNonTarget: Story = {
+  args: {
+    open: true,
+    initialActiveTab: 'expected-uw',
+    isNonTarget: true,
   },
   render: (args) => (
     <LayoutDoc>

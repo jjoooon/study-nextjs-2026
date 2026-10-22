@@ -277,7 +277,7 @@ const Ltpz002 = () => {
                       <NativeSelect width={120} required>
                         <NativeSelectOption value="">피보험자번호</NativeSelectOption>
                       </NativeSelect>
-                      <Input value={'000000-0******'} width={120} readOnly />
+                      <Input value={'000000-0******'} width={120} readOnly masking />
                       <Button variant={'outlined'} only={'icon'} color={'gray-light'}>
                         <SearchIcon color={'var(--color-primary-50)'} />
                       </Button>
