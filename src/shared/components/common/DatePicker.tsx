@@ -733,7 +733,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
   const buttonSizeClass = size === 'lg' ? 'h-[2.8rem] w-[2.8rem]' : 'h-[2.5rem] w-[2.5rem]';
   const isCalendarButtonDisabled = disabled || readOnly;
 
-  const baseStyle = `px-[0.8rem] py-[0.4rem] rounded-[0.4rem] border text-[1.3rem] font-normal box-border tracking-[-0.03rem] ${
+  const baseStyle = `px-[0.4rem] py-[0.4rem] rounded-[0.4rem] border text-[1.3rem] font-normal box-border tracking-[-0.03rem] ${
     error || invalidDate
       ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)]'
       : required
@@ -752,7 +752,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
       : required
         ? 'focus:border-[var(--color-input-border-highlight-bold)]'
         : 'focus:border-[var(--color-input-border-hover)]'
-  } focus:ring-1 focus:ring-[var(--color-gray-5)] focus:border-[0.2rem] focus:px-[0.7rem]`;
+  } focus:ring-1 focus:ring-[var(--color-gray-5)] focus:border-[0.2rem] focus:px-[0.3rem]`;
   const disabledClass = disabled
     ? 'bg-[var(--color-input-surface-disabled)] text-[var(--color-gray-40)] cursor-not-allowed pointer-events-none'
     : '';

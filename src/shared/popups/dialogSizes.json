@@ -880,5 +880,33 @@
     "width": 560,
     "height": 100,
     "isIframe": true
+  },
+  {
+    "id": "LTPZ203",
+    "title": "대안설계 상세보기",
+    "width": 1180,
+    "height": 754,
+    "isIframe": true
+  },
+  {
+    "id": "LTPZ120",
+    "title": "보험계약 중요사항 설명의무 확인(모집자)",
+    "width": 760,
+    "height": 776,
+    "isIframe": true
+  },
+  {
+    "id": "LTPZ121",
+    "title": "대안설계 상세보기",
+    "width": 480,
+    "height": 317,
+    "isIframe": true
+  },
+  {
+    "id": "LTPZ122",
+    "title": "대안설계 상세보기",
+    "width": 760,
+    "height": 564,
+    "isIframe": true
   }
 ]

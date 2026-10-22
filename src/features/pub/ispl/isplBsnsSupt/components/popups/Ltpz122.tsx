@@ -50,9 +50,9 @@ const Ltpz120 = () => {
 
         {/* 팝업 본문 */}
         <DialogSection className="gap-3">
-          <Gcol placement="ss">
+          <Gcol placement="ss" gap={3}>
             {/* 상단 안내 문구 */}
-            <Typo variant={'body-lg'} className="flex flex-col gap-[0.6rem]">
+            <Typo variant={'body-lg'} className="flex flex-col gap-[0.6rem] pb-3">
               <span>
                 모집종사자는 금융소비자보호에 관한 법률 및 동법 하위규정 등에서 정하는 설명의무 사항을 포함한
                 TM표준스크립트 설명 내용을 충실히 설명하였으며, 부실설명 등으로 고객과의 분쟁발생, 법규위반 사항이
@@ -66,74 +66,78 @@ const Ltpz120 = () => {
             </Typo>
 
             {/* 대면 정보 입력 FormTable */}
-            <Typo variant={'body-lg'} weight={'bold'}>
-              고객과 직접 통화한 사항에 대하여 기재하시기 바랍니다.
-            </Typo>
-            <FormTable lineTop cols={['w-[10rem]', 'w-[22rem]', 'w-[12rem]', 'w-auto']} variant="default">
-              <FormRow>
-                <FormCell title={'통화일시'}>
-                  <Grow gap={1} className="items-center">
-                    <DatePickerInput
-                      mode="single"
-                      value={meetDate}
-                      onChange={(_date, formattedValue) => setMeetDate(formattedValue)}
-                      width={120}
-                    />
-                    <Input
-                      aria-label="대면시간"
-                      width={51}
-                      placeholder="__:__"
-                      value={meetTime}
-                      onChange={(e) => setMeetTime(e.target.value)}
-                    />
-                  </Grow>
-                </FormCell>
-                <FormCell title={'설명기간(분)'}>
-                  {/* NativeSelect 형태 */}
-                  <NativeSelect width={'12rem'} value={meetDuration} onChange={(e) => setMeetDuration(e.target.value)}>
-                    {[
-                      { value: '10분', label: '10분' },
-                      { value: '20분', label: '20분' },
-                      { value: '30분', label: '30분' },
-                      { value: '60분', label: '60분' },
-                      { value: '90분', label: '90분' },
-                      { value: '120분 이상', label: '120분 이상' },
-                    ].map((option) => (
-                      <NativeSelectOption key={option.value} value={option.value}>
-                        {option.label}
-                      </NativeSelectOption>
-                    ))}
-                  </NativeSelect>
-                </FormCell>
-              </FormRow>
+            <Gcol gap={1} placement="ss">
+              <Typo variant={'body-lg'} weight={'bold'}>
+                고객과 직접 통화한 사항에 대하여 기재하시기 바랍니다.
+              </Typo>
+              <FormTable lineTop cols={['w-[10rem]', 'w-[22rem]', 'w-[12rem]', 'w-auto']} variant="default">
+                <FormRow>
+                  <FormCell title={'통화일시'}>
+                    <Grow gap={1} className="items-center">
+                      <DatePickerInput
+                        mode="single"
+                        value={meetDate}
+                        onChange={(_date, formattedValue) => setMeetDate(formattedValue)}
+                        width={120}
+                      />
+                      <Input
+                        aria-label="대면시간"
+                        width={51}
+                        placeholder="__:__"
+                        value={meetTime}
+                        onChange={(e) => setMeetTime(e.target.value)}
+                      />
+                    </Grow>
+                  </FormCell>
+                  <FormCell title={'설명기간(분)'}>
+                    {/* NativeSelect 형태 */}
+                    <NativeSelect
+                      width={'12rem'}
+                      value={meetDuration}
+                      onChange={(e) => setMeetDuration(e.target.value)}
+                    >
+                      {[
+                        { value: '10분', label: '10분' },
+                        { value: '20분', label: '20분' },
+                        { value: '30분', label: '30분' },
+                        { value: '60분', label: '60분' },
+                        { value: '90분', label: '90분' },
+                        { value: '120분 이상', label: '120분 이상' },
+                      ].map((option) => (
+                        <NativeSelectOption key={option.value} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                  </FormCell>
+                </FormRow>
 
-              <FormRow>
-                <FormCell title={'설명방법 '} colSpan={3}>
-                  <NativeSelect
-                    width={'24rem'}
-                    value={meetMethod}
-                    disabled
-                    onChange={(e) => setMeetMethod(e.target.value)}
-                  >
-                    {[{ value: '전화를 통한 설명', label: '전화를 통한 설명' }].map((option) => (
-                      <NativeSelectOption key={option.value} value={option.value}>
-                        {option.label}
-                      </NativeSelectOption>
-                    ))}
-                  </NativeSelect>
-                </FormCell>
-              </FormRow>
-            </FormTable>
-
-            {/* 출력일시 및 전자서명 안내 */}
-            <Gcol placement="ss" gap={0.5} className="text-[var(--color-gray-60)] text-[1.2rem]">
-              <BulletList position="col">
-                <BulletListItem className="whitespace-nowrap" type="ref" size="sm">
-                  상기 입력하신 정보는 인터넷 홈페이지등을 통해 고객에게 제공할 수 있습니다.
-                </BulletListItem>
-              </BulletList>
+                <FormRow>
+                  <FormCell title={'설명방법 '} colSpan={3}>
+                    <NativeSelect
+                      width={'24rem'}
+                      value={meetMethod}
+                      disabled
+                      onChange={(e) => setMeetMethod(e.target.value)}
+                    >
+                      {[{ value: '전화를 통한 설명', label: '전화를 통한 설명' }].map((option) => (
+                        <NativeSelectOption key={option.value} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+              {/* 출력일시 및 전자서명 안내 */}
+              <Gcol placement="ss" gap={0.5} className="text-[var(--color-gray-60)] text-[1.2rem]">
+                <BulletList position="col">
+                  <BulletListItem className="whitespace-nowrap" type="ref" size="sm">
+                    상기 입력하신 정보는 인터넷 홈페이지등을 통해 고객에게 제공할 수 있습니다.
+                  </BulletListItem>
+                </BulletList>
+              </Gcol>
             </Gcol>
-
             {/* 수신처 확인 안내 박스 */}
             <Gcol placement={'ss'} variant={'box-info'} className="w-full gap-2">
               <Typo variant={'body-sm'} icon={'info'} className="!font-bold">

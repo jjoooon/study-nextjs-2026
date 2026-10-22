@@ -46,7 +46,7 @@ const Ltpz121 = () => {
 
         {/* 팝업 본문 */}
         <DialogSection>
-          <Gcol placement="ss">
+          <Gcol placement="ss" gap={6}>
             {/* 상단 안내 문구 */}
             <Gcol placement="ss">
               <Typo variant={'body-md'}>

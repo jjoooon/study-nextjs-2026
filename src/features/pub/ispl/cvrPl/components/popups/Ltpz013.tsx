@@ -367,7 +367,7 @@ const Ltpz013 = () => {
                       </Gcol>
                     </Gcol>
 
-                    <div className="ag-theme-alpine min-h-[37.7rem]">
+                    <div className="ag-theme-alpine inner-min-scroll" data-row={2}>
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
@@ -499,7 +499,7 @@ const Ltpz013 = () => {
                       </Gcol>
                     </Gcol>
 
-                    <div className="ag-theme-alpine inner-scroll " data-row={rowData.length}>
+                    <div className="ag-theme-alpine inner-scroll inner-min-scroll" data-row={2}>
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}

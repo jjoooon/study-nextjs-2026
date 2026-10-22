@@ -1206,7 +1206,7 @@ const Ltpz059 = () => {
       </Dialog>
 
       {/* 목적물 사용유형 안내 서브 팝업 */}
-      <Dialog open={isUsageTypeOpen} onOpenChange={setIsUsageTypeOpen}>
+      <Dialog open={isUsageTypeOpen} onOpenChange={setIsUsageTypeOpen} isIframe={false}>
         <DialogContent showCloseButton resizable={false} size="lg">
           <DialogHeader>
             <DialogTitle>

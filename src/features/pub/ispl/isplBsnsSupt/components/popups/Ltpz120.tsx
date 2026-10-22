@@ -59,9 +59,9 @@ const Ltpz120 = () => {
 
         {/* 팝업 본문 */}
         <DialogSection>
-          <Gcol placement="ss">
+          <Gcol placement="ss" gap={3}>
             {/* 상단 안내 문구 */}
-            <Typo variant={'body-lg'} className="pb-2">
+            <Typo variant={'body-lg'} className="pb-3">
               보험 모집자는 보험계약 체결 전 <strong>계약자 및 피보험자를 직접 만나</strong> 다음 사항을 고객님께 설명
               하여야 합니다.
             </Typo>
@@ -251,8 +251,8 @@ const Ltpz120 = () => {
               </FormRow>
             </FormTable>
 
-            {/* 본계약이 아닌경우 */}
             <Gcol placement="ss" gap={0.5} className="text-[var(--color-gray-60)] text-[1.2rem]">
+              {/* 본계약이 아닌경우 */}
               <BulletList position="col">
                 <BulletListItem className="whitespace-nowrap" type="dash" size="sm">
                   가입제안서(상품설명서) 출력일시 : 2026-10-16 10:05:05
@@ -261,9 +261,8 @@ const Ltpz120 = () => {
                   가입제안서 or 상품설명서 출력 이후에 전자서명을 진행하실 수 있습니다.
                 </BulletListItem>
               </BulletList>
-            </Gcol>
-            {/* 본계약일 경우 */}
-            <Gcol placement="ss">
+
+              {/* 본계약일 경우 */}
               <Typo variant={'body-sm'} color={'information'}>
                 본인계약 해당시 가입제안서 출력, 전자서명 가능시간제어 및 대면설명정보입력 예외됩니다.
               </Typo>
