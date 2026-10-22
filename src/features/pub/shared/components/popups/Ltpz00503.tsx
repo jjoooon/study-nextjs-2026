@@ -168,12 +168,11 @@ const Ltpz00503 = ({ onClose }: Ltpz00503Props) => {
             <Gcol gap={1}>
               <Gcol variant={'box-info'} placement={'ss'} className="w-full">
                 <Typo variant={'body-sm'} icon={'info'}>
-                  고객 직업정보(상해급수)가 불일치 할 경우 <b>신계약 체결이 불가능</b>합니다. 해당 신계약 청약완료
-                  이전에 기계약의 작업변경을 완료하시기 바랍니다.
+                  고객 직업정보(상해급수)가 불일치하면 <b>체결이 불가능</b>하므로, 해당 신계약 청약완료 이전에 기계약의
+                  작업변경을 완료해주세요.
                 </Typo>
-
                 <Typo variant={'body-sm'} icon={'info'}>
-                  <b>신계약 청약서 발행 이전에 기계약의 직업변경 배서(청약중 이후)를 진행</b>바랍니다.
+                  <b>신계약 청약서 발행하시기 전에 배서(청약중 이후) 진행</b>바랍니다.
                 </Typo>
               </Gcol>
             </Gcol>
@@ -283,7 +282,8 @@ const Ltpz00503 = ({ onClose }: Ltpz00503Props) => {
                   상해급수가 동일하더라도 고객님의 정확한 직업정보의 관리를 위하려 재확인 바랍니다.
                 </BulletListItem>
                 <BulletListItem className="mt-2" size={'sm'} type="dot">
-                  관련문서: [대내-1507-1552]직업정보(상해급수) 일치 관련 신계약 프로세스 변경통보, 장기계약관리파트
+                  관련문서: [대내-2609-5089] 장기 신계약 직업정보(상해급수) 불일치 계약 처리 프로세스 변경 시행 사전
+                  안내, 상품지원파트
                 </BulletListItem>
               </BulletList>
             </Gcol>

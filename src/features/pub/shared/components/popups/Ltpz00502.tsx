@@ -17,7 +17,7 @@ import {
   numberValueFormatter,
   useDynamicColumnWidths,
 } from '@aggrid'; // 2026-05-29 numberValueFormatter 추가
-import { Gcol, Grow, Typo, Grid, Divider } from '@atoms';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { KeyValueItem } from '@common/KeyValueList';
 import { TabPager } from '@common/TabPager';
 import { AiIcon } from '@icons';
@@ -465,6 +465,7 @@ const Ltpz00502 = ({ onClose }: Ltpz00502Props) => {
   // 누적
   return (
     // M2. 디자인 변경으로 수정
+
     <Grid className="w-full grid-rows-[1fr_auto] gap-[2rem]">
       <div
         className="relative [&>div]:absolute [&>div]:p-3 [&>div]:top-0 [&>div]:left-0 w-[calc[+
