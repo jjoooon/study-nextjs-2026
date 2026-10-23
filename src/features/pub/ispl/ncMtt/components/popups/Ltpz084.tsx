@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -17,7 +18,12 @@ import {
 import { Input } from '@uiux/Input';
 import { Ltpa3500301 } from '../Ltpa3500301';
 
-const Ltpz084 = () => {
+export interface Ltpz084Props {
+  isSubmitted?: boolean;
+}
+
+const Ltpz084 = ({ isSubmitted: initialSubmitted = false }: Ltpz084Props) => {
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(initialSubmitted);
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="full">
@@ -47,6 +53,7 @@ const Ltpz084 = () => {
               mtValue="0rem"
               warningMessage="알릴의무사항은 상세설계시 입력 가능합니다."
               headerBgClass="top-[-0.1rem]! rounded-[0.8rem]"
+              isSubmitted={isSubmitted}
               // allNoDisabled={true}
             />
           </div>
@@ -62,7 +69,7 @@ const Ltpz084 = () => {
               <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 알릴사항 가져오기
               </Button>
-              <Button variant={'contained'} size={'xl'}>
+              <Button variant={'contained'} size={'xl'} onClick={() => setIsSubmitted(true)}>
                 저장
               </Button>
               <DialogClose asChild>

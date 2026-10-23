@@ -61,7 +61,7 @@ import { Ltpa35004 } from '../udRqRst/components/Ltpa35004'; // 04. 심사요청
 type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
 
 // types
-type Ltpa350ProcessStep = 1 | 2 | 3 | 4 | 5 | 6; //단계번호
+export type Ltpa350ProcessStep = 1 | 2 | 3 | 4 | 5 | 6; //단계번호
 type Ltpa350ProcessItem = {
   step: Ltpa350ProcessStep;
   label: string;
@@ -184,11 +184,15 @@ const isPageProcessStep = (value: number): value is Ltpa350ProcessStep => {
 export interface Ltpa350SectionProps {
   showRenewalCycle?: boolean;
   showContractConversion?: boolean;
+  initialStep?: Ltpa350ProcessStep;
+  isSubmitted?: boolean;
 }
 
 export default function Ltpa350Section({
   showRenewalCycle = true,
   showContractConversion = false,
+  initialStep,
+  isSubmitted = false,
 }: Ltpa350SectionProps = {}) {
   // simpleMode: 페이지를 간략 모드로 보여줄지 여부 (PageTitle와 step별 본문에서 같이 사용)
   const [simpleMode, setSimpleMode] = useState<boolean>(data.head.pageTitle.simpleMode);
@@ -199,7 +203,7 @@ export default function Ltpa350Section({
 
   // 2단계 화면에서 좌/우 폭 확장 시 aside를 강제로 숨기기 위한 상태
   const [isWidthExpanded, setIsWidthExpanded] = useState<boolean>(false);
-  const defaultStep = data.process.state.active;
+  const defaultStep = initialStep ?? data.process.state.active;
 
   // URL query(step)와 현재 단계 상태를 동기화
   // - defaultStep: query가 없을 때 기본 진입 단계
@@ -237,7 +241,7 @@ export default function Ltpa350Section({
       />
     ),
     2: <Ltpa35002 onIsWidthExpandedChange={setIsWidthExpanded} />,
-    3: <Ltpa35003 simpleMode={simpleMode} />,
+    3: <Ltpa35003 simpleMode={simpleMode} isSubmitted={isSubmitted} />,
     4: <Ltpa35004 />,
     5: <Ltpa35005 />,
     6: <Ltpa35006 />,

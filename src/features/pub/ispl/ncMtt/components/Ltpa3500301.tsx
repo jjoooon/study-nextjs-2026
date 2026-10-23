@@ -8,10 +8,9 @@ import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { cn } from '@/shared/lib/shadcn/utils';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow, Typo, Divider } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
+import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
 import {
@@ -22,7 +21,7 @@ import {
 } from '@common/QuestionRadioCard';
 import { TableMore } from '@common/TablePagination';
 import { TooltipQ } from '@common/TooltipQ';
-import { CheckIcon, InfoBoxInfoIcon, SelectDropIcon } from '@icons';
+import { InfoBoxInfoIcon, SelectDropIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -156,6 +155,7 @@ interface Ltpa3500301Props {
   allNoDisabled?: boolean;
   warningMessage?: string;
   headerBgClass?: string;
+  isSubmitted?: boolean;
 }
 
 export const Ltpa3500301 = ({
@@ -164,7 +164,7 @@ export const Ltpa3500301 = ({
   mtValue = '-3rem',
   warningMessage = '[홍길순 Self고지중] Self고지 완료(또는 취소)처리시 알릴사항 입력 가능',
   allNoDisabled = false,
-  headerBgClass = '',
+  isSubmitted = false,
 }: Ltpa3500301Props) => {
   type BadgeId = number | '6-1';
   const { attributeColumnWidth } = useDynamicColumnWidths();
@@ -355,46 +355,60 @@ export const Ltpa3500301 = ({
         data-layout="scroll-item"
       >
         {!sampleMode && (
-          <Grow variant={'box-round-b'} placement={'se'} className={cn('w-full sticky top-0 z-10', headerBgClass)}>
-            <Gcol placement="ss">
-              <Typo
-                variant={'body-sm'}
-                icon={'warning'}
-                color={'danger'}
-                weight={'bold'}
-                className="text-[var(--color-danger-50)]"
+          <Gcol
+            placement={'ss'}
+            className="py-4 gap-4 border-b-[0.1rem] border-b-[#1E2124] border-solid border-[#1E2124]"
+          >
+            {warningMessage && (
+              <Grow
+                variant={'box-detail'}
+                placement="sc"
+                className="w-full bg-[var(--color-warning-10)]! py-1.5! px-3! rounded-[0.4rem]"
               >
-                {warningMessage}
-              </Typo>
-              <Typo variant={'body-lg'} weight={'bold'}>
-                다음 각 항목의 질문에 사실대로 답변 하시기 바랍니다.
-              </Typo>
-            </Gcol>
-            <Grow gap={1}>
-              <NativeSelect aria-label="알릴사항" width={124} readOnly>
-                {[
-                  { label: '알릴사항(설계)', value: 'value1' },
-                  { label: '알릴사항', value: 'value2' },
-                ].map((option) => (
-                  <NativeSelectOption key={option.value} value={option.value}>
-                    {option.label}
-                  </NativeSelectOption>
-                ))}
-              </NativeSelect>
-              <Button color="primary" onClick={() => {}} size="lg" variant="outlined" disabled={allNoDisabled}>
-                모두 아니오
-              </Button>
+                <Typo
+                  variant={'body-sm'}
+                  icon={'warning'}
+                  color={'danger'}
+                  weight={'bold'}
+                  className="text-[var(--color-danger-50)] text-[1.3rem]"
+                >
+                  {warningMessage}
+                </Typo>
+              </Grow>
+            )}
+            <Grow placement={'bwe'} className="w-full">
+              <Gcol placement="ss">
+                <Typo variant={'body-xl'} weight={'bold'}>
+                  다음 각 항목의 질문에 사실대로 답변 하시기 바랍니다.
+                </Typo>
+                <BulletItem className="whitespace-nowrap" color="info" size="sm" type="ref">
+                  {' '}
+                  알릴의무사항은 상세설계시 가능합니다.안내 문구입니다.
+                </BulletItem>
+              </Gcol>
+
+              <Grow gap={1}>
+                <NativeSelect aria-label="알릴사항" width={124} readOnly>
+                  {[
+                    { label: '알릴사항(설계)', value: 'value1' },
+                    { label: '알릴사항', value: 'value2' },
+                  ].map((option) => (
+                    <NativeSelectOption key={option.value} value={option.value}>
+                      {option.label}
+                    </NativeSelectOption>
+                  ))}
+                </NativeSelect>
+                <Button color="primary" onClick={() => {}} size="lg" variant="contained" disabled={allNoDisabled}>
+                  모두 아니오
+                </Button>
+              </Grow>
             </Grow>
-          </Grow>
+          </Gcol>
         )}
-        <Gcol gap={2} placement="ss">
+        <Gcol gap={4} placement="ss">
           {!sampleMode && (
-            <Gcol
-              variant={'box-line'}
-              placement={'ss'}
-              className="w-full bg-[#F4F4F4] shadow-none border-[0.1rem] border-solid border-[#D8D8D8]"
-            >
-              <Typo variant={'body-lg'} weight={'bold'}>
+            <Gcol variant={'box-line'} placement={'ss'} className="w-full bg-[#F3F4F6] shadow-none border-none p-3">
+              <Typo variant={'body-md'} weight={'bold'} color={'gray'}>
                 ■ 이 청약서에서 ‘최근 3개월 1년, 5년 이내’는 청약일의 3개월, 1년, 5년 전일부터 청약일가지를 의미합니다.
                 (예를 들어 청약일이 4월 1일 인 경우 ‘최근 3개월 1년, 5년 이내’는 1월 1일부터 4월 1일까지)
               </Typo>
@@ -411,7 +425,7 @@ export const Ltpa3500301 = ({
                 있습니까?
               </QuestionRadioCardHeaderTitle>
               <RadioGroup
-                className={'gap-[1.2rem] w-[11rem]'}
+                className={'gap-[0.6rem] w-[11rem]'}
                 width="auto"
                 value={qAnswerList[0] === 'Y' ? '예' : qAnswerList[0] === 'N' ? '아니오' : undefined}
                 onValueChange={(val) => {
@@ -450,14 +464,14 @@ export const Ltpa3500301 = ({
                   </Checkbox>
                 ))}
               </Grid>
-              <Gcol className="w-full pl-6 py-2" placement="ss">
-                <Typo icon="ref" variant="body-sm">
-                  <b>질병의심소견</b>이란 의사가 진단서나 소견서 또는 진료의뢰서 등을 포함하여 서면(전자문서 포함)으로
-                  교부한 경우를 말합니다.
+              <Gcol className="w-full py-[0.8rem] pr-[1rem] pl-[2.4rem]" placement="ss">
+                <Typo icon="ref" variant="body-sm" color={'gray'}>
+                  질병의심소견이란 의사가 진단서나 소견서 또는 진료의뢰서 등을 포함하여 서면(전자문서 포함)으로 교부한
+                  경우를 말합니다.
                 </Typo>
-                <Typo icon="ref" variant="body-sm">
-                  <b>투약이란</b> 의사가 환자에게 약을 처방하는 행위를 말하는 것으로 실제로 약을 구입하지 않았어도
-                  기재해야 합니다.
+                <Typo icon="ref" variant="body-sm" color={'gray'}>
+                  투약이란 의사가 환자에게 약을 처방하는 행위를 말하는 것으로 실제로 약을 구입하지 않았어도 기재해야
+                  합니다.
                 </Typo>
               </Gcol>
             </QuestionRadioCardContents>
@@ -495,10 +509,10 @@ export const Ltpa3500301 = ({
               </RadioGroup>
             </QuestionRadioCardHeader>
             <QuestionRadioCardContents>
-              <Gcol className="w-full pl-6 py-2" placement="ss">
-                <Typo icon="ref" variant="body-sm">
-                  <b>혈압강하제</b>란 혈압을 내리게 하는 의약품을 말하며, 각성제란 신경계를 흥분시켜 잠이 오는 것을
-                  억제하는 의약품을 말합니다.
+              <Gcol className="w-full py-[0.8rem] pr-[1rem] pl-[2.4rem]" placement="ss">
+                <Typo icon="ref" variant="body-sm" color={'gray'}>
+                  혈압강하제란 혈압을 내리게 하는 의약품을 말하며, 각성제란 신경계를 흥분시켜 잠이 오는 것을 억제하는
+                  의약품을 말합니다.
                 </Typo>
               </Gcol>
             </QuestionRadioCardContents>
@@ -535,11 +549,10 @@ export const Ltpa3500301 = ({
               </RadioGroup>
             </QuestionRadioCardHeader>
             <QuestionRadioCardContents>
-              <Gcol className="w-full pl-6 py-2" placement="ss">
-                <Typo icon="ref" variant="body-sm">
-                  <b>추가검사(재검사)</b>란 검사 결과 이상 소견이 확인되어 보다 정확한 진단을 위해 시행한 검사를
-                  의미하며, 병증에 대한 치료 필요 없이 유지되는 상태에서 시행하는 정기검사 또는 추적관찰은 포함하지
-                  않습니다.
+              <Gcol className="w-full py-[0.8rem] pr-[1rem] pl-[2.4rem]" placement="ss">
+                <Typo icon="ref" variant="body-sm" color={'gray'}>
+                  추가검사(재검사)란 검사 결과 이상 소견이 확인되어 보다 정확한 진단을 위해 시행한 검사를 의미하며,
+                  병증에 대한 치료 필요 없이 유지되는 상태에서 시행하는 정기검사 또는 추적관찰은 포함하지 않습니다.
                 </Typo>
               </Gcol>
             </QuestionRadioCardContents>
@@ -592,9 +605,9 @@ export const Ltpa3500301 = ({
                   </Checkbox>
                 ))}
               </Grid>
-              <Gcol className="w-full pl-6 py-2" placement="ss">
-                <Typo icon="ref" variant="body-sm">
-                  여기서 <b>‘계속하여’</b>란 같은 원인으로 치료 시작 후 완료일까지 실제 치료, 투약 받은 일수를 말합니다.
+              <Gcol className="w-full py-[0.8rem] pr-[1rem] pl-[2.4rem]" placement="ss">
+                <Typo icon="ref" variant="body-sm" color={'gray'}>
+                  여기서 ‘계속하여’란 같은 원인으로 치료 시작 후 완료일까지 실제 치료, 투약 받은 일수를 말합니다.
                 </Typo>
               </Gcol>
             </QuestionRadioCardContents>
@@ -744,11 +757,11 @@ export const Ltpa3500301 = ({
                   에이즈(AIDS) 및 HIV보균
                 </Checkbox>
               </Grid>
-              <Gcol placement="ss" className="pl-6 pt-2">
+              <Gcol className="w-full py-[0.8rem] pr-[1rem] pl-[2.4rem]" placement="ss">
                 <Divider dir="row" className="w-full" color="gray-light" />
                 <Gcol className="w-auto py-2" placement="ss">
-                  <Typo icon="ref" variant="body-sm">
-                    <b>실손의료보험</b> 가입시에만 체크
+                  <Typo icon="ref" variant="body-sm" color={'gray'}>
+                    실손의료보험 가입시에만 체크
                   </Typo>
                 </Gcol>
                 <Checkbox
@@ -1031,20 +1044,19 @@ export const Ltpa3500301 = ({
                   <FormCell className="pl-0!" title={<b className="text-[#000]">직장명</b>} variant="default">
                     <Input onChange={() => {}} width={'100%'} value={'전기공학 개발자 및 연구원'} readOnly />
                   </FormCell>
-                  <FormCell className="text-right" title={<b className="text-[#000]">직장명</b>} variant="default">
+                  <FormCell className="text-right" title={<b className="text-[#000]">업종</b>} variant="default">
                     <Input onChange={() => {}} width={'100%'} value={'전기공학 개발자 및 연구원'} readOnly />
                   </FormCell>
-                  <FormCell className="text-right" title={<b className="text-[#000]">직장명</b>} variant="default">
+                  <FormCell className="text-right" title={<b className="text-[#000]">직무</b>} variant="default">
                     <Input onChange={() => {}} width={'100%'} value={'전기공학 개발자 및 연구원'} readOnly />
                   </FormCell>
                 </FormRow>
               </FormTable>
-              <Gcol className="w-full py-2" placement="ss">
-                <Typo icon="ref" variant="body-sm">
-                  보험계약 체결 당시 <b>직업*</b> 또는 <b>직무*</b>를 사실대로 알리지 않거나 보험계약 체결 후{' '}
-                  <b>직업*</b> 또는 <b>직무*</b>가 <b>변경*</b>된 사실(예:사무관리 ↔ 현장관리)을 지체없이 회사에 알리지
-                  않은 경우 계약 해지 등 알릴 의무 위반에 따른 <b>불이익*</b>이 발생할 수 있습니다.{' '}
-                  <b>(*보험계약자가 직접 기재하여야 하는 문구)</b>
+              <Gcol className="w-full py-[0.8rem] pr-[1rem]" placement="ss">
+                <Typo icon="ref" variant="body-sm" color={'gray'}>
+                  보험계약 체결 당시 직업* 또는 직무*를 사실대로 알리지 않거나 보험계약 체결 후 직업* 또는 직무*가
+                  변경*된 사실(예:사무관리 ↔ 현장관리)을 지체없이 회사에 알리지 않은 경우 계약 해지 등 알릴 의무 위반에
+                  따른 불이익*이 발생할 수 있습니다. (*보험계약자가 직접 기재하여야 하는 문구)
                 </Typo>
               </Gcol>
             </QuestionRadioCardContents>
@@ -1760,6 +1772,8 @@ export const Ltpa3500301 = ({
               <Gcol className="w-full mb-2 rounded-b-[0.6rem]" gap={1}>
                 {badgeLabelIds.map((badgeNum) => {
                   const answer = getAnswerByBadgeId(badgeNum);
+                  const isAnswered = answer === 'Y' || answer === 'N';
+                  const isMissing = isSubmitted && !isAnswered;
                   return (
                     <Grow className="w-full" gap={1} key={String(badgeNum)}>
                       <Button
@@ -1772,7 +1786,7 @@ export const Ltpa3500301 = ({
                         variant="none"
                       >
                         <Badge
-                          color={'secondary'}
+                          color={isMissing ? 'danger' : 'secondary'}
                           size={'md'}
                           variant={'contained'}
                           className="w-[1.8rem] transition-colors group-hover:bg-[var(--color-primary-50)]"
@@ -1782,10 +1796,10 @@ export const Ltpa3500301 = ({
                         <Typo
                           variant={'body-sm'}
                           weight={'bold'}
-                          color={answer === 'Y' ? 'danger' : 'green'}
+                          color={answer === 'Y' ? 'danger' : answer === 'N' ? 'green' : 'gray'}
                           className="flex flex-1 justify-center items-center"
                         >
-                          {answer}
+                          {isAnswered ? answer : isSubmitted ? '-' : ''}
                         </Typo>
                       </Button>
                     </Grow>
