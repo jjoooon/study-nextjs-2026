@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import useMounted from '@/shared/hooks/useMounted';
-import useNotoSans from '@/shared/hooks/useNotoSans';
 import { selectZoomPercent } from '@/shared/store/uiSelectors';
 import { resetZoom, zoomIn, zoomOut, ZOOM_MIN, ZOOM_MAX } from '@/shared/store/uiSlice';
 import { setScale } from '@/shared/utils/scale';
@@ -21,24 +20,45 @@ export const ZoomControl = () => {
   const zoomPercent = useAppSelector(selectZoomPercent);
   const scale = zoomPercent / 100;
   const [envLabel, setEnvLabel] = useState<string | null>(null);
-  const { isNotoSans, toggleNotoSans } = useNotoSans();
+  const [isNotoSans, setIsNotoSans] = useState<boolean>(false);
 
-  useMounted(() => {
-    const href = window.location.href;
-    const hostname = window.location.hostname;
+  // 화면 확인용 임시 노토산스 토글 (iframe/스토리지 등 외부 로직 간섭 없는 최소 로직)
+  const toggleNotoSans = () => {
+    setIsNotoSans((prev) => {
+      const next = !prev;
+      if (typeof document !== 'undefined') {
+        document.documentElement.classList.toggle('font-noto', next);
+        document.body?.classList.toggle('font-noto', next);
+      }
+      return next;
+    });
+  };
 
-    if (href.includes('ltp-dev.hwgitest.com')) {
-      setEnvLabel('개발');
-    } else if (href.includes('prd-ltp.hwgitest.com')) {
-      setEnvLabel('운영-임시');
-    } else if (href.includes('ltp.hwgitest.com')) {
-      setEnvLabel('테스트');
-    } else if (href.includes('ltp.hwgeneralins.com')) {
-      setEnvLabel('운영');
-    } else if (hostname.includes('localhost') || hostname.includes('127.0.0.1')) {
-      setEnvLabel('로컬');
+  useMounted(
+    () => {
+      const href = window.location.href;
+      const hostname = window.location.hostname;
+
+      if (href.includes('ltp-dev.hwgitest.com')) {
+        setEnvLabel('개발');
+      } else if (href.includes('prd-ltp.hwgitest.com')) {
+        setEnvLabel('운영-임시');
+      } else if (href.includes('ltp.hwgitest.com')) {
+        setEnvLabel('테스트');
+      } else if (href.includes('ltp.hwgeneralins.com')) {
+        setEnvLabel('운영');
+      } else if (hostname.includes('localhost') || hostname.includes('127.0.0.1')) {
+        setEnvLabel('로컬');
+      }
+    },
+    () => {
+      // 컴포넌트 언마운트 시 클래스 정리하여 다른 페이지 영향 차단
+      if (typeof document !== 'undefined') {
+        document.documentElement.classList.remove('font-noto');
+        document.body?.classList.remove('font-noto');
+      }
     }
-  });
+  );
 
   // 모든 iframe을 CSS transform으로 직접 확대/축소
   const broadcastZoomToIframes = (scale: number) => {
@@ -79,14 +99,14 @@ export const ZoomControl = () => {
     <Grow className="items-center">
       {envLabel && <Badge>{envLabel}</Badge>}
       <Button
-        variant={isNotoSans ? 'contained' : 'outlined'}
-        color={isNotoSans ? 'primary' : 'gray'}
+        variant="outlined"
+        color="primary"
         size={'sm'}
         onClick={toggleNotoSans}
         className="!h-[22px] !text-[12px] !px-[6px]"
         title={isNotoSans ? '원래 폰트로 복원' : '전체 노토산스 폰트 적용'}
       >
-        노토산스
+        {isNotoSans ? '맑은고딕' : '노토산스'}
       </Button>
       <Button
         variant={'none'}

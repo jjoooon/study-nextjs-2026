@@ -119,19 +119,6 @@ export default function RootLayout({
                       });
                     }
                   }
-
-                  try {
-                    if (localStorage.getItem('ui-font-noto') === 'true') {
-                      document.documentElement.classList.add('font-noto');
-                      if (document.body) {
-                        document.body.classList.add('font-noto');
-                      } else {
-                        document.addEventListener('DOMContentLoaded', function() {
-                          document.body.classList.add('font-noto');
-                        });
-                      }
-                    }
-                  } catch(e) {}
                 } catch(e) {}
               })();
             `,
