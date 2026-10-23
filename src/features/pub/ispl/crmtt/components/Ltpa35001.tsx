@@ -1309,26 +1309,28 @@ export const Ltpa35001 = ({
                                     <Input aria-label="목적물명" width={76} value={'목적물1'} />
                                   </FormCell>
                                 ) : (
-                                  <FormCell title="소재지" colSpan={3} tdClassName="grid grid-cols-[auto_auto_1fr]">
-                                    <Input aria-label="목적물명" width={76} value={'목적물1'} />
-                                    <Button
-                                      aria-label="목적물 주소찾기"
-                                      variant={'outlined'}
-                                      size={'lg'}
-                                      color={'gray-light'}
-                                    >
-                                      주소찾기
-                                    </Button>
-                                    <Grid className="grid-cols-[1fr_1fr_1fr]">
-                                      <Input aria-label="목적물 소재지" width={'auto'} readOnly />
-                                      <Input aria-label="목적물 소재지" width={'auto'} />
-                                      <Input aria-label="목적물 소재지" width={'auto'} readOnly />
+                                  <FormCell title="소재지" colSpan={3}>
+                                    <Grid className="grid-cols-[auto_auto_1fr] w-full">
+                                      <Input aria-label="목적물명" width={76} value={'목적물1'} />
+                                      <Button
+                                        aria-label="목적물 주소찾기"
+                                        variant={'outlined'}
+                                        size={'lg'}
+                                        color={'gray-light'}
+                                      >
+                                        주소찾기
+                                      </Button>
+                                      <Grid className="grid-cols-[1fr_1fr_1fr]">
+                                        <Input aria-label="목적물 소재지" width={'auto'} readOnly />
+                                        <Input aria-label="목적물 소재지" width={'auto'} />
+                                        <Input aria-label="목적물 소재지" width={'auto'} readOnly />
+                                      </Grid>
                                     </Grid>
                                   </FormCell>
                                 )}
                               </FormRow>
                               <FormRow>
-                                <FormCell title="가입업종" tdClassName="grid grid-cols-[auto_auto_1fr]">
+                                <FormCell title="가입업종">
                                   <Input aria-label="가입업종코드" width={76} value={'12345'} readOnly />
                                   <Button
                                     aria-label="가입업종 검색"
