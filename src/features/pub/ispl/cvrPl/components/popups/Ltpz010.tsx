@@ -296,7 +296,7 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
                     {
                       headerName: '',
                       headerComponent: () => null,
-                      headerClass: '!hidden hidden',
+                      headerClass: '!hidden',
                       field: 'paymentPeriod' as keyof DummyDataType,
                       minWidth: attributeColumnWidth(70),
                       flex: 1,
@@ -305,7 +305,7 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
                     {
                       headerName: '',
                       headerComponent: () => null,
-                      headerClass: '!hidden hidden',
+                      headerClass: '!hidden',
                       field: 'paymentPeriod2' as keyof DummyDataType,
                       minWidth: attributeColumnWidth(140),
                       flex: 2,
