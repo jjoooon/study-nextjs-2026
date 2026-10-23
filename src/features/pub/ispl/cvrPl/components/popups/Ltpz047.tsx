@@ -180,7 +180,16 @@ const Ltpz047 = () => {
                 )}
               </FormRow>
               <FormRow>
-                <FormCell title={'영업장면적'} titleColSpan={2} colSpan={4}>
+                <FormCell
+                  title={
+                    <Grow placement="sc">
+                      영업장면적
+                      <EssentialIcon />
+                    </Grow>
+                  }
+                  titleColSpan={2}
+                  colSpan={4}
+                >
                   <Input
                     errorMsg="입력은 필수입니다."
                     errorPs="bl"
@@ -268,11 +277,11 @@ const Ltpz047 = () => {
                 </FormCell>
               </FormRow>
               <FormRow>
-                {/* 2026-05-27 EssentialIcon 아이콘 삭제 */}
                 <FormCell
                   title={
                     <Grow placement="sc">
-                      <span>종업원담보업종</span>
+                      종업원담보업종
+                      <EssentialIcon />
                     </Grow>
                   }
                   titleColSpan={2}

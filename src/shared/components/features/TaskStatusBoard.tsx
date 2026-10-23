@@ -7,7 +7,6 @@ import * as React from 'react';
 import { twMerge } from 'tailwind-merge';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Gcol, Grow, Grid, Typo } from '@atoms';
-import { BadgeCheckIcon } from '@icons';
 import { Button } from '@uiux/Button';
 
 // TaskStatusBoard 입력 타입
@@ -48,7 +47,6 @@ export function TaskStatusBoard<
         <Typo tag={'h4'} variant={'heading-sm'}>
           꼭 해야할 일
         </Typo>
-        <BadgeCheckIcon />
       </Grow>
 
       <Grid className="grid-cols-4 gap-0 w-full h-[5.4rem] bg-[var(--color-danger-5)] px-1.5 rounded-[0.6rem]">
