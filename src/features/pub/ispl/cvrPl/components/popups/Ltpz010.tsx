@@ -16,7 +16,6 @@ import {
   createInsertCopiedRowButtonCellRenderer,
   useDynamicColumnWidths,
   CustomGridLoadingOverlay,
-  createFieldRenderer,
 } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -295,14 +294,18 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
                   ),
                   children: [
                     {
-                      headerName: '출생후1',
+                      headerName: '',
+                      headerComponent: () => null,
+                      headerClass: '!hidden hidden',
                       field: 'paymentPeriod' as keyof DummyDataType,
                       minWidth: attributeColumnWidth(70),
                       flex: 1,
                       cellClass: 'text-center px-[0.2rem]!',
                     },
                     {
-                      headerName: '출생후2',
+                      headerName: '',
+                      headerComponent: () => null,
+                      headerClass: '!hidden hidden',
                       field: 'paymentPeriod2' as keyof DummyDataType,
                       minWidth: attributeColumnWidth(140),
                       flex: 2,
@@ -662,6 +665,8 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
                     }}
                     animateRows={false}
                     domLayout="normal"
+                    groupHeaderHeight={isFetusisured ? 30 : undefined}
+                    headerHeight={isFetusisured ? 0 : undefined}
                     onRowDataUpdated={handleRowDataUpdated} // 데이터 업데이트 완료 시, 예약된 중복 행을 자동 선택 처리
                     onRowSelected={handleRowSelected} // 체크 해제 시 복사된 중복행 필터 삭제
                     onGridReady={(params) => {
