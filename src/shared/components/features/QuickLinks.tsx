@@ -28,7 +28,7 @@ export function QuickLinks() {
         </Button>
       </Grow>
       {/* M1. gap-1 수정 */}
-      <Grid variant="box-line" className="grid-cols-[1fr_1fr] w-full gap-1" placement="ss">
+      <Grid className="grid-cols-[1fr_1fr] w-full gap-1" placement="ss">
         {DummyList.map((menu, index) => (
           <Button
             asChild

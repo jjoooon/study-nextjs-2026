@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import useMounted from '@/shared/hooks/useMounted';
+import useNotoSans from '@/shared/hooks/useNotoSans';
 import { selectZoomPercent } from '@/shared/store/uiSelectors';
 import { resetZoom, zoomIn, zoomOut, ZOOM_MIN, ZOOM_MAX } from '@/shared/store/uiSlice';
 import { setScale } from '@/shared/utils/scale';
@@ -20,6 +21,7 @@ export const ZoomControl = () => {
   const zoomPercent = useAppSelector(selectZoomPercent);
   const scale = zoomPercent / 100;
   const [envLabel, setEnvLabel] = useState<string | null>(null);
+  const { isNotoSans, toggleNotoSans } = useNotoSans();
 
   useMounted(() => {
     const href = window.location.href;
@@ -76,6 +78,16 @@ export const ZoomControl = () => {
   return (
     <Grow className="items-center">
       {envLabel && <Badge>{envLabel}</Badge>}
+      <Button
+        variant={isNotoSans ? 'contained' : 'outlined'}
+        color={isNotoSans ? 'primary' : 'gray'}
+        size={'sm'}
+        onClick={toggleNotoSans}
+        className="!h-[22px] !text-[12px] !px-[6px]"
+        title={isNotoSans ? '원래 폰트로 복원' : '전체 노토산스 폰트 적용'}
+      >
+        노토산스
+      </Button>
       <Button
         variant={'none'}
         only={'icon'}

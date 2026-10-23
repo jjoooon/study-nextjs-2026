@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
 @import './agGridRe.css';
 @import './shardcnRe.css';
 @import './v109.css';
@@ -684,13 +685,46 @@
     font-family: 'NotoSansKRNumber', Consolas, Monaco, monospace;
   }
 
+  /* 전역 노토산스 폰트 적용 모드 (.font-noto) */
+  html.font-noto,
+  body.font-noto,
+  body.font-noto *:not(code):not(pre):not(kbd):not(samp) {
+    font-family: 'NotoSansKRNumber', 'Noto Sans KR', 'Noto Sans', sans-serif !important;
+  }
+
+  body.font-noto button,
+  body.font-noto input,
+  body.font-noto select,
+  body.font-noto textarea,
+  body.font-noto optgroup,
+  body.font-noto option,
+  body.font-noto datalist,
+  body.font-noto legend {
+    font-family: 'NotoSansKRNumber', 'Noto Sans KR', 'Noto Sans', sans-serif !important;
+  }
+
+  body.font-noto .ag-theme-alpine {
+    --ag-font-family: 'NotoSansKRNumber', 'Noto Sans KR', 'Noto Sans', sans-serif !important;
+    --ag-cell-font-family: 'NotoSansKRNumber', 'Noto Sans KR', 'Noto Sans', sans-serif !important;
+    --ag-header-font-family: 'NotoSansKRNumber', 'Noto Sans KR', 'Noto Sans', sans-serif !important;
+  }
+
+  body.font-noto .num-font,
+  body.font-noto .font-notosans,
+  body.font-noto .ag-theme-alpine .num-font,
+  body.font-noto .ag-theme-alpine .font-notosans,
+  body.font-noto .ag-cell.num-font,
+  body.font-noto .ag-cell.font-notosans {
+    font-family: 'NotoSansKRNumber', 'Noto Sans KR', 'Noto Sans', sans-serif !important;
+  }
+
   #storybook-root {
     /* width: 1196px; */
     border-right: 1px solid #ccc;
     overflow-x: auto;
     height: 100%;
   }
-  [role="dialog"]   [data-layout='main'] {
+  [role='dialog'] [data-layout='main'] {
     min-width: 0;
   }
   [data-layout='main'] {
@@ -838,7 +872,6 @@
   [data-layout='main'] {
     min-width: 120.4rem;
   }
-
 
   /* filefond */
   .filepond--wrapper {
@@ -1187,7 +1220,7 @@
   .is-iframe [data-slot='dialog-footer'] {
     border-radius: 0 !important;
   }
-  .is-iframe > [data-slot="dialog-controls"] [data-slot='dialog-close'],
+  .is-iframe > [data-slot='dialog-controls'] [data-slot='dialog-close'],
   .is-iframe > [data-slot='dialog-close'],
   .is-iframe [data-slot='resize-handle'],
   .is-iframe [data-slot='dialog-header'] {
@@ -1520,10 +1553,12 @@
   background-color: var(--color-blue-gray-20);
 } */
 .sb-show-main.sb-main-padded.dialog-split-active,
-.dialog-split-active {margin-right: 35% !important; }
+.dialog-split-active {
+  margin-right: 35% !important;
+}
 
 .dialog-split-active .ai-chatbot {
-  padding:0.4rem 0.8rem !important;
+  padding: 0.4rem 0.8rem !important;
 }
 
 /* ----------------------------------------------------
@@ -1562,9 +1597,9 @@
 .TableFoldBody .masking,
 .TableFoldBody .masking span,
 .TableFoldBody .masking input,
-[data-slot="table-fold-body"] .masking,
-[data-slot="table-fold-body"] .masking span,
-[data-slot="table-fold-body"] .masking input {
+[data-slot='table-fold-body'] .masking,
+[data-slot='table-fold-body'] .masking span,
+[data-slot='table-fold-body'] .masking input {
   font-weight: normal !important;
 }
 
@@ -1588,6 +1623,12 @@
   height: 2.6rem;
   background: url(../components/icons/trafficLight/light-3.png) no-repeat 50% 50% / cover;
 }
-.page-title table{width: auto !important;}
-.formTable-auto table{table-layout: auto;}
-.formTable-fixed table{table-layout: fixed;}
+.page-title table {
+  width: auto !important;
+}
+.formTable-auto table {
+  table-layout: auto;
+}
+.formTable-fixed table {
+  table-layout: fixed;
+}
