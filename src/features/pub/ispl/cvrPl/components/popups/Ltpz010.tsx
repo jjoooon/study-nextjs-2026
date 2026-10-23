@@ -285,12 +285,30 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
                   flex: 1,
                   cellClass: 'text-center px-[0.2rem]!',
                 },
+
                 {
                   headerName: '출생후',
-                  cellRenderer: createFieldRenderer<DummyDataType>('paymentPeriod', 'paymentPeriod2', 'row'),
-                  minWidth: attributeColumnWidth(140),
-                  flex: 2,
-                  cellClass: 'text-center px-[0.2rem]!',
+                  headerGroupComponent: () => (
+                    <Grow placement="cc" className="w-full">
+                      <span className="font-bold text-[1.3rem]!">출생후</span>
+                    </Grow>
+                  ),
+                  children: [
+                    {
+                      headerName: '출생후1',
+                      field: 'paymentPeriod' as keyof DummyDataType,
+                      minWidth: attributeColumnWidth(70),
+                      flex: 1,
+                      cellClass: 'text-center px-[0.2rem]!',
+                    },
+                    {
+                      headerName: '출생후2',
+                      field: 'paymentPeriod2' as keyof DummyDataType,
+                      minWidth: attributeColumnWidth(140),
+                      flex: 2,
+                      cellClass: 'text-center px-[0.2rem]!',
+                    },
+                  ],
                 },
               ],
             },
