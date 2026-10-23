@@ -40,6 +40,7 @@ const badgeVariants = cva(
         // 색상 키 선언
         blue: '',
         red: '',
+        danger: '',
         green: '',
         primary: '',
         gray: '',
@@ -60,7 +61,7 @@ const badgeVariants = cva(
       },
       {
         variant: ['contained', 'rounded'],
-        color: 'red',
+        color: ['red', 'danger'],
         class: 'bg-[var(--color-danger-10)] text-[var(--color-danger-50)]',
       },
       {
@@ -97,7 +98,7 @@ const badgeVariants = cva(
         color: 'blue',
         class: 'bg-[var(--color-information-40)] text-[#FFF]',
       },
-      { variant: 'dark', color: 'red', class: 'bg-[var(--color-danger-40)] text-[#FFF]' },
+      { variant: 'dark', color: ['red', 'danger'], class: 'bg-[var(--color-danger-40)] text-[#FFF]' },
       { variant: 'dark', color: 'green', class: 'bg-[var(--color-success-40)] text-[#FFF]' },
       { variant: 'dark', color: 'primary', class: 'bg-[var(--color-primary-50)] text-[#FFF]' },
       { variant: 'dark', color: 'gray', class: 'bg-[var(--color-blue-gray-15)] text-[#FFF]' },
@@ -117,7 +118,7 @@ const badgeVariants = cva(
       },
       {
         variant: 'soft',
-        color: 'red',
+        color: ['red', 'danger'],
         class: 'bg-[var(--color-danger-10)] border-[var(--color-danger-50)] text-[var(--color-danger-50)]',
       },
       {
@@ -157,7 +158,7 @@ const badgeVariants = cva(
         color: 'blue',
         class: 'border-[var(--color-information-50)] text-[var(--color-information-50)]',
       },
-      { variant: 'outlined', color: 'red', class: 'border-[var(--color-danger-50)] text-[var(--color-danger-50)]' },
+      { variant: 'outlined', color: ['red', 'danger'], class: 'border-[var(--color-danger-50)] text-[var(--color-danger-50)]' },
       { variant: 'outlined', color: 'green', class: 'border-[var(--color-success-50)] text-[var(--color-success-50)]' },
       {
         variant: 'outlined',
@@ -184,7 +185,7 @@ const badgeVariants = cva(
       // ghost + color 조합
       { variant: 'ghost', color: 'blue', class: 'text-[var(--color-information-50)]' },
       { variant: 'ghost', color: 'yellow', class: 'text-[var(--color-warning-50)]' },
-      { variant: 'ghost', color: 'red', class: 'text-[var(--color-danger-50)]' },
+      { variant: 'ghost', color: ['red', 'danger'], class: 'text-[var(--color-danger-50)]' },
       { variant: 'ghost', color: 'green', class: 'text-[var(--color-success-50)]' },
       { variant: 'ghost', color: 'primary', class: 'text-[var(--color-primary-50)]' },
       { variant: 'ghost', color: 'gray', class: 'text-[var(--color-gray-70)]' },
@@ -197,7 +198,7 @@ const badgeVariants = cva(
       { variant: 'status', color: 'gray', class: 'bg-[#E4E7EC] text-[#000]' },
       { variant: 'status', color: 'dark', class: 'bg-[#000000] text-[#FFFFFF]' },
       { variant: 'status', color: 'yellow', class: 'bg-[#FEF4D4] text-[#DD9F00]' },
-      { variant: 'status', color: 'red', class: 'bg-[#FFE0E0] text-[#E43939]' },
+      { variant: 'status', color: ['red', 'danger'], class: 'bg-[#FFE0E0] text-[#E43939]' },
       { variant: 'status', color: 'orange', class: 'bg-[#FFE0E0] text-[#FF5C2E]' },
     ],
     defaultVariants: {

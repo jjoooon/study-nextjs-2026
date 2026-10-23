@@ -20,7 +20,7 @@ export const QuestionRadioCardHeader = ({
 }) => {
   return (
     <Grow
-      className={cn('w-full p-[1rem]', !bg ? 'bg-[#F4F4F4]' : undefined, className)}
+      className={cn('w-full px-[1.2rem] py-[1.6rem]', !bg ? 'bg-[#F4F4F4]' : undefined, className)}
       style={bg ? { background: bg } : undefined}
       placement="bwc"
       gap="[1rem]"

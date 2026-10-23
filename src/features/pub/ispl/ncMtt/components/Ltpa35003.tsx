@@ -1,4 +1,4 @@
-﻿/*
+/*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
@@ -8,7 +8,6 @@ import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Gcol, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
-import { ConfirmDialog } from '@common/ConfirmDialog';
 import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
@@ -233,9 +232,10 @@ interface Ltpa35003Props {
   onSelectPlan?: (planId: number) => void;
   isWidthExpanded?: boolean;
   setIsWidthExpanded?: (value: boolean) => void;
+  isSubmitted?: boolean;
 }
 
-export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
+export function Ltpa35003({ simpleMode: _simpleMode, isSubmitted: initialSubmitted = false }: Ltpa35003Props) {
   const handleActionButtonClick = useCallback(() => {}, []);
 
   // 2) Tabs/rowData 분기
@@ -247,6 +247,7 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
   const { tabs: Tabs, active: TabActive, setActive: TabSetActive } = useTabs<TabDataType>(stringifiedTabs);
 
   const [testError, setTestError] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(initialSubmitted);
   const [isAlert01, setAlert01] = useState(false);
 
   return (
@@ -315,7 +316,7 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
               }}
             ></TabPager>
             <div className="relative w-full h-full">
-              <Ltpa3500301 key={TabActive} simpleMode={_simpleMode} />
+              <Ltpa3500301 key={TabActive} simpleMode={_simpleMode} isSubmitted={isSubmitted} />
             </div>
           </LayoutMainBody>
 
@@ -386,7 +387,10 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                     variant={'contained'}
                     color={'primary'}
                     size={'xl'}
-                    onClick={() => setAlert01(true)}
+                    onClick={() => {
+                      setIsSubmitted(true);
+                      setAlert01(true);
+                    }}
                   >
                     저장
                   </Button>
