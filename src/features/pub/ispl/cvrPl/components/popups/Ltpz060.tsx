@@ -106,28 +106,26 @@ const Ltpz060 = () => {
       headerName: '구분',
       field: 'field02',
       wrapText: true,
-      flex: 20,
+      flex: 2,
       cellClass: 'text-left h-full',
     },
     {
       field: 'field03',
       headerName: '급수',
-      width: attributeColumnWidth(50),
+      flex: 2,
       cellClass: 'text-center h-full',
     },
     {
       headerName: '목적물가입금액',
       field: 'field04',
-      flex: 1,
-      minWidth: attributeColumnWidth(100),
+      flex: 3,
       cellClass: 'text-right h-full',
       valueFormatter: numberValueFormatter, // 천단위 콤마 표시
     },
     {
       headerName: '가입금액',
       field: 'field05',
-      flex: 1,
-      minWidth: attributeColumnWidth(90),
+      flex: 3,
       cellClass: 'text-right h-full',
       valueFormatter: numberValueFormatter, // 천단위 콤마 표시
     },
@@ -193,11 +191,11 @@ const Ltpz060 = () => {
             <FormTable caption={'계약기본사항'} cols={['w-[6rem]', 'w-auto', 'w-[7rem]', 'w-[15rem]']}>
               <FormRow>
                 <FormCell title={'담보명'}>
-                  <Input value={'풍수재손해(실손전부보상비)'} readOnly />
+                  <Input value={'급배수시설누출손해(실손전부보상,90일면책,일반,등산외)'} readOnly />
                 </FormCell>
                 <FormCell title={'가입금액'}>
                   <Grow placement="sc" gap={2}>
-                    <Input value={'0'} readOnly className="[&>input]:text-right" />
+                    <Input value={'300'} readOnly className="[&>input]:text-right" />
                     <Typo variant={'body-sm'} className="w-[3rem]">
                       만원
                     </Typo>

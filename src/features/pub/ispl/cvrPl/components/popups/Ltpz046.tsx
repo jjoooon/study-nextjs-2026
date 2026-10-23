@@ -111,7 +111,7 @@ const Ltpz046 = () => {
       },
       {
         headerName: '구분',
-        flex: 10,
+        flex: 2,
         field: 'field02',
         cellClass: 'text-left',
       },
@@ -124,16 +124,14 @@ const Ltpz046 = () => {
       },
       {
         headerName: '목적물가입금액',
-        minWidth: attributeColumnWidth(90),
-        flex: 1,
+        flex: 2,
         field: 'field04',
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter,
       },
       {
         headerName: '가입금액',
-        minWidth: attributeColumnWidth(90),
-        flex: 1,
+        flex: 2,
         field: 'field05',
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter,
