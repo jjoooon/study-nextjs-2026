@@ -602,7 +602,7 @@ const Ltpz640 = () => {
       //   spanRows: true,
       // },
       {
-        headerName: '패키지명',
+        headerName: '패키지유형',
         field: 'field1',
         flex: 1,
         cellClass: 'editable-cell',
@@ -626,7 +626,7 @@ const Ltpz640 = () => {
         resizable: false,
       },
       {
-        headerName: '담보그룹명',
+        headerName: '패키지',
         field: 'field2',
         flex: 10,
         cellClass: 'editable-cell',
@@ -687,10 +687,10 @@ const Ltpz640 = () => {
           <DialogSection className="grid-rows-[auto_minmax(0,1fr)] gap-1 ">
             <Grow placement="ec" className="w-full">
               <Button variant={'outlined'} color={'gray'} onClick={handleOpenAddPackageDialog}>
-                패키지 추가
+                패키지유형 추가
               </Button>
               <Button variant={'outlined'} color={'gray'} onClick={handleAddRow}>
-                행추가
+                패키지 추가
                 <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
               </Button>
               <Button variant={'outlined'} color={'gray'} onClick={handleDeleteRow} disabled={!hasCheckedRows}>
@@ -775,13 +775,13 @@ const Ltpz640 = () => {
         </DialogContent>
       </Dialog>
       <ConfirmDialog
-        title="패키지 추가"
+        title="패키지유형 추가"
         description={
           <div className="space-y-2">
-            <p>추가할 패키지명을 입력하세요.</p>
+            <p>추가할 명칭을 입력하세요.</p>
             <Input
               type="text"
-              placeholder="패키지명을 입력하세요."
+              placeholder="명칭을 입력해주세요."
               value={mergePackageName}
               onChange={(e) => setMergePackageName(e.target.value)}
             />
