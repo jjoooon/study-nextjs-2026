@@ -116,6 +116,7 @@ export function PageTitleProduct({
       <Grow className="gap-2 flex-1" placement="sc">
         {/* 간편/상세 모드를 토글하는 UI. 실제 상태값은 controlled/uncontrolled 정책에 따라 결정된다. */}
         <ViewMode
+          variant="secondary"
           label={['간편', '상세']}
           state={resolvedSimpleMode}
           onChange={handleSimpleModeChange}
