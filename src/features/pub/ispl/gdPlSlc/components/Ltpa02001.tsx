@@ -823,6 +823,12 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
                     domLayout="normal"
                     tooltipShowMode="whenTruncated"
                     tooltipShowDelay={0}
+                    rowSelection={{
+                      mode: 'multiRow',
+                      checkboxes: false,
+                      headerCheckbox: false,
+                      enableClickSelection: true,
+                    }}
                   />
                 </div>
               </TableFoldBody>
