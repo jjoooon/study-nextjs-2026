@@ -106,26 +106,29 @@ const Ltpz060 = () => {
       headerName: '구분',
       field: 'field02',
       wrapText: true,
-      flex: 2,
+      flex: 10,
       cellClass: 'text-left h-full',
     },
     {
       field: 'field03',
       headerName: '급수',
-      flex: 2,
+      minWidth: attributeColumnWidth(40),
+      flex: 1,
       cellClass: 'text-center h-full',
     },
     {
       headerName: '목적물가입금액',
       field: 'field04',
-      flex: 3,
+      minWidth: attributeColumnWidth(170),
+      flex: 1,
       cellClass: 'text-right h-full',
       valueFormatter: numberValueFormatter, // 천단위 콤마 표시
     },
     {
       headerName: '가입금액',
       field: 'field05',
-      flex: 3,
+      minWidth: attributeColumnWidth(150),
+      flex: 1,
       cellClass: 'text-right h-full',
       valueFormatter: numberValueFormatter, // 천단위 콤마 표시
     },

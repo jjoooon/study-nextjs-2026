@@ -223,13 +223,13 @@ export function TabPager<T>({
             })}
           </TabsList>
 
-          <Grow gap={2.5} className="mb-[0.2rem]" placement={'es'}>
+          <Grow gap={2.5} className="pb-[0.3rem]" placement={'es'}>
             {renderButtons}
             {showPagination && (
               <Grow placement="cc" gap={1}>
                 <Grow className="gap-[0.1rem] pt-[0.1rem]">
                   <Typo className="tracking-[0]!" color={'default'} weight={'bold'}>
-                    {Math.ceil((visibleStart + visibleCount) / visibleCount)}
+                    {safeData.length === 0 ? 0 : Math.ceil((visibleStart + visibleCount) / visibleCount)}
                   </Typo>
                   <Typo className="tracking-[0]! text-[var(--color-gray-50)]" weight={'bold'}>
                     /

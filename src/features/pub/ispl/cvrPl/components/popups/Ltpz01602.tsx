@@ -3,7 +3,7 @@
  */
 'use client';
 
-import type { CellValueChangedEvent, ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import type { CellValueChangedEvent, ColDef, ColGroupDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useRef, useState } from 'react';
 import * as React from 'react';
@@ -14,8 +14,9 @@ import {
   DatePickerCellEditor,
   editableSelectCellRenderer,
   numberValueFormatter,
+  useDynamicColumnWidths,
 } from '@aggrid';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo } from '@atoms';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { ZoomInIcon, ZoomOutIcon } from '@icons';
 import { Button } from '@uiux/Button';
@@ -152,17 +153,20 @@ const Ltpz01602 = () => {
     );
   }, []);
 
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+
   const golfColumnDefs: ColDef<GolfItemDataType>[] = [
     {
       headerName: '순번',
       field: 'id',
-      width: 50,
+      width: attributeColumnWidth(50),
       cellClass: 'text-center',
     },
     {
-      headerName: '품명',
+      headerName: '어린이놀이시설 배상책임 가입여부',
       field: 'field01',
-      width: 180,
+      flex: 1,
+      minWidth: attributeColumnWidth(120),
       cellClass: 'text-center editable-cell',
       cellEditor: 'agSelectCellEditor',
       editable: true,
@@ -172,7 +176,7 @@ const Ltpz01602 = () => {
     {
       headerName: '브랜드명',
       field: 'field02',
-      flex: 1,
+      flex: 10,
       cellClass: 'text-left editable-cell',
       editable: true,
       tooltipValueGetter: createTooltipValueGetter<GolfItemDataType>({ field: 'field02' }),
@@ -180,7 +184,8 @@ const Ltpz01602 = () => {
     {
       headerName: '구입년월',
       field: 'field03',
-      width: 120,
+      flex: 1,
+      minWidth: attributeColumnWidth(100),
       cellClass: 'text-center editable-cell',
       cellEditor: DatePickerCellEditor,
       cellEditorParams: {
@@ -191,7 +196,8 @@ const Ltpz01602 = () => {
     {
       headerName: '구입가격(만원)',
       field: 'field04',
-      width: 130,
+      flex: 1,
+      minWidth: attributeColumnWidth(130),
       cellClass: 'text-right editable-cell',
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
@@ -200,11 +206,12 @@ const Ltpz01602 = () => {
   ];
 
   // 2. 시설소유(관리)자배상책임 ag-grid renderer & defs
-  const facilityColumnDefs: ColDef<FacilityLiabilityDataType>[] = [
+  const facilityColumnDefs: (ColDef<FacilityLiabilityDataType> | ColGroupDef<FacilityLiabilityDataType>)[] = [
     {
       headerName: '업종구분',
       field: 'field01',
-      width: 100,
+      flex: 10,
+      minWidth: attributeColumnWidth(100),
       cellClass: 'text-center editable-cell',
       editable: true,
       cellEditor: 'agSelectCellEditor',
@@ -214,28 +221,45 @@ const Ltpz01602 = () => {
     {
       headerName: '규모',
       flex: 1,
-      cellClass: 'text-center p-0! h-full',
-      cellRenderer: (params: ICellRendererParams<FacilityLiabilityDataType>) => {
-        return (
-          <Grid className="h-full w-full grid-cols-[1fr_1fr_1fr_1fr] gap-0 items-stretch">
-            <span className="flex w-full h-full items-center justify-center editable-cell">{params.data?.field02}</span>
-            <span className="flex h-full items-center justify-center border-l border-gray-200 pl-2">
-              {params.data?.field03}
-            </span>
-            <span className="flex h-full items-center justify-center border-l border-gray-200 pl-2 editable-cell">
-              {params.data?.field04}
-            </span>
-            <span className="flex h-full items-center justify-center border-l border-gray-200 pl-2">
-              {params.data?.field05}
-            </span>
-          </Grid>
-        );
-      },
+      cellClass: 'text-center',
+      children: [
+        {
+          headerName: '규모',
+          field: 'field02',
+          flex: 1,
+          minWidth: attributeColumnWidth(90),
+          cellClass: 'text-right editable-cell',
+          editable: true,
+        },
+        {
+          headerName: '규모단위',
+          field: 'field03',
+          flex: 1,
+          minWidth: attributeColumnWidth(40),
+          cellClass: 'text-center',
+        },
+        {
+          headerName: '보조규모',
+          field: 'field04',
+          flex: 1,
+          minWidth: attributeColumnWidth(90),
+          cellClass: 'text-right editable-cell',
+          editable: true,
+        },
+        {
+          headerName: '보조규모단위',
+          field: 'field05',
+          flex: 1,
+          minWidth: attributeColumnWidth(40),
+          cellClass: 'text-center',
+        },
+      ],
     },
     {
       headerName: '보상한도',
       field: 'field06',
-      width: 100,
+      flex: 1,
+      minWidth: attributeColumnWidth(100),
       cellClass: 'text-center editable-cell',
       editable: true,
       valueParser: (params) => Number(params.newValue) || 0,
@@ -246,7 +270,8 @@ const Ltpz01602 = () => {
     {
       headerName: '자기부담금',
       field: 'field07',
-      width: 100,
+      flex: 1,
+      minWidth: attributeColumnWidth(100),
       cellClass: 'text-center editable-cell',
       editable: true,
       valueParser: (params) => Number(params.newValue) || 0,
@@ -257,31 +282,34 @@ const Ltpz01602 = () => {
     {
       headerName: '보험료',
       field: 'field08',
-      width: 100,
+      flex: 1,
+      minWidth: attributeColumnWidth(100),
       cellClass: 'text-center',
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
     },
     {
-      headerName: '',
+      headerName: '트램플린 (에어바운스)',
       field: 'field09',
-      width: 100,
+      flex: 1,
+      minWidth: attributeColumnWidth(100),
       cellClass: 'text-center editable-cell',
       editable: true,
-      headerComponent: () => (
-        <div className="w-full text-center whitespace-normal px-1">
-          트램플린
-          <br />
-          (에어바운스)
-        </div>
-      ),
+      // headerComponent: () => (
+      //   <div className="w-full text-center whitespace-normal px-1">
+      //     트램플린
+      //     <br />
+      //     (에어바운스)
+      //   </div>
+      // ),
       cellEditor: 'agSelectCellEditor',
       cellRenderer: expiryCellRenderer('center'),
     },
     {
       headerName: '요양병원여부',
       field: 'field10',
-      width: 100,
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-center',
     },
   ];
@@ -353,7 +381,8 @@ const Ltpz01602 = () => {
                 checkboxes: true,
                 enableClickSelection: false,
               }}
-              headerHeight={50}
+              groupHeaderHeight={30}
+              headerHeight={30}
               selectionColumnDef={{
                 headerName: '선택',
                 width: 30,

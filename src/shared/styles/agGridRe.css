@@ -776,11 +776,16 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   border-top: 0 !important;
 }
 
-/* .ag-header-cell-text{
+.ag-header-cell-text{
   width: 100%;
   display: block;
   text-align: center;
-} */
+  line-height: 1;
+  font-size: 1.3rem;
+  font-weight: bold;
+  white-space: normal;
+  word-break: keep-all;
+}
 
 .ag-header-cell-label .ag-header-cell-text {
   overflow: visible !important;
@@ -856,7 +861,7 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 
 .ag-header-group-text {
   font-size: 1.3rem;
-  font-weight: 500;
+  font-weight: 700 ;
 }
 
 /* .ag-blue-text .ag-cell {
@@ -2027,4 +2032,12 @@ html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked
 .v109 .ag-cell-value .masking [data-slot="input"]{
   background: none;
   border: none;
+}
+
+.th-cell-break {
+  word-break: keep-all;
+  width: 100%;
+  display: block;
+  text-align: center;
+  line-height: 1.1;
 }
