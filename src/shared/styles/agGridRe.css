@@ -324,11 +324,11 @@
 }
 
 .ag-header-viewport {
-  border-bottom: 0.1rem solid var(--color-gray-10) !important;
+  border-bottom: 0.2rem solid var(--color-gray-10);
 }
 .ag-header .ag-header-viewport,
 .ag-header-container {
-  background-color: var(--color-gray-5);
+  background-color: var(--color-gray-10);
 }
 
 /* .ag-theme-alpine{

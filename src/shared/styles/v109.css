@@ -338,16 +338,6 @@
 /* ----------------------------------------------------
  * Chrome 109 전용 FormTable head variant (dl/dt/dd) 호환 스타일
  * ---------------------------------------------------- */
-.v109 .formtable-head-body dl,
-.v109 [data-variant='head'] dl {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-wrap: wrap;
-  flex-wrap: wrap;
-  row-gap: 0.4rem;
-  column-gap: 2.4rem;
-}
 
 .v109 .formtable-head-body dl + dl,
 .v109 [data-variant='head'] dl + dl,
@@ -702,7 +692,7 @@
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
-  border-radius: 0.8rem;
+  border-radius: 0.4rem;
   font-size: 1.4rem;
   color: var(--color-secondary-70);
   font-weight: bold;
@@ -2216,7 +2206,7 @@
 /* RadioGroupItem data-[state=checked] & hover Chrome 109 호환 (.v109 전용) */
 .v109 .cp-radio button[data-state='checked'],
 .v109 button[role='radio'][data-state='checked'] {
-  background-color: var(--color-primary-5);
+  background-color: #FFF;
   color: var(--color-primary-50);
   border-color: var(--color-primary-50);
   border-style: solid;
@@ -2470,3 +2460,341 @@
     border-color: var(--color-gray-200, var(--color-gray-20, #e5e7eb));
   }
 }
+
+.v109 .ag-disabled,
+html.v109 .ag-disabled {
+  pointer-events: none !important;
+  cursor: default !important;
+}
+
+.v109 .ag-checkbox-input-wrapper.ag-disabled,
+.v109 .ag-disabled .ag-checkbox-input-wrapper,
+.v109 .ag-disabled.ag-checkbox-input-wrapper,
+html.v109 .ag-checkbox-input-wrapper.ag-disabled,
+html.v109 .ag-disabled .ag-checkbox-input-wrapper,
+html.v109 .ag-disabled.ag-checkbox-input-wrapper {
+  pointer-events: none !important;
+  cursor: default !important;
+}
+
+.v109 .ag-checkbox-input-wrapper.ag-disabled.ag-checked,
+.v109 .ag-disabled .ag-checkbox-input-wrapper.ag-checked,
+.v109 .ag-disabled.ag-checkbox-input-wrapper.ag-checked,
+.v109 .ag-disabled.ag-checked,
+html.v109 .ag-checkbox-input-wrapper.ag-disabled.ag-checked,
+html.v109 .ag-disabled .ag-checkbox-input-wrapper.ag-checked,
+html.v109 .ag-disabled.ag-checkbox-input-wrapper.ag-checked,
+html.v109 .ag-disabled.ag-checked {
+  background-color: #babbbc !important;
+  border-color: #babbbc !important;
+}
+
+.v109 .ag-checkbox-input-wrapper.ag-disabled:not(.ag-checked),
+.v109 .ag-disabled .ag-checkbox-input-wrapper:not(.ag-checked),
+.v109 .ag-disabled.ag-checkbox-input-wrapper:not(.ag-checked),
+html.v109 .ag-checkbox-input-wrapper.ag-disabled:not(.ag-checked),
+html.v109 .ag-disabled .ag-checkbox-input-wrapper:not(.ag-checked),
+html.v109 .ag-disabled.ag-checkbox-input-wrapper:not(.ag-checked) {
+  opacity: 0.5 !important;
+  border-color: #babbbc !important;
+}
+
+.v109 input[class*='bg-[var(--color-input-surface-disabled)]'],[class*='bg-[var(--color-input-surface-disabled)]'] {
+  background-color: var(--color-input-surface-disabled);
+}
+
+.v109 [data-slot='input'][class*='bg-[var(--color-input-surface-disabled)]'] {
+  background-color: var(--color-input-surface-disabled); 
+}
+
+.v109 .ag-cell [data-slot='input'][class*='bg-[var(--color-input-surface-disabled)]'] {
+  background-color: var(--color-input-surface-disabled) 
+}
+
+.v109 [class*='[&_input]:bg-transparent!'] input {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+.v109 [class*='[&_input]:text-[#FFF]!'] input {
+  color: #ffffff !important;
+}
+
+.v109 [class*='[&_input]:border-none!'] input {
+  --tw-border-style: none;
+  border-style: none ;
+}
+
+.v109 [class*='border-[var(--color-input-border)]'] {
+  border-color: var(--color-input-border) !important;
+}
+
+.v109 [class*='border-[0.1rem]'] {
+  border-style: var(--tw-border-style, solid);
+  border-width: 0.1rem;
+}
+
+/* bg-[var(--color-gray-5)] Chrome 109 호환 스타일 */
+.v109 [class*='bg-[var(--color-gray-5)]'] {
+  background-color: var(--color-gray-5) !important;
+}
+html.v109 [class*='bg-[var(--color-gray-5)]'][class*='bg-[var(--color-gray-0)]'] {
+  background-color: var(--color-gray-0) !important;
+}
+html.v109 [class*='bg-[var(--color-gray-5)]'][class*='bg-[var(--color-primary-50)]'] {
+  background-color: var(--color-primary-50) !important;
+}
+html.v109 [class*='bg-[var(--color-gray-5)]'][class*='bg-[var(--color-primary-5)]'] {
+  background-color: var(--color-primary-5) !important;
+}
+
+html.v109 [class*='bg-[var(--color-primary-50)]']:disabled,
+html.v109 [class*='bg-[var(--color-primary-5)]']:disabled,
+html.v109 [class*='disabled:bg-[var(--color-gray-5)]']:disabled,
+html.v109 [class*='disabled:bg-[var(--color-gray-5)]'].disabled {
+  background-color: var(--color-gray-5) !important;
+}
+
+/* after 가상 요소 transform 합성 규칙 (Chrome 109 호환) */
+.v109 [class*='after:rotate-']::after,
+.v109 [class*='after:translate-']::after {
+  content: '' !important;
+  -webkit-transform: translate(var(--v109-after-tx, 0), var(--v109-after-ty, 0)) rotate(var(--v109-after-rotate, 0deg)) !important;
+  transform: translate(var(--v109-after-tx, 0), var(--v109-after-ty, 0)) rotate(var(--v109-after-rotate, 0deg)) !important;
+}
+
+.v109 [class*='after:rotate-[45deg]']::after {
+  --v109-after-rotate: 45deg !important;
+}
+
+.v109 [class*='after:rotate-[225deg]']::after {
+  --v109-after-rotate: 225deg !important;
+}
+
+.v109 [class*='after:translate-y-[-0.4rem]']::after {
+  --v109-after-ty: -0.4rem !important;
+}
+
+.v109 [class*='after:translate-y-[0.4rem]']::after {
+  --v109-after-ty: 0.4rem !important;
+}
+
+.v109 [class*='after:-translate-x-1/2']::after {
+  --v109-after-tx: -50% !important;
+}
+
+.v109 [class*='after:left-[0.4rem]']::after {
+  content: '' !important;
+  left: 0.4rem !important;
+}
+
+.v109 [class*='after:bottom-full']::after {
+  content: '' !important;
+  bottom: 100% !important;
+}
+
+.v109 [class*='after:z-0']::after {
+  content: '' !important;
+  z-index: 0 !important;
+}
+
+/* AG Grid 가로/세로 구분선 Chrome 109 호환 스타일 */
+.v109 .ag-header-row {
+  border-bottom: 1px solid var(--color-gray-10, #e5e5e5) !important;
+}
+
+.v109 .ag-header-cell {
+  border-right: 1px solid var(--color-gray-10, #e5e5e5) !important;
+}
+
+.v109 .ag-header-cell.ag-column-last,
+.v109 .ag-header-group-cell.ag-column-last {
+  border-right: 0 !important;
+}
+
+.v109 .ag-row {
+  border-bottom: 2px solid var(--color-gray-10, #e5e5e5) !important;
+}
+
+.v109 .ag-cell {
+  border-right: 1px solid var(--color-gray-10, #e5e5e5) !important;
+}
+
+.v109 .ag-row .ag-column-last,
+.v109 .ag-cell.ag-column-last {
+  border-right: 0 !important;
+}
+
+/* RadioGroup / TabBadge / CountBadge / SubLabel Chrome 109 호환 스타일 */
+.v109 [class*='[&_.sub-label]:text-[#e53935]'] .sub-label {
+  color: #e53935 !important;
+}
+
+.v109 [class*='data-[state=checked]:[&_.sub-label]:text-[#E43939]!'][data-state='checked'] .sub-label {
+  color: #E43939 !important;
+}
+
+.v109 [class*='[&_.count-badge]:inline-flex'] .count-badge {
+  display: inline-flex !important;
+}
+
+.v109 [class*='[&_.count-badge]:h-[1.6rem]'] .count-badge {
+  height: 1.6rem !important;
+}
+
+.v109 [class*='[&_.count-badge]:min-w-[1.6rem]'] .count-badge {
+  min-width: 1.6rem !important;
+}
+
+.v109 [class*='[&_.count-badge]:items-center'] .count-badge {
+  align-items: center !important;
+}
+
+.v109 [class*='[&_.count-badge]:justify-center'] .count-badge {
+  justify-content: center !important;
+}
+
+.v109 [class*='[&_.count-badge]:rounded-full'] .count-badge {
+  border-radius: 9999px !important;
+}
+
+.v109 [class*='[&_.count-badge]:bg-white'] .count-badge {
+  background-color: var(--color-white, #ffffff) !important;
+}
+
+.v109 [class*='[&_.count-badge]:px-[0.4rem]'] .count-badge {
+  padding-left: 0.4rem !important;
+  padding-right: 0.4rem !important;
+}
+
+.v109 [class*='[&_.count-badge]:pb-[0.25rem]'] .count-badge {
+  padding-bottom: 0.25rem !important;
+}
+
+.v109 [class*='[&_.count-badge]:text-center'] .count-badge {
+  text-align: center !important;
+}
+
+.v109 [class*='[&_.count-badge]:text-[1.2rem]'] .count-badge {
+  font-size: 1.2rem !important;
+}
+
+.v109 [class*='[&_.count-badge]:leading-none'] .count-badge {
+  line-height: 1 !important;
+}
+
+.v109 [class*='[&_.count-badge]:font-bold'] .count-badge {
+  font-weight: 700 !important;
+}
+
+.v109 [class*='[&_.count-badge]:tracking-normal'] .count-badge {
+  letter-spacing: normal !important;
+}
+
+.v109 [class*='[&_.count-badge]:text-gray-100'] .count-badge {
+  color: var(--color-gray-100) !important;
+}
+
+.v109 [class*='[&_.count-badge]:shadow-[0px_2px_4px_0px_rgba(0,0,0,0.1)]!'] .count-badge {
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1) !important;
+}
+
+.v109 [class*='data-[state=checked]:[&_.count-badge]:bg-[#fbc02d]!'][data-state='checked'] .count-badge {
+  background-color: #fbc02d !important;
+}
+
+.v109 [class*='data-[state=checked]:[&_.count-badge]:text-gray-100!'][data-state='checked'] .count-badge {
+  color: var(--color-gray-100) !important;
+}
+
+/* data-[state=checked] 스타일 */
+.v109 [class*='data-[state=checked]:border-transparent!'][data-state='checked'] {
+  border-color: transparent !important;
+}
+
+.v109 [class*='data-[state=checked]:bg-[#1f2429]!'][data-state='checked'] {
+  background-color: #1f2429 !important;
+}
+
+.v109 [class*='data-[state=checked]:text-white!'][data-state='checked'] {
+  color: var(--color-white, #ffffff) !important;
+}
+
+/* disabled 관련 스타일 */
+.v109 [class*='disabled:opacity-100']:disabled,
+.v109 [class*='disabled:opacity-100'].disabled,
+.v109 [class*='disabled:opacity-100'][aria-disabled='true'] {
+  opacity: 1 !important;
+}
+
+.v109 [class*='disabled:bg-[var(--color-gray-10)]']:disabled,
+.v109 [class*='disabled:bg-[var(--color-gray-10)]'].disabled,
+.v109 [class*='disabled:bg-[var(--color-gray-10)]'][aria-disabled='true'] {
+  background-color: var(--color-gray-10) !important;
+}
+
+.v109 [class*='disabled:border-[var(--color-gray-15)]']:disabled,
+.v109 [class*='disabled:border-[var(--color-gray-15)]'].disabled,
+.v109 [class*='disabled:border-[var(--color-gray-15)]'][aria-disabled='true'] {
+  border-color: var(--color-gray-15) !important;
+}
+
+.v109 [class*='disabled:cursor-not-allowed']:disabled,
+.v109 [class*='disabled:cursor-not-allowed'].disabled,
+.v109 [class*='disabled:cursor-not-allowed'][aria-disabled='true'] {
+  cursor: not-allowed !important;
+}
+
+.v109 [class*='disabled:data-[state=checked]:border-[var(--color-gray-15)]']:disabled[data-state='checked'],
+.v109 [class*='disabled:data-[state=checked]:border-[var(--color-gray-15)]'].disabled[data-state='checked'],
+.v109 [class*='disabled:data-[state=checked]:border-[var(--color-gray-15)]'][aria-disabled='true'][data-state='checked'] {
+  border-color: var(--color-gray-15) !important;
+}
+
+/* inner-min-scroll: data-row={2} 일 때 5개 행(15rem)이 아닌 2개 행(6rem) 기준으로 높이에 따라 가변 동작 */
+.v109 .ag-theme-alpine.inner-scroll.inner-min-scroll[data-row='2'] .ag-root-wrapper-body .ag-overlay,
+.v109 .ag-theme-alpine.inner-scroll.inner-min-scroll[data-row='2'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
+  height: 6rem !important;
+  min-height: 6rem !important;
+  max-height: 100% !important;
+  overflow-y: auto !important;
+}
+.v109 .ag-theme-alpine.inner-min-scroll[data-row='2'] .ag-root-wrapper-body .ag-overlay,
+.v109 .ag-theme-alpine.inner-min-scroll[data-row='2'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
+  height: 6rem !important;
+  min-height: 6rem !important;
+  max-height: 100% !important;
+  overflow-y: auto !important;
+}
+
+
+/* Ltpz068 상단 탭바 grid-cols-[15.8rem_16rem_16.2rem_17.6rem] Chrome 109 호환 스타일 */
+.v109 [class*='grid-cols-[15.8rem_16rem_16.2rem_17.6rem]'],
+.v109 .grid-cols-\[15\.8rem_16rem_16\.2rem_17\.6rem\] {
+  display: -ms-grid !important;
+  display: grid !important;
+  grid-template-columns: 15.8rem 16rem 16.2rem 17.6rem !important;
+}
+
+/* DialogSection 내부에서 Ag-Grid가 1fr 행에 꽉 차도록 보정 (스크롤 넘침 차단) */
+.v109 [data-slot='dialog-section'] > [class*='grid-rows-[auto_1fr_auto]'] {
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.v109 [data-slot='dialog-section'] > [class*='grid-rows-[auto_1fr_auto]'] > div.relative {
+  height: 100% !important;
+  min-height: 0 !important;
+}
+
+.v109 [data-slot='dialog-section'] > [class*='grid-rows-[auto_1fr_auto]'] .ag-theme-alpine {
+  height: 100% !important;
+  min-height: 0 !important;
+}
+
+.v109 [class*='[&_strong]:text-[1.2rem]!'] strong {
+  font-size: 1.2rem !important;
+}
+
+
