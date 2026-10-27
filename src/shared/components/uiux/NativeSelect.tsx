@@ -39,7 +39,7 @@ interface UINativeSelectProps extends Omit<React.ComponentProps<'select'>, 'size
   width?: number | string;
   /** 필수 선택 여부 (활성화 시 연한 노란색 배경 스타일 적용) */
   required?: boolean;
-  /** 읽기 전용 상태 여부 (클릭 시 드롭다운이 열리지 않음) */
+  /** 읽기 전용 상태 여부 (활성화 시 select에 disabled가 적용되어 선택/조작이 비활성화됨) */
   readOnly?: boolean;
   /** 에러 상태(선택하지 않음 등) 표시 여부 */
   error?: boolean;
@@ -88,6 +88,7 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
       width = 'full',
       required = false,
       readOnly = false,
+      disabled = false,
       error = false,
       errorMsg = '입력은 필수입니다.',
       errorPs = 'bl',
@@ -101,6 +102,7 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
     },
     ref
   ) => {
+    const isDisabled = Boolean(disabled || readOnly);
     const [internalMasked, setInternalMasked] = React.useState(defaultMasked);
     const isMaskControlled = isMasked !== undefined;
     const currentMasked = isMaskControlled ? isMasked : internalMasked;
@@ -134,6 +136,7 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
     }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      if (isDisabled) return;
       setSelectedValue(e.target.value);
       if (props.onChange) {
         props.onChange(e);
@@ -163,21 +166,26 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
           ? 'text-[var(--color-text-basic)] bg-[var(--color-warning-10)] border-[var(--color-warning-30)]'
           : 'text-[var(--color-text-basic)] border-[var(--color-input-border)] bg-white'
     );
-    const hoverStyle =
-      isInvalid || isErrorActive
+    const hoverStyle = isDisabled
+      ? ''
+      : isInvalid || isErrorActive
         ? 'hover:border-[var(--color-danger-50)]'
         : required
           ? 'hover:border-[var(--color-warning-70)]'
           : 'hover:border-[var(--color-input-border-hover)]';
-    const focusStyle = `${
-      isInvalid || isErrorActive ? 'focus:border-[var(--color-danger-50)] focus:ring-[var(--color-danger-5)]' : required
-      // ? 'focus:border-[#006ff2] focus:ring-1 focus:ring-[#006ff2]'
-      // : 'focus:border-[#006ff2] focus:ring-1 focus:ring-[#006ff2]'
-    } 
+    const focusStyle = isDisabled
+      ? ''
+      : `${
+          isInvalid || isErrorActive
+            ? 'focus:border-[var(--color-danger-50)] focus:ring-[var(--color-danger-5)]'
+            : required
+          // ? 'focus:border-[#006ff2] focus:ring-1 focus:ring-[#006ff2]'
+          // : 'focus:border-[#006ff2] focus:ring-1 focus:ring-[#006ff2]'
+        } 
       focus:outline-none`;
-    const readonlyStyle = readOnly ? 'bg-[var(--color-input-surface-disabled)]  opacity-100' : '';
-    const disabledStyle = 'disabled:bg-[var(--color-input-surface-disabled)]  disabled:opacity-100';
-    const disabledStyle2 = 'disabled:opacity-100 !border-0 !p-0 !w-auto';
+    const readonlyStyle = readOnly ? 'bg-[var(--color-input-surface-disabled)] opacity-100' : '';
+    const disabledStyle = isDisabled ? 'disabled:bg-[var(--color-input-surface-disabled)] disabled:opacity-100' : '';
+    const disabledStyle2 = isDisabled ? 'disabled:opacity-100 !border-0 !p-0 !w-auto' : '';
     const sizeStyle = `${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
 
     const variantStyles = {
@@ -190,7 +198,7 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
         ? 'var(--color-danger-50)'
         : required
           ? 'var(--color-gray-50)'
-          : readOnly || props.disabled
+          : isDisabled
             ? 'var(--color-gray-30)'
             : 'var(--color-gray-50)';
 
@@ -252,12 +260,13 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
         ref={localRef}
         data-slot="native-select"
         className={cn('cp-nativeselect', variantStyles[variant])}
-        tabIndex={readOnly ? -1 : props.tabIndex}
+        tabIndex={isDisabled ? -1 : props.tabIndex}
         aria-invalid={isErrorActive || undefined}
         aria-describedby={isErrorActive ? errorId : undefined}
         {...props}
+        disabled={isDisabled}
         onMouseDown={(e) => {
-          if (readOnly) {
+          if (isDisabled) {
             e.preventDefault();
           }
           props.onMouseDown?.(e);
@@ -278,7 +287,9 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
             <>
               {shouldRenderTooltip ? (
                 <Tooltip>
-                  <TooltipTrigger asChild>{selectElement}</TooltipTrigger>
+                  <TooltipTrigger asChild>
+                    <span className="block w-full">{selectElement}</span>
+                  </TooltipTrigger>
                   <TooltipContent side="top" align="center">
                     {selectedLabel}
                   </TooltipContent>
@@ -307,8 +318,11 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
             variant="none"
             only="icon"
             size="xs"
-            disabled={props.disabled || isMaskLoading}
-            className="text-[var(--color-gray-60)] hover:text-[var(--color-gray-90)] cursor-pointer shrink-0"
+            disabled={disabled || isMaskLoading}
+            className={cn(
+              'text-[var(--color-gray-60)] hover:text-[var(--color-gray-90)] cursor-pointer shrink-0',
+              !currentMasked && 'pointer-events-none'
+            )}
             onMouseDown={(e) => e.preventDefault()}
             onClick={handleToggleMask}
             aria-label={currentMasked ? '마스킹 해제 (정보 조회)' : '마스킹 적용 (정보 숨김)'}
