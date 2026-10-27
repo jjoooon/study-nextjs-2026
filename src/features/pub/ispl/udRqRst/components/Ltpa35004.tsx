@@ -36,7 +36,7 @@ interface TabDataType {
   gender?: string;
   value: string;
   error?: boolean;
-  info: string[];
+  info?: string[];
 }
 const TabData: TabDataType[] = [
   {
@@ -46,7 +46,7 @@ const TabData: TabDataType[] = [
     gender: '여',
     value: 'tab1',
     error: true,
-    info: ['추가정보1', '추가정보2', '추가정보3', '추가정보4', '추가정보5'],
+    info: [],
   },
   {
     id: 2,
@@ -343,25 +343,34 @@ export function Ltpa35004({ onClose }: Ltpa35004Props = {}) {
             setActive={TabSetActive}
             visibleCount={5}
             getValue={(tab) => String(tab.id)}
-            renderTab={(tab) => (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span className="flex items-center">
-                    <span className="max-w-20 truncate block">{tab.name}</span>
-                    <span className="block">{`${tab.age}세(${tab.gender})`}</span>
-                  </span>
-                </TooltipTrigger>
-                <TooltipContent side="top" sideOffset={8}>
-                  <BulletList className="gap-[0.5rem]">
-                    {tab.info.map((info: string, index: number) => (
-                      <BulletListItem key={index} type="dot">
-                        {info}
-                      </BulletListItem>
-                    ))}
-                  </BulletList>
-                </TooltipContent>
-              </Tooltip>
-            )}
+            renderTab={(tab) => {
+              const tabContent = (
+                <span className="flex items-center">
+                  <span className="max-w-20 truncate block">{tab.name}</span>
+                  <span className="block">{`${tab.age}세(${tab.gender})`}</span>
+                </span>
+              );
+
+              // info 정보가 없거나 빈 배열인 경우 툴팁 및 관련 이벤트를 차단하고 콘텐츠만 반환
+              if (!tab.info || tab.info.length === 0) {
+                return tabContent;
+              }
+
+              return (
+                <Tooltip>
+                  <TooltipTrigger asChild>{tabContent}</TooltipTrigger>
+                  <TooltipContent side="top" sideOffset={8}>
+                    <BulletList className="gap-[0.5rem]">
+                      {tab.info.map((info: string, index: number) => (
+                        <BulletListItem key={index} type="dot">
+                          {info}
+                        </BulletListItem>
+                      ))}
+                    </BulletList>
+                  </TooltipContent>
+                </Tooltip>
+              );
+            }}
             renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => {
               const idx = data.findIndex((t) => String(t.value) === String(tab.value));
               return (
