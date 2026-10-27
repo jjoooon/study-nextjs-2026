@@ -263,7 +263,7 @@ const Ltpz022 = () => {
           </Grow>
 
           {/* 중간: 탭 영역 및 위배 내역 그리드 */}
-          <Table variant="default" className="border-0 translate-y-[-0.1rem]">
+          <Table variant="default">
             <colgroup>
               <col style={{ width: '9rem' }} />
               <col style={{ width: '12rem' }} />
