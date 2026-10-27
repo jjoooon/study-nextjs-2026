@@ -31,62 +31,53 @@ export const ViewMode = ({
   const isSecondary = variant === 'secondary' || variant === 'box';
 
   const labelClassName = isSecondary
-    ? `relative min-h-[1.8rem] p-[0.3rem] rounded-[0.2rem] bg-[var(--color-secondary-5)] translate-[0.1rem] flex justify-center items-center gap-0 ${
-        disabled ? '' : 'cursor-pointer'
-      }
-        [&>.peer-1]:text-[var(--color-gray-0)]
-        [&>.peer-1]:bg-[var(--color-secondary-50)]
-        [&>.peer-1]:font-bold
-        peer-checked:[&>.peer-1]:bg-[var(--color-secondary-5)]
-        peer-checked:[&>.peer-1]:font-normal
-        peer-checked:[&>.peer-1]:text-[var(--color-gray-100)]
-        peer-checked:[&>.peer-1]:text-normal
-
-        peer-checked:[&>.peer-2]:text-[var(--color-gray-0)]
-        peer-checked:[&>.peer-2]:font-bold
-        peer-checked:[&>.peer-2]:bg-[var(--color-secondary-50)]`
+    ? `relative min-h-[2rem] rounded-[0.2rem] translate-[0.1rem] flex justify-center items-center gap-0 z-1 ${
+        disabled ? 'bg-[var(--color-gray-5)] rounded-[0.6rem]' : 'bg-transparent cursor-pointer'
+      }`
     : `relative h-[2.8rem] p-[0.1rem] rounded-full border bg-white border-[var(--color-gray-15)] flex justify-center items-center gap-0 ${
         disabled ? '' : 'cursor-pointer'
-      }  
-        [&>.peer-1]:text-[var(--color-gray-0)] 
-        [&>.peer-1]:bg-gradient-to-r 
-        [&>.peer-1]:from-[#ff5c2e] 
-        [&>.peer-1]:to-[#ffb800] 
-        [&>.peer-1]:font-bold
-        peer-checked:[&>.peer-1]:!bg-none 
-        peer-checked:[&>.peer-1]:font-normal 
-        peer-checked:[&>.peer-1]:text-[var(--color-gray-50)] 
-        peer-checked:[&>.peer-1]:text-normal 
-        
-        peer-checked:[&>.peer-2]:text-[var(--color-gray-0)] 
-        peer-checked:[&>.peer-2]:font-bold 
-        peer-checked:[&>.peer-2]:bg-gradient-to-r 
-        peer-checked:[&>.peer-2]:from-[#ff5c2e] 
-        peer-checked:[&>.peer-2]:to-[#ffb800]`;
+      }`;
 
-  const itemClassName = isSecondary
-    ? 'h-[1.8rem] leading-1 flex items-center px-1 rounded-[0.3rem] text-[1.1rem] text-[var(--color-gray-100)] tracking-[-0.08rem] whitespace-nowrap'
-    : 'rounded-full flex items-center pl-1 pr-[0.6rem] h-full text-[1.1rem] text-[var(--color-gray-50)] tracking-[-0.08rem] !whitespace-nowrap';
+  const itemBaseClass = isSecondary
+    ? `h-[2rem] leading-1 flex items-center px-1 rounded-[0.2rem] text-[1.1rem] tracking-[-0.08rem] whitespace-nowrap`
+    : 'rounded-full flex items-center pl-1 pr-[0.6rem] h-full text-[1.1rem] tracking-[-0.08rem] whitespace-nowrap';
+
+  const activeItemClass = isSecondary
+    ? `text-[var(--color-gray-0)] font-bold ${disabled ? 'bg-[var(--color-blue-gray-50)]' : 'bg-[var(--color-secondary-50)]'}`
+    : 'text-[var(--color-gray-0)] bg-gradient-to-r from-[#ff5c2e] to-[#ffb800] font-bold';
+
+  const inactiveItemClass = isSecondary
+    ? `bg-transparent font-normal ${disabled ? 'text-[var(--color-gray-30)]' : 'text-[var(--color-gray-100)]'}`
+    : 'text-[var(--color-gray-50)] bg-transparent font-normal';
+
+  const isFirstActive = state;
+  const isSecondActive = !state;
 
   return (
     <div
-      className={`flex items-center cp-viewmode ${
+      className={`flex items-center cp-viewmode relative ${
         isSecondary ? 'cp-viewmode-secondary' : 'cp-viewmode-default'
       } ${className}`.trim()}
     >
       <input
         type="checkbox"
         id={inputId}
-        className="peer a11y-hidden"
+        className="a11y-hidden"
         checked={!state}
         disabled={disabled}
         onChange={() => onChange?.(!state)}
       />
       <label htmlFor={inputId} className={labelClassName}>
-        <span className={`peer-1 ${itemClassName}`}>{label?.[0] ?? '간편'}</span>
-        <span className={`peer-2 ${itemClassName}`}>{label?.[1] ?? '상세'}</span>
-        {/* <b className="inline-flex items-center justify-center px-1.5 py-0.5 rounded-full bg-gradient-to-r from-[#ff5c2e] to-[#ffb800] shadow-[0rem_.2rem_.4rem_0rem_rgba(0,0,0,0.08)] absolute z-0 w-[3rem] h-[2.4rem] left-[.1rem] transition-left duration-300"></b> */}
+        <span className={`peer-1 ${itemBaseClass} ${isFirstActive ? activeItemClass : inactiveItemClass}`}>
+          {label?.[0] ?? '간편'}
+        </span>
+        <span className={`peer-2 ${itemBaseClass} ${isSecondActive ? activeItemClass : inactiveItemClass}`}>
+          {label?.[1] ?? '상세'}
+        </span>
       </label>
+      {isSecondary && !disabled && (
+        <span className="absolute w-full h-full border z-0 border-[var(--color-gray-20)] rounded-[0.2rem] top-[0.1rem] left-[0.1rem] pointer-events-none"></span>
+      )}
     </div>
   );
 };
