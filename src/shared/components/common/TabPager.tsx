@@ -28,10 +28,11 @@ interface TabPagerProps<T> {
    */
   children?: React.ReactNode;
   /**
-   * 탭의 스타일 변형 프리셋명 (default 등)
+   * 탭의 스타일 변형 프리셋명 (default, box, scroll 등)
+   * - 'scroll': 탭 전체를 렌더링하고 가로 스크롤을 생성하여 선택된 탭을 중앙에 배치
    * @default 'default'
    */
-  variant?: string;
+  variant?: 'default' | 'box' | 'scroll' | (string & {});
   /**
    * 탭 라인 바로 아래 테이블이 오는지 여부 (디자인적 선 보더 조정을 위함)
    * @default false
@@ -114,7 +115,8 @@ interface TabPagerProps<T> {
 
 /**
  * 페이지네이션형 탭 컴포넌트 (TabPager)
- * - 탭 아이템 개수가 많아 화면 폭을 초과할 때, 이전/다음 버튼을 통해 탭 헤더를 슬라이딩(페이지네이션)하는 탭 레이아웃 래퍼입니다.
+ * - 탭 아이템 개수가 많아 화면 폭을 초과할 때, 이전/다음 버튼을 통해 탭 헤더를 슬라이딩(페이지네이션)하거나
+ *   variant="scroll"을 통해 전체 탭 가로 스크롤 및 중앙 정렬, 1개씩 이동하는 탭 레이아웃 래퍼입니다.
  */
 export function TabPager<T>({
   data,
@@ -139,8 +141,9 @@ export function TabPager<T>({
   showPagination = true,
 }: TabPagerProps<T>) {
   const safeData = data ?? [];
+  const isScrollVariant = variant === 'scroll';
 
-  // tab pagination 훅 사용
+  // tab pagination 훅 사용 (기존 페이지네이션 모드)
   const { visibleStart, end, handlePrev, handleNext, isLastPage, setVisibleStart } = useTabsPagination(
     safeData, // T[]: data의 타입이 자동으로 T로 추론됨
     visibleCount,
@@ -153,9 +156,97 @@ export function TabPager<T>({
     }
   );
 
+  // 현재 활성화된 탭의 인덱스
+  const currentIndex = safeData.findIndex((tab) => getValue(tab) === active);
+
+  // variant="scroll" 일 때 좌우 1탭씩 이동 핸들러 및 disabled 상태
+  const handleScrollPrev = () => {
+    if (currentIndex > 0) {
+      setActive(getValue(safeData[currentIndex - 1]));
+    }
+  };
+
+  const handleScrollNext = () => {
+    if (currentIndex < safeData.length - 1 && currentIndex >= 0) {
+      setActive(getValue(safeData[currentIndex + 1]));
+    } else if (currentIndex === -1 && safeData.length > 0) {
+      setActive(getValue(safeData[0]));
+    }
+  };
+
+  const isScrollPrevDisabled = currentIndex <= 0;
+  const isScrollNextDisabled = currentIndex === -1 || currentIndex >= safeData.length - 1;
+
+  // variant="scroll" 탭 목록 가로 스크롤 및 선택된 탭 중앙 정렬 관리
+  const tabsListRef = React.useRef<HTMLDivElement>(null);
+  const isFirstRender = React.useRef(true);
+
+  const scrollToActiveTab = React.useCallback(
+    (behavior: ScrollBehavior = 'smooth') => {
+      if (!tabsListRef.current) return;
+      const container = tabsListRef.current;
+
+      const escapedActive =
+        typeof CSS !== 'undefined' && typeof CSS.escape === 'function'
+          ? CSS.escape(active)
+          : active.replace(/["\\]/g, '\\$&');
+
+      const activeTrigger =
+        (active ? container.querySelector<HTMLElement>(`[data-tab-value="${escapedActive}"]`) : null) ??
+        container.querySelector<HTMLElement>('[role="tab"][data-state="active"]');
+
+      if (!activeTrigger) return;
+
+      const targetEl = activeTrigger.closest<HTMLElement>('[data-tabs="tab-trigger-wrap"]') ?? activeTrigger;
+
+      const containerRect = container.getBoundingClientRect();
+      const targetRect = targetEl.getBoundingClientRect();
+
+      const currentRelativeCenter = targetRect.left - containerRect.left + targetRect.width / 2;
+      const desiredCenter = containerRect.width / 2;
+      const scrollDiff = currentRelativeCenter - desiredCenter;
+
+      container.scrollTo({
+        left: container.scrollLeft + scrollDiff,
+        behavior,
+      });
+    },
+    [active]
+  );
+
+  React.useEffect(() => {
+    if (!isScrollVariant) return;
+
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      const rafId = requestAnimationFrame(() => {
+        scrollToActiveTab('auto');
+      });
+      return () => cancelAnimationFrame(rafId);
+    }
+
+    scrollToActiveTab('smooth');
+  }, [active, isScrollVariant, scrollToActiveTab]);
+
+  React.useEffect(() => {
+    if (!isScrollVariant) return;
+
+    const handleResize = () => {
+      scrollToActiveTab('auto');
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [isScrollVariant, scrollToActiveTab]);
+
+  // Tabs 컴포넌트에는 기본 탭 스타일(default 등)을 전달하여 UI 스타일이 기존과 100% 동일하게 유지되도록 처리
+  const tabsVariant = isScrollVariant ? 'default' : variant;
+
   // removable이 true일 때만 onRemove 전달
   const tabsProps = {
-    variant,
+    variant: tabsVariant,
     value: active ?? '',
     removable,
     onValueChange: setActive,
@@ -177,12 +268,21 @@ export function TabPager<T>({
     }
   }, [active]);
 
+  // variant="scroll" 모드일 때는 전체 탭을 뿌리고, 기본 모드일 때는 페이징된 탭만 렌더링
+  const tabsToRender = isScrollVariant ? safeData : safeData.slice(visibleStart, end);
+
   return (
     <>
       <Tabs {...tabsProps}>
         <TabsLine hasTableBelow={hasTableBelow}>
-          <TabsList>
-            {safeData?.slice(visibleStart, end).map((tab) => {
+          <TabsList
+            ref={tabsListRef}
+            className={cn(
+              isScrollVariant &&
+                'min-w-0 overflow-x-auto hide-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden flex-nowrap [&>[data-tabs=tab-trigger-wrap]]:shrink-0'
+            )}
+          >
+            {tabsToRender.map((tab) => {
               // error 속성이 없는 타입도 허용
               const tabHasError =
                 typeof tab === 'object' &&
@@ -203,10 +303,13 @@ export function TabPager<T>({
                   ? Boolean((tab as { removable?: unknown }).removable)
                   : removable;
 
+              const tabValue = getValue(tab);
+
               return (
                 <TabsTrigger
-                  key={getValue(tab)}
-                  value={getValue(tab)}
+                  key={tabValue}
+                  value={tabValue}
+                  data-tab-value={tabValue}
                   removable={tabIsRemovable}
                   data-tab-trigger="true"
                   data-tab-error={error && tabHasError ? 'true' : 'false'}
@@ -229,13 +332,19 @@ export function TabPager<T>({
               <Grow placement="cc" gap={1}>
                 <Grow className="gap-[0.1rem] pt-[0.1rem]">
                   <Typo className="tracking-[0]!" color={'default'} weight={'bold'}>
-                    {safeData.length === 0 ? 0 : Math.ceil((visibleStart + visibleCount) / visibleCount)}
+                    {isScrollVariant
+                      ? safeData.length === 0 || currentIndex === -1
+                        ? 0
+                        : currentIndex + 1
+                      : safeData.length === 0
+                        ? 0
+                        : Math.ceil((visibleStart + visibleCount) / visibleCount)}
                   </Typo>
                   <Typo className="tracking-[0]! text-[var(--color-gray-50)]" weight={'bold'}>
                     /
                   </Typo>
                   <Typo className="tracking-[0]! text-[var(--color-gray-30)]" weight={'bold'}>
-                    {Math.ceil(safeData.length / visibleCount)}
+                    {isScrollVariant ? safeData.length : Math.ceil(safeData.length / visibleCount)}
                   </Typo>
                 </Grow>
                 <Button
@@ -243,8 +352,8 @@ export function TabPager<T>({
                   color={'gray'}
                   only={'icon'}
                   size={'md'}
-                  onClick={handlePrev}
-                  disabled={visibleStart === 0}
+                  onClick={isScrollVariant ? handleScrollPrev : handlePrev}
+                  disabled={isScrollVariant ? isScrollPrevDisabled : visibleStart === 0}
                 >
                   <ArrowIcon />
                 </Button>
@@ -253,8 +362,8 @@ export function TabPager<T>({
                   color={'gray'}
                   only={'icon'}
                   size={'md'}
-                  onClick={handleNext}
-                  disabled={isLastPage}
+                  onClick={isScrollVariant ? handleScrollNext : handleNext}
+                  disabled={isScrollVariant ? isScrollNextDisabled : isLastPage}
                 >
                   <ArrowIcon className="rotate-180" />
                 </Button>

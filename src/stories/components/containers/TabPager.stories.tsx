@@ -268,7 +268,7 @@ const handleRemoveTab = (value: string) => {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['default', 'box'],
+      options: ['default', 'box', 'scroll'],
       description: '탭 버튼 스타일',
       table: { category: '스타일 props' },
     },
@@ -665,3 +665,74 @@ export const HandlerActivation: Story = {
     );
   },
 };
+
+export const ScrollTabs: Story = {
+  args: {
+    variant: 'scroll',
+    removable: true,
+  },
+  render: (args) => {
+    const scrollData = Array.from({ length: 15 }, (_, i) => ({
+      name: i % 3 === 0 ? '반짝빛나리반짝빛나리' : i % 2 === 0 ? '김철수' : '홍길동',
+      age: String(i + 1),
+      gender: i % 2 === 0 ? '남' : '여',
+      value: `tab_${i + 1}`,
+      info: [`추가정보 ${i + 1}`],
+    }));
+
+    const [tabs, setTabs] = React.useState(scrollData);
+    const [active, setActive] = React.useState('tab_1');
+
+    const handleRemoveTab = (value: string) => {
+      const updated = tabs.filter((t) => t.value !== value);
+      setTabs(updated);
+      if (active === value && updated.length > 0) {
+        setActive(updated[Math.max(0, updated.length - 1)].value);
+      }
+    };
+
+    return (
+      <Gcol gap={4} className="w-full p-8">
+        <TabPager
+          data={tabs}
+          active={active}
+          setActive={setActive}
+          removable={args.removable}
+          onRemove={handleRemoveTab}
+          visibleCount={args.visibleCount}
+          variant="scroll"
+          hasTableBelow={args.hasTableBelow}
+          error={args.error}
+          getValue={(tab) => String(tab.value)}
+          renderButtons={false}
+          renderTab={(tab) => (
+            <span className="flex items-center">
+              <span className="max-w-20 truncate block">{tab.name}</span>
+              <span className="block">{`${tab.age}세(${tab.gender})`}</span>
+            </span>
+          )}
+          renderDropdownItem={(tab, setActiveItem) => (
+            <Button
+              variant="text"
+              color="gray"
+              key={String(tab.value)}
+              onClick={() => {
+                setActiveItem(String(tab.value));
+              }}
+            >
+              <span className="flex items-center gap-2">
+                <span className="block">{tab.name}</span>
+                <span className="block">{`${tab.age}세(${tab.gender})`}</span>
+              </span>
+            </Button>
+          )}
+        >
+          <div className="w-full p-10 bg-[var(--color-gray-5)] flex items-center justify-center">
+            내용{active}
+          </div>
+        </TabPager>
+      </Gcol>
+    );
+  },
+};
+

@@ -747,6 +747,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
               disabled={disabled || isMaskLoading}
               className={cn(
                 'text-[var(--color-gray-60)] hover:text-[var(--color-gray-90)] cursor-pointer',
+                !currentMasked && 'pointer-events-none',
                 variant === 'info' && readOnly
                   ? 'relative! ml-1! inline-flex items-center self-center'
                   : 'absolute! right-[0.3rem] top-1/2 -translate-y-1/2'

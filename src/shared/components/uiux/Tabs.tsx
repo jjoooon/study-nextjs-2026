@@ -252,7 +252,11 @@ const TabsLine = React.forwardRef<
   const { variant } = useTabsContext();
   const style = variant === 'box' ? 'after:opacity-0 rounded-[0.8rem]' : '';
   const lineHeightClass =
-    variant === 'default' || !variant ? (hasTableBelow ? 'after:!h-[0.2rem]' : 'after:h-[0.1rem]') : 'after:h-[0.2rem]';
+    variant === 'default' || !variant || variant === 'scroll'
+      ? hasTableBelow
+        ? 'after:!h-[0.2rem]'
+        : 'after:h-[0.1rem]'
+      : 'after:h-[0.2rem]';
   return (
     <div
       data-tabs="tablist-wrap"
