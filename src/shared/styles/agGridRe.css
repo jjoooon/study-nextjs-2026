@@ -1344,6 +1344,27 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   overflow-y: auto !important;
 }
 
+/* 트리 그룹 확장 시 부모 행 체크박스 스타일 */
+.children-checked .ag-theme-alpine .ag-row.ag-row-group-expanded .ag-checkbox-input-wrapper.ag-checked {
+  background-color: var(--color-primary-50);
+  border-color: var(--color-primary-50);
+}
+
+/* 트리 그룹의 하위(자식) 행 체크박스 스타일 (배경색/보더 수정 가능) */
+.children-checked .ag-theme-alpine .ag-row.ag-row-level-1 .ag-checkbox-input-wrapper.ag-checked,
+.children-checked .ag-theme-alpine .ag-row:not(.ag-row-level-0) .ag-checkbox-input-wrapper.ag-checked {
+  background-color: var(--color-gray-0);
+  border-color: var(--color-primary-50);
+}
+
+/* 트리 그룹의 하위(자식) 행 체크박스 체크 아이콘 색상 (:after) */
+.children-checked .ag-theme-alpine .ag-row.ag-row-level-1 .ag-checkbox-input-wrapper.ag-checked:after,
+.children-checked .ag-theme-alpine .ag-row:not(.ag-row-level-0) .ag-checkbox-input-wrapper.ag-checked:after,
+.children-checked .ag-theme-alpine .ag-row.ag-row-level-1 .ag-checkbox-input-wrapper.ag-checked::after,
+.children-checked .ag-theme-alpine .ag-row:not(.ag-row-level-0) .ag-checkbox-input-wrapper.ag-checked::after {
+  background-color: var(--color-primary-50);
+}
+
 
 .ag-theme-alpine.inner-scroll[data-page='1'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height: 100%;
