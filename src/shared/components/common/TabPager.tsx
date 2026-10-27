@@ -186,14 +186,19 @@ export function TabPager<T>({
       if (!tabsListRef.current) return;
       const container = tabsListRef.current;
 
-      const escapedActive =
-        typeof CSS !== 'undefined' && typeof CSS.escape === 'function'
-          ? CSS.escape(active)
-          : active.replace(/["\\]/g, '\\$&');
+      let activeTrigger: HTMLElement | null = null;
 
-      const activeTrigger =
-        (active ? container.querySelector<HTMLElement>(`[data-tab-value="${escapedActive}"]`) : null) ??
-        container.querySelector<HTMLElement>('[role="tab"][data-state="active"]');
+      if (active) {
+        const escapedActive =
+          typeof CSS !== 'undefined' && typeof CSS.escape === 'function'
+            ? CSS.escape(active)
+            : active.replace(/["\\]/g, '\\$&');
+        activeTrigger = container.querySelector<HTMLElement>(`[data-tab-value="${escapedActive}"]`);
+      }
+
+      if (!activeTrigger) {
+        activeTrigger = container.querySelector<HTMLElement>('[role="tab"][data-state="active"]');
+      }
 
       if (!activeTrigger) return;
 
