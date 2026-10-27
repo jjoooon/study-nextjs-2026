@@ -19,6 +19,7 @@ import { changeTitle, resizeWindow } from '@/shared/utils/screenUtils';
 import { Grid, Typo } from '@atoms';
 import { CloseIcon, FullscreenIcon, FullscreenExitIcon, SplitScreenIcon, SplitScreenExitIcon } from '@icons';
 import { Button } from '@uiux/Button';
+import { DialogPortalContainerContext, useDialogPortalContainer } from './DialogContainerContext';
 
 type DialogSizeValue = number | string;
 
@@ -1424,6 +1425,11 @@ function DialogContent({
   const [isResizing, setIsResizing] = React.useState<string | null>(null);
   const [dragStart, setDragStart] = React.useState({ x: 0, y: 0 });
   const contentRef = React.useRef<HTMLDivElement | null>(null);
+  const [containerNode, setContainerNode] = React.useState<HTMLDivElement | null>(null);
+  const handleContentRef = React.useCallback((node: HTMLDivElement | null) => {
+    contentRef.current = node;
+    setContainerNode((prev) => (prev === node ? prev : node));
+  }, []);
   const prevMinimizedRef = React.useRef(isMinimized);
   const prevPositionBeforeMinimizeRef = React.useRef<{ x: number; y: number } | null>(null);
   const prevIsInitializedBeforeMinimizeRef = React.useRef<boolean>(false);
@@ -1802,7 +1808,7 @@ function DialogContent({
             />
           )}
           <DialogPrimitive.Content
-            ref={contentRef}
+            ref={handleContentRef}
             data-slot="dialog-content"
             style={contentStyle}
             data-isminimize={isMinimized ? 'true' : 'false'}
@@ -1838,7 +1844,9 @@ function DialogContent({
             }}
             {...props}
           >
-            {children}
+            <DialogPortalContainerContext.Provider value={containerNode}>
+              {children}
+            </DialogPortalContainerContext.Provider>
             {(isDragging || !!isResizing) && !isFullSize && !isIframeState && (
               <div
                 aria-hidden="true"
@@ -2187,4 +2195,6 @@ export {
   DialogMinimize,
   DialogFullscreen,
   DialogSplit,
+  DialogPortalContainerContext,
+  useDialogPortalContainer,
 };

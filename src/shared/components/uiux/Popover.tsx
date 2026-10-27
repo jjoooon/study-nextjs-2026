@@ -7,6 +7,7 @@ import * as PopoverPrimitive from '@radix-ui/react-popover';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { CloseIcon } from '@icons';
+import { useDialogPortalContainer } from './DialogContainerContext';
 
 /** Popover 루트 props */
 interface PopoverProps extends React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Root> {
@@ -118,6 +119,9 @@ const PopoverContent = React.forwardRef<React.ElementRef<typeof PopoverPrimitive
       ...rest
     } = props;
 
+    const dialogContainer = useDialogPortalContainer();
+    const effectivePortalContainer = portalContainer !== undefined ? portalContainer : dialogContainer;
+
     // motion 문자열을 실제 클래스 문자열로 변환
     let motionClass = '';
     if (motion === 'fade') {
@@ -129,33 +133,25 @@ const PopoverContent = React.forwardRef<React.ElementRef<typeof PopoverPrimitive
     }
 
     React.useEffect(() => {
-      // portalContainer를 사용하는 경우에만
-      // Radix wrapper의 position을 강제하고(classWrap 적용을 위해)
+      // effectivePortalContainer를 사용하는 경우에만
       // wrapper에 classWrap 클래스를 동적으로 추가한다.
-      if (portalContainer) {
-        const styleId = 'popover-content-wrapper-absolute-style';
-        if (!document.getElementById(styleId)) {
-          const style = document.createElement('style');
-          style.id = styleId;
-          style.innerHTML = '[data-radix-popper-content-wrapper]{position:absolute !important;}';
-          document.head.appendChild(style);
-        }
-        // classWrap을 data-radix-popper-content-wrapper에 동적으로 추가
-        const wrapper = portalContainer.querySelector('[data-radix-popper-content-wrapper]');
-        if (wrapper && classWrap) {
+      if (effectivePortalContainer && classWrap) {
+        const wrapper = effectivePortalContainer.querySelector('[data-radix-popper-content-wrapper]');
+        if (wrapper) {
           wrapper.classList.add(...classWrap.split(' '));
         }
       }
-    }, [portalContainer, classWrap]);
+    }, [effectivePortalContainer, classWrap]);
+
     return (
-      <PopoverPrimitive.Portal {...(portalContainer ? { container: portalContainer } : {})}>
+      <PopoverPrimitive.Portal {...(effectivePortalContainer ? { container: effectivePortalContainer } : {})}>
         <PopoverPrimitive.Content
           ref={ref}
           align={align}
           sideOffset={sideOffset}
           tabIndex={-1}
           className={cn(
-            'cp-popover z-150 w-auto border border-[var(--color-gray-10)] rounded-[.6rem] px-2.5 py-2 shadow-md outline-none',
+            'cp-popover z-50 w-auto border border-[var(--color-gray-10)] rounded-[.6rem] px-2.5 py-2 shadow-md outline-none',
             variantStyles[variant] ?? variantStyles.default,
             motionClass,
             'data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-popover-content-transform-origin]',

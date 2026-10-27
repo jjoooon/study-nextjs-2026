@@ -76,3 +76,9 @@
 .rdp-week button[data-range-end='true'] {
   border-radius: 0 1.3rem 1.3rem 0 !important;
 }
+
+/* Dialog / AlertDialog 내부로 포탈된 Radix Popper 래퍼의 위치 기준점 보정 */
+[data-slot='dialog-content'] [data-radix-popper-content-wrapper],
+[data-slot='alert-dialog-content'] [data-radix-popper-content-wrapper] {
+  position: absolute !important;
+}

@@ -15,6 +15,7 @@ import {
   subscribeOverlay,
 } from '@/shared/utils/popup/dialogOverlayRegistry';
 import { buttonVariants } from '@uiux/Button';
+import { DialogPortalContainerContext } from './DialogContainerContext';
 
 // AlertDialog가 열릴 때 공유 레지스트리에 등록하기 위한 Context
 const AlertDialogIdContext = React.createContext<string | null>(null);
@@ -95,8 +96,17 @@ function AlertDialogOverlay({
   );
 }
 
-function AlertDialogContent({ className, style, ...props }: React.ComponentProps<typeof AlertDialogPrimitive.Content>) {
+function AlertDialogContent({
+  className,
+  style,
+  children,
+  ...props
+}: React.ComponentProps<typeof AlertDialogPrimitive.Content>) {
   const alertDialogId = React.useContext(AlertDialogIdContext);
+  const [containerNode, setContainerNode] = React.useState<HTMLDivElement | null>(null);
+  const handleContentRef = React.useCallback((node: HTMLDivElement | null) => {
+    setContainerNode((prev) => (prev === node ? prev : node));
+  }, []);
 
   // 공유 레지스트리 구독: 최상위 다이얼로그만 딤 표시 및 동적 z-index 계산
   const [topOpenDialogId, setTopOpenDialogId] = React.useState(getTopOpenDialogId);
@@ -124,6 +134,7 @@ function AlertDialogContent({ className, style, ...props }: React.ComponentProps
     <AlertDialogPortal>
       {showOverlay && <AlertDialogOverlay style={{ zIndex: overlayZIndex }} disableMotion={disableOverlayMotion} />}
       <AlertDialogPrimitive.Content
+        ref={handleContentRef}
         data-slot="alert-dialog-content"
         style={{ zIndex: autoContentZIndex, ...style }}
         className={cn(
@@ -139,7 +150,9 @@ function AlertDialogContent({ className, style, ...props }: React.ComponentProps
           className
         )}
         {...props}
-      />
+      >
+        <DialogPortalContainerContext.Provider value={containerNode}>{children}</DialogPortalContainerContext.Provider>
+      </AlertDialogPrimitive.Content>
     </AlertDialogPortal>
   );
 }
