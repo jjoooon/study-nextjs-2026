@@ -4,13 +4,10 @@
 'use client';
 
 import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
-import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow, Typo } from '@atoms';
 
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TabPager } from '@common/TabPager';
 import { AiIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
@@ -26,46 +23,11 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-
-/** 탭 메뉴 구성 타입 정의 */
-type Ltpz022TabType = {
-  id: string;
-  value: string;
-  label: string;
-};
-
-const DATA_TABS: Ltpz022TabType[] = [
-  {
-    id: '1',
-    value: 'tab1',
-    label: '김한화한화김한화한화',
-  },
-  {
-    id: '2',
-    value: 'tab2',
-    label: '김한화한김한화한화화',
-  },
-  {
-    id: '3',
-    value: 'tab3',
-    label: '김한화한화김한화한화',
-  },
-  {
-    id: '4',
-    value: 'tab4',
-    label: '김한화한화김한화한화',
-  },
-  {
-    id: '5',
-    value: 'tab5',
-    label: '김한화한화김한화한화',
-  },
-];
 
 /** 인수 지침 위배 내역 데이터 타입 */
 type UnderwritingViolationRow = {
   id: number;
+  target?: string;
   criteria: string; // 인수제한 구분 (인수기준, 청약완료불가 등)
   details: string; // 상세 위배 내용 (HTML 포함 가능)
   auto?: boolean;
@@ -76,20 +38,21 @@ const violationRowData: UnderwritingViolationRow[] = [
   {
     id: 1,
     criteria: '인수기준',
+    target: '설계',
     details:
       '[ULA16364H01_1814_01] [암(유사암제외)항암호르몬약물(연1회)][전체누적][인수한도: 300 만원][초과: 300 만원]',
     auto: true,
   },
   {
     id: 2,
-    // target: '홍길순',
+    target: '홍길순',
     criteria: '인수기준',
     details: '[ULA16364H01_1818_01] [암(유사암제외)항암호르몬약물(합)][전체누적][인수한도: 300 만원][초과: 300 만원]',
     auto: true,
   },
   {
     id: 3,
-    // target: '홍길순',
+    target: '홍길순',
     criteria: '인수기준',
     details:
       '[ULA16364H01_1095_01] [카티(CAR-T)항암약물허가치료비(1회한)][전체누적][인수한도: 5000 만원][초과: 5,000 만원]',
@@ -97,7 +60,7 @@ const violationRowData: UnderwritingViolationRow[] = [
   },
   {
     id: 4,
-    // target: '홍길순',
+    target: '홍길순',
     criteria: '인수기준',
     details:
       '[ULA16364H01_1035_01] [표적항암약물허가치료비(1회한)(합)][전체누적][인수한도: 7000 만원][초과: 2,000 만원]',
@@ -105,28 +68,28 @@ const violationRowData: UnderwritingViolationRow[] = [
   },
   {
     id: 5,
-    // target: '홍길순',
+    target: '홍길순',
     criteria: '인수기준',
     details: '[ULA16364H01_663_01] [표적항암약물허가치료비(합)][전체누적][인수한도: 16000 만원][초과: 3,000 만원]',
     auto: false,
   },
   {
     id: 6,
-    // target: '홍길순',
+    target: '홍길순',
     criteria: '인수기준',
     details: '[ULA16364H01_834_01] [항암양성자방사선치료비(1회한)][전체누적][인수한도: 3000 만원][초과: 3,000 만원]',
     auto: false,
   },
   {
     id: 7,
-    // target: '홍길순',
+    target: '홍길순',
     criteria: '인수기준',
     details: '[ULA16364H01_2634_01] [항암양성자방사선치료비(합)][전체누적][인수한도: 4000 만원][초과: 2,000 만원]',
     auto: true,
   },
   {
     id: 8,
-    // target: '홍길순',
+    target: '홍길순',
     criteria: '인수기준',
     details:
       '[ULA16364H01_2280_01] [항암중입자방사선치료(유사암포함)(1회한)][전체누적][인수한도: 5000 만원][초과: 5,000 만원]',
@@ -134,28 +97,28 @@ const violationRowData: UnderwritingViolationRow[] = [
   },
   {
     id: 9,
-    // target: '홍길순',
+    target: '홍길순',
     criteria: '특인대상',
     details: '[표준하체산출이력001] [특별조건부 확인 필요] 표준하체 위험지수 산출의뢰 이력이 있습니다.',
     auto: false,
   },
   {
     id: 10,
-    // target: '홍길순',
+    target: '홍길순',
     criteria: '참고사항',
     details: '[표준하체산출이력001] [특별조건부 확인 필요] 표준하체 위험지수 산출의뢰 이력이 있습니다.',
     auto: false,
   },
   {
     id: 11,
-    // target: '홍길순',
+    target: '홍길순',
     criteria: '참고사항',
     details: '[시그니처여성올인원플랜00] [시그니처 여성 올인원플랜]',
     auto: false,
   },
   {
     id: 12,
-    // target: '홍길순',
+    target: '홍길순',
     criteria: '참고사항',
     details:
       '[모집인제한_암담보비중안내_여성] ▶암담보제한◀ 전체 보장보험료 (119814원) 중 암담보보장보험료 (71507원)  비중 40% 초과되었습니다. ①암직접치료통원비(상급종합병원포함) 5만원 이상 또는 ②뇌출혈진단비 1500만원 이상 가입 필요합니다. (암/유의담보 리스트는 대내문서 참고)',
@@ -163,14 +126,14 @@ const violationRowData: UnderwritingViolationRow[] = [
   },
   {
     id: 13,
-    // target: '홍길순',
+    target: '홍길순',
     criteria: '참고사항',
     details: '[테스트_13] 대인벌금:  0대물벌금:  0변호사:  0형사합의실손:  0형사합의실손_42일미만:  0',
     auto: false,
   },
   {
     id: 14,
-    // target: '홍길순',
+    target: '홍길순',
     criteria: '청약완료불가(업계누적)',
     details:
       '[정액담보(항암약물치료)초과ICIS001] [업계가입금액 초과 수납불가][주소희] 고액항암치료비 2억7천만원 초과시(업계 정액보상담보 포함) 가입이 불가능합니다. [당사 : 37000만원 / 타사 : 0만원]',
@@ -188,7 +151,7 @@ const criteriaColorMap: Record<string, string> = {
  * Ltpz022: 보험 설계의 지침 확인 결과(인수 지침 위배 사항)를 보여주는 팝업 컴포넌트입니다.
  */
 const Ltpz022 = () => {
-  type SelectedViolationCell = Pick<UnderwritingViolationRow, 'id' | 'criteria'>;
+  type SelectedViolationCell = Pick<UnderwritingViolationRow, 'id' | 'criteria' | 'target'>;
 
   /** 위배내용 텍스트 중 특정 키워드에 색상을 입히는 치환 함수 */
   const applyDetailsColor = (html: string): string => {
@@ -204,14 +167,33 @@ const Ltpz022 = () => {
   /** 현재 선택된 셀(위배 내역) 정보 상태 */
   const [selectedCell, setSelectedCell] = React.useState<SelectedViolationCell | null>(null);
 
-  /** criteria 연속 항목 개수를 계산하여 rowSpan 매핑 생성 */
-  const rowSpanMap = React.useMemo(() => {
+  /** target 연속 항목 개수를 계산하여 rowSpan 매핑 생성 */
+  const targetRowSpanMap = React.useMemo(() => {
+    const spans: number[] = new Array(violationRowData.length).fill(1);
+    let i = 0;
+    while (i < violationRowData.length) {
+      let count = 1;
+      while (i + count < violationRowData.length && violationRowData[i + count].target === violationRowData[i].target) {
+        count++;
+      }
+      spans[i] = count;
+      for (let j = 1; j < count; j++) {
+        spans[i + j] = 0;
+      }
+      i += count;
+    }
+    return spans;
+  }, []);
+
+  /** criteria 연속 항목 개수를 계산하여 rowSpan 매핑 생성 (동일 target 내에서만 병합) */
+  const criteriaRowSpanMap = React.useMemo(() => {
     const spans: number[] = new Array(violationRowData.length).fill(1);
     let i = 0;
     while (i < violationRowData.length) {
       let count = 1;
       while (
         i + count < violationRowData.length &&
+        violationRowData[i + count].target === violationRowData[i].target &&
         violationRowData[i + count].criteria === violationRowData[i].criteria
       ) {
         count++;
@@ -230,16 +212,12 @@ const Ltpz022 = () => {
     if (selectedCell?.id === row.id) return;
     setSelectedCell({
       id: row.id,
+      target: row.target,
       criteria: row.criteria,
     });
   };
 
   /** 탭 상태 관리 훅 */
-  const [otherDep, setOtherDep] = React.useState(false);
-  const tabListData = DATA_TABS;
-  const stringifiedTabs: Ltpz022TabType[] = tabListData.map((item) => ({ ...item, value: String(item.id) }));
-  const { tabs: Tabs, active: TabActive, setActive: TabSetActive } = useTabs<Ltpz022TabType>(stringifiedTabs);
-
   return (
     <Dialog open>
       <DialogContent
@@ -285,121 +263,66 @@ const Ltpz022 = () => {
           </Grow>
 
           {/* 중간: 탭 영역 및 위배 내역 그리드 */}
-          <TabPager
-            data={Tabs}
-            active={TabActive}
-            setActive={TabSetActive}
-            removable={false}
-            visibleCount={otherDep ? 1 : 3}
-            hasTableBelow={true}
-            getValue={(tab) => String(tab.value)}
-            renderTab={(tab) => {
-              const isTruncated = tab.label.length > 5;
-              const displayLabel = isTruncated ? `${tab.label.slice(0, 5)}...` : tab.label;
-              return isTruncated ? (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <span title={tab.label}>{displayLabel}</span>
-                  </TooltipTrigger>
-                  <TooltipContent side="top" align="center" sideOffset={8}>
-                    {tab.label}
-                  </TooltipContent>
-                </Tooltip>
-              ) : (
-                <span>{tab.label}</span>
-              );
-            }}
-            // AI 자동해소 버튼 추가 (플래시 효과 적용)
-            renderAfter={
-              <Button variant={'contained'} size={'md'} effect={'flash'}>
-                <AiIcon color={'#fff'} color2={'#fff'} />
-                AI자동해소
-              </Button>
-            }
-            renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount, active) => {
-              const idx = data.findIndex((t) => String(t.value) === String(tab.value));
-              const isSelected = String(tab.value) === String(active ?? TabActive);
-              return (
-                <Button
-                  variant={'none'}
-                  key={String(tab.value)}
-                  onClick={() => {
-                    setActive(String(tab.value));
-                    if (idx !== -1) {
-                      const page = Math.floor(idx / visibleCount);
-                      setVisibleStart(page * visibleCount);
-                    }
-                  }}
-                  className={cn(
-                    'min-h-[2.8rem]! w-full rounded-none hover:bg-[var(--color-warning-10)]',
-                    isSelected && 'bg-[var(--color-warning-10)] font-bold text-[var(--color-primary-60)]'
-                  )}
-                  aria-selected={isSelected}
-                  style={idx > 0 ? { borderTop: '1px solid var(--color-gray-15)' } : undefined}
-                >
-                  <span className="flex items-start gap-2 w-full">
-                    <span className="block">{tab.label}</span>
-                  </span>
-                </Button>
-              );
-            }}
-            className="border-separate"
-            contentClass="relative"
-          >
-            <div className="absolute h-full overflow-y-auto">
-              <Table variant="default" className="border-0 translate-y-[-0.1rem]">
-                <colgroup>
-                  <col style={{ width: '12rem' }} />
-                  <col style={{ width: 'auto' }} />
-                </colgroup>
-                <TableHeader className="sticky top-0 z-10">
-                  <TableRow>
-                    <TableHead className="text-center">인수제한</TableHead>
-                    <TableHead className="text-center">위배내용</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {violationRowData.map((row, index) => {
-                    const span = rowSpanMap[index];
-                    const isSelectedCriteria = selectedCell?.criteria === row.criteria;
-                    const isSelectedDetails = selectedCell?.id === row.id;
-                    const criteriaBg = isSelectedCriteria
-                      ? '#FEF4D4'
-                      : row.criteria.startsWith('청약완료불가') || row.criteria === '참고사항'
-                        ? '#F4F4F4'
-                        : '#FFFFFF';
-                    const detailsBg = isSelectedDetails ? '#FEF4D4' : (index + 1) % 2 !== 0 ? '#FFFFFF' : '#F4F4F4';
-                    const criteriaColor = criteriaColorMap[row.criteria];
+          <Table variant="default" className="border-0 translate-y-[-0.1rem]">
+            <colgroup>
+              <col style={{ width: '9rem' }} />
+              <col style={{ width: '12rem' }} />
+              <col style={{ width: 'auto' }} />
+            </colgroup>
+            <TableHeader className="sticky top-0 z-10">
+              <TableRow>
+                <TableHead className="text-center">대상</TableHead>
+                <TableHead className="text-center">인수제한</TableHead>
+                <TableHead className="text-center">위배내용</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {violationRowData.map((row, index) => {
+                const targetSpan = targetRowSpanMap[index];
+                const criteriaSpan = criteriaRowSpanMap[index];
+                const isSelectedCriteria =
+                  selectedCell?.criteria === row.criteria && (selectedCell?.target ?? '') === (row.target ?? '');
+                const isSelectedDetails = selectedCell?.id === row.id;
+                const criteriaBg = isSelectedCriteria
+                  ? '#FEF4D4'
+                  : row.criteria.startsWith('청약완료불가') || row.criteria === '참고사항'
+                    ? '#F4F4F4'
+                    : '#FFFFFF';
+                const detailsBg = isSelectedDetails ? '#FEF4D4' : (index + 1) % 2 !== 0 ? '#FFFFFF' : '#F4F4F4';
+                const criteriaColor = criteriaColorMap[row.criteria];
 
-                    return (
-                      <TableRow key={row.id}>
-                        {span > 0 && (
-                          <TableCell rowSpan={span} style={{ backgroundColor: criteriaBg }}>
-                            <div
-                              className="text-center"
-                              style={criteriaColor ? { color: criteriaColor } : undefined}
-                              dangerouslySetInnerHTML={{ __html: String(row.criteria).replace(/\n/g, '<br/>') }}
-                            />
-                          </TableCell>
+                return (
+                  <TableRow key={row.id}>
+                    {targetSpan > 0 && (
+                      <TableCell rowSpan={targetSpan} style={{ backgroundColor: '#FFFFFF' }}>
+                        <div className="text-center">{row.target}</div>
+                      </TableCell>
+                    )}
+                    {criteriaSpan > 0 && (
+                      <TableCell rowSpan={criteriaSpan} style={{ backgroundColor: criteriaBg }}>
+                        <div
+                          className="text-center"
+                          style={criteriaColor ? { color: criteriaColor } : undefined}
+                          dangerouslySetInnerHTML={{ __html: String(row.criteria).replace(/\n/g, '<br/>') }}
+                        />
+                      </TableCell>
+                    )}
+                    <TableCell style={{ backgroundColor: detailsBg }} onClick={() => handleCellClicked(row)}>
+                      <Grow placement="bwc">
+                        <div dangerouslySetInnerHTML={{ __html: applyDetailsColor(String(row.details)) }} />
+                        {row.auto && (
+                          <Badge variant={'rounded'} color={'primary'} size={'lg'}>
+                            <AiIcon color={'var(--color-primary-50)'} color2={'var(--color-primary-50)'} />
+                            자동해소
+                          </Badge>
                         )}
-                        <TableCell style={{ backgroundColor: detailsBg }} onClick={() => handleCellClicked(row)}>
-                          <Grow placement="bwc">
-                            <div dangerouslySetInnerHTML={{ __html: applyDetailsColor(String(row.details)) }} />
-                            {row.auto && (
-                              <Badge variant={'rounded'} color={'primary'} size={'lg'}>
-                                <AiIcon color={'var(--color-primary-50)'} color2={'var(--color-primary-50)'} />
-                                자동해소
-                              </Badge>
-                            )}
-                          </Grow>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </div>
-          </TabPager>
+                      </Grow>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
 
           <Grow variant="box-detail" className="w-full gap-0">
             <Typo icon={'ref'} variant={'body-sm'} color={'danger'}>

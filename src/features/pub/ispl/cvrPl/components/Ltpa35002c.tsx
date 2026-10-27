@@ -420,7 +420,7 @@ export function Ltpa35002c({
         sortable: true,
         field: 'insuredAmount',
         flex: 1,
-        minWidth: attributeColumnWidth(86),
+        minWidth: attributeColumnWidth(120),
         cellClass: 'text-right editable-cell [&_input]:text-right',
         valueFormatter: numberValueFormatter<AgGridRow2>,
         cellClassRules: {
@@ -472,7 +472,7 @@ export function Ltpa35002c({
         sortable: true,
         field: 'field7',
         flex: 1,
-        minWidth: attributeColumnWidth(70),
+        minWidth: attributeColumnWidth(90),
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter<AgGridRow2>,
       },
@@ -480,7 +480,7 @@ export function Ltpa35002c({
         headerName: '만기',
         field: 'field5',
         flex: 1,
-        minWidth: attributeColumnWidth(88),
+        minWidth: attributeColumnWidth(100),
         cellClassRules: editableCellClassRules<AgGridRow2>(),
         cellClass: (params: CellClassParams<AgGridRow2>) => {
           // 편집 가능 여부를 class로 시각화(no-edited)
@@ -494,13 +494,13 @@ export function Ltpa35002c({
         cellEditorParams: {
           values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세만기', '무제한'],
         },
-        cellRenderer: getExpiryRenderer('center'),
+        cellRenderer: getExpiryRenderer('right'),
       },
       {
         headerName: '납기',
         field: 'field6',
         flex: 1,
-        minWidth: attributeColumnWidth(70),
+        minWidth: attributeColumnWidth(100),
         cellClassRules: editableCellClassRules<AgGridRow2>(),
         cellClass: (params: CellClassParams<AgGridRow2>) => {
           // 편집 가능 여부를 class로 시각화(no-edited)
@@ -514,7 +514,7 @@ export function Ltpa35002c({
         cellEditorParams: {
           values: ['5년', '10년', '15년', '20년', '25년', '30년', '35년', '전기납'],
         },
-        cellRenderer: getExpiryRenderer('center'),
+        cellRenderer: getExpiryRenderer('right'),
       },
     ],
     [attributeColumnWidth, getExpiryRenderer]
@@ -524,7 +524,7 @@ export function Ltpa35002c({
     <Grid className="w-full grid-rows-[minmax(0,1fr)_auto]">
       <LayoutMainBody>
         <ResizablePanelGroup orientation="vertical" className="w-full">
-          <ResizablePanel defaultSize={50}>
+          <ResizablePanel defaultSize={30}>
             <Grid className="w-full grid grid-rows-[auto_1fr] h-full" gap={1}>
               <Grow placement={'bwc'} className="gap-1 w-full pt-2" gap={0}>
                 <Grow className="gap-1.5">
@@ -543,9 +543,10 @@ export function Ltpa35002c({
                         </NativeSelectOption>
                       ))}
                     </NativeSelect>
-                    <Button variant={'outlined'} color={'gray'} size={'md'}>
-                      가입설계도우미 알림톡발송
-                    </Button>
+                    <TooltipQ>
+                      <b>가입설계도우미이란?</b> <br />
+                      설명 알림톡발송
+                    </TooltipQ>
                   </Grow>
                 </Grow>
               </Grow>
@@ -564,7 +565,7 @@ export function Ltpa35002c({
             </Grid>
           </ResizablePanel>
           <ResizableHandle />
-          <ResizablePanel defaultSize={50}>
+          <ResizablePanel defaultSize={70}>
             <Grid className="w-full grid grid-rows-[auto_1fr] h-full" gap={1}>
               <Grow placement={'bwc'} className="gap-1 w-full" gap={0}>
                 <Grow className="gap-1.5">
@@ -574,8 +575,11 @@ export function Ltpa35002c({
                   <Button color="gray" onClick={() => {}} only="default" size="md" variant="contained">
                     질권설정
                   </Button>
-                  <TooltipQ>
-                    {`질권설정이란 채권자가 채무자 등이 제공한 재산이나 재산권에 대해 다른 채권자보다 우선변제를 받을 수 있도록 하는 담보권입니다. 목적물 질권 설정 버튼은 청약진행 후 활성화 됩니다.`}
+                  <TooltipQ align="end">
+                    <p className="w-[28rem]">
+                      질권설정이란 채권자가 채무자 등이 제공한 재산이나 재산권에 대해 다른 채권자보다 우선변제를 받을 수
+                      있도록 하는 담보권입니다. 목적물 질권 설정 버튼은 청약진행 후 활성화 됩니다.
+                    </p>
                   </TooltipQ>
                 </Grow>
               </Grow>
