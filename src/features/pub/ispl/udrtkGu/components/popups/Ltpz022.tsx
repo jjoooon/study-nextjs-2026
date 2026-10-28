@@ -244,7 +244,7 @@ const Ltpz022 = () => {
           {/* 상단: 설계 기본 정보 표시 영역 */}
           <Grow className="w-full" variant="box-round" placement={'ss'}>
             <FormTable variant={'head'} cols={['w-1', 'w-auto', 'w-1', 'w-auto']}>
-              <FormRow className="gap-0">
+              <FormRow className="gap-y-0">
                 <FormCell title={'설계번호'} className="whitespace-nowrap " tdClassName="w-full flex-wrap">
                   <Input
                     aria-label=""
