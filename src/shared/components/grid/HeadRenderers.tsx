@@ -188,7 +188,7 @@ export const ProductNameHeader = React.memo(function ProductNameHeader({
   const { selectedHashtags, toggleHashtag, resetHashtags } = useHashFilter(undefined, handleHashtagsChange);
 
   return (
-    <Grow className="w-full px-[0.4rem] flex-wrap gap-x-3 gap-y-1" placement={'cc'}>
+    <Grow className="w-full px-[0.4rem] gap-x-3 gap-y-1" placement={'cc'}>
       <Grow gap={1.5} placement={'sc'}>
         {/* 외부 상태 제어 props가 있으면 controlled 체크박스로 렌더링 */}
         {checkedMap && onCheckedChange ? (

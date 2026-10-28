@@ -17,6 +17,7 @@ export type DummyDataType = {
   };
   insuredAmount?: string | number | boolean | string[];
   isSelectedInsuredAmount?: boolean;
+  insuredAmountOptions?: (number | string)[];
   rowCopy?: string | number | boolean;
 
   field1?: string | number | boolean;
@@ -59,6 +60,7 @@ export const dummyData: DummyDataType[] = [
     field2: true,
     insuredAmount: 5000,
     isSelectedInsuredAmount: true,
+    insuredAmountOptions: [5000], // [테스트] 셀렉트 옵션이 1개인 경우 -> 에디터 모드 제외 (화살표 제거, 일반 텍스트)
     field4: 5000,
     field5: '100세만기',
     isEditedField5: false,
@@ -88,6 +90,7 @@ export const dummyData: DummyDataType[] = [
     field2: true,
     insuredAmount: 10,
     isSelectedInsuredAmount: true,
+    insuredAmountOptions: [10, 20, 30, 50, 100], // [테스트] 셀렉트 옵션이 2개 이상인 경우 -> 에디터 모드 활성화 (셀렉트 화살표 및 드롭다운 에디터 제공)
     field4: 10,
     field5: '100세만기',
     isEditedField5: false,
@@ -116,6 +119,7 @@ export const dummyData: DummyDataType[] = [
     field2: false,
     insuredAmount: 5,
     isSelectedInsuredAmount: true,
+    insuredAmountOptions: [5], // [테스트] 셀렉트 옵션이 1개인 경우 -> 에디터 모드 제외
     field4: 5,
     field5: '20년만기',
     isEditedField5: false,

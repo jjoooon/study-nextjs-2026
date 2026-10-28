@@ -7,8 +7,7 @@ import type { ICellRendererParams, IGroupCellRendererParams, IRowNode } from 'ag
 import type { ReactNode } from 'react';
 import { DotColor } from '@/shared/components/common/DotColor';
 
-import { editableSelectCellRenderer } from '@aggrid';
-import { CoveragePopover } from '@aggrid';
+import { editableSelectCellRenderer, CoveragePopover, getInsuredAmountOptions } from '@aggrid';
 import { Gcol, Grow } from '@atoms';
 import { SearchIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
@@ -169,11 +168,14 @@ export function groupEditableButtonRenderer<
     filePath?: string[];
     isSelectedInsuredAmount?: boolean;
     _tooltipOn?: boolean;
+    insuredAmountOptions?: (number | string)[];
+    options?: (number | string)[];
   },
 >(
   getExpiryRenderer: (align: 'left' | 'center' | 'right') => (params: ICellRendererParams<T>) => ReactNode,
   numberValueFormatter: (params: ICellRendererParams<T>) => ReactNode,
-  align: 'left' | 'center' | 'right' = 'right'
+  align: 'left' | 'center' | 'right' = 'right',
+  defaultOptions?: (number | string)[]
 ) {
   const Renderer = (params: ICellRendererParams<T>) => {
     const isSelectedInsuredAmount = params.data?.isSelectedInsuredAmount ?? false;
@@ -219,7 +221,16 @@ export function groupEditableButtonRenderer<
       );
     }
 
-    return isSelectedInsuredAmount ? getExpiryRenderer(align)(params) : numberValueFormatter(params);
+    // isSelectedInsuredAmount인 경우에도 셀렉트 옵션이 1개 이하이면 화살표 대신 일반 숫자 포맷터로 렌더링
+    if (isSelectedInsuredAmount) {
+      const options = getInsuredAmountOptions(params.data, defaultOptions);
+      if (options.length <= 1) {
+        return numberValueFormatter(params);
+      }
+      return getExpiryRenderer(align)(params);
+    }
+
+    return numberValueFormatter(params);
   };
 
   Renderer.displayName = 'GroupEditableButtonRenderer';

@@ -20,6 +20,8 @@ import {
   useDynamicColumnWidths,
   AgGridEmptyComponent,
   AmountWithPopoverCellEditor,
+  getInsuredAmountOptions,
+  isInsuredAmountEditable,
 } from '@aggrid';
 import { Grid, Grow, Typo } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -48,6 +50,7 @@ type AgGridRow = DummyDataType & {
   badge?: string[];
   locked?: boolean;
   isHighlighted?: boolean;
+  insuredAmountOptions?: (number | string)[];
 };
 
 type AgGridRow2 = DummyData2Type & {
@@ -57,7 +60,10 @@ type AgGridRow2 = DummyData2Type & {
   badge?: string[];
   locked?: boolean;
   isHighlighted?: boolean;
+  insuredAmountOptions?: (number | string)[];
 };
+
+const DEFAULT_INSURED_AMOUNT_OPTIONS = ['1천만원', '2천만원', '3천만원', '5천만원', '1억원'];
 
 // 렌더링 성능 최적화를 위해 불변 설정 및 순수 함수는 컴포넌트 외부로 분리
 const ROW_SELECTION = {
@@ -220,19 +226,23 @@ export function Ltpa35002c({
         field: 'insuredAmount',
         flex: 1,
         minWidth: attributeColumnWidth(88),
-        cellClass: 'text-right editable-cell [&_input]:text-right',
+        cellClass: (params: CellClassParams<AgGridRow>) => {
+          const base = 'text-right [&_input]:text-right';
+          return isInsuredAmountEditable(params.data, DEFAULT_INSURED_AMOUNT_OPTIONS)
+            ? `${base} editable-cell`
+            : `${base} no-edited`;
+        },
         valueFormatter: numberValueFormatter<AgGridRow>,
         cellClassRules: {
-          'style-select': (params) => !!params.data?.isSelectedInsuredAmount,
+          'style-select': (params) =>
+            !!params.data?.isSelectedInsuredAmount &&
+            getInsuredAmountOptions(params.data, DEFAULT_INSURED_AMOUNT_OPTIONS).length > 1,
           'tooltip-on': (params) => !!params.data?._tooltipOn,
         },
-        cellEditorSelector: (params: EditableCallbackParams): CellEditorSelectorResult | undefined => {
-          // 기준담보 그룹행이며 편집 불가 상태면 에디터 자체를 제공하지 않음
-          if (params.data?.isStandard?.group && !params.data?.isStandard?.edit) {
+        cellEditorSelector: (params: EditableCallbackParams<AgGridRow>): CellEditorSelectorResult | undefined => {
+          if (!isInsuredAmountEditable(params.data, DEFAULT_INSURED_AMOUNT_OPTIONS)) {
             return undefined;
           }
-          // 선택형 금액 여부에 따라 에디터를 분기
-          // false: Popover 수치 조정 에디터 / true: 고정 옵션 select 에디터
           const isSelectedInsuredAmount = params.data?.isSelectedInsuredAmount ?? false;
           if (!isSelectedInsuredAmount) {
             return {
@@ -240,19 +250,15 @@ export function Ltpa35002c({
               params: { step: 10 }, // Popover에서 조정할 단위 설정
             };
           } else {
-            const baseOptions = ['1천만원', '2천만원', '3천만원', '5천만원', '1억원'];
+            const baseOptions = getInsuredAmountOptions(params.data, DEFAULT_INSURED_AMOUNT_OPTIONS);
             return {
               component: 'agSelectCellEditor',
               params: { values: baseOptions },
             };
           }
         },
-        editable: (params: EditableCallbackParams) => {
-          // 그룹이면서 편집 불가면 에디터 비활성화
-          if (params.data?.isStandard?.group && !params.data?.isStandard?.edit) {
-            return false;
-          }
-          return true;
+        editable: (params: EditableCallbackParams<AgGridRow>) => {
+          return isInsuredAmountEditable(params.data, DEFAULT_INSURED_AMOUNT_OPTIONS);
         },
         // [중요] 편집 모드 중 ag-Grid의 기본 키보드 이벤트 인터셉트 비활성화
         // 셀에 텍스트 인풋을 입력하는 중 Enter, Backspace, 화살표 키 등을 누를 때
@@ -421,11 +427,18 @@ export function Ltpa35002c({
         field: 'insuredAmount',
         flex: 1,
         minWidth: attributeColumnWidth(120),
-        cellClass: 'text-right editable-cell [&_input]:text-right',
+        cellClass: (params: CellClassParams<AgGridRow2>) => {
+          const base = 'text-right [&_input]:text-right';
+          return isInsuredAmountEditable(params.data, DEFAULT_INSURED_AMOUNT_OPTIONS)
+            ? `${base} editable-cell`
+            : `${base} no-edited`;
+        },
         valueFormatter: numberValueFormatter<AgGridRow2>,
         cellClassRules: {
           // 금액 선택형 여부에 따른 스타일 분기
-          'style-select': (params: CellClassParams<AgGridRow2>) => !!params.data?.isSelectedInsuredAmount,
+          'style-select': (params: CellClassParams<AgGridRow2>) =>
+            !!params.data?.isSelectedInsuredAmount &&
+            getInsuredAmountOptions(params.data, DEFAULT_INSURED_AMOUNT_OPTIONS).length > 1,
           // 기준담보 그룹행(편집 불가) 스타일
           isStandardGroup: (params: CellClassParams<AgGridRow2>) =>
             !!(params.data?.isStandard?.group && !params.data?.isStandard?.edit),
@@ -434,12 +447,10 @@ export function Ltpa35002c({
           // 커스텀 툴팁 활성화 상태
           'tooltip-on': (params: CellClassParams<AgGridRow2>) => !!params.data?._tooltipOn,
         },
-        cellEditorSelector: (params: EditableCallbackParams): CellEditorSelectorResult | undefined => {
-          // 기준담보 그룹행 + 편집 불가 상태면 에디터 제공 안 함
-          if (params.data?.isStandard?.group && !params.data?.isStandard?.edit) {
+        cellEditorSelector: (params: EditableCallbackParams<AgGridRow2>): CellEditorSelectorResult | undefined => {
+          if (!isInsuredAmountEditable(params.data, DEFAULT_INSURED_AMOUNT_OPTIONS)) {
             return undefined;
           }
-          // 선택형 금액 여부에 따라 에디터 타입 전환
           const isSelectedInsuredAmount = params.data?.isSelectedInsuredAmount ?? false;
           if (!isSelectedInsuredAmount) {
             return {
@@ -447,19 +458,15 @@ export function Ltpa35002c({
               params: { step: 10 }, // Popover에서 조정할 단위 설정
             };
           } else {
-            const baseOptions = ['1천만원', '2천만원', '3천만원', '5천만원', '1억원'];
+            const baseOptions = getInsuredAmountOptions(params.data, DEFAULT_INSURED_AMOUNT_OPTIONS);
             return {
               component: 'agSelectCellEditor',
               params: { values: baseOptions },
             };
           }
         },
-        editable: (params: EditableCallbackParams) => {
-          // 그룹이면서 편집 불가면 에디터 비활성화
-          if (params.data?.isStandard?.group && !params.data?.isStandard?.edit) {
-            return false;
-          }
-          return true;
+        editable: (params: EditableCallbackParams<AgGridRow2>) => {
+          return isInsuredAmountEditable(params.data, DEFAULT_INSURED_AMOUNT_OPTIONS);
         },
       },
       {
