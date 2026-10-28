@@ -246,244 +246,54 @@ export const SingleItemReduction: Story = {
 };
 
 /**
- * Case 1. 복합 알릴사항 오류(알릴사항반영중)
+ * 5. [처리불가 케이스] Single Item Notice에서 반영중 다음에 완료가 아닌 Case 9(담보감액 처리 불가)로 전환
  */
-export const Case1: Story = {
-  name: 'case1 복합 알릴사항 오류(알릴사항반영중)',
+export const Unprocessable: Story = {
   render: () => {
     const [open, setOpen] = useState(false);
-    const items: PlanApplyItem[] = [
-      { id: 'notice', title: '알릴사항', status: 'processing' },
-      { id: 'reduction', title: '담보감액', status: 'idle' },
-    ];
+    const [items, setItems] = useState<PlanApplyItem[]>([
+      {
+        id: 'notice',
+        title: '알릴사항',
+        description: '보험금 지급을 기준으로 일부 항목을 자동으로 반영합니다.',
+        warningNotice:
+          '조회정보를 기준으로 추정입력되며 (예: 완치여부) 실제 사실관계와 다를 수 있으므로 반드시 고객에게 확인바랍니다.',
+        status: 'idle',
+      },
+    ]);
+
+    const handleStart = () => {
+      setItems([{ ...items[0], status: 'processing' }]);
+      setTimeout(() => {
+        setItems([{ id: 'reduction', title: '담보감액', status: 'error' }]);
+      }, 2000);
+    };
+
+    const handleOpen = () => {
+      setItems([
+        {
+          id: 'notice',
+          title: '알릴사항',
+          description: '보험금 지급을 기준으로 일부 항목을 자동으로 반영합니다.',
+          warningNotice:
+            '조회정보를 기준으로 추정입력되며 (예: 완치여부) 실제 사실관계와 다를 수 있으므로 반드시 고객에게 확인바랍니다.',
+          status: 'idle',
+        },
+      ]);
+      setOpen(true);
+    };
 
     return (
       <div className="flex flex-col gap-4 items-center justify-center p-8 bg-slate-50 rounded-xl">
-        <Button variant="outlined" size="xl" onClick={() => setOpen(true)}>
-          case1 복합 알릴사항 오류(알릴사항반영중)
-        </Button>
-
-        <PlanApplyStatus open={open} onOpenChange={setOpen} step="progress" items={items} />
-      </div>
-    );
-  },
-};
-
-/**
- * Case 2. 복합 알릴사항 오류(알릴사항 오류)
- */
-export const Case2: Story = {
-  name: 'case2 복합 알릴사항 오류(알릴사항 오류)',
-  render: () => {
-    const [open, setOpen] = useState(false);
-    const items: PlanApplyItem[] = [
-      { id: 'notice', title: '알릴사항', status: 'error' },
-      { id: 'reduction', title: '담보감액', status: 'idle' },
-    ];
-
-    return (
-      <div className="flex flex-col gap-4 items-center justify-center p-8 bg-slate-50 rounded-xl">
-        <Button variant="outlined" size="xl" onClick={() => setOpen(true)}>
-          case2 복합 알릴사항 오류(알릴사항 오류)
-        </Button>
-
-        <PlanApplyStatus
-          open={open}
-          onOpenChange={setOpen}
-          step="progress"
-          items={items}
-          onNavigate={(item) => alert(`${item?.title || '해당'} 입력 화면으로 이동합니다.`)}
-        />
-      </div>
-    );
-  },
-};
-
-/**
- * Case 3. 복합 알릴사항 완료, 담보감액 오류(알릴사항반영중)
- */
-export const Case3: Story = {
-  name: 'case3 복합 알릴사항 완료, 담보감액 오류(알릴사항반영중)',
-  render: () => {
-    const [open, setOpen] = useState(false);
-    const items: PlanApplyItem[] = [
-      { id: 'notice', title: '알릴사항', status: 'processing' },
-      { id: 'reduction', title: '담보감액', status: 'idle' },
-    ];
-
-    return (
-      <div className="flex flex-col gap-4 items-center justify-center p-8 bg-slate-50 rounded-xl">
-        <Button variant="outlined" size="xl" onClick={() => setOpen(true)}>
-          case3 복합 알릴사항 완료, 담보감액 오류(알릴사항반영중)
-        </Button>
-
-        <PlanApplyStatus open={open} onOpenChange={setOpen} step="progress" items={items} />
-      </div>
-    );
-  },
-};
-
-/**
- * Case 4. 복합 알릴사항 완료, 담보감액 오류(알릴사항 완료, 담보감액 오류)
- */
-export const Case4: Story = {
-  name: 'case4 복합 알릴사항 완료, 담보감액 오류(알릴사항 완료, 담보감액 오류)',
-  render: () => {
-    const [open, setOpen] = useState(false);
-    const items: PlanApplyItem[] = [
-      { id: 'notice', title: '알릴사항', status: 'success' },
-      { id: 'reduction', title: '담보감액', status: 'error' },
-    ];
-
-    return (
-      <div className="flex flex-col gap-4 items-center justify-center p-8 bg-slate-50 rounded-xl">
-        <Button variant="outlined" size="xl" onClick={() => setOpen(true)}>
-          case4 복합 알릴사항 완료, 담보감액 오류(알릴사항 완료, 담보감액 오류)
+        <Button variant="outlined" size="xl" onClick={handleOpen}>
+          처리불가 케이스 팝업 열기
         </Button>
 
         <PlanApplyStatus
           open={open}
           onOpenChange={setOpen}
-          step="progress"
           items={items}
-          onNavigate={(item) => alert(`${item?.title || '해당'} 입력 화면으로 이동합니다.`)}
-        />
-      </div>
-    );
-  },
-};
-
-/**
- * Case 5. 정상처리(알릴사항반영중)
- */
-export const Case5: Story = {
-  name: 'case5 정상처리(알릴사항반영중)',
-  render: () => {
-    const [open, setOpen] = useState(false);
-    const items: PlanApplyItem[] = [
-      { id: 'notice', title: '알릴사항', status: 'processing' },
-      { id: 'reduction', title: '담보감액', status: 'idle' },
-    ];
-
-    return (
-      <div className="flex flex-col gap-4 items-center justify-center p-8 bg-slate-50 rounded-xl">
-        <Button variant="outlined" size="xl" onClick={() => setOpen(true)}>
-          case5 정상처리(알릴사항반영중)
-        </Button>
-
-        <PlanApplyStatus open={open} onOpenChange={setOpen} step="progress" items={items} />
-      </div>
-    );
-  },
-};
-
-/**
- * Case 6. 정상처리(알릴사항 완료, 담보감액 반영중)
- */
-export const Case6: Story = {
-  name: 'case6 정상처리(알릴사항 완료, 담보감액 반영중)',
-  render: () => {
-    const [open, setOpen] = useState(false);
-    const items: PlanApplyItem[] = [
-      { id: 'notice', title: '알릴사항', status: 'success' },
-      { id: 'reduction', title: '담보감액', status: 'processing' },
-    ];
-
-    return (
-      <div className="flex flex-col gap-4 items-center justify-center p-8 bg-slate-50 rounded-xl">
-        <Button variant="outlined" size="xl" onClick={() => setOpen(true)}>
-          case6 정상처리(알릴사항 완료, 담보감액 반영중)
-        </Button>
-
-        <PlanApplyStatus open={open} onOpenChange={setOpen} step="progress" items={items} />
-      </div>
-    );
-  },
-};
-
-/**
- * Case 7. 정상처리(알릴사항 완료, 담보감액 완료)
- */
-export const Case7: Story = {
-  name: 'case7 정상처리(알릴사항 완료, 담보감액 완료)',
-  render: () => {
-    const [open, setOpen] = useState(false);
-    const items: PlanApplyItem[] = [
-      { id: 'notice', title: '알릴사항', status: 'success' },
-      { id: 'reduction', title: '담보감액', status: 'success' },
-    ];
-
-    return (
-      <div className="flex flex-col gap-4 items-center justify-center p-8 bg-slate-50 rounded-xl">
-        <Button variant="outlined" size="xl" onClick={() => setOpen(true)}>
-          case7 정상처리(알릴사항 완료, 담보감액 완료)
-        </Button>
-
-        <PlanApplyStatus
-          open={open}
-          onOpenChange={setOpen}
-          step="progress"
-          items={items}
-          onConfirm={() => {
-            setOpen(false);
-            alert('설계반영이 최종 완료되었습니다.');
-          }}
-        />
-      </div>
-    );
-  },
-};
-
-/**
- * Case 8. 개별(알릴사항 오류)
- */
-export const Case8: Story = {
-  name: 'case8 개별(알릴사항 오류)',
-  render: () => {
-    const [open, setOpen] = useState(false);
-    const items: PlanApplyItem[] = [{ id: 'notice', title: '알릴사항', status: 'error' }];
-
-    return (
-      <div className="flex flex-col gap-4 items-center justify-center p-8 bg-slate-50 rounded-xl">
-        <Button variant="outlined" size="xl" onClick={() => setOpen(true)}>
-          case8 개별(알릴사항 오류)
-        </Button>
-
-        <PlanApplyStatus
-          open={open}
-          onOpenChange={setOpen}
-          step="progress"
-          items={items}
-          onNavigate={(item) => {
-            setOpen(false);
-            alert(`${item?.title || '해당'} 입력 화면으로 이동합니다.`);
-          }}
-        />
-      </div>
-    );
-  },
-};
-
-/**
- * Case 9. 개별(담보감액 반영 오류)
- */
-export const Case9: Story = {
-  name: 'case9 개별(담보감액 반영 오류)',
-  render: () => {
-    const [open, setOpen] = useState(false);
-    const items: PlanApplyItem[] = [{ id: 'reduction', title: '담보감액', status: 'error' }];
-
-    return (
-      <div className="flex flex-col gap-4 items-center justify-center p-8 bg-slate-50 rounded-xl">
-        <Button variant="outlined" size="xl" onClick={() => setOpen(true)}>
-          case9 개별(담보감액 반영 오류)
-        </Button>
-
-        <PlanApplyStatus
-          open={open}
-          onOpenChange={setOpen}
-          step="progress"
-          items={items}
+          onStart={handleStart}
           onNavigate={(item) => {
             setOpen(false);
             alert(`${item?.title || '해당'} 입력 화면으로 이동합니다.`);
