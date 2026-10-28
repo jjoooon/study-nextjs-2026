@@ -1351,8 +1351,8 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
 
   const unitLabel = isUnitStep ? `1${editorParams.step}` : `${step.toLocaleString()}만원`;
   // 바닥화면(가입금액 만원 단위)과 동일하게 언제나 만원 단위로 일관성 있게 표시
-  const popoverDisplayValue = typeof value === 'number' ? value.toLocaleString() : (value ?? '');
-  const popoverSuffix = '만';
+  // const popoverDisplayValue = typeof value === 'number' ? value.toLocaleString() : (value ?? '');
+  // const popoverSuffix = '만';
 
   // 값 업데이트 시 State와 Ref를 동시에 동기화
   const updateValue = useCallback((newValue: number) => {
@@ -1700,7 +1700,10 @@ function parseRangeFromValue(rawValue: unknown): DatePickerRangeValue {
  * - ag-Grid 컬럼 설정의 cellEditorParams로 DatePickerCellEditorParams 옵션 전달 가능
  */
 export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams<RowType>) {
-  const rawParams = (props as any).cellEditorParams ?? props.colDef?.cellEditorParams ?? {};
+  const rawParams =
+    (props as unknown as { cellEditorParams?: DatePickerCellEditorParams }).cellEditorParams ??
+    props.colDef?.cellEditorParams ??
+    {};
   const editorParams = { ...rawParams, ...props } as DatePickerCellEditorParams;
   const mode: DatePickerEditorMode = editorParams.mode ?? 'single';
 
@@ -3119,4 +3122,59 @@ export function createHeaderWithSort(label: string, className: string = 'text-[1
   };
 
   return HeaderWithSortComponent;
+}
+
+/**
+ * 가입금액 행의 기본 데이터 인터페이스 (옵션 목록 및 기준 담보 여부)
+ */
+export interface InsuredAmountRowData {
+  isSelectedInsuredAmount?: boolean;
+  insuredAmountOptions?: (number | string)[];
+  options?: (number | string)[];
+  isStandard?: {
+    group?: boolean;
+    edit?: boolean;
+  };
+  [key: string]: unknown;
+}
+
+/**
+ * 가입금액 셀렉트 옵션 목록 조회 공용 함수
+ * - row 데이터의 insuredAmountOptions, options 등을 조회하고, 없을 경우 defaultOptions(기본값 [1000]) 반환
+ */
+export function getInsuredAmountOptions<T extends InsuredAmountRowData>(
+  data?: T,
+  defaultOptions: (number | string)[] = [1000]
+): (number | string)[] {
+  if (!data) return [];
+  if (Array.isArray(data.insuredAmountOptions) && data.insuredAmountOptions.length > 0) {
+    return data.insuredAmountOptions;
+  }
+  if (Array.isArray(data.options) && data.options.length > 0) {
+    return data.options as (number | string)[];
+  }
+  return defaultOptions;
+}
+
+/**
+ * 가입금액 컬럼 편집 가능 여부 판별 공용 함수
+ * - 담보 그룹이면서 개별 편집 불가인 경우 false
+ * - isSelectedInsuredAmount이면서 셀렉트 옵션이 1개 이하인 경우 false (에디터 모드 제외)
+ * - 그 외 true
+ */
+export function isInsuredAmountEditable<T extends InsuredAmountRowData>(
+  data?: T,
+  defaultOptions?: (number | string)[]
+): boolean {
+  if (!data) return false;
+  if (data.isStandard?.group && !data.isStandard?.edit) {
+    return false;
+  }
+  if (data.isSelectedInsuredAmount) {
+    const options = getInsuredAmountOptions(data, defaultOptions);
+    if (options.length <= 1) {
+      return false;
+    }
+  }
+  return true;
 }

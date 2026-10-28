@@ -127,7 +127,7 @@ export function TabPager<T>({
   onRemove,
   visibleCount = 6,
   children,
-  variant = 'default',
+  variant = 'scroll',
   renderTab,
   error = false,
   errorMsg = '입력하세요.',

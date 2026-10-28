@@ -40,6 +40,8 @@ import {
   useDynamicColumnWidths,
   AgGridEmptyComponent,
   AmountWithPopoverCellEditor,
+  getInsuredAmountOptions,
+  isInsuredAmountEditable,
 } from '@aggrid';
 import { Divider, Gcol, Grow, Grid } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -83,7 +85,10 @@ type AgGridRow = DummyDataType & {
   badge?: string[]; // 담보명 옆에 표시되는 라벨/배지 목록
   locked?: boolean; // 필수 담보 여부 (선택 상태가 상시 유지되며 해제 불가)
   isHighlighted?: boolean; // 로우 강조 하이라이트 여부
+  insuredAmountOptions?: (number | string)[];
 };
+
+const DEFAULT_INSURED_AMOUNT_OPTIONS = ['1천만원', '2천만원', '3천만원', '5천만원', '1억원'];
 
 // 렌더링 성능 최적화를 위해 불변 설정 및 순수 함수는 컴포넌트 외부로 분리
 const ROW_SELECTION = {
@@ -298,7 +303,13 @@ export function Ltpa35002d({
 
   // 그룹 편집 버튼 렌더러 메모이제이션
   const groupEditableRenderer = useMemo(
-    () => groupEditableButtonRenderer<AgGridRow>(getExpiryRenderer, numberCellRenderer),
+    () =>
+      groupEditableButtonRenderer<AgGridRow>(
+        getExpiryRenderer,
+        numberCellRenderer,
+        'right',
+        DEFAULT_INSURED_AMOUNT_OPTIONS
+      ),
     [getExpiryRenderer, numberCellRenderer]
   );
 
@@ -370,17 +381,24 @@ export function Ltpa35002d({
         field: 'insuredAmount',
         flex: 1,
         minWidth: attributeColumnWidth(86),
-        cellClass: 'text-right editable-cell [&_input]:text-right',
+        cellClass: (params: CellClassParams<AgGridRow>) => {
+          const base = 'text-right [&_input]:text-right';
+          return isInsuredAmountEditable(params.data, DEFAULT_INSURED_AMOUNT_OPTIONS)
+            ? `${base} editable-cell`
+            : `${base} no-edited`;
+        },
         cellClassRules: {
           // 셀 조건에 따라 다르게 지정할 CSS 스타일 규칙 매핑
-          'style-select': (params) => !!params.data?.isSelectedInsuredAmount, // 리스트 선택식 금액 입력일 때 테두리 스타일
+          'style-select': (params) =>
+            !!params.data?.isSelectedInsuredAmount &&
+            getInsuredAmountOptions(params.data, DEFAULT_INSURED_AMOUNT_OPTIONS).length > 1, // 리스트 선택식 금액 입력일 때 테두리 스타일
           isStandardGroup: (params) => !!(params.data?.isStandard?.group && !params.data?.isStandard?.edit), // 수정 불가 기본형 담보 그룹 스타일
           isStandard: (params) => !!params.data?.isStandard?.edit, // 수정 가능 담보 스타일
           'tooltip-on': (params) => !!params.data?._tooltipOn, // 툴팁 활성화 상태 스타일
         },
-        cellEditorSelector: (params: EditableCallbackParams): CellEditorSelectorResult | undefined => {
-          // 1. 담보 그룹 기준값이면서 개별 수정을 막아야 하는 경우엔 에디터를 띄우지 않음 (undefined 반환)
-          if (params.data?.isStandard?.group && !params.data?.isStandard?.edit) {
+        cellEditorSelector: (params: EditableCallbackParams<AgGridRow>): CellEditorSelectorResult | undefined => {
+          // 1. 담보 그룹 기준값이면서 개별 수정을 막아야 하는 경우 또는 옵션 1개 이하일 때는 에디터를 띄우지 않음 (undefined 반환)
+          if (!isInsuredAmountEditable(params.data, DEFAULT_INSURED_AMOUNT_OPTIONS)) {
             return undefined;
           }
           const isSelectedInsuredAmount = params.data?.isSelectedInsuredAmount ?? false;
@@ -392,7 +410,7 @@ export function Ltpa35002d({
               params: { step: 10 }, // 금액 증감시 조절할 기본 단위값 (10만원 단위)
             };
           } else {
-            const baseOptions = ['1천만원', '2천만원', '3천만원', '5천만원', '1억원'];
+            const baseOptions = getInsuredAmountOptions(params.data, DEFAULT_INSURED_AMOUNT_OPTIONS);
             return {
               component: 'agSelectCellEditor', // Ag-Grid 내장 콤보박스 에디터
               params: { values: baseOptions },
@@ -401,12 +419,8 @@ export function Ltpa35002d({
         },
         // 가입금액 전용 셀 렌더러 (만기 표시 렌더러 및 포맷팅용 천단위 콤마 포맷터 지정)
         cellRenderer: groupEditableRenderer,
-        editable: (params: EditableCallbackParams) => {
-          // 그룹 담보이면서 편집 불가능한 행은 셀 편집 비활성화
-          if (params.data?.isStandard?.group && !params.data?.isStandard?.edit) {
-            return false;
-          }
-          return true;
+        editable: (params: EditableCallbackParams<AgGridRow>) => {
+          return isInsuredAmountEditable(params.data, DEFAULT_INSURED_AMOUNT_OPTIONS);
         },
         // [중요] 편집 모드 중 ag-Grid의 기본 키보드 이벤트 인터셉트 비활성화
         // 셀에 텍스트 인풋을 입력하는 중 Enter, Backspace, 화살표 키 등을 누를 때
@@ -509,7 +523,7 @@ export function Ltpa35002d({
   );
 
   //보장패키지 선택여부에 따라
-  const [is보장패키지, set보장패키지] = useState(false);
+  const [is보장패키지] = useState(false);
 
   return (
     <Gcol>
