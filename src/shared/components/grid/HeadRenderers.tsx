@@ -6,7 +6,6 @@ import * as React from 'react';
 import { DotColor } from '@/shared/components/common/DotColor';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Divider, Grow, Gcol } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
 import { HashFilter, useHashFilter } from '@common/HashFilter';
 import { TooltipQ } from '@common/TooltipQ';
 import { SearchIcon, SortArrowIcon, SortArrowDefaultIcon } from '@icons';

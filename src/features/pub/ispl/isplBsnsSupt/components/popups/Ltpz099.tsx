@@ -3,15 +3,16 @@
  */
 'use client';
 
-import type { ColDef } from 'ag-grid-enterprise';
+import type { BodyScrollEvent, ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import React from 'react';
-import { useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+
 import { Grid, Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { HeaderWithUnit } from '@grid/HeadRenderers';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -46,50 +47,50 @@ const DummyData: DummyDataType[] = [
   {
     id: 1,
     field01: '보통약관(상해80%이상후유) 보통약관(상해80%이상후유)',
-    field02: '100만원',
-    field03: '10만원',
+    field02: '100',
+    field03: '10',
   },
   {
     id: 2,
     field01: '상해사망(체증형)',
-    field02: '150,000만원',
-    field03: '9,600원',
+    field02: '150,000',
+    field03: '9,600',
   },
   {
     id: 3,
     field01: '상해사망추가',
-    field02: '10,000만원',
-    field03: '96,000원',
+    field02: '10,000',
+    field03: '96,000',
   },
   {
     id: 4,
     field01: '골절(치아파절포함)진단비(간편)',
-    field02: '10만원',
-    field03: '1,185원',
+    field02: '10',
+    field03: '1,185',
   },
   {
     id: 5,
     field01: '암(4대유사암제외)특정치료비(암전문의료기)',
-    field02: '5,000만원',
-    field03: '11,600원',
+    field02: '5,000',
+    field03: '11,600',
   },
   {
     id: 6,
     field01: '보통약관(상해80%이상후유)',
-    field02: '100만원',
-    field03: '10만원',
+    field02: '100',
+    field03: '10',
   },
   {
     id: 7,
     field01: '상해사망(체증형)',
-    field02: '15,000만원',
-    field03: '9,600원',
+    field02: '15,000',
+    field03: '9,600',
   },
   {
     id: 8,
     field01: '상해사망추가',
-    field02: '10,000만원',
-    field03: '96,000원',
+    field02: '10,000',
+    field03: '96,000',
   },
   {
     id: 9,
@@ -100,14 +101,14 @@ const DummyData: DummyDataType[] = [
   {
     id: 10,
     field01: '암(4대유사암제외)특정치료비(암전문의료기)',
-    field02: '5,000만원',
-    field03: '11,600원',
+    field02: '5,000',
+    field03: '11,600',
   },
   {
     id: 11,
     field01: '암(4대유사암제외)특정치료비(암전문의료기)',
-    field02: '1,000만원',
-    field03: '11,600원',
+    field02: '1,000',
+    field03: '11,600',
   },
 ];
 
@@ -115,20 +116,20 @@ const DummyData2: DummyDataType2[] = [
   {
     id: 1,
     field01: '보통약관(상해80%이상후유) 보통약관(상해80%이상후유)',
-    field02: '100만원',
-    field03: '10만원',
+    field02: '100',
+    field03: '10',
   },
   {
     id: 2,
     field01: '상해사망(체증형)',
-    field02: '150,000만원',
-    field03: '9,600원',
+    field02: '150,000',
+    field03: '9,600',
   },
   {
     id: 3,
     field01: '상해사망추가',
-    field02: '10,000만원',
-    field03: '96,000원',
+    field02: '10,000',
+    field03: '96,000',
   },
   {
     id: 4,
@@ -139,26 +140,26 @@ const DummyData2: DummyDataType2[] = [
   {
     id: 5,
     field01: '암(4대유사암제외)특정치료비(암전문의료기)',
-    field02: '5,000만원',
-    field03: '11,600원',
+    field02: '5,000',
+    field03: '11,600',
   },
   {
     id: 6,
     field01: '보통약관(상해80%이상후유)',
-    field02: '100만원',
-    field03: '10만원',
+    field02: '100',
+    field03: '10',
   },
   {
     id: 7,
     field01: '상해사망(체증형)',
-    field02: '15,000만원',
-    field03: '9,600원',
+    field02: '15,000',
+    field03: '9,600',
   },
   {
     id: 8,
     field01: '상해사망추가',
-    field02: '10,000만원',
-    field03: '96,000원',
+    field02: '10,000',
+    field03: '96,000',
   },
   {
     id: 9,
@@ -169,42 +170,41 @@ const DummyData2: DummyDataType2[] = [
   {
     id: 10,
     field01: '암(4대유사암제외)특정치료비(암전문의료기)',
-    field02: '5,000만원',
-    field03: '11,600원',
+    field02: '5,000',
+    field03: '11,600',
   },
   {
     id: 11,
     field01: '암(4대유사암제외)특정치료비(암전문의료기)',
-    field02: '1,000만원',
-    field03: '11,600원',
+    field02: '1,000',
+    field03: '11,600',
   },
 ];
 
 export const Ltpz099 = () => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
-  // 021 페이지 방식: 외부 스크롤 div 동기화
-  const scrollRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const isSyncing = useRef(false);
-  const handleSyncScroll = (idx: number, e: React.UIEvent<HTMLDivElement>) => {
-    if (isSyncing.current) {
-      return;
+
+  // 그리드 간 스크롤 동기화 관리
+  const isSyncingRef = useRef(false);
+  const grid1ContainerRef = useRef<HTMLDivElement>(null);
+  const grid2ContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleSyncScroll = useCallback((targetRef: React.RefObject<HTMLDivElement | null>, event: BodyScrollEvent) => {
+    if (isSyncingRef.current) return;
+    const targetViewport = targetRef.current?.querySelector<HTMLElement>('.ag-body-viewport');
+    if (!targetViewport) return;
+
+    const prop = event.direction === 'vertical' ? 'scrollTop' : 'scrollLeft';
+    const value = event.direction === 'vertical' ? event.top : event.left;
+
+    if (Math.abs(targetViewport[prop] - value) > 1) {
+      isSyncingRef.current = true;
+      targetViewport[prop] = value;
+      requestAnimationFrame(() => {
+        isSyncingRef.current = false;
+      });
     }
-
-    isSyncing.current = true;
-
-    const target = e.currentTarget;
-    const scrollTop = target.scrollTop;
-
-    scrollRefs.current.forEach((ref, i) => {
-      if (i !== idx && ref && Math.abs(ref.scrollTop - scrollTop) > 1) {
-        ref.scrollTop = scrollTop;
-      }
-    });
-
-    setTimeout(() => {
-      isSyncing.current = false;
-    }, 0);
-  };
+  }, []);
 
   // AgGrid Column
   const columnDefs: ColDef<DummyDataType>[] = [
@@ -217,15 +217,25 @@ export const Ltpz099 = () => {
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field01' }),
     },
     {
-      headerName: '가입금액',
+      headerName: '가능금액(만원)',
+      headerComponent: HeaderWithUnit,
+      headerComponentParams: {
+        label: '가능금액',
+        unit: '(만원)',
+      },
       field: 'field02',
       flex: 1,
-      minWidth: attributeColumnWidth(80),
+      minWidth: attributeColumnWidth(86),
       cellClass: 'text-right flex [&>div>span]:h-auto!',
       valueFormatter: numberValueFormatter,
     },
     {
-      headerName: '보험료',
+      headerName: '보험료(원)',
+      headerComponent: HeaderWithUnit,
+      headerComponentParams: {
+        label: '보험료',
+        unit: '(원)',
+      },
       field: 'field03',
       flex: 1,
       minWidth: attributeColumnWidth(80),
@@ -244,15 +254,25 @@ export const Ltpz099 = () => {
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field01' }),
     },
     {
-      headerName: '가입금액',
+      headerName: '가능금액(만원)',
+      headerComponent: HeaderWithUnit,
+      headerComponentParams: {
+        label: '가능금액',
+        unit: '(만원)',
+      },
       field: 'field02',
       flex: 1,
-      minWidth: attributeColumnWidth(80),
+      minWidth: attributeColumnWidth(86),
       cellClass: 'text-right flex [&>div>span]:h-auto!',
       valueFormatter: numberValueFormatter,
     },
     {
-      headerName: '보험료',
+      headerName: '보험료(원)',
+      headerComponent: HeaderWithUnit,
+      headerComponentParams: {
+        label: '보험료',
+        unit: '(원)',
+      },
       field: 'field03',
       flex: 1,
       minWidth: attributeColumnWidth(80),
@@ -261,36 +281,6 @@ export const Ltpz099 = () => {
     },
   ];
 
-  // 비교 테이블 커스텀 헤더 셀의 너비/유연 비율 스타일을 ag-Grid 컬럼 정의로 계산
-  function getComparisonHeaderCellStyle(column: ColDef): React.CSSProperties {
-    // 최소 너비가 없으면 0으로 두어 flex 계산 시 레이아웃 깨짐 방지
-    const minWidth = typeof column.minWidth === 'number' ? `${column.minWidth}px` : '0px';
-
-    // width가 고정된 컬럼은 flex 확장을 막고 고정 폭으로 렌더링
-    if (typeof column.width === 'number') {
-      const width = `${column.width}px`;
-
-      return {
-        flex: '0 0 auto',
-        minWidth: width,
-        width,
-      };
-    }
-
-    // flex 컬럼은 비율 기반으로 너비를 나누되 minWidth는 유지
-    if (typeof column.flex === 'number') {
-      return {
-        flex: `${column.flex} 1 0%`,
-        minWidth,
-      };
-    }
-
-    // width/flex 정보가 모두 없으면 기본 균등 분할 규칙 사용
-    return {
-      flex: '1 1 0%',
-      minWidth,
-    };
-  }
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={false} size="xl">
@@ -410,30 +400,7 @@ export const Ltpz099 = () => {
                         </TableRow>
                       </TableBody>
                     </Table>
-                    <div
-                      className="ag-theme-alpine no-header w-full min-h-[34rem] overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
-                      ref={(el) => {
-                        scrollRefs.current[0] = el;
-                      }}
-                      onScroll={(e) => handleSyncScroll(0, e)}
-                    >
-                      <div className="sticky top-0 z-10 flex h-[3rem] w-full border-b border-[#D9E2EC] bg-[var(--color-gray-5)] border-t-[0.2rem] border-t-[#000]">
-                        {columnDefs.map((column, index) => {
-                          const key = column.field ?? column.headerName ?? `column-${index}`;
-
-                          return (
-                            <div
-                              key={key}
-                              className={`flex h-full items-center border-r border-[#D9E2EC] px-0 justify-center last:border-r-0`}
-                              style={getComparisonHeaderCellStyle(column)}
-                            >
-                              <Typo tag={'span'} variant={'body-md'} weight={'bold'}>
-                                {column.headerName}
-                              </Typo>
-                            </div>
-                          );
-                        })}
-                      </div>
+                    <div ref={grid1ContainerRef} className="ag-theme-alpine min-h-[34rem]">
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
@@ -445,6 +412,7 @@ export const Ltpz099 = () => {
                         }}
                         tooltipShowMode="whenTruncated"
                         tooltipShowDelay={0}
+                        onBodyScroll={(event) => handleSyncScroll(grid2ContainerRef, event)}
                       />
                     </div>
                   </Grid>
@@ -478,30 +446,7 @@ export const Ltpz099 = () => {
                         </TableRow>
                       </TableBody>
                     </Table>
-                    <div
-                      className="ag-theme-alpine no-header w-full min-h-[34rem] overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
-                      ref={(el) => {
-                        scrollRefs.current[1] = el;
-                      }}
-                      onScroll={(e) => handleSyncScroll(1, e)}
-                    >
-                      <div className="sticky top-0 z-10 flex h-[3rem] w-full border-b border-[#D9E2EC] bg-[var(--color-gray-5)] border-t-[0.2rem] border-t-[#000]">
-                        {columnDefs2.map((column, index) => {
-                          const key = column.field ?? column.headerName ?? `column-${index}`;
-
-                          return (
-                            <div
-                              key={key}
-                              className={`flex h-full items-center border-r border-[#D9E2EC] px-0 justify-center last:border-r-0`}
-                              style={getComparisonHeaderCellStyle(column)}
-                            >
-                              <Typo tag={'span'} variant={'body-md'} weight={'bold'}>
-                                {column.headerName}
-                              </Typo>
-                            </div>
-                          );
-                        })}
-                      </div>
+                    <div ref={grid2ContainerRef} className="ag-theme-alpine min-h-[34rem]">
                       <AgGridReact<DummyDataType2>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
@@ -515,6 +460,7 @@ export const Ltpz099 = () => {
                         enableCellSpan={true}
                         tooltipShowMode="whenTruncated"
                         tooltipShowDelay={0}
+                        onBodyScroll={(event) => handleSyncScroll(grid1ContainerRef, event)}
                       />
                     </div>
                   </Grid>
