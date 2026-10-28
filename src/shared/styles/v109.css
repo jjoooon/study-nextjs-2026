@@ -349,7 +349,18 @@
 /* ----------------------------------------------------
  * Chrome 109 전용 유틸리티 클래스 (disabled, has>svg, focus, hover) 호환 스타일
  * ---------------------------------------------------- */
-/* SVG 및 disabled 투명도/색상 호환 */
+
+.v109 .bg-\[var\(--color-gray-50\)\],
+.v109 [class*='bg-[var(--color-gray-50)]'] {
+  background-color: var(--color-gray-50);
+}
+.v109 .border-\[var\(--color-gray-50\)\],
+.v109 [class*='border-[var(--color-gray-50)]'] {
+  border-color: var(--color-gray-50);
+}
+
+
+ /* SVG 및 disabled 투명도/색상 호환 */
 .v109 [class*='[&>disabled_svg]:opacity-50']:disabled svg,
 .v109 [class*='[&:disabled_svg]:opacity-50']:disabled svg,
 .v109 button:disabled svg {
@@ -2619,6 +2630,9 @@ html.v109 [class*='bg-[var(--color-gray-5)]'][class*='bg-[var(--color-primary-50
 html.v109 [class*='bg-[var(--color-gray-5)]'][class*='bg-[var(--color-primary-5)]'] {
   background-color: var(--color-primary-5) !important;
 }
+html.v109 [class*='bg-[var(--color-gray-5)]'][class*='bg-[var(--color-gray-50)]'] {
+  background-color: var(--color-gray-50) !important;
+}
 
 html.v109 [class*='bg-[var(--color-primary-50)]']:disabled,
 html.v109 [class*='bg-[var(--color-primary-5)]']:disabled,
@@ -2898,3 +2912,4 @@ html.v109 [class*='disabled:bg-[var(--color-gray-5)]'].disabled {
   -webkit-mask-image: none !important;
   mask-image: none !important;
 }
+
