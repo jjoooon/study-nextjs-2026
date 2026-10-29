@@ -41,6 +41,7 @@ const badgeVariants = cva(
         blue: '',
         red: '',
         danger: '',
+        error: '',
         green: '',
         primary: '',
         gray: '',
@@ -91,6 +92,7 @@ const badgeVariants = cva(
       },
       { variant: ['contained', 'rounded'], color: 'purple', class: 'bg-[#F0E6FF] text-[#853EE2]' },
       { variant: ['contained', 'rounded'], color: 'yellow', class: 'bg-[var(--color-warning-10)] text-[#FFB800]' },
+      { variant: ['contained', 'rounded'], color: 'error', class: 'bg-[#E43939] text-[#FFF]' },
 
       // dark + color 조합
       {
@@ -158,7 +160,11 @@ const badgeVariants = cva(
         color: 'blue',
         class: 'border-[var(--color-information-50)] text-[var(--color-information-50)]',
       },
-      { variant: 'outlined', color: ['red', 'danger'], class: 'border-[var(--color-danger-50)] text-[var(--color-danger-50)]' },
+      {
+        variant: 'outlined',
+        color: ['red', 'danger'],
+        class: 'border-[var(--color-danger-50)] text-[var(--color-danger-50)]',
+      },
       { variant: 'outlined', color: 'green', class: 'border-[var(--color-success-50)] text-[var(--color-success-50)]' },
       {
         variant: 'outlined',
