@@ -211,6 +211,12 @@
   background-color: var(--color-gray-10) !important;
 }
 
+.ag-row-hover.ag-row-focus.editable-cell,
+.ag-row-hover.ag-row-focus.editable-cell .ag-cell,
+.ag-row-hover.ag-row-focus .ag-cell {
+  background-color: #e4dfc8 !important;
+}
+
 .editable-cell {
   background: var(--color-information-5);
 }

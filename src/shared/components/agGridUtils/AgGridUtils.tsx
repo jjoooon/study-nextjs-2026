@@ -3144,7 +3144,7 @@ export interface InsuredAmountRowData {
  */
 export function getInsuredAmountOptions<T extends InsuredAmountRowData>(
   data?: T,
-  defaultOptions: (number | string)[] = [1000]
+  defaultOptions: (number | string)[] = []
 ): (number | string)[] {
   if (!data) return [];
   if (Array.isArray(data.insuredAmountOptions) && data.insuredAmountOptions.length > 0) {

@@ -117,6 +117,7 @@ export function Ltpa35002({ onIsWidthExpandedChange }: Ltpa35002Props) {
               data={Tabs}
               active={TabActive}
               setActive={TabSetActive}
+              variant="scroll"
               visibleCount={8}
               error={false}
               errorMsg="입력하세요."

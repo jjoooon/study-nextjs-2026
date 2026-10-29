@@ -475,6 +475,7 @@ function GlobalSpinnerPortal({
       tabIndex={-1}
       aria-busy="true"
       aria-label={typeof currentText === 'string' ? currentText : undefined}
+      className="pointer-events-auto"
       style={{
         position: 'fixed',
         inset: 0,
@@ -483,6 +484,7 @@ function GlobalSpinnerPortal({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        pointerEvents: 'auto',
         ...backgroundStyle,
       }}
     >

@@ -301,7 +301,7 @@ export function Ltpa35002a({
       headerName: '담보명',
       headerComponent: AgGridProductNameHeader,
       field: 'id' as const,
-      flex: 20,
+      flex: 10,
       cellClass: 'text-left !p-0',
       cellRenderer: productNameCellRenderer<AgGridRow>,
       tooltipValueGetter: (params: { data?: AgGridRow }) => params.data?.title ?? '',
@@ -351,7 +351,7 @@ export function Ltpa35002a({
           unit: '(만원)',
         },
         field: 'field4',
-        flex: 1,
+        flex: 2,
         minWidth: attributeColumnWidth(86),
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter<AgGridRow>,
@@ -365,7 +365,7 @@ export function Ltpa35002a({
         },
         sortable: true,
         field: 'insuredAmount',
-        flex: 1,
+        flex: 2,
         minWidth: attributeColumnWidth(86),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           const base = 'text-right [&_input]:text-right [&_input]:tracking-normal';
@@ -430,7 +430,7 @@ export function Ltpa35002a({
         },
         sortable: true,
         field: 'field7',
-        flex: 1,
+        flex: 2,
         minWidth: attributeColumnWidth(60),
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter<AgGridRow>,
@@ -438,7 +438,7 @@ export function Ltpa35002a({
       {
         headerName: '만기',
         field: 'field5',
-        flex: 1,
+        flex: 2,
         minWidth: attributeColumnWidth(88),
         // width: attributeColumnWidth[7],
         cellClassRules: editableCellClassRules<AgGridRow>(),
@@ -459,7 +459,7 @@ export function Ltpa35002a({
       {
         headerName: '납기',
         field: 'field6',
-        flex: 1,
+        flex: 2,
         minWidth: attributeColumnWidth(68),
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
