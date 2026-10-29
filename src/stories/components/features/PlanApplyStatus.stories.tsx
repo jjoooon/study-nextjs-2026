@@ -244,3 +244,121 @@ export const SingleItemReduction: Story = {
     );
   },
 };
+
+/**
+ * 5. [단일 항목 오류 케이스] 알릴사항 단일 반영중 후 알릴사항 오류(확인 필요)로 전환
+ */
+export const SingleItemError: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false);
+    const [items, setItems] = useState<PlanApplyItem[]>([
+      {
+        id: 'notice',
+        title: '알릴사항',
+        description: '보험금 지급을 기준으로 일부 항목을 자동으로 반영합니다.',
+        warningNotice:
+          '조회정보를 기준으로 추정입력되며 (예: 완치여부) 실제 사실관계와 다를 수 있으므로 반드시 고객에게 확인바랍니다.',
+        status: 'idle',
+      },
+    ]);
+
+    const handleStart = () => {
+      setItems([{ ...items[0], status: 'processing' }]);
+      setTimeout(() => {
+        setItems([{ id: 'notice', title: '알릴사항', status: 'error' }]);
+      }, 2000);
+    };
+
+    const handleOpen = () => {
+      setItems([
+        {
+          id: 'notice',
+          title: '알릴사항',
+          description: '보험금 지급을 기준으로 일부 항목을 자동으로 반영합니다.',
+          warningNotice:
+            '조회정보를 기준으로 추정입력되며 (예: 완치여부) 실제 사실관계와 다를 수 있으므로 반드시 고객에게 확인바랍니다.',
+          status: 'idle',
+        },
+      ]);
+      setOpen(true);
+    };
+
+    return (
+      <div className="flex flex-col gap-4 items-center justify-center p-8 bg-slate-50 rounded-xl">
+        <Button variant="outlined" size="xl" onClick={handleOpen}>
+          알릴사항 단일 오류 팝업 열기
+        </Button>
+
+        <PlanApplyStatus
+          open={open}
+          onOpenChange={setOpen}
+          items={items}
+          onStart={handleStart}
+          onNavigate={(item) => {
+            setOpen(false);
+            alert(`${item?.title || '해당'} 입력 화면으로 이동합니다.`);
+          }}
+        />
+      </div>
+    );
+  },
+};
+
+/**
+ * 6. [단일 항목 처리불가 케이스] 반영중 다음에 완료가 아닌 담보감액 처리 불가로 전환
+ */
+export const SingleItemUnprocessable: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false);
+    const [items, setItems] = useState<PlanApplyItem[]>([
+      {
+        id: 'notice',
+        title: '알릴사항',
+        description: '보험금 지급을 기준으로 일부 항목을 자동으로 반영합니다.',
+        warningNotice:
+          '조회정보를 기준으로 추정입력되며 (예: 완치여부) 실제 사실관계와 다를 수 있으므로 반드시 고객에게 확인바랍니다.',
+        status: 'idle',
+      },
+    ]);
+
+    const handleStart = () => {
+      setItems([{ ...items[0], status: 'processing' }]);
+      setTimeout(() => {
+        setItems([{ id: 'reduction', title: '담보감액', status: 'error' }]);
+      }, 2000);
+    };
+
+    const handleOpen = () => {
+      setItems([
+        {
+          id: 'notice',
+          title: '알릴사항',
+          description: '보험금 지급을 기준으로 일부 항목을 자동으로 반영합니다.',
+          warningNotice:
+            '조회정보를 기준으로 추정입력되며 (예: 완치여부) 실제 사실관계와 다를 수 있으므로 반드시 고객에게 확인바랍니다.',
+          status: 'idle',
+        },
+      ]);
+      setOpen(true);
+    };
+
+    return (
+      <div className="flex flex-col gap-4 items-center justify-center p-8 bg-slate-50 rounded-xl">
+        <Button variant="outlined" size="xl" onClick={handleOpen}>
+          처리불가 케이스 팝업 열기
+        </Button>
+
+        <PlanApplyStatus
+          open={open}
+          onOpenChange={setOpen}
+          items={items}
+          onStart={handleStart}
+          onNavigate={(item) => {
+            setOpen(false);
+            alert(`${item?.title || '해당'} 입력 화면으로 이동합니다.`);
+          }}
+        />
+      </div>
+    );
+  },
+};

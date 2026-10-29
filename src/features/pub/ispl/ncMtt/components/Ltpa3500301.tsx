@@ -1786,10 +1786,14 @@ export const Ltpa3500301 = ({
                         variant="none"
                       >
                         <Badge
-                          color={isMissing ? 'danger' : 'secondary'}
+                          color={isMissing ? 'error' : 'secondary'}
                           size={'md'}
                           variant={'contained'}
-                          className="w-[1.8rem] transition-colors group-hover:bg-[var(--color-primary-50)]"
+                          className={`w-[1.8rem] transition-colors ${
+                            isMissing
+                              ? 'group-hover:bg-[var(--color-danger-80)]'
+                              : 'group-hover:bg-[var(--color-secondary-70)]'
+                          }`}
                         >
                           {badgeNum}
                         </Badge>

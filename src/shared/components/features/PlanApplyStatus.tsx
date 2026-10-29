@@ -203,7 +203,7 @@ export function PlanApplyStatus({
                             >
                               {status === 'idle' && '대기중'}
                               {status === 'processing' && '반영중'}
-                              {status === 'error' && '추가확인 필요'}
+                              {status === 'error' && (item.id === 'reduction' ? '처리 불가' : '확인 필요')}
                               {status === 'success' && '완료'}
                             </Typo>
                           </Gcol>
@@ -216,14 +216,32 @@ export function PlanApplyStatus({
                 {/* 하단 진행상태 안내 문구 */}
                 <Gcol className="w-full" placement="cc">
                   {hasError ? (
-                    <div className="flex flex-col items-center gap-1">
-                      <Typo tag="p" variant="body-lg">
-                        {errorItem?.title || '항목'} 입력 과정 중 확인사항이 발생하였습니다.
-                      </Typo>
-                      <Typo tag="p" variant="body-lg" color={'danger'}>
-                        중단 후, 해당 입력화면으로 이동합니다.
-                      </Typo>
-                    </div>
+                    errorItem?.id === 'reduction' ? (
+                      <Gcol className="items-center gap-1">
+                        <Typo tag="p" variant="body-lg">
+                          {errorItem.title} 과정 중 처리불가사항이 발생하였습니다.
+                        </Typo>
+                        <Typo tag="p" variant="body-lg">
+                          감액담보 확인 후 <b>&lsquo;직접 조정&rsquo;</b> 바랍니다.
+                        </Typo>
+                        <Typo
+                          tag="p"
+                          variant="body-lg"
+                          className="[&>em]:text-[var(--color-danger-50)] [&>em]:not-italic!"
+                        >
+                          단, <em>필수가입담보 가입불가시, 인수불가합니다.</em>
+                        </Typo>
+                      </Gcol>
+                    ) : (
+                      <Gcol className="items-center gap-1">
+                        <Typo tag="p" variant="body-lg">
+                          {errorItem?.title || '항목'} 입력 과정 중 확인사항이 발생하였습니다.
+                        </Typo>
+                        <Typo tag="p" variant="body-lg" color={'danger'}>
+                          중단 후, 해당 입력화면으로 이동합니다.
+                        </Typo>
+                      </Gcol>
+                    )
                   ) : isAllSuccess ? (
                     <Typo tag="p" variant="body-lg">
                       설계반영이 완료되었습니다.
@@ -231,7 +249,7 @@ export function PlanApplyStatus({
                   ) : (
                     <Typo tag="p" variant="body-lg">
                       {activeProcessingItem
-                        ? `${activeProcessingItem.title}를 반영하고 있습니다.`
+                        ? `${activeProcessingItem.title}을 반영하고 있습니다.`
                         : '반영을 진행하고 있습니다.'}
                     </Typo>
                   )}

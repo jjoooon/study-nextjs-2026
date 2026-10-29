@@ -50,7 +50,7 @@ import { Badge } from '@uiux/Badge';
 
 <Badge
   variant={'contained' | 'soft' | 'outlined' | 'ghost'}
-  color={'blue' | 'red' | 'green' | 'primary' | 'gray' | 'bluegray' | 'secondary'}
+  color={'blue' | 'red' | 'green' | 'primary' | 'gray' | 'bluegray' | 'secondary' | 'error'}
   size={'sm' | 'md' | 'lg'}
 >
   D-31
@@ -83,7 +83,7 @@ import { Badge } from '@uiux/Badge';
                   <td>color</td>
                   <td>
                     &apos;blue&apos; | &apos;red&apos; | &apos;green&apos; | &apos;primary&apos; | &apos;gray&apos; |
-                    &apos;bluegray&apos; | &apos;secondary&apos;
+                    &apos;bluegray&apos; | &apos;secondary&apos; | &apos;error&apos;
                   </td>
                   <td>배지 색상</td>
                 </tr>
@@ -164,6 +164,7 @@ import { Badge } from '@uiux/Badge';
                   <Badge color="gray">gray</Badge>
                   <Badge color="bluegray">bluegray</Badge>
                   <Badge color="secondary">secondary</Badge>
+                  <Badge color="error">error</Badge>
                 </Grow>
               </Gcol>
             </Unstyled>
@@ -202,7 +203,7 @@ import { Badge } from '@uiux/Badge';
     },
     color: {
       control: { type: 'select' },
-      options: ['blue', 'red', 'green', 'primary', 'gray', 'bluegray', 'secondary'],
+      options: ['blue', 'red', 'green', 'primary', 'gray', 'bluegray', 'secondary', 'error'],
       table: { category: '스타일 props' },
     },
     size: {
