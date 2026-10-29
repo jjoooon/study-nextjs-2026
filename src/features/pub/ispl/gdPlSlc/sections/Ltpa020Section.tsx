@@ -386,7 +386,7 @@ export default function Ltpa020Section() {
                               onClick={() => setIsLtpz034Open(true)}
                             >
                               {isLtpz034Open && <PlusIcon size={16} className="translate-y-[-.1rem]" />}
-                              {isLtpz034Open ? '고지유형찾기 다시보기' : '고지유형찾기'}
+                              {isLtpz034Open ? '예상고지유형 다시보기' : '예상고지유형'}
                             </Button>
                           </Grow>
                         </Grow>
