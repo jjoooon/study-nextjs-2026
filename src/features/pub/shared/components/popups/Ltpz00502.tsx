@@ -5,7 +5,13 @@
 
 import '@/shared/lib/agGridPub';
 
-import type { ValueFormatterParams, ValueParserParams } from 'ag-grid-enterprise';
+import type {
+  CellValueChangedEvent,
+  GridApi,
+  SpanRowsParams,
+  ValueFormatterParams,
+  ValueParserParams,
+} from 'ag-grid-enterprise';
 import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
@@ -316,6 +322,14 @@ const Ltpz00502 = ({ onClose }: Ltpz00502Props) => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const [groupTabValue, setGroupTabValue] = React.useState<string>('tab1');
   const [accumOptionValue, setAccumOptionValue] = React.useState<string>('option1');
+  const [rowData, setRowData] = React.useState<DummyDataType2[]>(DummyData2);
+  const gridApiRef = React.useRef<GridApi<DummyDataType2> | null>(null);
+
+  React.useEffect(() => {
+    const nextData =
+      accumOptionValue === 'option2' ? DummyData3 : accumOptionValue === 'option3' ? DummyData4 : DummyData2;
+    setRowData(nextData);
+  }, [accumOptionValue]);
 
   function formatAmountWithComma(value: unknown): string {
     const normalized = String(value ?? '')
@@ -345,6 +359,81 @@ const Ltpz00502 = ({ onClose }: Ltpz00502Props) => {
 
   const spanRowsByAccumName = React.useMemo(() => createSpanRowsByField<DummyDataType2, 'accumName'>('accumName'), []);
 
+  const spanRowsByExcessAmount = React.useCallback((params: SpanRowsParams<DummyDataType2>): boolean => {
+    const a = params.nodeA?.data;
+    const b = params.nodeB?.data;
+    if (!a || !b) return false;
+    const excessA = String(a.excessAmount ?? '')
+      .replace(/,/g, '')
+      .trim();
+    const excessB = String(b.excessAmount ?? '')
+      .replace(/,/g, '')
+      .trim();
+    return a.accumName === b.accumName && excessA !== '' && excessA === excessB;
+  }, []);
+
+  const handleCellValueChanged = React.useCallback((params: CellValueChangedEvent<DummyDataType2>) => {
+    if (params.colDef.field !== 'designAmount') {
+      return;
+    }
+
+    const row = params.data;
+    if (!row) return;
+
+    const rawDesign = String(row.designAmount ?? '')
+      .replace(/,/g, '')
+      .trim();
+    const designAmountNum = Number(rawDesign) || 0;
+    const multiplierNum = Number(row.multiplier) || 1;
+
+    const newAppliedNum = designAmountNum * multiplierNum;
+    const prevAppliedNum =
+      Number(
+        String(row.appliedAmount ?? '')
+          .replace(/,/g, '')
+          .trim()
+      ) || 0;
+    const diff = newAppliedNum - prevAppliedNum;
+
+    const oldTotalNum =
+      Number(
+        String(row.totalAmount ?? '')
+          .replace(/,/g, '')
+          .trim()
+      ) || 0;
+    const limitAmountNum =
+      Number(
+        String(row.limitAmount ?? '')
+          .replace(/,/g, '')
+          .trim()
+      ) || 0;
+
+    const newTotalNum = Math.max(0, oldTotalNum + diff);
+    const newExcessNum = Math.max(0, newTotalNum - limitAmountNum);
+
+    const formattedApplied = newAppliedNum.toLocaleString('ko-KR');
+    const formattedTotal = newTotalNum.toLocaleString('ko-KR');
+    const formattedExcess = newExcessNum.toLocaleString('ko-KR');
+
+    params.node.setDataValue('appliedAmount', formattedApplied);
+    params.node.setDataValue('totalAmount', formattedTotal);
+    params.node.setDataValue('excessAmount', formattedExcess);
+
+    setRowData((prev) =>
+      prev.map((item) =>
+        item.id === row.id
+          ? {
+              ...item,
+              designAmount: formatAmountWithComma(rawDesign),
+              appliedAmount: formattedApplied,
+              totalAmount: formattedTotal,
+              excessAmount: formattedExcess,
+            }
+          : item
+      )
+    );
+  }, []);
+
   // 누적 인수기준
   const columnDefs2: (ColDef<DummyDataType2> | ColGroupDef<DummyDataType2>)[] = [
     // 2026-05-29 numberValueFormatter 추가
@@ -353,7 +442,6 @@ const Ltpz00502 = ({ onClose }: Ltpz00502Props) => {
       field: 'accumName',
       flex: 10,
       spanRows: true,
-      autoHeight: true,
       cellClass: 'flex! !items-center !justify-start !whitespace-normal !leading-[1.4] !py-1',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'accumName' }),
     },
@@ -442,7 +530,7 @@ const Ltpz00502 = ({ onClose }: Ltpz00502Props) => {
       field: 'excessAmount',
       flex: 1,
       minWidth: attributeColumnWidth(70),
-      spanRows: true,
+      spanRows: spanRowsByExcessAmount,
       cellClass: 'flex! items-center! justify-end! border-r-0',
       cellStyle: { borderRight: 'none' },
       valueFormatter: numberValueFormatter,
@@ -458,9 +546,6 @@ const Ltpz00502 = ({ onClose }: Ltpz00502Props) => {
       },
     },
   ];
-
-  const selectedAccumRowData: DummyDataType2[] =
-    accumOptionValue === 'option2' ? DummyData3 : accumOptionValue === 'option3' ? DummyData4 : DummyData2;
 
   // 누적
   return (
@@ -562,8 +647,12 @@ const Ltpz00502 = ({ onClose }: Ltpz00502Props) => {
                 <AgGridReact<DummyDataType2>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={selectedAccumRowData}
+                  rowData={rowData}
                   columnDefs={columnDefs2}
+                  onCellValueChanged={handleCellValueChanged}
+                  onGridReady={(params) => {
+                    gridApiRef.current = params.api;
+                  }}
                   defaultColDef={{
                     sortable: true,
                     resizable: true,
