@@ -50,7 +50,7 @@ export const LayoutTemplateLTPA350 = ({
   hideAside = false,
 }: Props) => (
   <>
-    <LayoutBody className="grid grid-cols-[auto_minmax(91.6rem,1fr)_auto] grid-rows-[auto_minmax(0,1fr)] gap-x-3 gap-y-1">
+    <LayoutBody className="grid grid-cols-[auto_minmax(88rem,1fr)_auto] grid-rows-[auto_minmax(0,1fr)] gap-x-3 gap-y-1">
       {/* 페이지 타이틀은 3열 전체에 걸쳐 표시 */}
       <div className="col-span-3 pl-2.5">{pageTitle}</div>
 
