@@ -867,7 +867,7 @@
   }
 
   [data-layout='body'] [data-layout='main'] {
-    min-width: 100%;
+    min-width: 100% !important;
   }
   [data-layout='main'] {
     min-width: 118rem !important; 
