@@ -8,21 +8,128 @@ import * as React from 'react';
 
 import { cn } from '@/shared/lib/shadcn/utils';
 
+type TooltipContextValue = {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  onTriggerPointerDown: (e: React.PointerEvent<HTMLButtonElement>) => void;
+  onTriggerClick: () => void;
+};
+
+const TooltipContext = React.createContext<TooltipContextValue | null>(null);
+
 // 테스트 시 마우스가 떠난 후에도 툴팁을 오래 유지하려면 skipDelayDuration 값을 늘려주세요. (예: 300000ms = 5분)
 function TooltipProvider({ delayDuration = 0, ...props }: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
   return <TooltipPrimitive.Provider data-slot="tooltip-provider" delayDuration={delayDuration} {...props} />;
 }
 
-function Tooltip({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Root>) {
+function Tooltip({
+  open: controlledOpen,
+  defaultOpen = false,
+  onOpenChange,
+  ...props
+}: React.ComponentProps<typeof TooltipPrimitive.Root>) {
+  const [uncontrolledOpen, setUncontrolledOpen] = React.useState<boolean>(defaultOpen);
+  const isControlled = controlledOpen !== undefined;
+  const open = isControlled ? controlledOpen : uncontrolledOpen;
+
+  const pointerTypeRef = React.useRef<string>('');
+  const wasOpenOnPointerDownRef = React.useRef<boolean>(false);
+  const isTriggerInteractingRef = React.useRef<boolean>(false);
+
+  const setOpen = React.useCallback(
+    (nextOpen: boolean) => {
+      if (!isControlled) {
+        setUncontrolledOpen(nextOpen);
+      }
+      onOpenChange?.(nextOpen);
+    },
+    [isControlled, onOpenChange]
+  );
+
+  const handleRadixOpenChange = React.useCallback(
+    (nextOpen: boolean) => {
+      // 트리거 클릭/탭 도중 Radix 기본 동작이 강제로 닫는 현상 방지
+      if (!nextOpen && isTriggerInteractingRef.current) {
+        return;
+      }
+      setOpen(nextOpen);
+    },
+    [setOpen]
+  );
+
+  const onTriggerPointerDown = React.useCallback(
+    (e: React.PointerEvent<HTMLButtonElement>) => {
+      pointerTypeRef.current = e.pointerType;
+      wasOpenOnPointerDownRef.current = open;
+      isTriggerInteractingRef.current = true;
+
+      if (typeof window !== 'undefined') {
+        const resetInteracting = () => {
+          window.setTimeout(() => {
+            isTriggerInteractingRef.current = false;
+          }, 100);
+        };
+        window.addEventListener('pointerup', resetInteracting, { once: true });
+        window.addEventListener('pointercancel', resetInteracting, { once: true });
+      }
+    },
+    [open]
+  );
+
+  const onTriggerClick = React.useCallback(() => {
+    const isTouchOrPen = pointerTypeRef.current === 'touch' || pointerTypeRef.current === 'pen';
+    const nextOpen = isTouchOrPen ? !wasOpenOnPointerDownRef.current : true;
+
+    if (nextOpen && typeof document !== 'undefined') {
+      document.dispatchEvent(new CustomEvent('tooltip.open'));
+    }
+    setOpen(nextOpen);
+
+    queueMicrotask(() => {
+      isTriggerInteractingRef.current = false;
+    });
+  }, [setOpen]);
+
+  const contextValue = React.useMemo<TooltipContextValue>(
+    () => ({
+      open,
+      setOpen,
+      onTriggerPointerDown,
+      onTriggerClick,
+    }),
+    [open, setOpen, onTriggerPointerDown, onTriggerClick]
+  );
+
   return (
-    <TooltipProvider>
-      <TooltipPrimitive.Root data-slot="tooltip" {...props} />
-    </TooltipProvider>
+    <TooltipContext.Provider value={contextValue}>
+      <TooltipProvider>
+        <TooltipPrimitive.Root data-slot="tooltip" open={open} onOpenChange={handleRadixOpenChange} {...props} />
+      </TooltipProvider>
+    </TooltipContext.Provider>
   );
 }
 
-function TooltipTrigger({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
-  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
+function TooltipTrigger({ onPointerDown, onClick, ...props }: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
+  const tooltipContext = React.useContext(TooltipContext);
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLButtonElement>) => {
+    tooltipContext?.onTriggerPointerDown(e);
+    onPointerDown?.(e);
+  };
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    tooltipContext?.onTriggerClick();
+    onClick?.(e);
+  };
+
+  return (
+    <TooltipPrimitive.Trigger
+      data-slot="tooltip-trigger"
+      onPointerDown={handlePointerDown}
+      onClick={handleClick}
+      {...props}
+    />
+  );
 }
 
 function TooltipContent({
