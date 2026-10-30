@@ -782,7 +782,7 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   border-top: 0 !important;
 }
 
-.ag-header-cell-text{
+.ag-header-cell-text {
   width: 100%;
   display: block;
   text-align: center;
@@ -867,7 +867,7 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 
 .ag-header-group-text {
   font-size: 1.3rem;
-  font-weight: 700 ;
+  font-weight: 700;
 }
 
 /* .ag-blue-text .ag-cell {
@@ -1339,7 +1339,9 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   max-height: 15rem !important;
 }
 
-.ag-theme-alpine.inner-scroll[data-row='0'] .ag-header-row{ width: 100% !important; }
+.ag-theme-alpine.inner-scroll[data-row='0'] .ag-header-row {
+  width: 100% !important;
+}
 
 /* inner-min-scroll: data-row={2} 일 때 5개 행(15rem)이 아닌 2개 행(6rem) 기준으로 높이에 따라 가변 동작 */
 .ag-theme-alpine.inner-scroll.inner-min-scroll[data-row='2'] .ag-root-wrapper-body .ag-overlay,
@@ -1370,7 +1372,6 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 .children-checked .ag-theme-alpine .ag-row:not(.ag-row-level-0) .ag-checkbox-input-wrapper.ag-checked::after {
   background-color: var(--color-primary-50);
 }
-
 
 .ag-theme-alpine.inner-scroll[data-page='1'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height: 100%;
@@ -1772,7 +1773,7 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   position: relative !important;
 }
 .ag-cell-focus.ag-cell-inline-editing {
-  padding:0 0.2rem !important;
+  padding: 0 0.2rem !important;
 }
 .ag-cell.ag-select-cell:not(.ag-cell-inline-editing)::after,
 .ag-cell.select-cell:not(.ag-cell-inline-editing)::after,
@@ -2049,7 +2050,7 @@ html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked
 /* Ltpz204 보장패키지 선택 팝업 구분선 스타일 (상단 border 덮어쓰기 및 음수 마진으로 이전 행의 border-bottom 자연 상쇄) */
 .ltpz204-style .ag-theme-alpine .ag-row.package-group-divider,
 .ag-theme-alpine .ag-row.package-group-divider {
-  border-top: 1px solid #6B7280 !important;
+  border-top: 1px solid #6b7280 !important;
   margin-top: -1px;
   z-index: 1;
 }
@@ -2058,7 +2059,7 @@ html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked
   border-top: none !important;
 }
 
-.v109 .ag-cell-value .masking [data-slot="input"]{
+.v109 .ag-cell-value .masking [data-slot='input'] {
   background: none;
   border: none;
 }

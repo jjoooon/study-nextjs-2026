@@ -359,8 +359,7 @@
   border-color: var(--color-gray-50);
 }
 
-
- /* SVG 및 disabled 투명도/색상 호환 */
+/* SVG 및 disabled 투명도/색상 호환 */
 .v109 [class*='[&>disabled_svg]:opacity-50']:disabled svg,
 .v109 [class*='[&:disabled_svg]:opacity-50']:disabled svg,
 .v109 button:disabled svg {
@@ -2915,4 +2914,3 @@ html.v109 [class*='disabled:bg-[var(--color-gray-5)]'].disabled {
   -webkit-mask-image: none !important;
   mask-image: none !important;
 }
-

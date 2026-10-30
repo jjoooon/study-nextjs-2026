@@ -84,7 +84,6 @@ const DATA_TABS_4 = [
       '추가정보9',
     ],
   },
- 
 ];
 
 const DATA_TABS_3 = null;
@@ -745,12 +744,9 @@ export const ScrollTabs: Story = {
             </Button>
           )}
         >
-          <div className="w-full p-10 bg-[var(--color-gray-5)] flex items-center justify-center">
-            내용{active}
-          </div>
+          <div className="w-full p-10 bg-[var(--color-gray-5)] flex items-center justify-center">내용{active}</div>
         </TabPager>
       </Gcol>
     );
   },
 };
-

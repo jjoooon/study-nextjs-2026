@@ -229,7 +229,7 @@ export const FormCell = ({
     return (
       <div className="flex items-center gap-2">
         {!thNone && title !== null && (
-          <dt className={cn('font-bold', className)}>
+          <dt className={cn('font-bold shrink-0', className)}>
             <Typo
               variant={'body-md'}
               weight="bold"
@@ -241,7 +241,7 @@ export const FormCell = ({
           </dt>
         )}
         {!tdNone && (
-          <dd className={cn('text-[#000] flex items-center gap-1', tdClassName)} style={tdStyle}>
+          <dd className={cn('text-[#000] flex items-center flex-wrap gap-x-1 gap-y-0', tdClassName)} style={tdStyle}>
             {children}
           </dd>
         )}
@@ -285,7 +285,7 @@ export const FormCell = ({
           {contextVertical ? (
             <TooltipIfOverflow>{children}</TooltipIfOverflow>
           ) : (
-            <Grow className={cn('justify-start items-center', tdClassName)}>{children}</Grow>
+            <Grow className={cn('justify-start items-center flex-wrap gap-y-0', tdClassName)}>{children}</Grow>
           )}
         </TableCell>
       )}

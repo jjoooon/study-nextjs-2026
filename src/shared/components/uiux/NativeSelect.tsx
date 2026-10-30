@@ -56,8 +56,10 @@ interface UINativeSelectProps extends Omit<React.ComponentProps<'select'>, 'size
    * @default 'bl'
    */
   errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
-  /** 읽기 전용(readOnly) 상태일 때 텍스트 툴팁 노출 여부 @default true */
+  /** 읽기 전용(readOnly) 상태일 때 텍스트 말줄임 시 툴팁 노출 여부 @default true */
   showTooltipOnReadOnly?: boolean;
+  /** 비활성화(disabled) 상태일 때 텍스트 말줄임 시 툴팁 노출 여부 @default true */
+  showTooltipOnDisabled?: boolean;
   /** 마스킹 토글 버튼(눈 아이콘) 표시 여부 */
   masking?: boolean;
   /** 외부에서 마스킹 상태를 직접 제어할 때 사용 (true: 마스킹/숨김 상태, false: 마스킹 해제/표시 상태) */
@@ -68,6 +70,25 @@ interface UINativeSelectProps extends Omit<React.ComponentProps<'select'>, 'size
   onMaskToggle?: (nextMasked: boolean, e: React.MouseEvent<HTMLButtonElement>) => void;
   /** 마스킹 데이터 조회/갱신 중 로딩 인디케이터 표시 여부 @default false */
   isMaskLoading?: boolean;
+}
+
+let measureCanvasContext: CanvasRenderingContext2D | null = null;
+
+function getTextWidth(text: string, font: string, letterSpacing = 0): number {
+  if (typeof window === 'undefined') return 0;
+  try {
+    if (!measureCanvasContext) {
+      const canvas = document.createElement('canvas');
+      measureCanvasContext = canvas.getContext('2d');
+    }
+    if (!measureCanvasContext) return 0;
+    measureCanvasContext.font = font;
+    const metrics = measureCanvasContext.measureText(text);
+    const extra = letterSpacing * Math.max(0, text.length - 1);
+    return metrics.width + extra;
+  } catch {
+    return 0;
+  }
 }
 
 type NativeSelectOptGroupProps = React.HTMLAttributes<HTMLOptGroupElement> & {
@@ -93,6 +114,7 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
       errorMsg = '입력은 필수입니다.',
       errorPs = 'bl',
       showTooltipOnReadOnly = true,
+      showTooltipOnDisabled = true,
       masking = false,
       isMasked,
       defaultMasked = true,
@@ -184,9 +206,7 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
         } 
       focus:outline-none`;
     const readonlyStyle = readOnly ? 'bg-[var(--color-input-surface-disabled)] opacity-100' : '';
-    const disabledStyle = isDisabled
-      ? 'disabled:bg-[var(--color-input-surface-disabled)] disabled:cursor-not-allowed disabled:opacity-100'
-      : '';
+    const disabledStyle = isDisabled ? 'disabled:bg-[var(--color-input-surface-disabled)] disabled:opacity-100' : '';
     const disabledStyle2 = isDisabled ? 'disabled:opacity-100 !border-0 !p-0 !w-auto' : '';
     const sizeStyle = `${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
 
@@ -232,18 +252,55 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
       return label || (currentVal !== undefined && currentVal !== null ? String(currentVal) : '');
     }, [props.value, selectedValue, props.children]);
 
+    const isTooltipEligible = (readOnly && showTooltipOnReadOnly) || (disabled && showTooltipOnDisabled);
+
     const [isOverflow, setIsOverflow] = React.useState(false);
 
-    React.useEffect(() => {
+    const checkOverflow = React.useCallback(() => {
       const el = localRef.current;
-      if (!el || !readOnly || !showTooltipOnReadOnly || !selectedLabel) {
+      const label = selectedLabel || el?.selectedOptions?.[0]?.textContent || '';
+      if (!el || !label) {
         setIsOverflow(false);
         return;
       }
 
-      const checkOverflow = () => {
-        setIsOverflow(el.scrollWidth > el.clientWidth);
-      };
+      // 1. 단순 비교 (일반 요소인 경우)
+      if (el.scrollWidth > el.clientWidth + 1) {
+        setIsOverflow(true);
+        return;
+      }
+
+      // 2. select 태그는 브라우저 특성상 scrollWidth가 항상 clientWidth와 같으므로 Canvas 폰트 폭 기반 정밀 측정
+      const style = window.getComputedStyle(el);
+      const paddingLeft = parseFloat(style.paddingLeft) || 0;
+      const paddingRight = parseFloat(style.paddingRight) || 0;
+      const availableWidth = el.clientWidth - paddingLeft - paddingRight;
+
+      if (availableWidth > 0) {
+        const font = `${style.fontWeight || '400'} ${style.fontSize || '13px'} ${style.fontFamily || 'inherit'}`;
+        const letterSpacing = parseFloat(style.letterSpacing) || 0;
+        const textWidth = getTextWidth(label, font, letterSpacing);
+
+        if (textWidth > availableWidth + 1) {
+          setIsOverflow(true);
+          return;
+        }
+      }
+
+      setIsOverflow(false);
+    }, [selectedLabel]);
+
+    React.useEffect(() => {
+      if (!isTooltipEligible || !selectedLabel) {
+        setIsOverflow(false);
+        return;
+      }
+
+      const el = localRef.current;
+      if (!el) {
+        setIsOverflow(false);
+        return;
+      }
 
       checkOverflow();
 
@@ -251,11 +308,15 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
       resizeObserver.observe(el);
       window.addEventListener('resize', checkOverflow);
 
+      if (typeof document !== 'undefined' && 'fonts' in document) {
+        document.fonts.ready.then(checkOverflow).catch(() => {});
+      }
+
       return () => {
         resizeObserver.disconnect();
         window.removeEventListener('resize', checkOverflow);
       };
-    }, [readOnly, showTooltipOnReadOnly, selectedLabel, width]);
+    }, [isTooltipEligible, selectedLabel, width, size, checkOverflow]);
 
     const selectElement = (
       <select
@@ -277,7 +338,7 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
       />
     );
 
-    const shouldRenderTooltip = readOnly && showTooltipOnReadOnly && Boolean(selectedLabel) && isOverflow;
+    const shouldRenderTooltip = Boolean(isTooltipEligible) && Boolean(selectedLabel) && isOverflow;
 
     return (
       <div className={cn('relative', showMaskToggle && 'inline-flex items-center gap-1', className)} style={widthStyle}>
@@ -290,7 +351,9 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
               {shouldRenderTooltip ? (
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <span className="block w-full">{selectElement}</span>
+                    <span className={cn('block w-full', isDisabled && '[&>*]:pointer-events-none')}>
+                      {selectElement}
+                    </span>
                   </TooltipTrigger>
                   <TooltipContent side="top" align="center">
                     {selectedLabel}

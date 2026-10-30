@@ -67,7 +67,8 @@ const meta: Meta<DialogContentProps> = {
                   <b>showFullscreenButton</b> 또는 <b>fullscreen</b> prop으로 전체화면 토글 버튼을 제공할 수 있습니다.
                 </li>
                 <li>
-                  <b>showSplitButton</b> 또는 <b>split</b> prop으로 화면분할(우측 35% 위치 차지, BODY padding-right:35% 공간 생성, 이동 방지) 토글 버튼을 제공할 수 있습니다.
+                  <b>showSplitButton</b> 또는 <b>split</b> prop으로 화면분할(우측 35% 위치 차지, BODY padding-right:35%
+                  공간 생성, 이동 방지) 토글 버튼을 제공할 수 있습니다.
                 </li>
                 <li>
                   <b>resizable</b> prop을 true로 설정하면 8방향 리사이즈 핸들이 노출됩니다.
@@ -293,8 +294,8 @@ export const SharedZIndexOverlayTest: Story = {
           z-index 공유 레지스트리 교차 순서 테스트
         </Typo>
         <p className="text-sm text-gray-600 max-w-lg text-center">
-          Alert(100) ➔ Dialog(101) ➔ Alert(102) ➔ Dialog(103) 순서대로 교차하여 열릴 때 z-index가 1씩 증가하며
-          상위 레이어에 순차적으로 떠서 클릭이 정상 조작되는지 검증합니다.
+          Alert(100) ➔ Dialog(101) ➔ Alert(102) ➔ Dialog(103) 순서대로 교차하여 열릴 때 z-index가 1씩 증가하며 상위
+          레이어에 순차적으로 떠서 클릭이 정상 조작되는지 검증합니다.
         </p>
 
         <Button variant="contained" size="xl" onClick={() => setAlert1Open(true)}>

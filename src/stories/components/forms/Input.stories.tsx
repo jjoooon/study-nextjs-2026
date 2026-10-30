@@ -83,6 +83,31 @@ import { Input } from '@uiux/Input';
               <Input disabled placeholder="disabled (비활성화)" />
             </Grow>
 
+            <h2 className="mt-8">Overflow Tooltip (말줄임 시 툴팁 자동 생성)</h2>
+            <p>
+              readOnly 또는 disabled 상태에서 텍스트가 인풋 너비를 초과해 잘리면(말줄임 발생) 마우스 오버 시 전체 내용을
+              볼 수 있는 툴팁이 자동으로 생성됩니다.
+            </p>
+            <Gcol
+              gap={4}
+              className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
+            >
+              <Grow gap={8} className="flex-wrap">
+                <div className="flex flex-col gap-2 w-[20rem]">
+                  <span className="text-[1.2rem] font-bold text-gray-800">readOnly 말줄임 (툴팁 생성)</span>
+                  <Input readOnly value="한화손해보험 장기보험 계약관리시스템 차세대 프로젝트" width="full" />
+                </div>
+                <div className="flex flex-col gap-2 w-[20rem]">
+                  <span className="text-[1.2rem] font-bold text-gray-800">disabled 말줄임 (툴팁 생성)</span>
+                  <Input disabled value="비활성화 상태에서도 텍스트가 잘리면 툴팁이 정상 동작합니다" width="full" />
+                </div>
+                <div className="flex flex-col gap-2 w-[20rem]">
+                  <span className="text-[1.2rem] font-bold text-gray-800">말줄임 없음 (툴팁 미생성)</span>
+                  <Input readOnly value="짧은 텍스트" width="full" />
+                </div>
+              </Grow>
+            </Gcol>
+
             <h2 className="mt-8">Error</h2>
             <p>에러 메시지 위치 옵션 예시입니다.</p>
             <Gcol
@@ -103,8 +128,8 @@ import { Input } from '@uiux/Input';
 
             <h2 className="mt-8">Masking (개인정보 및 비밀번호 마스킹)</h2>
             <p>
-              masking prop을 전달하면 우측에 눈 아이콘 버튼이 노출되며, 버튼 클릭 시 onMaskToggle 콜백을 통해
-              비동기로 원본 정보(API 조회)를 받아와 갱신하거나 다시 원래 마스킹 상태로 전환할 수 있습니다.
+              masking prop을 전달하면 우측에 눈 아이콘 버튼이 노출되며, 버튼 클릭 시 onMaskToggle 콜백을 통해 비동기로
+              원본 정보(API 조회)를 받아와 갱신하거나 다시 원래 마스킹 상태로 전환할 수 있습니다.
             </p>
             <Gcol
               gap={4}
@@ -185,6 +210,16 @@ import { Input } from '@uiux/Input';
     disabled: {
       control: { type: 'boolean' },
       table: { category: '설정 props' },
+    },
+    showTooltipOnReadOnly: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+      description: 'readOnly 상태일 때 텍스트 말줄임 시 툴팁 노출 여부 (기본: true)',
+    },
+    showTooltipOnDisabled: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+      description: 'disabled 상태일 때 텍스트 말줄임 시 툴팁 노출 여부 (기본: true)',
     },
     maxLength: {
       control: { type: 'number' },
@@ -371,9 +406,7 @@ function MaskingDocExample() {
   return (
     <Grow gap={8} className="flex-wrap">
       <div className="flex flex-col gap-2 min-w-[24rem]">
-        <span className="text-[1.2rem] font-bold text-gray-800">
-          개인정보 API 재조회 콜백 연동 (onMaskToggle)
-        </span>
+        <span className="text-[1.2rem] font-bold text-gray-800">개인정보 API 재조회 콜백 연동 (onMaskToggle)</span>
         <Input
           masking
           isMaskLoading={isResidentLoading}
@@ -390,9 +423,7 @@ function MaskingDocExample() {
       </div>
 
       <div className="flex flex-col gap-2 min-w-[24rem]">
-        <span className="text-[1.2rem] font-bold text-gray-800">
-          비밀번호 입력 마스킹 (type="password" + clear)
-        </span>
+        <span className="text-[1.2rem] font-bold text-gray-800">비밀번호 입력 마스킹 (type="password" + clear)</span>
         <Input
           masking
           type="password"
@@ -413,4 +444,39 @@ function MaskingDocExample() {
 export const Masking: Story = {
   name: '마스킹 토글 및 콜백 연동 (masking prop)',
   render: () => <MaskingDocExample />,
+};
+
+export const OverflowTooltip: Story = {
+  name: '말줄임 자동 툴팁 (readOnly/disabled)',
+  render: () => (
+    <div className="flex flex-col gap-6 p-4">
+      <div className="flex flex-col gap-2 w-[24rem]">
+        <span className="text-[1.2rem] font-bold text-gray-800">1. readOnly 말줄임 툴팁</span>
+        <Input readOnly value="한화손해보험 장기보험 계약관리시스템 차세대 프로젝트" width="full" />
+      </div>
+      <div className="flex flex-col gap-2 w-[24rem]">
+        <span className="text-[1.2rem] font-bold text-gray-800">2. disabled 말줄임 툴팁</span>
+        <Input
+          disabled
+          value="비활성화 상태에서도 텍스트가 잘리면 마우스 오버 시 툴팁이 정상 표시됩니다."
+          width="full"
+        />
+      </div>
+      <div className="flex flex-col gap-2 w-[24rem]">
+        <span className="text-[1.2rem] font-bold text-gray-800">3. 말줄임 없는 경우 (툴팁 없음)</span>
+        <Input readOnly value="한화손해보험" width="full" />
+      </div>
+      <div className="flex flex-col gap-2 w-[24rem]">
+        <span className="text-[1.2rem] font-bold text-gray-800">
+          4. 툴팁 비활성화 옵션 (showTooltipOnDisabled=false)
+        </span>
+        <Input
+          disabled
+          showTooltipOnDisabled={false}
+          value="옵션으로 툴팁을 끈 비활성화 인풋 텍스트입니다."
+          width="full"
+        />
+      </div>
+    </div>
+  ),
 };

@@ -870,7 +870,7 @@
     min-width: 100%;
   }
   [data-layout='main'] {
-    min-width: 88rem !important; 
+    min-width: 88rem !important;
   }
 
   /* filefond */
@@ -1633,4 +1633,7 @@
   table-layout: fixed;
 }
 
-select, input {text-overflow: clip;}
+select,
+input {
+  text-overflow: clip;
+}

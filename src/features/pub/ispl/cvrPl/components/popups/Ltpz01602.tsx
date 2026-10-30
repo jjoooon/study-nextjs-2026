@@ -382,7 +382,7 @@ const Ltpz01602 = () => {
                 enableClickSelection: false,
               }}
               groupHeaderHeight={30}
-              headerHeight={30}
+              headerHeight={0}
               selectionColumnDef={{
                 headerName: '선택',
                 width: 30,

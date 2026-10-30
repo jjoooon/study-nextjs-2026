@@ -191,7 +191,6 @@ const Ltpz066 = () => {
         </DialogHeader>
 
         <DialogSection>
-          {/* 2026-05-27 전체 수정 */}
           <Grid placement="ss" className="w-full grid-rows-[auto_1fr]" gap={3}>
             <TableFold>
               <TableFoldHead title="유형선택" />
@@ -220,9 +219,9 @@ const Ltpz066 = () => {
                 </FormTable>
               </TableFoldBody>
             </TableFold>
-            <TableFold className="grid grid-row-[1fr]">
+            <TableFold>
               <TableFoldHead title="사고등급별 담보 가입금액" />
-              <TableFoldBody className="gap-2 grid grid-row-[1fr_1fr_auto]">
+              <TableFoldBody className="gap-2 grid grid-rows-[auto_1fr_auto]">
                 <div className="ag-theme-alpine inner-scroll" data-row={DummyData.length}>
                   <AgGridReact<DummyDataType>
                     getRowId={(params) => String(params.data.id)}

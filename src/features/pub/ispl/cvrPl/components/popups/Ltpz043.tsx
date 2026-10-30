@@ -57,7 +57,7 @@ const Ltpz043 = () => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection>
-          <Gcol className="w-full" gap={3}>
+          <Gcol className="w-full" gap={3} placement="ss">
             <Grow placement="bwc" className="w-full" variant={'box-round'}>
               <FormTable variant={'head'} lineTop={false} caption="">
                 <FormTable variant="none" cols={['w-1', 'w-auto']}>

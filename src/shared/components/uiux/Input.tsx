@@ -62,9 +62,30 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   maxLength?: number;
   /** 입력 최소 길이 지정 */
   minLength?: number;
-  /** 읽기 전용(readOnly) 상태일 때 텍스트 툴팁 노출 여부 @default true */
+  /** 읽기 전용(readOnly) 상태일 때 텍스트 말줄임 시 툴팁 노출 여부 @default true */
   showTooltipOnReadOnly?: boolean;
+  /** 비활성화(disabled) 상태일 때 텍스트 말줄임 시 툴팁 노출 여부 @default true */
+  showTooltipOnDisabled?: boolean;
   // debug?: boolean;
+}
+
+let measureCanvasContext: CanvasRenderingContext2D | null = null;
+
+function getTextWidth(text: string, font: string, letterSpacing = 0): number {
+  if (typeof window === 'undefined') return 0;
+  try {
+    if (!measureCanvasContext) {
+      const canvas = document.createElement('canvas');
+      measureCanvasContext = canvas.getContext('2d');
+    }
+    if (!measureCanvasContext) return 0;
+    measureCanvasContext.font = font;
+    const metrics = measureCanvasContext.measureText(text);
+    const extra = letterSpacing * Math.max(0, text.length - 1);
+    return metrics.width + extra;
+  } catch {
+    return 0;
+  }
 }
 
 /** charFilter 값별 허용 문자 화이트리스트 패턴 (매치된 문자는 제거됨) */
@@ -196,6 +217,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
     maxLength,
     minLength,
     showTooltipOnReadOnly = true,
+    showTooltipOnDisabled = true,
     ...props
   },
   ref
@@ -206,6 +228,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
   const [internalMasked, setInternalMasked] = useState(defaultMasked);
   const currentMasked = isControlledMask ? isMaskedProp : internalMasked;
   const inputRef = React.useRef<HTMLInputElement | null>(null);
+  const infoSpanRef = React.useRef<HTMLSpanElement | null>(null);
 
   React.useEffect(() => {
     if (isControlledMask) {
@@ -239,7 +262,12 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
   const isControlled = value !== undefined;
   const { onFocus: onFocusProp, onBlur: onBlurProp, style: styleProp, ...inputProps } = props;
 
-  const rawValue = value === undefined || value === null ? '' : String(value);
+  const rawValue =
+    value !== undefined && value !== null
+      ? String(value)
+      : props.defaultValue !== undefined && props.defaultValue !== null
+        ? String(props.defaultValue)
+        : '';
   let displayValue = rawValue;
 
   if (commaAmount) {
@@ -454,18 +482,56 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
   const dateColorStyle = hasDateColor ? getDateColorClass(displayValue) : '';
   const mergedInputStyle = styleProp;
 
+  const isTooltipEligible = (readOnly && showTooltipOnReadOnly) || (disabled && showTooltipOnDisabled);
+
   const [isOverflow, setIsOverflow] = React.useState(false);
 
-  React.useEffect(() => {
-    const el = inputRef.current;
-    if (!el || !readOnly || !showTooltipOnReadOnly || !displayValue) {
+  const checkOverflow = React.useCallback(() => {
+    const el = variant === 'info' && readOnly ? infoSpanRef.current : inputRef.current;
+    if (!el || !displayValue || resolvedType === 'password') {
       setIsOverflow(false);
       return;
     }
 
-    const checkOverflow = () => {
-      setIsOverflow(el.scrollWidth > el.clientWidth + 1);
-    };
+    // 1. scrollWidth vs clientWidth 단순 비교
+    if (el.scrollWidth > el.clientWidth + 1) {
+      setIsOverflow(true);
+      return;
+    }
+
+    // 2. input 태그 정밀 측정 (Canvas 기반 텍스트 폭과 패딩 제외 가용 너비 비교)
+    if (el instanceof HTMLInputElement) {
+      const style = window.getComputedStyle(el);
+      const paddingLeft = parseFloat(style.paddingLeft) || 0;
+      const paddingRight = parseFloat(style.paddingRight) || 0;
+      const availableWidth = el.clientWidth - paddingLeft - paddingRight;
+
+      if (availableWidth > 0) {
+        const font = `${style.fontWeight || '400'} ${style.fontSize || '13px'} ${style.fontFamily || 'inherit'}`;
+        const letterSpacing = parseFloat(style.letterSpacing) || 0;
+        const textWidth = getTextWidth(displayValue, font, letterSpacing);
+
+        if (textWidth > availableWidth + 1) {
+          setIsOverflow(true);
+          return;
+        }
+      }
+    }
+
+    setIsOverflow(false);
+  }, [variant, readOnly, displayValue, resolvedType]);
+
+  React.useEffect(() => {
+    if (!isTooltipEligible || !displayValue || resolvedType === 'password') {
+      setIsOverflow(false);
+      return;
+    }
+
+    const el = variant === 'info' && readOnly ? infoSpanRef.current : inputRef.current;
+    if (!el) {
+      setIsOverflow(false);
+      return;
+    }
 
     checkOverflow();
 
@@ -473,13 +539,18 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
     resizeObserver.observe(el);
     window.addEventListener('resize', checkOverflow);
 
+    if (typeof document !== 'undefined' && 'fonts' in document) {
+      document.fonts.ready.then(checkOverflow).catch(() => {});
+    }
+
     return () => {
       resizeObserver.disconnect();
       window.removeEventListener('resize', checkOverflow);
     };
-  }, [readOnly, showTooltipOnReadOnly, displayValue, width, size]);
+  }, [isTooltipEligible, displayValue, resolvedType, variant, readOnly, checkOverflow, width, size]);
 
-  const shouldRenderTooltip = readOnly && showTooltipOnReadOnly && Boolean(displayValue) && isOverflow;
+  const shouldRenderTooltip =
+    Boolean(isTooltipEligible) && resolvedType !== 'password' && Boolean(displayValue) && isOverflow;
 
   const renderSingleInput = (
     <input
@@ -507,6 +578,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
       )}
       required={required}
       readOnly={readOnly}
+      disabled={disabled}
       maxLength={maxLength}
       minLength={minLength}
       aria-invalid={shouldShowError || undefined}
@@ -543,45 +615,48 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
           data-invalid={shouldShowError || undefined}
         >
           {before && <div>{before}</div>}
-          <div className="relative w-full min-w-0 [&>input]:w-full [&>input]:min-w-0 [&>input]:box-border [&>input]:bg-transparent [&>input]:border-0 [&>input]:tracking-[-0.03rem] [&>input]:p-0 [&>input]:m-0 [&>input]:focus:ring-0 [&>input]:focus:outline-none">
+          <div className="relative w-full min-w-0 [&_input]:w-full [&_input]:min-w-0 [&_input]:box-border [&_input]:bg-transparent [&_input]:border-0 [&_input]:tracking-[-0.03rem] [&_input]:p-0 [&_input]:m-0 [&_input]:focus:ring-0 [&_input]:focus:outline-none">
             {shouldRenderTooltip ? (
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <input
-                    ref={inputRef}
-                    type={resolvedType}
-                    data-slot="input"
-                    className={cn(
-                      align === 'right'
-                        ? 'text-right'
-                        : align === 'center' || width === 'quoteNo'
-                          ? 'text-center'
-                          : 'text-left',
-                      dateColorStyle,
-                      '[&::-ms-reveal]:hidden [&::-ms-clear]:hidden',
-                      showClearButton && showMaskToggle
-                        ? 'pr-[4.4rem]'
-                        : showClearButton
-                          ? 'pr-[2.2rem]'
-                          : showMaskToggle
-                            ? 'pr-[2.4rem]'
-                            : ''
-                    )}
-                    required={required}
-                    readOnly={readOnly}
-                    maxLength={maxLength}
-                    minLength={minLength}
-                    aria-invalid={shouldShowError || undefined}
-                    aria-describedby={shouldShowError ? errorId : undefined}
-                    value={isControlled ? displayValue : undefined}
-                    onChange={handleChange}
-                    onKeyDown={handleFormatterKeyDown}
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                    style={mergedInputStyle}
-                    placeholder={resolvedPlaceholder}
-                    {...inputProps}
-                  />
+                  <span className={cn('inline-flex w-full min-w-0', disabled && '[&>*]:pointer-events-none')}>
+                    <input
+                      ref={inputRef}
+                      type={resolvedType}
+                      data-slot="input"
+                      className={cn(
+                        align === 'right'
+                          ? 'text-right'
+                          : align === 'center' || width === 'quoteNo'
+                            ? 'text-center'
+                            : 'text-left',
+                        dateColorStyle,
+                        '[&::-ms-reveal]:hidden [&::-ms-clear]:hidden',
+                        showClearButton && showMaskToggle
+                          ? 'pr-[4.4rem]'
+                          : showClearButton
+                            ? 'pr-[2.2rem]'
+                            : showMaskToggle
+                              ? 'pr-[2.4rem]'
+                              : ''
+                      )}
+                      required={required}
+                      readOnly={readOnly}
+                      disabled={disabled}
+                      maxLength={maxLength}
+                      minLength={minLength}
+                      aria-invalid={shouldShowError || undefined}
+                      aria-describedby={shouldShowError ? errorId : undefined}
+                      value={isControlled ? displayValue : undefined}
+                      onChange={handleChange}
+                      onKeyDown={handleFormatterKeyDown}
+                      onFocus={handleFocus}
+                      onBlur={handleBlur}
+                      style={mergedInputStyle}
+                      placeholder={resolvedPlaceholder}
+                      {...inputProps}
+                    />
+                  </span>
                 </TooltipTrigger>
                 <TooltipContent side="top" align="center">
                   {displayValue}
@@ -607,6 +682,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                 )}
                 required={required}
                 readOnly={readOnly}
+                disabled={disabled}
                 maxLength={maxLength}
                 minLength={minLength}
                 aria-invalid={shouldShowError || undefined}
@@ -680,6 +756,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
               <Tooltip>
                 <TooltipTrigger asChild>
                   <span
+                    ref={infoSpanRef}
                     className={cn(
                       'leading-[1.2] font-bold text-[#000] text-[1.3rem] inline-flex items-center truncate max-w-full h-[auto]!',
                       dateColorStyle,
@@ -695,8 +772,9 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
               </Tooltip>
             ) : (
               <span
+                ref={infoSpanRef}
                 className={cn(
-                  'leading-[1.2]! font-bold text-[#000] text-[1.3rem] inline-flex items-center h-[auto]! py-[0.4rem]!',
+                  'leading-[1.2]! font-bold text-[#000] text-[1.3rem] inline-flex items-center h-[auto]! py-[0rem]!',
                   dateColorStyle,
                   sizeStyle
                 )}
@@ -706,7 +784,11 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
             )
           ) : shouldRenderTooltip ? (
             <Tooltip>
-              <TooltipTrigger asChild>{renderSingleInput}</TooltipTrigger>
+              <TooltipTrigger asChild>
+                <span className={cn('inline-flex w-full min-w-0', disabled && '[&>*]:pointer-events-none')}>
+                  {renderSingleInput}
+                </span>
+              </TooltipTrigger>
               <TooltipContent side="top" align="center">
                 {displayValue}
               </TooltipContent>

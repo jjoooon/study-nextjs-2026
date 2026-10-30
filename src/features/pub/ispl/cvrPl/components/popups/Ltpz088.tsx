@@ -4,7 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { EssentialIcon, SearchIcon } from '@icons';
@@ -40,14 +40,13 @@ const Ltpz088 = () => {
           <Grow className="w-full" variant="box-round" placement={'ss'}>
             <FormTable variant="none" cols={['w-1', 'w-auto']}>
               <FormRow>
-                <FormCell
-                  title={'설계번호'}
-                  tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full"
-                >
-                  <Input width={'quoteNo'} value={'LA123456789012'} readOnly />
-                  -
-                  <Input width={26} value={'1'} readOnly />
-                  <Input width={'full'} value={'한화 BigPlus 재산종합보험 2601'} readOnly />
+                <FormCell title={'설계번호'}>
+                  <Grid className={'grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full'}>
+                    <Input width={'quoteNo'} value={'LA123456789012'} readOnly />
+                    -
+                    <Input width={26} value={'1'} readOnly />
+                    <Input width={'auto'} value={'한화 BigPlus 재산종합보험 2601'} readOnly />
+                  </Grid>
                 </FormCell>
               </FormRow>
             </FormTable>

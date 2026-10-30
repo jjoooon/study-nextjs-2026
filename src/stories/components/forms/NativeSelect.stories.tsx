@@ -209,6 +209,10 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
       control: { type: 'boolean' },
       table: { category: '설정 props' },
     },
+    showTooltipOnDisabled: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+    },
     error: {
       control: { type: 'boolean' },
       table: { category: '에러 props' },
@@ -289,13 +293,7 @@ export const Masking: Story = {
   render: () => {
     const [isMasked, setIsMasked] = React.useState(true);
     return (
-      <NativeSelect
-        width={240}
-        masking
-        isMasked={isMasked}
-        onMaskToggle={setIsMasked}
-        defaultValue="opt1"
-      >
+      <NativeSelect width={240} masking isMasked={isMasked} onMaskToggle={setIsMasked} defaultValue="opt1">
         <NativeSelectOption value="opt1">
           {isMasked ? '김한화 (000000-1******)' : '김한화 (000000-1234567)'}
         </NativeSelectOption>
