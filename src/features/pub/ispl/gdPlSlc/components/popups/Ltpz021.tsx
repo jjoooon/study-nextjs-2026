@@ -348,7 +348,7 @@ const Ltpz021 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]">
+        <DialogSection className="grid-rows-[auto_minmax(38rem,1fr)]">
           <Grow className="w-full" variant="box-round">
             <FormTable variant={'head'} lineTop={false}>
               <FormRow>
@@ -406,7 +406,7 @@ const Ltpz021 = () => {
                   ></Checkbox>
                 </Grow>
                 <Gcol className="w-full overflow-hidden px-[1rem] pb-[3.3rem]" placement="ss" gap={0}>
-                  <div className="ag-theme-alpine w-full inner-scroll min-h-[30rem]" data-row={rowData1.length}>
+                  <div className="ag-theme-alpine w-full inner-scroll" data-row={rowData1.length}>
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}

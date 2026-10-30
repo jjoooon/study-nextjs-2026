@@ -333,7 +333,7 @@ export function TabPager<T>({
               );
             })}
           </TabsList>
-          {renderButtons && showPagination && (
+          {(renderButtons || showPagination) && (
             <Grow gap={2.5} className="pb-[0.3rem]" placement={'es'}>
               {renderButtons}
               {showPagination && (

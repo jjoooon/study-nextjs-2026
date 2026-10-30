@@ -382,6 +382,9 @@ const Ltpz204 = () => {
                     gridApiRef.current = event.api;
                   }}
                   noRowsOverlayComponent={AgGridEmptyComponent}
+                  noRowsOverlayComponentParams={{
+                    message: '보장패키지를 선택해주세요',
+                  }}
                   getRowId={(params) => String(params.data.id)}
                   rowData={rowData2}
                   columnDefs={columnDefs2}
