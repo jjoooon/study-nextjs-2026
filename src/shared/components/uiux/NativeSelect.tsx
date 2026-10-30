@@ -184,7 +184,9 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
         } 
       focus:outline-none`;
     const readonlyStyle = readOnly ? 'bg-[var(--color-input-surface-disabled)] opacity-100' : '';
-    const disabledStyle = isDisabled ? 'disabled:bg-[var(--color-input-surface-disabled)] disabled:opacity-100' : '';
+    const disabledStyle = isDisabled
+      ? 'disabled:bg-[var(--color-input-surface-disabled)] disabled:cursor-not-allowed disabled:opacity-100'
+      : '';
     const disabledStyle2 = isDisabled ? 'disabled:opacity-100 !border-0 !p-0 !w-auto' : '';
     const sizeStyle = `${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
 

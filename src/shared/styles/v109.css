@@ -2581,16 +2581,19 @@ html.v109 .ag-disabled.ag-checkbox-input-wrapper:not(.ag-checked) {
   border-color: #babbbc !important;
 }
 
-.v109 input[class*='bg-[var(--color-input-surface-disabled)]'],
-[class*='bg-[var(--color-input-surface-disabled)]'] {
+/* Chrome 109 호환: disabled 상태일 때 적용 */
+.v109 [class*='disabled:bg-[var(--color-input-surface-disabled)]']:disabled,
+html.v109 [class*='disabled:bg-[var(--color-input-surface-disabled)]']:disabled,
+[class*='disabled:bg-[var(--color-input-surface-disabled)]']:disabled {
   background-color: var(--color-input-surface-disabled);
 }
 
-.v109 [data-slot='input'][class*='bg-[var(--color-input-surface-disabled)]'] {
-  background-color: var(--color-input-surface-disabled);
-}
-
-.v109 .ag-cell [data-slot='input'][class*='bg-[var(--color-input-surface-disabled)]'] {
+/* Chrome 109 호환: 단독 bg-[var(--color-input-surface-disabled)] 클래스일 때 (disabled: 접두사 제외) */
+.v109 input[class*='bg-[var(--color-input-surface-disabled)]']:not([class*='disabled:']),
+.v109 select[class*='bg-[var(--color-input-surface-disabled)]']:not([class*='disabled:']),
+.v109 [data-slot='input'][class*='bg-[var(--color-input-surface-disabled)]']:not([class*='disabled:']),
+.v109 .ag-cell [data-slot='input'][class*='bg-[var(--color-input-surface-disabled)]']:not([class*='disabled:']),
+[class*='bg-[var(--color-input-surface-disabled)]']:not([class*='disabled:']) {
   background-color: var(--color-input-surface-disabled);
 }
 

@@ -123,14 +123,14 @@ export default function Ltpa020Section() {
                 <RadioGroupItem
                   variant={'button'}
                   value="Ltpa02001"
-                  className="relative z-1 [&>div]:hidden w-[18rem] h-[3.6rem] bg-[transparent] border-0! flex items-center gap-1 justify-center rounded-2 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
+                  className="relative z-1 [&>div]:hidden max-w-[18rem] w-full h-[3.6rem] bg-[transparent] border-0! flex items-center gap-1 justify-center rounded-2 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
                 >
                   상품선택
                 </RadioGroupItem>
                 <RadioGroupItem
                   variant={'button'}
                   value="Ltpa02002"
-                  className="relative z-1 [&>div]:hidden w-[18rem] h-[3.6rem] bg-[transparent] border-0! flex items-center gap-1 justify-center rounded-2 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
+                  className="relative z-1 [&>div]:hidden max-w-[18rem] w-full h-[3.6rem] bg-[transparent] border-0! flex items-center gap-1 justify-center rounded-2 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
                 >
                   <span className="flex w-full justify-center items-center">추천설계</span>
                   {/* 현재 탭 상태에 맞춰 AI 아이콘 색상을 전환해 선택 상태를 직관적으로 표시 */}
