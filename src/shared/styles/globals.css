@@ -728,7 +728,7 @@
     min-width: 0;
   }
   [data-layout='main'] {
-    min-width: 119.5rem;
+    min-width: 119.5rem !important;
   }
   .a11y-hidden {
     clip: rect(0 0 0 0);
@@ -870,7 +870,7 @@
     min-width: 100% !important;
   }
   [data-layout='main'] {
-    min-width: 118rem; 
+    min-width: 118rem !important; 
   }
 
   /* filefond */
