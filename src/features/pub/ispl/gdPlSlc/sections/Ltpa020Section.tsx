@@ -118,19 +118,19 @@ export default function Ltpa020Section() {
               <RadioGroup
                 value={tabSelectValue}
                 onValueChange={(value) => setTabSelectValue(value)}
-                className="ltpa020-tab-item bg-[#fff] gap-[0.2rem] rounded-2 relative after:content-[''] after:absolute after:block after:w-full after:h-full after:border after:border-[var(--color-secondary-15)] after:rounded-[0.8rem] after:z-0"
+                className="ltpa020-tab-item bg-[#fff] gap-[0.2rem] w-[36rem] rounded-2 relative after:content-[''] after:absolute after:block after:w-full after:h-full after:border after:border-[var(--color-secondary-15)] after:rounded-[0.8rem] after:z-0"
               >
                 <RadioGroupItem
                   variant={'button'}
                   value="Ltpa02001"
-                  className="relative z-1 [&>div]:hidden max-w-[18rem] w-full h-[3.6rem] bg-[transparent] border-0! flex items-center gap-1 justify-center rounded-2 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
+                  className="relative z-1 [&>div]:hidden w-full flex-1 h-[3.6rem] bg-[transparent] border-0! flex items-center gap-1 justify-center rounded-2 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
                 >
                   상품선택
                 </RadioGroupItem>
                 <RadioGroupItem
                   variant={'button'}
                   value="Ltpa02002"
-                  className="relative z-1 [&>div]:hidden max-w-[18rem] w-full h-[3.6rem] bg-[transparent] border-0! flex items-center gap-1 justify-center rounded-2 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
+                  className="relative z-1 [&>div]:hidden w-full flex-1 h-[3.6rem] bg-[transparent] border-0! flex items-center gap-1 justify-center rounded-2 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
                 >
                   <span className="flex w-full justify-center items-center">추천설계</span>
                   {/* 현재 탭 상태에 맞춰 AI 아이콘 색상을 전환해 선택 상태를 직관적으로 표시 */}

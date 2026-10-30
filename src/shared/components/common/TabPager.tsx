@@ -279,7 +279,10 @@ export function TabPager<T>({
   return (
     <>
       <Tabs {...tabsProps}>
-        <TabsLine hasTableBelow={hasTableBelow}>
+        <TabsLine
+          hasTableBelow={hasTableBelow}
+          className={!renderButtons && !showPagination ? 'grid-cols-[1fr] gap-0' : ''}
+        >
           <TabsList
             ref={tabsListRef}
             className={cn(
@@ -330,77 +333,78 @@ export function TabPager<T>({
               );
             })}
           </TabsList>
-
-          <Grow gap={2.5} className="pb-[0.3rem]" placement={'es'}>
-            {renderButtons}
-            {showPagination && (
-              <Grow placement="cc" gap={1}>
-                <Grow className="gap-[0.1rem] pt-[0.1rem]">
-                  <Typo className="tracking-[0]!" color={'default'} weight={'bold'}>
-                    {isScrollVariant
-                      ? safeData.length === 0 || currentIndex === -1
-                        ? 0
-                        : currentIndex + 1
-                      : safeData.length === 0
-                        ? 0
-                        : Math.ceil((visibleStart + visibleCount) / visibleCount)}
-                  </Typo>
-                  <Typo className="tracking-[0]! text-[var(--color-gray-50)]" weight={'bold'}>
-                    /
-                  </Typo>
-                  <Typo className="tracking-[0]! text-[var(--color-gray-30)]" weight={'bold'}>
-                    {isScrollVariant ? safeData.length : Math.ceil(safeData.length / visibleCount)}
-                  </Typo>
-                </Grow>
-                <Button
-                  variant={'outlined'}
-                  color={'gray'}
-                  only={'icon'}
-                  size={'md'}
-                  onClick={isScrollVariant ? handleScrollPrev : handlePrev}
-                  disabled={isScrollVariant ? isScrollPrevDisabled : visibleStart === 0}
-                >
-                  <ArrowIcon />
-                </Button>
-                <Button
-                  variant={'outlined'}
-                  color={'gray'}
-                  only={'icon'}
-                  size={'md'}
-                  onClick={isScrollVariant ? handleScrollNext : handleNext}
-                  disabled={isScrollVariant ? isScrollNextDisabled : isLastPage}
-                >
-                  <ArrowIcon className="rotate-180" />
-                </Button>
-                {renderDropdownItem && (
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button variant={'outlined'} color={'gray'} only={'icon'} size={'md'}>
-                        <ListIcon />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent
-                      className="w-auto p-[0.2rem] flex flex-col border border-[var(--color-gray-20)] shadow-md  "
-                      align={'end'}
-                      closeButton={true}
-                      onWheel={(e) => e.stopPropagation()}
-                    >
-                      <Gcol
-                        className="overflow-y-auto min-h-0 z-0 max-h-[20rem] gap-0"
-                        placement="ss"
+          {renderButtons && showPagination && (
+            <Grow gap={2.5} className="pb-[0.3rem]" placement={'es'}>
+              {renderButtons}
+              {showPagination && (
+                <Grow placement="cc" gap={1}>
+                  <Grow className="gap-[0.1rem] pt-[0.1rem]">
+                    <Typo className="tracking-[0]!" color={'default'} weight={'bold'}>
+                      {isScrollVariant
+                        ? safeData.length === 0 || currentIndex === -1
+                          ? 0
+                          : currentIndex + 1
+                        : safeData.length === 0
+                          ? 0
+                          : Math.ceil((visibleStart + visibleCount) / visibleCount)}
+                    </Typo>
+                    <Typo className="tracking-[0]! text-[var(--color-gray-50)]" weight={'bold'}>
+                      /
+                    </Typo>
+                    <Typo className="tracking-[0]! text-[var(--color-gray-30)]" weight={'bold'}>
+                      {isScrollVariant ? safeData.length : Math.ceil(safeData.length / visibleCount)}
+                    </Typo>
+                  </Grow>
+                  <Button
+                    variant={'outlined'}
+                    color={'gray'}
+                    only={'icon'}
+                    size={'md'}
+                    onClick={isScrollVariant ? handleScrollPrev : handlePrev}
+                    disabled={isScrollVariant ? isScrollPrevDisabled : visibleStart === 0}
+                  >
+                    <ArrowIcon />
+                  </Button>
+                  <Button
+                    variant={'outlined'}
+                    color={'gray'}
+                    only={'icon'}
+                    size={'md'}
+                    onClick={isScrollVariant ? handleScrollNext : handleNext}
+                    disabled={isScrollVariant ? isScrollNextDisabled : isLastPage}
+                  >
+                    <ArrowIcon className="rotate-180" />
+                  </Button>
+                  {renderDropdownItem && (
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button variant={'outlined'} color={'gray'} only={'icon'} size={'md'}>
+                          <ListIcon />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        className="w-auto p-[0.2rem] flex flex-col border border-[var(--color-gray-20)] shadow-md  "
+                        align={'end'}
+                        closeButton={true}
                         onWheel={(e) => e.stopPropagation()}
                       >
-                        {safeData.map((tab) =>
-                          renderDropdownItem(tab, setActive, setVisibleStart, safeData, visibleCount, active)
-                        )}
-                      </Gcol>
-                    </PopoverContent>
-                  </Popover>
-                )}
-              </Grow>
-            )}
-            {renderAfter}
-          </Grow>
+                        <Gcol
+                          className="overflow-y-auto min-h-0 z-0 max-h-[20rem] gap-0"
+                          placement="ss"
+                          onWheel={(e) => e.stopPropagation()}
+                        >
+                          {safeData.map((tab) =>
+                            renderDropdownItem(tab, setActive, setVisibleStart, safeData, visibleCount, active)
+                          )}
+                        </Gcol>
+                      </PopoverContent>
+                    </Popover>
+                  )}
+                </Grow>
+              )}
+              {renderAfter}
+            </Grow>
+          )}
         </TabsLine>
         {children && (
           <TabsContent ref={contentRef} value={active ?? ''} className={contentClass}>
