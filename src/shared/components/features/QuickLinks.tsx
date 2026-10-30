@@ -35,7 +35,7 @@ export function QuickLinks() {
             key={`${menu.name}-${index}`}
             variant="outlined"
             color={menu.fix ? 'primary' : 'gray-light'}
-            size={'sm'}
+            size={'md'}
             className="w-full"
           >
             <Link href={menu.link} className="truncate w-full block! text-center" title={menu.name}>
@@ -46,11 +46,11 @@ export function QuickLinks() {
         <Button
           variant="outlined"
           color={'gray-light'}
-          size={'sm'}
+          size={'md'}
           className={`${DummyList.length % 2 === 0 ? 'col-span-2' : 'w-full'}`}
         >
           전체보기
-          <AddIcon color="var(--color-primary-50)" size={12} />
+          <AddIcon color="var(--color-primary-50)" size={16} />
         </Button>
       </Grid>
     </Gcol>

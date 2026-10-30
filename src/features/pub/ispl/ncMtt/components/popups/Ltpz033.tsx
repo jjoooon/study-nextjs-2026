@@ -30,7 +30,7 @@ const Ltpz033 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection>
+        <DialogSection className="grid-rows-[auto_minmax(0,1fr)]">
           <Typo variant="body-lg">
             <b>기타치료</b>란에 입력하는 경우 <b className="text-[#E43939]">자동심사가 불가능</b>하며, 우선심사순서에
             따라 <b>후순위로 배정</b>되어 심사결과 안내까지 시간이 소요될 수 있습니다.

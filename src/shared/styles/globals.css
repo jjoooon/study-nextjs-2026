@@ -1632,3 +1632,5 @@
 .formTable-fixed table {
   table-layout: fixed;
 }
+
+select, input {text-overflow: clip;}

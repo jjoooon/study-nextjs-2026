@@ -413,7 +413,7 @@ const Ltpz206 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_minmax(0,1fr)] gap-3">
+        <DialogSection className="grid-rows-[auto_minmax(50rem,1fr)] gap-3">
           <Grow className="w-full" variant="box-round" placement={'bwe'}>
             <FormTable variant={'head'} lineTop={false}>
               <FormRow>

@@ -752,7 +752,6 @@ export const Ltpa35001 = ({
                     {/* 피보험자 관리 탭 및 상세 입력 */}
                     {currentTab?.type !== '연금저축' && (
                       <TabPager
-                        variant={'default'}
                         data={tabs}
                         active={active}
                         hasTableBelow={true}

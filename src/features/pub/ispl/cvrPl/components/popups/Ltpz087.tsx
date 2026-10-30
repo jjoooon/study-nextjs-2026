@@ -98,7 +98,7 @@ const Ltpz087 = () => {
         headerName: '가입금액(원)',
         field: 'field02',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(100),
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter,
       },
@@ -106,7 +106,7 @@ const Ltpz087 = () => {
         headerName: '타질권금액(원)',
         field: 'field03',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(100),
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter,
       },
@@ -115,7 +115,7 @@ const Ltpz087 = () => {
         headerName: '보험료(만원)',
         field: 'field04',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(100),
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter,
       },
@@ -148,7 +148,7 @@ const Ltpz087 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="md">
+      <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -165,14 +165,14 @@ const Ltpz087 = () => {
             <FormTable variant="none" cols={['w-1', 'w-auto']}>
               <FormRow>
                 <FormCell title={'설계번호'} tdClassName="grid grid-cols-[auto_1fr] items-center gap-1 w-full">
-                  <Input aria-label="" width={'quoteNo'} value={'LA123456789012'} readOnly />
-                  <Input aria-label="" value={'한화 BigPlus 재산종합보험 2601'} readOnly />
+                  <Input variant="info" width={'quoteNo'} value={'LA123456789012'} readOnly />
+                  <Input variant="info" value={'한화 BigPlus 재산종합보험 2601'} readOnly />
                 </FormCell>
               </FormRow>
               <FormRow>
                 <FormCell title={'목적물'} tdClassName="grid grid-cols-[auto_1fr] items-center gap-1 w-full">
-                  <Input aria-label="" width={250} value={''} readOnly />
-                  <Input aria-label="" value={''} readOnly />
+                  <Input variant="info" width={250} value={'정보값'} readOnly />
+                  <Input variant="info" value={'정보값'} readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>

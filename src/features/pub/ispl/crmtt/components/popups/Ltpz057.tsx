@@ -48,7 +48,7 @@ const Ltpz057 = () => {
                 </Button>
               </Grow>
             </TableFoldHead>
-            <TableFoldBody className="gap-2">
+            <TableFoldBody className="flex flex-col justify-start gap-2">
               <FormTable cols={['w-[15rem]', 'w-auto']}>
                 <FormRow>
                   <FormCell
@@ -88,8 +88,8 @@ const Ltpz057 = () => {
                       </Gcol>
                     }
                   >
-                    <CheckboxGroup defaultValue={['Industry2', 'Industry4']}>
-                      <Grid className="grid-cols-[minmax(19rem,1fr)_minmax(16rem,1fr)_minmax(15rem,1fr)_minmax(10rem,1fr)_1fr] gap-x-4 gap-y-2 w-full">
+                    <CheckboxGroup defaultValue={['Industry2', 'Industry4']} className="@container">
+                      <Grid className="grid-cols-[repeat(auto-fill,minmax(180px,1fr))] @[750px]:grid-cols-[minmax(19rem,1fr)_minmax(16rem,1fr)_minmax(15rem,1fr)_minmax(10rem,1fr)_1fr] gap-x-4 gap-y-2 w-full">
                         {[
                           { value: 'Industry1', label: '이용원, 미용원, 기타미용실' },
                           { value: 'Industry2', label: '학원(기관 및 교육목적)' },
@@ -136,7 +136,7 @@ const Ltpz057 = () => {
                       </Gcol>
                     }
                   >
-                    <Grid className="grid-cols-[1fr_1fr_1fr] gap-x-6 gap-y-2 w-full">
+                    <Grid className="grid-cols-[repeat(auto-fill,minmax(180px,1fr))] @[750px]:grid-cols-[1fr_1fr_1fr] gap-x-6 gap-y-2 w-full">
                       <Grid className="grid-cols-[auto_1fr_auto]">
                         <Checkbox aria-label="주변업종 선택"></Checkbox>
                         <Input aria-label="주변업종 직접 검색" value={'(1)여객자동차터미널, 물류터미널'} />

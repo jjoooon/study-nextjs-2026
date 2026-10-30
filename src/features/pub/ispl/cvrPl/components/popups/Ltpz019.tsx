@@ -344,6 +344,7 @@ const Ltpz019 = () => {
       {
         headerName: '상품명',
         flex: 6,
+        minWidth: attributeColumnWidth(360),
         cellClass: 'text-left p-0!',
         sortable: false,
         filter: false,
@@ -408,7 +409,7 @@ const Ltpz019 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={true} size="xl">
         {/* 팝업 헤더 영역 */}
         <DialogHeader>
           <DialogTitle>
@@ -541,7 +542,7 @@ const Ltpz019 = () => {
                           removable={false}
                           onRemove={handleRemove}
                           visibleCount={4}
-                          variant="default"
+                          showPagination={false}
                           hasTableBelow={true}
                           error={false}
                           errorMsg="에러 메시지 예시"
