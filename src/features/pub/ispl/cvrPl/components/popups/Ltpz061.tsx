@@ -489,7 +489,10 @@ const Ltpz061 = () => {
           <Grow className="w-full" variant="box-round" placement={'ss'}>
             <FormTable variant="none" cols={['w-1', 'w-auto']}>
               <FormRow>
-                <FormCell title={'증권번호'}>
+                <FormCell
+                  title={'증권번호'}
+                  tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full"
+                >
                   <Input aria-label="" value={'LA123456789012'} readOnly variant="info" />
                   <Input aria-label="" value={'한화 더 건강한 한아름종합보험 2601'} readOnly variant="info" />
                 </FormCell>
