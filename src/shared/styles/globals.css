@@ -728,7 +728,7 @@
     min-width: 0;
   }
   [data-layout='main'] {
-    min-width: 110rem !important;
+    min-width: 90rem !important;
   }
   .a11y-hidden {
     clip: rect(0 0 0 0);
