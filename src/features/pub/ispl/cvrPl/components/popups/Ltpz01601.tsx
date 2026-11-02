@@ -38,6 +38,7 @@ const Ltpz01601 = () => {
                   <EssentialIcon />
                 </Grow>
               }
+              tdClassName="flex-nowrap"
             >
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                 <SearchIcon color={'var(--color-primary-50)'} />
@@ -53,6 +54,7 @@ const Ltpz01601 = () => {
                   <EssentialIcon className="inline-block ml-1" />
                 </span>
               }
+              tdClassName="flex-nowrap"
             >
               <Input aria-label="" value={''} readOnly required />
               <Input aria-label="" value={''} readOnly required />
