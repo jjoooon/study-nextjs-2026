@@ -627,7 +627,7 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
                 cols={['w-[8rem]', 'w-[auto]']}
               >
                 <FormRow>
-                  <FormCell className="whitespace-nowrap" title={'피보험자찾기'}>
+                  <FormCell className="whitespace-nowrap" tdClassName="flex-nowrap" title={'피보험자찾기'}>
                     <NativeSelect aria-label="점검방법 선택" value={''} width={80} onChange={() => {}}>
                       {[
                         { value: 'selection', id: 'type1', label: '이름' },
