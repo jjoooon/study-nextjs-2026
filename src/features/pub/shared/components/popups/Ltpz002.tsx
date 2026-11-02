@@ -274,7 +274,7 @@ const Ltpz002 = () => {
                 <FormTable variant={'none'} cols={['w-1', 'w-[28.8rem]', 'w-[10rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'조회구분'}>
-                      <NativeSelect width={120} required>
+                      <NativeSelect width={'auto'} required>
                         <NativeSelectOption value="">피보험자번호</NativeSelectOption>
                       </NativeSelect>
                       <Input value={'000000-0******'} width={120} readOnly masking />

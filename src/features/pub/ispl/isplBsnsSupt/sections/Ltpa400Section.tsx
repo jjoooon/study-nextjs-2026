@@ -460,7 +460,7 @@ export default function Ltpa400Section() {
                       <FormCell title={'조회구분'}>
                         <NativeSelect
                           aria-label="조회구분 선택"
-                          width={110}
+                          width={'auto'}
                           value={form.type01}
                           onChange={(e) => setFormField('type01', e.target.value)}
                         >
@@ -502,7 +502,7 @@ export default function Ltpa400Section() {
                       <FormCell title={'진행상태'}>
                         <NativeSelect
                           aria-label="진행상태 선택"
-                          width={120}
+                          width={'auto'}
                           value={form.type03}
                           onChange={(e) => setFormField('type03', e.target.value)}
                         >
@@ -566,16 +566,27 @@ export default function Ltpa400Section() {
               <Grid className="w-full grid-rows-[auto_1fr] gap-3 h-full">
                 <Grow className="w-full" variant="box-round-b" placement={'bwe'}>
                   <FormTable
-                    variant={'none'}
+                    variant={'head'}
                     lineTop={false}
                     caption="장기보험 모집자 설계 조회 테이블"
-                    cols={['w-[6rem]', 'w-[10rem]', 'w-[8rem]', 'w-[10rem]', 'w-[8rem]', 'w-[auto]']}
+                    cols={[
+                      'w-1',
+                      'w-[auto]',
+                      'w-1',
+                      'w-[auto]',
+                      'w-1',
+                      'w-[auto]',
+                      'w-1',
+                      'w-[auto]',
+                      'w-1',
+                      'w-[auto]',
+                    ]}
                   >
                     <FormRow>
                       <FormCell title={'소속'}>
                         <NativeSelect
                           aria-label="소속 선택"
-                          width={120}
+                          width={'auto'}
                           value={form.type04}
                           onChange={(e) => setFormField('type04', e.target.value)}
                           readOnly
@@ -591,7 +602,7 @@ export default function Ltpa400Section() {
                         </NativeSelect>
                         <NativeSelect
                           aria-label="사업단 선택"
-                          width={145}
+                          width={'auto'}
                           value={form.type05}
                           onChange={(e) => setFormField('type05', e.target.value)}
                           readOnly
@@ -607,7 +618,7 @@ export default function Ltpa400Section() {
                         </NativeSelect>
                         <NativeSelect
                           aria-label="지점 선택"
-                          width={145}
+                          width={'auto'}
                           value={form.type06}
                           onChange={(e) => setFormField('type06', e.target.value)}
                           readOnly
@@ -637,12 +648,11 @@ export default function Ltpa400Section() {
                           size="lg"
                         />
                       </FormCell>
-                    </FormRow>
-                    <FormRow>
+
                       <FormCell title={'대리점'}>
                         <NativeSelect
                           aria-label="대리점 선택"
-                          width={120}
+                          width={'auto'}
                           value={form.type07}
                           onChange={(e) => setFormField('type07', e.target.value)}
                         >

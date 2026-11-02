@@ -214,13 +214,13 @@ export default function Ltpa500Section() {
               <FormTable
                 variant={'head'}
                 caption="장기신계약가입설계결재정보 테이블"
-                cols={['w-1', 'w-1', 'w-1', 'w-1', 'w-1', 'w-1', 'w-1', 'w-auto']}
+                cols={['w-1', 'w-auto', 'w-1', 'w-auto', 'w-1', 'w-auto', 'w-1', 'w-auto']}
               >
                 <FormRow>
                   <FormCell title={'조회구분'}>
                     <NativeSelect
                       aria-label="항목 선택"
-                      width={108}
+                      width={'auto'}
                       value={form.type01}
                       onChange={(e) => setFormField('type01', e.target.value)}
                     >
@@ -248,7 +248,7 @@ export default function Ltpa500Section() {
                   <FormCell title={'업무구분'}>
                     <NativeSelect
                       aria-label="업무구분 선택"
-                      width={190}
+                      width={'auto'}
                       value={form.type02}
                       onChange={(e) => setFormField('type02', e.target.value)}
                     >
@@ -267,7 +267,7 @@ export default function Ltpa500Section() {
                   <FormCell title={'승인여부'}>
                     <NativeSelect
                       aria-label="승인여부 선택"
-                      width={80}
+                      width={'auto'}
                       value={form.type03}
                       onChange={(e) => setFormField('type03', e.target.value)}
                     >

@@ -391,7 +391,7 @@ export default function Ltpa600Section() {
         headerComponent: GridHeaderCheckbox,
         headerComponentParams: createHeaderCheckboxParams(gridRef1, 'isCheck'),
         field: 'isCheck',
-        width: attributeColumnWidth(40),
+        width: attributeColumnWidth(30),
         cellClass: 'text-center',
         sortable: false,
         cellRenderer: (params: ICellRendererParams<DummyData1Type>) => {
@@ -417,7 +417,7 @@ export default function Ltpa600Section() {
           if (!d) return '';
           return d.depth2 !== undefined && d.depth2 !== null ? `${d.depth1}-${d.depth2}` : String(d.depth1);
         },
-        width: attributeColumnWidth(50),
+        width: attributeColumnWidth(40),
         cellClass: (params) => {
           const isSub = params.data?.depth2 !== undefined && params.data?.depth2 !== null;
           return isSub ? 'text-center font-medium text-[var(--color-gray-60)]' : 'text-center font-bold';
@@ -440,7 +440,7 @@ export default function Ltpa600Section() {
         headerName: '구분',
         field: 'groups',
         flex: 5,
-        minWidth: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(200),
         cellClass: 'text-center !p-0',
         autoHeight: true,
         sortable: false,
@@ -577,14 +577,16 @@ export default function Ltpa600Section() {
       {
         headerName: '담보명',
         field: 'field4',
-        flex: 16,
+        flex: 10,
+        minWidth: attributeColumnWidth(120),
         autoHeight: true,
         tooltipValueGetter: createTooltipValueGetter<DummyData2Type>({ field: 'field4' }),
       },
       {
         headerName: '예외',
         field: 'field5',
-        flex: 20,
+        flex: 1,
+        minWidth: attributeColumnWidth(86),
         editable: true,
         cellClass: 'text-center editable-cell cp-pr-0',
         cellEditor: 'agSelectCellEditor',
@@ -629,7 +631,7 @@ export default function Ltpa600Section() {
         mainBody={
           <ResizablePanelGroup orientation="horizontal" className="w-full h-full">
             {/* 담보분류 */}
-            <ResizablePanel defaultSize={55} minSize={20}>
+            <ResizablePanel defaultSize={50} minSize={20}>
               <Grid className="grid-rows-[auto_minmax(0,1fr)_auto] h-full w-full overflow-y-hidden" gap={1}>
                 <Grow className="w-full" placement="sc">
                   <Typo variant={'heading-md'} tag="h2">
@@ -676,7 +678,7 @@ export default function Ltpa600Section() {
             <ResizableHandle />
 
             {/* 시뮬레이션 */}
-            <ResizablePanel defaultSize={45} minSize={20}>
+            <ResizablePanel defaultSize={50} minSize={20}>
               <Grid className="grid-rows-[auto_minmax(0,1fr)_auto] h-full w-full overflow-y-hidden" gap={1}>
                 <Grow className="w-full" placement="sc">
                   <Typo variant={'heading-md'} tag="h2">

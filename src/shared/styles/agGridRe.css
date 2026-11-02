@@ -99,6 +99,10 @@
   background-color: #fff !important;
 }
 
+.ag-theme-alpine .ag-spanned-cell.editable-cell {
+  background-color: var(--color-information-5) !important;
+}
+
 .ag-row .ag-cell.row-span-cell,
 .ag-cell.row-span-cell,
 .ag-theme-alpine .ag-cell.row-span-cell,

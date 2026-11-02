@@ -305,7 +305,7 @@ const Ltpz062 = () => {
           </DialogTitle>
         </DialogHeader>
         {/*  */}
-        <DialogSection className="grid-rows-[auto_auto_auto]">
+        <DialogSection className="grid-rows-[auto_auto_1fr]">
           <Typo tag={'p'} variant={'body-lg'}>
             보험금지급이력을 기반으로 필요한 정보를 예상하여 자동입력합니다.
           </Typo>
@@ -342,7 +342,7 @@ const Ltpz062 = () => {
 
           <TableFold className="grid-rows-[auto_1fr]">
             <TableFoldHead title="질문항목(질병)" />
-            <TableFoldBody>
+            <TableFoldBody className="grid-rows-[1fr_auto]">
               <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
                 <AgGridReact<DummyDataType2>
                   getRowId={(params) => String(params.data.id)}

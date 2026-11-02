@@ -261,13 +261,13 @@ export default function Ltpa490Section() {
               <FormTable
                 variant={'none'}
                 caption="미사용청약서 관리 테이블"
-                cols={['w-1', 'w-[40rem]', 'w-1', 'w-1', 'w-1', 'w-auto']}
+                cols={['w-[6.4rem]', 'w-auto', 'w-[6.4rem]', 'w-auto', 'w-[6.4rem]', 'w-auto']}
               >
                 <FormRow>
                   <FormCell title={'조회구분'}>
                     <NativeSelect
                       aria-label="항목 선택"
-                      width={108}
+                      width={'auto'}
                       value={form.type01}
                       onChange={(e) => setFormField('type01', e.target.value)}
                     >
@@ -291,14 +291,14 @@ export default function Ltpa490Section() {
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
-                        <Input aria-label="" width={120} value={'김한화'} readOnly />
+                        <Input aria-label="" width={80} value={'김한화'} readOnly />
                       </>
                     )}
                   </FormCell>
                   <FormCell title={'설계상태'}>
                     <NativeSelect
                       aria-label="조직구분 선택"
-                      width={108}
+                      width={'auto'}
                       value={form.type02}
                       onChange={(e) => setFormField('type02', e.target.value)}
                     >
@@ -325,7 +325,7 @@ export default function Ltpa490Section() {
                   <FormCell title={'파기여부'}>
                     <NativeSelect
                       aria-label="파기여부"
-                      width={108}
+                      width={'auto'}
                       value={form.type03}
                       onChange={(e) => setFormField('type03', e.target.value)}
                       className="text-left"
@@ -345,7 +345,7 @@ export default function Ltpa490Section() {
                   <FormCell title={'유효기간초과여부'}>
                     <NativeSelect
                       aria-label="유효기간초과여부"
-                      width={108}
+                      width={'auto'}
                       value={form.type04}
                       onChange={(e) => setFormField('type04', e.target.value)}
                     >
@@ -363,7 +363,7 @@ export default function Ltpa490Section() {
                   <FormCell title={'고액여부'}>
                     <NativeSelect
                       aria-label="고액여부"
-                      width={108}
+                      width={'auto'}
                       value={form.type05}
                       onChange={(e) => setFormField('type05', e.target.value)}
                     >
