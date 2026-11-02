@@ -231,7 +231,7 @@ export const DummyData2: DummyDataType2[] = [
 type BadgeType = '할증' | '부담보' | 'SI경증(감액)' | 'SI경증';
 
 const BADGE_STYLES: Record<BadgeType, string> = {
-  할증: 'bg-[var(--color-danger-10)] text-[var(--color-danger-50)]',
+  할증: 'bg-[var(--color-pink-10)] text-[var(--color-pink-50)]',
   부담보: 'bg-[var(--color-purple-10)] text-[var(--color-purple-50)]',
   'SI경증(감액)': 'bg-[var(--color-information-10)] text-[var(--color-information-50)]',
   SI경증: 'bg-[var(--color-success-10)] text-[var(--color-success-60)]',

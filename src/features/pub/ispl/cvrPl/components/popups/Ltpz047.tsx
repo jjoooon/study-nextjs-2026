@@ -68,7 +68,7 @@ const Ltpz047 = () => {
                 <FormCell title={'업주성명(법인명)'} titleColSpan={2}>
                   <Input size="lg" value="" variant="default" width="full" readOnly />
                 </FormCell>
-                <FormCell title={'주민/법인번호'} tdClassName="flex-nowrap">
+                <FormCell title={'주민/법인번호'}>
                   <Input
                     aria-label="주민/법인번호"
                     size="lg"

@@ -615,7 +615,7 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
                 <FormCell title={'발행후변경순번'}>
                   <Input aria-label="발행후변경순번 입력" value={'1'} onChange={() => {}} variant="info" readOnly />
                 </FormCell>
-                <FormCell className="whitespace-nowrap" tdClassName="flex-nowrap" title={'피보험자찾기'}>
+                <FormCell className="whitespace-nowrap" title={'피보험자찾기'}>
                   <NativeSelect aria-label="점검방법 선택" value={''} width={80} onChange={() => {}}>
                     {[
                       { value: 'selection', id: 'type1', label: '이름' },

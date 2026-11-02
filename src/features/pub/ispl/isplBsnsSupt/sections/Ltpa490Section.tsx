@@ -259,9 +259,22 @@ export default function Ltpa490Section() {
           <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full gap-3">
             <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
               <FormTable
-                variant={'none'}
+                variant={'head'}
                 caption="미사용청약서 관리 테이블"
-                cols={['w-[6.4rem]', 'w-auto', 'w-[6.4rem]', 'w-auto', 'w-[6.4rem]', 'w-auto']}
+                cols={[
+                  'w-[6.4rem]',
+                  'w-auto',
+                  'w-[6.4rem]',
+                  'w-auto',
+                  'w-[6.4rem]',
+                  'w-auto',
+                  'w-[6.4rem]',
+                  'w-auto',
+                  'w-[6.4rem]',
+                  'w-auto',
+                  'w-[6.4rem]',
+                  'w-auto',
+                ]}
               >
                 <FormRow>
                   <FormCell title={'조회구분'}>
@@ -320,8 +333,7 @@ export default function Ltpa490Section() {
                   <FormCell title={'설계시작월'}>
                     <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" monthOnly />
                   </FormCell>
-                </FormRow>
-                <FormRow>
+
                   <FormCell title={'파기여부'}>
                     <NativeSelect
                       aria-label="파기여부"

@@ -424,15 +424,16 @@ export default function Ltpa560Section() {
           <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
               <FormTable
-                variant={'none'}
+                variant={'head'}
                 lineTop={false}
                 caption="설계번호"
-                cols={['w-[1rem]', 'w-[60rem] ', 'w-[1rem]', 'w-auto']}
+                cols={['w-[6rem]', 'w-auto ', 'w-[6rem]', 'w-auto', 'w-[6rem]', 'w-auto']}
               >
                 <FormRow>
-                  <FormCell title={'조직구분'} tdClassName="grid grid-cols-[auto_auto_auto_auto]" colSpan={3}>
+                  <FormCell title={'조직구분'} colSpan={3}>
                     <NativeSelect
                       aria-label="조직구분"
+                      width={'auto'}
                       value={form.type01}
                       onChange={(e) => setFormField('type01', e.target.value)}
                     >
@@ -447,6 +448,7 @@ export default function Ltpa560Section() {
                     </NativeSelect>
                     <NativeSelect
                       aria-label="본부"
+                      width={'auto'}
                       value={form.type02}
                       onChange={(e) => setFormField('type02', e.target.value)}
                     >
@@ -461,6 +463,7 @@ export default function Ltpa560Section() {
                     </NativeSelect>
                     <NativeSelect
                       aria-label="지역단1구분"
+                      width={'auto'}
                       value={form.type03}
                       onChange={(e) => setFormField('type03', e.target.value)}
                     >
@@ -475,6 +478,7 @@ export default function Ltpa560Section() {
                     </NativeSelect>
                     <NativeSelect
                       aria-label="지점구분"
+                      width={'auto'}
                       value={form.type04}
                       onChange={(e) => setFormField('type04', e.target.value)}
                     >
@@ -488,21 +492,20 @@ export default function Ltpa560Section() {
                       ))}
                     </NativeSelect>
                   </FormCell>
-                </FormRow>
-                <FormRow>
-                  <FormCell title={'상품'} tdClassName="grid grid-cols-[auto_auto_1fr]">
-                    <Input aria-label="" value={'LA1301097'} required />
+
+                  <FormCell title={'상품'}>
+                    <Input aria-label="" width={120} value={'LA1301097'} required />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
                     <Input
-                      width={'28rem'}
+                      width={260}
                       aria-label=""
                       value={'한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601'}
                       readOnly
                     />
                   </FormCell>
-                  <FormCell title={'설계일자'} tdClassName="grid grid-cols-[auto_auto]">
+                  <FormCell title={'설계일자'}>
                     <DatePickerInput
                       errorMsg="입력은 필수입니다."
                       errorPs="bl"

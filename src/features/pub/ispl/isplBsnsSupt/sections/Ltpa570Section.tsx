@@ -394,10 +394,10 @@ export default function Ltpa570Section() {
           <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
               <FormTable
-                variant={'none'}
+                variant={'head'}
                 lineTop={false}
                 caption="설계번호"
-                cols={['w-[1rem]', 'w-[60rem] ', 'w-[1rem]', 'min-w-[4.8rem] w-auto']}
+                cols={['w-[6rem]', 'w-[auto]', 'w-[6rem]', 'w-[auto]', 'w-[6rem]', 'w-[auto]', 'w-[6rem]', 'w-[auto]']}
               >
                 <FormRow>
                   <FormCell title={'조직구분'} colSpan={3}>
@@ -489,8 +489,7 @@ export default function Ltpa570Section() {
                       ))}
                     </RadioGroup>
                   </FormCell>
-                </FormRow>
-                <FormRow>
+
                   <FormCell title={'상품'} tdClassName="grid grid-cols-[auto_auto_1fr]">
                     <Input aria-label="" value={'LA123456789012'} width={'quoteNo'} required />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
