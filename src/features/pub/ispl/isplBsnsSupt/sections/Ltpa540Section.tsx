@@ -367,10 +367,15 @@ export default function Ltpa540Section() {
         mainBody={
           <Grid className="grid-rows-[auto_minmax(0,1fr)] w-full h-full" gap={3}>
             <Grow placement="bwc" className="w-full" variant={'box-round'}>
-              <FormTable variant={'head'} caption="유사담보관리 조회 테이블" cols={['w-[8rem]', 'w-auto']}>
+              <FormTable
+                variant={'head'}
+                caption="유사담보관리 조회 테이블"
+                cols={['w-[8rem]', 'w-auto']}
+                className="flex-1"
+              >
                 <FormRow>
                   <FormCell title={'조회구분'}>
-                    <NativeSelect aria-label="고객유형 선택" width={200} readOnly={false} required={false}>
+                    <NativeSelect aria-label="고객유형 선택" width={'auto'} readOnly={false} required={false}>
                       <NativeSelectOption value="">전체</NativeSelectOption>
                       <NativeSelectOption value="기준담보코드">기준담보코드</NativeSelectOption>
                       <NativeSelectOption value="기준담보명">기준담보명</NativeSelectOption>
@@ -378,7 +383,7 @@ export default function Ltpa540Section() {
                       <NativeSelectOption value="유사담보명">유사담보명</NativeSelectOption>
                     </NativeSelect>
                     <Input width={220} value={''} />
-                    <RadioGroup className="gap-3 ml-1" onValueChange={() => {}} width="full" defaultValue={'예'}>
+                    <RadioGroup className="gap-3 ml-1" onValueChange={() => {}} defaultValue={'예'}>
                       {[
                         { value: '예외', label: '예외' },
                         { value: '변경항목', label: '변경항목' },

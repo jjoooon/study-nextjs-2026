@@ -198,16 +198,15 @@ export default function Ltpa650Section() {
         headerName: '패키지명',
         field: 'field1',
         flex: 2,
-        minWidth: attributeColumnWidth(130),
-        cellClass: 'text-center',
+        minWidth: attributeColumnWidth(120),
+        cellClass: 'text-center editable-cell',
         autoHeight: true,
         spanRows: true,
       },
       {
         headerName: '선택',
         field: 'checked',
-        flex: 1,
-        minWidth: attributeColumnWidth(20),
+        width: attributeColumnWidth(30),
         sortable: false,
         editable: true,
         cellDataType: 'boolean',
@@ -298,7 +297,7 @@ export default function Ltpa650Section() {
                     </Button>
                     <Input
                       aria-label=""
-                      width={450}
+                      width={360}
                       value={'한화시그니처여성건강보험/(1종) 납입면제 강화형 기본형'}
                       readOnly
                     />

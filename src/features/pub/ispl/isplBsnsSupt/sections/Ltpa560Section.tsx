@@ -228,9 +228,10 @@ export default function Ltpa560Section() {
     () => [
       {
         headerName: '상품',
-        flex: 20,
+        flex: 10,
+        minWidth: attributeColumnWidth(100),
         field: 'field01',
-        cellClass: 'text-left [&>div]:whitespace-normal [&_span]:leading-normal',
+        cellClass: 'text-center [&>div]:whitespace-normal [&_span]:leading-normal',
         spanRows: true,
         autoHeight: true,
         colSpan: (params) => (params.node?.rowPinned === 'bottom' ? 3 : 1),
@@ -238,41 +239,38 @@ export default function Ltpa560Section() {
       {
         headerName: '채널',
         flex: 1,
-        minWidth: attributeColumnWidth(90),
+        minWidth: attributeColumnWidth(60),
         field: 'field02',
         cellClass: 'text-center',
         spanRows: true,
-        autoHeight: true,
         colSpan: (params) => (params.node?.rowPinned === 'bottom' ? 0 : params.data?.subtotal ? 2 : 1),
       },
       {
         headerName: '본부명',
         flex: 10,
+        minWidth: attributeColumnWidth(90),
         field: 'field03',
         cellClass: 'text-center',
-        autoHeight: true,
         colSpan: (params) => (params.node?.rowPinned === 'bottom' || params.data?.subtotal ? 0 : 1),
       },
       {
         headerName: '단순설계',
         flex: 1,
-        minWidth: attributeColumnWidth(75),
+        minWidth: attributeColumnWidth(60),
         field: 'field04',
         cellClass: 'text-center',
-        autoHeight: true,
       },
       {
         headerName: '설계중',
         flex: 1,
-        minWidth: attributeColumnWidth(75),
+        minWidth: attributeColumnWidth(60),
         field: 'field05',
         cellClass: 'text-center',
-        autoHeight: true,
       },
       {
         headerName: '설계완료',
         flex: 1,
-        minWidth: attributeColumnWidth(75),
+        minWidth: attributeColumnWidth(60),
         field: 'field06',
         cellClass: 'text-center',
         cellRenderer: (params: ICellRendererParams<Ltpa560DummyDataRow>) =>
@@ -283,15 +281,13 @@ export default function Ltpa560Section() {
           ) : (
             params.value
           ),
-        autoHeight: true,
       },
       {
         headerName: '청약중',
         flex: 1,
-        minWidth: attributeColumnWidth(75),
+        minWidth: attributeColumnWidth(60),
         field: 'field07',
         cellClass: 'text-center',
-        autoHeight: true,
       },
       {
         headerName: '청약심사완료',
@@ -299,31 +295,27 @@ export default function Ltpa560Section() {
         minWidth: attributeColumnWidth(90),
         field: 'field08',
         cellClass: 'text-center',
-        autoHeight: true,
       },
       {
         headerName: '청약완료',
         flex: 1,
-        minWidth: attributeColumnWidth(75),
+        minWidth: attributeColumnWidth(60),
         field: 'field09',
         cellClass: 'text-center',
-        autoHeight: true,
       },
       {
         headerName: '수납완료',
         flex: 1,
-        minWidth: attributeColumnWidth(75),
+        minWidth: attributeColumnWidth(60),
         field: 'field10',
         cellClass: 'text-center',
-        autoHeight: true,
       },
       {
         headerName: '총합계',
         flex: 1,
-        minWidth: attributeColumnWidth(75),
+        minWidth: attributeColumnWidth(60),
         field: 'field11',
         cellClass: 'text-center truncate',
-        autoHeight: true,
         cellRenderer: (params: ICellRendererParams<Ltpa560DummyDataRow>) =>
           params.data?.field10Type ? (
             <Button
@@ -341,18 +333,11 @@ export default function Ltpa560Section() {
           ),
       },
       {
-        headerComponent: () => (
-          <Grow className="w-full justify-center leading-tight">
-            증감율%
-            <br />
-            (전일대비)
-          </Grow>
-        ),
+        headerName: '증감율% (전일대비)',
         flex: 1,
-        minWidth: attributeColumnWidth(90),
+        minWidth: attributeColumnWidth(76),
         field: 'field12',
         cellClass: 'text-center',
-        autoHeight: true,
       },
     ],
     [attributeColumnWidth]
@@ -442,7 +427,7 @@ export default function Ltpa560Section() {
                 variant={'none'}
                 lineTop={false}
                 caption="설계번호"
-                cols={['w-[1rem]', 'w-[60rem] ', 'w-[1rem]', 'min-w-[4.8rem] w-auto']}
+                cols={['w-[1rem]', 'w-[60rem] ', 'w-[1rem]', 'w-auto']}
               >
                 <FormRow>
                   <FormCell title={'조직구분'} tdClassName="grid grid-cols-[auto_auto_auto_auto]" colSpan={3}>
@@ -546,7 +531,7 @@ export default function Ltpa560Section() {
               </Grow>
             </Grow>
             <Grid className="grid-rows-[1fr_auto]">
-              <div className="ag-theme-alpine ltpa010-grid">
+              <div className="ag-theme-alpine">
                 <AgGridReact<Ltpa560DummyDataRow>
                   ref={gridRef}
                   noRowsOverlayComponent={AgGridEmptyComponent}

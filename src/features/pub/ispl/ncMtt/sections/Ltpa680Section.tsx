@@ -1080,7 +1080,7 @@ export default function Ltpa680Section() {
       <LayoutTemplate
         mainBody={
           <ResizablePanelGroup orientation="horizontal" className="w-full h-full">
-            <ResizablePanel defaultSize={25}>
+            <ResizablePanel defaultSize={30}>
               <Grid className="w-full gap-[1.2rem] grid-rows-[1fr_auto]" placement="ss">
                 <Grid className="h-full grid-rows-[auto_1fr]" variant={'box-round'} placement="ss" gap={2}>
                   <Grow>
@@ -1170,7 +1170,7 @@ export default function Ltpa680Section() {
               </Grid>
             </ResizablePanel>
             <ResizableHandle />
-            <ResizablePanel defaultSize={75}>
+            <ResizablePanel defaultSize={70}>
               <Grid placement="ss" className="grid-rows-[auto_1fr]" gap={3}>
                 <Grid className="grid-cols-[1fr_1fr_1fr] w-full" placement="ss" gap={3}>
                   <Gcol className="w-full" placement="ss">

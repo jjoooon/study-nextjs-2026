@@ -282,7 +282,7 @@ export default function Ltpa460Section() {
               <FormTable
                 variant={'none'}
                 caption="검증화면 조회 테이블"
-                cols={['w-1', 'w-1', 'w-1', 'w-1', 'w-1', 'w-1', 'w-1', 'w-auto']}
+                cols={['w-1', 'w-auto', 'w-1', 'w-auto', 'w-1', 'w-auto', 'w-1', 'w-auto']}
               >
                 <FormRow>
                   <FormCell title={'조회기간'}>
@@ -298,7 +298,7 @@ export default function Ltpa460Section() {
                     />
                   </FormCell>
                   <FormCell title={'검증업무구분'}>
-                    <NativeSelect aria-label="검증업무구분 선택" width={108} value={''} onChange={() => {}}>
+                    <NativeSelect aria-label="검증업무구분 선택" width={'auto'} value={''} onChange={() => {}}>
                       {[
                         { value: 'selection', label: '보험료' },
                         { value: 'selection1', label: '추천보험료' },
@@ -311,15 +311,15 @@ export default function Ltpa460Section() {
                     </NativeSelect>
                   </FormCell>
                   <FormCell title={'설계번호'}>
-                    <Input aria-label="번호" width={150} value={''} />
+                    <Input aria-label="번호" width={114} value={''} />
                   </FormCell>
                   <FormCell title={'발행후변경순번'}>
-                    <Input aria-label="번호" width={120} value={''} />
+                    <Input aria-label="번호" width={60} value={''} />
                   </FormCell>
                 </FormRow>
                 <FormRow>
                   <FormCell title={'로그구분'}>
-                    <NativeSelect aria-label="로그구분 선택" width={108} value={''} onChange={() => {}}>
+                    <NativeSelect aria-label="로그구분 선택" width={'auto'} value={''} onChange={() => {}}>
                       {[
                         { value: 'selection', id: '', label: '선택' },
                         { value: 'selection1', id: '', label: '선택2' },
@@ -331,7 +331,7 @@ export default function Ltpa460Section() {
                     </NativeSelect>
                   </FormCell>
                   <FormCell title={'거래코드'}>
-                    <NativeSelect aria-label="거래코드 선택" width={108} value={''} onChange={() => {}}>
+                    <NativeSelect aria-label="거래코드 선택" width={'auto'} value={''} onChange={() => {}}>
                       {[
                         { value: 'selection', label: '선택' },
                         { value: 'selection1', label: '선택1' },

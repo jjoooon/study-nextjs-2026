@@ -867,10 +867,10 @@
   }
 
   [data-layout='body'] [data-layout='main'] {
-    min-width: 100%;
+    min-width: 88rem !important;
   }
   [data-layout='main'] {
-    min-width: 88rem !important;
+    min-width: 115.6rem !important;
   }
 
   /* filefond */

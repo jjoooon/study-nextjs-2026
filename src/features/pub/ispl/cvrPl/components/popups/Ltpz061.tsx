@@ -17,7 +17,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useState } from 'react';
 import * as React from 'react';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
-import { Grow, Typo, Gcol } from '@atoms'; // 2026-05-27 Grid 삭제
+import { Grow, Typo } from '@atoms'; // 2026-05-27 Grid 삭제
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
@@ -485,7 +485,7 @@ const Ltpz061 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr]">
+        <DialogSection className="grid-rows-[auto_auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
             <FormTable variant="none" cols={['w-1', 'w-auto']}>
               <FormRow>
@@ -501,77 +501,75 @@ const Ltpz061 = () => {
           </Grow>
 
           {/* 2026-05-27 Grid 삭제 */}
-          <Gcol gap={3}>
-            <TableFold variant={'accordion'}>
-              <TableFoldHead title="특정부위" />
-              <TableFoldBody>
-                <div className="ag-theme-alpine inner-scroll" data-row={rowData1.length}>
-                  <AgGridReact<DummyDataType1>
-                    getRowId={(params) => String(params.data.id)}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    columnDefs={columnDefs}
-                    rowData={rowData1}
-                    headerHeight={0}
-                    groupHeaderHeight={32}
-                    singleClickEdit={true}
-                    defaultColDef={{
-                      suppressMovable: true,
-                    }}
-                    rowSelection={{
-                      mode: 'multiRow',
-                      headerCheckbox: false,
-                      checkboxes: true,
-                      enableClickSelection: false,
-                      enableSelectionWithoutKeys: true,
-                    }}
-                    selectionColumnDef={{
-                      headerName: '선택',
-                      width: 30,
-                      cellClass: 'text-center editable-cell',
-                    }}
-                    onSelectionChanged={handleSelectionChanged1} // 2026-05-27 선택된 행의 상태를 업데이트하는 이벤트 핸들러 추가
-                    domLayout="normal"
-                    tooltipShowMode="whenTruncated"
-                    tooltipShowDelay={0}
-                    animateRows={false}
-                  />
-                </div>
-              </TableFoldBody>
-            </TableFold>
-            <TableFold variant={'accordion'}>
-              <TableFoldHead title="특정질병" />
-              <TableFoldBody>
-                <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
-                  <AgGridReact<DummyDataType2>
-                    getRowId={(params) => String(params.data.id)}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    columnDefs={columnDefs2}
-                    rowData={rowData2}
-                    headerHeight={0}
-                    groupHeaderHeight={32}
-                    singleClickEdit={true}
-                    defaultColDef={{
-                      suppressMovable: true,
-                    }}
-                    rowSelection={{
-                      mode: 'multiRow',
-                      headerCheckbox: false,
-                      checkboxes: true,
-                      enableClickSelection: false,
-                      enableSelectionWithoutKeys: true,
-                    }}
-                    selectionColumnDef={{
-                      headerName: '선택',
-                      width: 30,
-                      cellClass: 'text-center editable-cell',
-                    }}
-                    onSelectionChanged={handleSelectionChanged2}
-                    domLayout="normal"
-                  />
-                </div>
-              </TableFoldBody>
-            </TableFold>
-          </Gcol>
+          <TableFold variant={'accordion'}>
+            <TableFoldHead title="특정부위" />
+            <TableFoldBody>
+              <div className="ag-theme-alpine inner-scroll" data-row={rowData1.length}>
+                <AgGridReact<DummyDataType1>
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  columnDefs={columnDefs}
+                  rowData={rowData1}
+                  headerHeight={0}
+                  groupHeaderHeight={32}
+                  singleClickEdit={true}
+                  defaultColDef={{
+                    suppressMovable: true,
+                  }}
+                  rowSelection={{
+                    mode: 'multiRow',
+                    headerCheckbox: false,
+                    checkboxes: true,
+                    enableClickSelection: false,
+                    enableSelectionWithoutKeys: true,
+                  }}
+                  selectionColumnDef={{
+                    headerName: '선택',
+                    width: 30,
+                    cellClass: 'text-center editable-cell',
+                  }}
+                  onSelectionChanged={handleSelectionChanged1} // 2026-05-27 선택된 행의 상태를 업데이트하는 이벤트 핸들러 추가
+                  domLayout="normal"
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
+                  animateRows={false}
+                />
+              </div>
+            </TableFoldBody>
+          </TableFold>
+          <TableFold variant={'accordion'}>
+            <TableFoldHead title="특정질병" />
+            <TableFoldBody>
+              <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
+                <AgGridReact<DummyDataType2>
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  columnDefs={columnDefs2}
+                  rowData={rowData2}
+                  headerHeight={0}
+                  groupHeaderHeight={32}
+                  singleClickEdit={true}
+                  defaultColDef={{
+                    suppressMovable: true,
+                  }}
+                  rowSelection={{
+                    mode: 'multiRow',
+                    headerCheckbox: false,
+                    checkboxes: true,
+                    enableClickSelection: false,
+                    enableSelectionWithoutKeys: true,
+                  }}
+                  selectionColumnDef={{
+                    headerName: '선택',
+                    width: 30,
+                    cellClass: 'text-center editable-cell',
+                  }}
+                  onSelectionChanged={handleSelectionChanged2}
+                  domLayout="normal"
+                />
+              </div>
+            </TableFoldBody>
+          </TableFold>
         </DialogSection>
         <DialogFooter>
           <DialogFooterArea>

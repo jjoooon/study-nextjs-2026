@@ -185,11 +185,13 @@ const Ltpz087 = () => {
                 <FormTable caption={'질권설정내용'} cols={['w-[10rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'질권자'}>
-                      <Input aria-label="" value={''} readOnly />
-                      <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                        <SearchIcon color={'var(--color-primary-50)'} />
-                      </Button>
-                      <Input aria-label="" width={150} value={''} readOnly />
+                      <Grid className="grid-cols-[1fr_auto_auto] w-full">
+                        <Input aria-label="" value={''} readOnly />
+                        <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                          <SearchIcon color={'var(--color-primary-50)'} />
+                        </Button>
+                        <Input aria-label="" width={150} value={''} readOnly />
+                      </Grid>
                     </FormCell>
                   </FormRow>
                   <FormRow>

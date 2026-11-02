@@ -162,23 +162,22 @@ export default function Ltpa630Section() {
         headerName: '패키지명',
         field: 'field1',
         cellClass: 'text-center',
-        flex: 1,
-        minWidth: attributeColumnWidth(140),
+        flex: 10,
         autoHeight: true,
         spanRows: true,
       },
       {
         headerName: '세부',
         field: 'field2',
-        flex: 6,
+        flex: 2,
         minWidth: attributeColumnWidth(150),
         autoHeight: true,
       },
       {
         headerName: '적용대상',
         field: 'field3',
-        flex: 6,
-        minWidth: attributeColumnWidth(150),
+        flex: 1,
+        minWidth: attributeColumnWidth(100),
         autoHeight: true,
         cellClass: 'text-center',
         valueFormatter: (params) => (Array.isArray(params.value) ? params.value.join(' / ') : (params.value ?? '')),
@@ -240,7 +239,7 @@ export default function Ltpa630Section() {
         field: 'id',
         cellClass: 'text-center justify-center',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellRenderer: (params: ICellRendererParams<DummyData2Type>) => {
           return (
             <Button
