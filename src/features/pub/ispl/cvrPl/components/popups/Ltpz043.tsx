@@ -63,7 +63,7 @@ const Ltpz043 = () => {
                 <FormTable variant="none" cols={['w-1', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'설계번호'} tdClassName="grid grid-cols-[auto_1fr] items-center gap-1 w-full">
-                      <Input aria-label="" width={140} value={'LA123456789012'} readOnly />
+                      <Input aria-label="" variant={'info'} width={140} value={'LA123456789012'} readOnly />
                       <Input aria-label="" variant={'info'} value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
                     </FormCell>
                   </FormRow>
@@ -71,7 +71,7 @@ const Ltpz043 = () => {
               </FormTable>
             </Grow>
             <Gcol gap={2}>
-              <FormTable caption="주차장 정보" cols={['w-[7rem]', 'w-[7rem]', 'w-auto']}>
+              <FormTable caption="주차장 정보" cols={['w-[4rem]', 'w-[7rem]', 'w-auto', 'w-[13rem]']}>
                 {/* 2026-05-27 전체 수정(옥내주차장, 2단주차기, 기계식주차기, 카리프트) */}
                 <FormRow>
                   <FormCell title={'옥내주차장'} titleColSpan={2}>
@@ -202,7 +202,7 @@ const Ltpz043 = () => {
                     (1사고당)
                     <NativeSelect
                       aria-label="선택"
-                      width={80}
+                      width={'auto'}
                       value={form.type06}
                       required
                       onChange={(e) => setFormField('type06', e.target.value)}
@@ -222,7 +222,7 @@ const Ltpz043 = () => {
                     (1사고당)
                     <NativeSelect
                       aria-label="선택"
-                      width={80}
+                      width={'auto'}
                       value={form.type07}
                       required
                       onChange={(e) => setFormField('type07', e.target.value)}
@@ -239,7 +239,7 @@ const Ltpz043 = () => {
                   <FormCell title={'공제금액'} titleColSpan={2} colSpan={2}>
                     <NativeSelect
                       aria-label="선택"
-                      width={264}
+                      width={'auto'}
                       value={form.type08}
                       required
                       onChange={(e) => setFormField('type08', e.target.value)}

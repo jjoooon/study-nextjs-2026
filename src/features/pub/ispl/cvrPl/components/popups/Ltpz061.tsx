@@ -540,7 +540,7 @@ const Ltpz061 = () => {
           <TableFold variant={'accordion'}>
             <TableFoldHead title="특정질병" />
             <TableFoldBody>
-              <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
+              <div className="ag-theme-alpine inner-scroll" data-row={6}>
                 <AgGridReact<DummyDataType2>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}

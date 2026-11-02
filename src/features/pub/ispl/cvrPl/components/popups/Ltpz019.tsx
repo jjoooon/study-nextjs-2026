@@ -477,7 +477,7 @@ const Ltpz019 = () => {
           <Grid className="w-full grid-rows-[minmax(0,1fr)]" gap={2}>
             {/* 본문 그리드: 2분할 레이아웃 (상품정보 vs 종/플랜정보) */}
             <Grow placement={'ss'} className="w-full gap-3 h-full">
-              <Grid className="w-full grid-cols-[5fr_2fr] grid-rows-[minmax(0,1fr)] gap-3 h-full">
+              <Grid className="w-full grid-cols-[6fr_4fr] grid-rows-[minmax(0,1fr)] gap-3 h-full">
                 {/* 좌측: 상품정보 리스트 (Ag-Grid) */}
                 <TableFold variant={'default'}>
                   <TableFoldHead title="상품정보">

@@ -220,7 +220,7 @@ const Ltpz086 = () => {
     {
       headerName: '가입금액',
       field: 'field07',
-      minWidth: attributeColumnWidth(70),
+      minWidth: attributeColumnWidth(100),
       flex: 1,
       // 하단 합계 행일 때 가입금액~반영금액(4개 셀)을 병합하여 합계 금액을 넓게 표시
       colSpan: (params) => (params.node?.rowPinned ? 4 : 1),
@@ -240,7 +240,7 @@ const Ltpz086 = () => {
     {
       headerName: '상태',
       field: 'field09',
-      minWidth: attributeColumnWidth(60),
+      minWidth: attributeColumnWidth(70),
       flex: 1,
       autoHeight: true,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
@@ -249,7 +249,7 @@ const Ltpz086 = () => {
     {
       headerName: '반영금액',
       field: 'field10',
-      minWidth: attributeColumnWidth(70),
+      minWidth: attributeColumnWidth(100),
       flex: 1,
       autoHeight: true,
       // 합계 행일 때는 가입금액 열에 병합(colSpan 4)되므로 가려짐 (0 처리)
@@ -284,7 +284,7 @@ const Ltpz086 = () => {
     {
       headerName: '기누적금액',
       field: 'field04',
-      minWidth: attributeColumnWidth(100),
+      minWidth: attributeColumnWidth(140),
       flex: 1,
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
@@ -292,7 +292,7 @@ const Ltpz086 = () => {
     {
       headerName: '합계',
       field: 'field05',
-      minWidth: attributeColumnWidth(100),
+      minWidth: attributeColumnWidth(140),
       flex: 1,
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
@@ -300,7 +300,7 @@ const Ltpz086 = () => {
     {
       headerName: '한도',
       field: 'field06',
-      minWidth: attributeColumnWidth(100),
+      minWidth: attributeColumnWidth(140),
       flex: 1,
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
@@ -343,7 +343,7 @@ const Ltpz086 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="xl">
+      <DialogContent showCloseButton resizable={true} size="2xl">
         {/* 다이얼로그 타이틀 영역 */}
         <DialogHeader>
           <DialogTitle>

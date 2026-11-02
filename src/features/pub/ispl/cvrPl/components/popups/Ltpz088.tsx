@@ -36,7 +36,7 @@ const Ltpz088 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr]">
+        <DialogSection className="flex flex-col justify-start">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
             <FormTable variant="none" cols={['w-1', 'w-auto']}>
               <FormRow>

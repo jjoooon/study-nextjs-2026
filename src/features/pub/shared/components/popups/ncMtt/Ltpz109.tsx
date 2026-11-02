@@ -38,7 +38,7 @@ const Ltpz109 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="gap-2">
+        <DialogSection className="gap-2 grid-rows-[auto_1fr]">
           <TableFold variant="default">
             <TableFoldHead title="고객 SELF고지 알림톡(LMS) 발송대상"></TableFoldHead>
             <TableFoldBody>

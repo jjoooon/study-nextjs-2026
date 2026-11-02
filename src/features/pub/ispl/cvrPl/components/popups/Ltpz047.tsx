@@ -63,10 +63,10 @@ const Ltpz047 = () => {
             </FormTable>
           </Grow>
           <Gcol className="w-full">
-            <FormTable caption="화재배상" cols={['w-[7.4rem]', 'w-[11.5rem]', 'w-auto', 'w-[11.5rem]', 'w-auto']}>
+            <FormTable caption="화재배상" cols={['w-[4.4rem]', 'w-[11.5rem]', 'w-auto', 'w-[9.5rem]', 'w-[26.8rem]']}>
               <FormRow>
                 <FormCell title={'업주성명(법인명)'} titleColSpan={2}>
-                  <Input size="lg" value="" variant="default" width="13rem" readOnly />
+                  <Input size="lg" value="" variant="default" width="full" readOnly />
                 </FormCell>
                 <FormCell title={'주민/법인번호'}>
                   <Input
@@ -142,7 +142,7 @@ const Ltpz047 = () => {
                 >
                   <NativeSelect
                     aria-label="선택"
-                    width="14rem"
+                    width="auto"
                     value={form.type01}
                     onChange={(e) => setFormField('type01', e.target.value)}
                   >
@@ -180,16 +180,7 @@ const Ltpz047 = () => {
                 )}
               </FormRow>
               <FormRow>
-                <FormCell
-                  title={
-                    <Grow placement="sc">
-                      영업장면적
-                      <EssentialIcon />
-                    </Grow>
-                  }
-                  titleColSpan={2}
-                  colSpan={4}
-                >
+                <FormCell title={'영업장면적'} titleColSpan={2} colSpan={4}>
                   <Input
                     errorMsg="입력은 필수입니다."
                     errorPs="bl"
@@ -215,15 +206,7 @@ const Ltpz047 = () => {
               </FormRow>
               <FormRow>
                 <FormCell title={'보상한도'} titleRowSpan={2} tdNone={true}></FormCell>
-                <FormCell
-                  title={
-                    <Grow placement="sc">
-                      대인(1인당)
-                      <EssentialIcon />
-                    </Grow>
-                  }
-                  colSpan={4}
-                >
+                <FormCell title={'대인(1인당)'} colSpan={4}>
                   <Input
                     errorMsg="입력은 필수입니다."
                     errorPs="bl"
@@ -277,16 +260,7 @@ const Ltpz047 = () => {
                 </FormCell>
               </FormRow>
               <FormRow>
-                <FormCell
-                  title={
-                    <Grow placement="sc">
-                      종업원담보업종
-                      <EssentialIcon />
-                    </Grow>
-                  }
-                  titleColSpan={2}
-                  colSpan={4}
-                >
+                <FormCell title={'종업원담보업종'} titleColSpan={2} colSpan={4}>
                   {/* 2026-05-27 select 추가 */}
                   {form.type06 === 'selection3' && (
                     <NativeSelect

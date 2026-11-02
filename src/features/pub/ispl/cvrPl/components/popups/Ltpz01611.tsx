@@ -30,14 +30,14 @@ const Ltpz01611 = () => {
     <TableFold>
       <TableFoldHead title="재난배상책임(화재/붕괴/폭발)" />
       <TableFoldBody className="gap-2">
-        <FormTable caption="화재배상" cols={['w-[9.4rem]', 'w-[11rem]', 'w-[11.5rem]', 'w-[11.5rem]', 'w-auto']}>
+        <FormTable caption="화재배상" cols={['w-[9.4rem]', 'w-[11rem]', 'w-[32rem]', 'w-[11.5rem]', 'w-auto']}>
           <FormRow>
             <FormCell title={'재난배상책임 가입관리코드'} titleColSpan={2}>
               <Input size="lg" value="" variant="default" width="18rem" readOnly />
               <Button variant={'outlined'}>가입관리코드조회</Button>
             </FormCell>
             <FormCell title={'상호(건물명)'}>
-              <Input size="lg" value="" variant="default" width="24rem" />
+              <Input size="lg" value="" variant="default" width="full" />
             </FormCell>
           </FormRow>
           <FormRow>

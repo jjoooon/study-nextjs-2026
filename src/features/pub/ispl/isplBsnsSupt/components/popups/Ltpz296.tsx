@@ -594,14 +594,13 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
         </DialogHeader>
 
         {/* 다이얼로그 본문 영역 */}
-        <DialogSection className="w-full h-full min-h-0 overflow-y-auto grid-rows-[auto_1fr]">
-          {/* 상단: 조회 조건 설정 폼 */}
+        <DialogSection className=" grid-rows-[auto_1fr]">
           <Grow className="w-full items-center" variant="box-round" placement={'bwe'}>
             <FormTable
-              variant={'head'}
+              variant={'none'}
               lineTop={false}
-              caption="정액담보점검목록 조회"
-              cols={['w-[6rem]', 'w-[auto]', 'w-[8rem]', 'w-[auto]']}
+              caption="조회"
+              cols={['w-[6rem]', 'w-[12rem]', 'w-[8rem]', 'w-[auto]', 'w-[8rem]', 'w-[22rem]']}
             >
               <FormRow>
                 <FormCell title={'설계번호'}>
@@ -616,40 +615,27 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
                 <FormCell title={'발행후변경순번'}>
                   <Input aria-label="발행후변경순번 입력" value={'1'} onChange={() => {}} variant="info" readOnly />
                 </FormCell>
+                <FormCell className="whitespace-nowrap" tdClassName="flex-nowrap" title={'피보험자찾기'}>
+                  <NativeSelect aria-label="점검방법 선택" value={''} width={80} onChange={() => {}}>
+                    {[
+                      { value: 'selection', id: 'type1', label: '이름' },
+                      { value: 'selection2', id: 'type2', label: '이름1' },
+                    ].map((option) => (
+                      <NativeSelectOption key={option.id} value={option.value}>
+                        {option.label}
+                      </NativeSelectOption>
+                    ))}
+                  </NativeSelect>
+                  <Input aria-label="조직구분명 입력" width={120} value={'김한화'} onChange={() => {}} />
+                </FormCell>
               </FormRow>
             </FormTable>
-
-            <Grow>
-              <FormTable
-                variant={'head'}
-                lineTop={false}
-                caption="정액담보점검목록 조회"
-                cols={['w-[8rem]', 'w-[auto]']}
-              >
-                <FormRow>
-                  <FormCell className="whitespace-nowrap" tdClassName="flex-nowrap" title={'피보험자찾기'}>
-                    <NativeSelect aria-label="점검방법 선택" value={''} width={80} onChange={() => {}}>
-                      {[
-                        { value: 'selection', id: 'type1', label: '이름' },
-                        { value: 'selection2', id: 'type2', label: '이름1' },
-                      ].map((option) => (
-                        <NativeSelectOption key={option.id} value={option.value}>
-                          {option.label}
-                        </NativeSelectOption>
-                      ))}
-                    </NativeSelect>
-                    <Input aria-label="조직구분명 입력" width={120} value={'김한화'} onChange={() => {}} />
-                  </FormCell>
-                </FormRow>
-              </FormTable>
-              <Button id="btnRA" color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
-                검색
-              </Button>
-            </Grow>
+            <Button id="btnRA" color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+              검색
+            </Button>
           </Grow>
 
-          {/* 2026-05-27 div 추가 - 실데이터 그리드 및 일괄 처리 영역 */}
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 overflow-y-scroll">
             {/* 1. 그룹 설정 영역 */}
             <TableFold>
               <TableFoldHead title="그룹설정">

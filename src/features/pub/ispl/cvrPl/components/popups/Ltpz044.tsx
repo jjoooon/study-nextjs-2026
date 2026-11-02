@@ -165,7 +165,7 @@ const Ltpz044 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_minmax(0,1fr)_auto]">
+        <DialogSection className="flex flex-col justify-start">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
             <FormTable variant="head">
               <FormRow>
@@ -184,23 +184,22 @@ const Ltpz044 = () => {
               </FormRow>
             </FormTable>
           </Grow>
+          <Gcol placement="ss">
+            <div className="ag-theme-alpine">
+              <AgGridReact<DummyDataType>
+                getRowId={(params) => String(params.data.id)}
+                noRowsOverlayComponent={AgGridEmptyComponent}
+                rowData={rowData}
+                columnDefs={columnDefs}
+                defaultColDef={{
+                  sortable: true,
+                  resizable: true,
+                }}
+                singleClickEdit={true}
+                domLayout="autoHeight"
+              />
+            </div>
 
-          <div className="ag-theme-alpine">
-            <AgGridReact<DummyDataType>
-              getRowId={(params) => String(params.data.id)}
-              noRowsOverlayComponent={AgGridEmptyComponent}
-              rowData={rowData}
-              columnDefs={columnDefs}
-              defaultColDef={{
-                sortable: true,
-                resizable: true,
-              }}
-              singleClickEdit={true}
-              domLayout="autoHeight"
-            />
-          </div>
-
-          <Gcol>
             <Gcol className="w-full" placement="ss" variant="box-info">
               <Typo icon="info">
                 예정보험료는 설계의 출생예정일 기준으로 산출된 값으로 실제출생일 출생성별이 다른 경우 변경될 수

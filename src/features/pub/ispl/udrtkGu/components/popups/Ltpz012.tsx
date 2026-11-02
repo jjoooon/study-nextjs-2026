@@ -385,7 +385,7 @@ const Ltpz012 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid h-full grid-rows-[auto_1fr]">
+        <DialogSection className="grid-rows-[auto_1fr]">
           {/* 상단: 기본 설계 및 피보험자 정보 영역 */}
           <Grow className="w-full" variant="box-round" placement={'ss'}>
             <FormTable variant="head">
@@ -422,7 +422,7 @@ const Ltpz012 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <Grid placement="ss" className="min-h-0 w-full overflow-y-auto" gap={4}>
+          <Grid placement="ss" className="min-h-0 overflow-y-auto" gap={4}>
             {/* 1. 가점계산 섹션 */}
             <TableFold>
               <TableFoldHead title="가점계산">

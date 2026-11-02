@@ -878,7 +878,7 @@ const Ltpz031 = () => {
           {/* 2-2. 중앙 스플릿 레이아웃: 좌측(질병검색 패널) & 우측(선택 질병별 입력 폼 패널) */}
           {/* 좌측 영역: 많이 찾는 질병 목록 및 질병 검색창 & 결과 목록 그리드 */}
           <ResizablePanelGroup orientation="horizontal" className="w-full">
-            <ResizablePanel defaultSize={31} maxSize={290}>
+            <ResizablePanel defaultSize={260}>
               <Grid placement={'ss'} className="w-full h-full overflow-hidden grid-rows-[auto_1fr]" gap={5}>
                 {/* 많이 찾는 질병 (퀵 태그 버튼들) */}
                 <Gcol className="w-full" placement={'ss'} gap={2}>
@@ -888,7 +888,7 @@ const Ltpz031 = () => {
                       className="cp-checkbox-group-button gap-1"
                       minSelected={2}
                       defaultValue={[]}
-                      variant="button"
+                      variant="noCheckButton"
                     >
                       {[
                         { value: '대장·직장용종', label: '대장직장용종장직장용종 장·직장용종' },
@@ -948,7 +948,7 @@ const Ltpz031 = () => {
                       </Grow>
                     </Grow>
 
-                    <div className="ag-theme-alpine min-h-[30rem] ">
+                    <div className="ag-theme-alpine inner-scroll inner-min-scroll" data-row={2}>
                       <AgGridReact<DummyDataType>
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         getRowId={(params) => String(params.data.id)}
@@ -964,7 +964,7 @@ const Ltpz031 = () => {
               </Grid>
             </ResizablePanel>
             <ResizableHandle />
-            <ResizablePanel defaultSize={69}>
+            <ResizablePanel defaultSize={646}>
               {/* 우측 영역: 선택한 질병 리스트 탭 및 탭별 세부 정보 입력 폼 */}
               <Grow placement={'ss'} className="w-full min-w-0" gap={2}>
                 <Grow className="w-full min-w-0">

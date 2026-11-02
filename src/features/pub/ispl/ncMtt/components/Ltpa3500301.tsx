@@ -1813,14 +1813,16 @@ export const Ltpa3500301 = ({
             )}
           </Gcol>
           <Gcol
-            className="w-[5.6rem] border-[0.1rem] border-solid border-[#1E2124] rounded-[0.6rem] text-center bg-white"
+            className="mb-1 w-[5.6rem] border-[0.1rem] border-solid border-[#1E2124] rounded-[0.6rem] text-center bg-white"
             gap={2}
           >
             <Gcol className="bg-[#F4F4F4] rounded-t-[0.6rem] py-1" gap={1}>
               <Gcol gap={0}>
                 <Typo variant={'body-sm'} weight={'bold'}>
-                  [참고용]<br></br>
-                  지급정보<br></br>
+                  [참고용]
+                  <br />
+                  지급정보
+                  <br />
                   <TooltipQ>
                     <Typo variant="body-md" weight={'bold'}>
                       주의
@@ -1835,12 +1837,13 @@ export const Ltpa3500301 = ({
                     </BulletList>
                   </TooltipQ>
                 </Typo>
-                <Typo variant={'body-xs'}>
-                  조회기준일<br></br>
+                <Typo variant={'body-xs'} className="tracking-[-0.1rem]">
+                  조회기준일
+                  <br />
                   2026.02.02
                 </Typo>
               </Gcol>
-              <Typo variant={'body-sm'} weight={'bold'}>
+              <Typo variant={'body-sm'} weight={'bold'} className="tracking-[-0.1rem]">
                 입원/수술
               </Typo>
             </Gcol>

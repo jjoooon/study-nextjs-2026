@@ -492,10 +492,10 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
           {/* 상단: 설계번호 및 피보험자 조회 조건 영역 */}
           <Grow className="w-full items-center" variant="box-round" placement={'bwe'}>
             <FormTable
-              variant={'head'}
+              variant={'none'}
               lineTop={false}
               caption="정액담보점검목록 조회"
-              cols={['w-[6rem]', 'w-[auto]', 'w-[8rem]', 'w-[auto]']}
+              cols={['w-[6rem]', 'w-[12rem]', 'w-[8rem]', 'w-[auto]', 'w-[8rem]', 'w-[22rem]']}
             >
               <FormRow>
                 <FormCell title={'설계번호'}>
@@ -510,35 +510,25 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
                 <FormCell title={'발행후변경순번'}>
                   <Input aria-label="발행후변경순번 입력" value={'1'} onChange={() => {}} variant="info" readOnly />
                 </FormCell>
+
+                <FormCell className="whitespace-nowrap" title={'피보험자찾기'}>
+                  <NativeSelect aria-label="점검방법 선택" value={''} width={80} onChange={() => {}}>
+                    {[
+                      { value: 'selection', id: 'type1', label: '이름' },
+                      { value: 'selection2', id: 'type2', label: '이름1' },
+                    ].map((option) => (
+                      <NativeSelectOption key={option.id} value={option.value}>
+                        {option.label}
+                      </NativeSelectOption>
+                    ))}
+                  </NativeSelect>
+                  <Input aria-label="조직구분명 입력" width={120} value={'김한화'} onChange={() => {}} />
+                </FormCell>
               </FormRow>
             </FormTable>
-            <Grow>
-              <FormTable
-                variant={'head'}
-                lineTop={false}
-                caption="정액담보점검목록 조회"
-                cols={['w-[8rem]', 'w-[auto]']}
-              >
-                <FormRow>
-                  <FormCell className="whitespace-nowrap" title={'피보험자찾기'}>
-                    <NativeSelect aria-label="점검방법 선택" value={''} width={80} onChange={() => {}}>
-                      {[
-                        { value: 'selection', id: 'type1', label: '이름' },
-                        { value: 'selection2', id: 'type2', label: '이름1' },
-                      ].map((option) => (
-                        <NativeSelectOption key={option.id} value={option.value}>
-                          {option.label}
-                        </NativeSelectOption>
-                      ))}
-                    </NativeSelect>
-                    <Input aria-label="조직구분명 입력" width={120} value={'김한화'} onChange={() => {}} />
-                  </FormCell>
-                </FormRow>
-              </FormTable>
-              <Button id="btnRA" color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
-                검색
-              </Button>
-            </Grow>
+            <Button id="btnRA" color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+              검색
+            </Button>
           </Grow>
           {/* 2026-05-27 구조변경, div, Gcol 추가 */}
           <div className="flex flex-col gap-3">
