@@ -860,6 +860,14 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   overflow: hidden;
   text-overflow: clip;
 }
+
+[role="checkbox"].truncate > div {
+  width: 100%;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .truncate-no .truncate-no {
   padding-right: 0.2rem;
 }

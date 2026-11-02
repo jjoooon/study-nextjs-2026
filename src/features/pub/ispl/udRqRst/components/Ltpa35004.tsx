@@ -401,12 +401,12 @@ export function Ltpa35004({ onClose }: Ltpa35004Props = {}) {
                   <FormCell
                     title={isMultiDesign ? '동시설계' : '설계번호'}
                     className="min-w-[6.4rem]"
-                    tdStyle={{ width: '100%' }}
                     tdClassName="justify-between w-full"
                   >
                     {isMultiDesign ? (
                       <RadioGroup
                         className="gap-2"
+                        width={'auto'}
                         errorMsg="하나를 선택해주세요."
                         errorPs="bl"
                         onValueChange={() => {}}
@@ -414,16 +414,21 @@ export function Ltpa35004({ onClose }: Ltpa35004Props = {}) {
                         <RadioGroupItem color="primary" id="radio1" size="md" value="LA123456789012" variant="button">
                           LA123456789012
                         </RadioGroupItem>
-                        <RadioGroupItem color="primary" id="radio2" size="md" value="LA123456789012" variant="button">
+                        <RadioGroupItem color="primary" id="radio2" size="md" value="LA123456789013" variant="button">
                           LA123456789012
                         </RadioGroupItem>
                       </RadioGroup>
                     ) : (
-                      <Input width={'full'} value={'LA123456789012'} size={'md'} variant="ghost" readOnly />
+                      <Input width={200} value={'LA123456789012'} size={'md'} variant="ghost" readOnly />
                     )}
 
                     <Grow className="flex items-center gap-1">
-                      <Button variant={'outlined'} color={'gray'} size={'md'}>
+                      <Button
+                        variant={'outlined'}
+                        color={'gray'}
+                        size={'md'}
+                        onClick={() => setIsMultiDesign(!isMultiDesign)}
+                      >
                         진단결과
                       </Button>
                       <Button variant={'outlined'} color={'gray'} size={'md'}>
@@ -445,7 +450,6 @@ export function Ltpa35004({ onClose }: Ltpa35004Props = {}) {
                   </FormCell>
                 </FormRow>
 
-                {/* M3. size md 삭제 */}
                 <FormRow className="grid grid-cols-[1f]">
                   <FormCell
                     title={'심사구분'}
@@ -480,7 +484,7 @@ export function Ltpa35004({ onClose }: Ltpa35004Props = {}) {
                       <Input aria-label="심사처리자3" width={'full'} value={''} readOnly />
                     </Grid>
                   </FormCell>
-                  <FormCell title={'심사상태'} className="w-full" tdStyle={{ flex: 1 }} tdClassName="w-full">
+                  <FormCell title={'심사상태'} tdStyle={{ flex: 1 }} tdClassName="w-full">
                     <Grid className="w-full grid-cols-[minmax(15.8rem,1fr)_11rem] gap-1">
                       <Input aria-label="심사상태" width={'full'} value={''} readOnly />
                       <Checkbox>심사자배정</Checkbox>

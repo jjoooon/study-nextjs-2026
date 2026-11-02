@@ -169,7 +169,7 @@ export default function Ltpa630Section() {
       {
         headerName: '세부',
         field: 'field2',
-        flex: 2,
+        flex: 15,
         minWidth: attributeColumnWidth(150),
         autoHeight: true,
       },

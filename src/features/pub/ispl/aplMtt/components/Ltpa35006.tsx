@@ -276,7 +276,7 @@ export const Ltpa35006 = () => {
                     <Typo variant="heading-md">청약사항</Typo>
                     <FormTable
                       className="formTable-fixed"
-                      cols={['w-[8rem]', 'w-[25%]', 'w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
+                      cols={['w-[8rem]', 'w-[24%]', 'w-[8rem]', 'w-auto', 'w-[8rem]', 'w-[24%]']}
                     >
                       <FormRow>
                         <FormCell title={'보험종목'}>
@@ -298,10 +298,10 @@ export const Ltpa35006 = () => {
                       </FormRow>
                       <FormRow>
                         <FormCell title={'계약자'}>
-                          <Input aria-label="계약자명" width={170} value={'김한화(00)'} readOnly />
+                          <Input aria-label="계약자명" width={70} value={'김한화(00)'} readOnly />
                           <Input
                             aria-label="계약자 주민등록번호"
-                            width={'full'}
+                            width={126}
                             readOnly
                             masking
                             value={'000000-0123456'}
@@ -316,10 +316,10 @@ export const Ltpa35006 = () => {
                       </FormRow>
                       <FormRow>
                         <FormCell title={'영수보험료'}>
-                          <Input aria-label="총보험료" width={'full'} commaAmount value={'46500'} readOnly />원
+                          <Input aria-label="총보험료" width={'auto'} commaAmount value={'46500'} readOnly />원
                         </FormCell>
                         <FormCell title={'총보험료'}>
-                          <Input aria-label="총보험료" width={'full'} commaAmount value={'46500'} readOnly />원
+                          <Input aria-label="총보험료" width={'auto'} commaAmount value={'46500'} readOnly />원
                         </FormCell>
                         <FormCell title={'입금구분'}>
                           <Input aria-label="입금구분" width={'full'} value={'장기초화납입'} readOnly />
@@ -327,10 +327,10 @@ export const Ltpa35006 = () => {
                       </FormRow>
                       <FormRow>
                         <FormCell title={'피보험자'}>
-                          <Input aria-label="피보험자명" width={170} value={'김한화(00)'} readOnly />
+                          <Input aria-label="피보험자명" width={70} value={'김한화(00)'} readOnly />
                           <Input
                             aria-label="피보험자 주민등록번호"
-                            width={'full'}
+                            width={126}
                             readOnly
                             masking
                             value={'000000-0123456'}

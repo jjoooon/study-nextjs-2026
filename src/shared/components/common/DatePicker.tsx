@@ -761,6 +761,8 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
   const singleSelected = selected instanceof Date ? selected : undefined;
   const multiSelected = Array.isArray(selected) ? selected : undefined;
 
+  const errorStyle = errorPs === 'br' || errorPs === 'bc' || errorPs === 'tc' || errorPs === 'tr' ? 'ml-[-2.9rem]' : '';
+
   return (
     <div className="cp-datepicker relative flex gap-1 items-center justify-center ag-custom-component-popup">
       {mode === 'range' ? (
@@ -1033,7 +1035,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
         </div>
       )}
       {(error || invalidDate) && (
-        <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
+        <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId} className={errorStyle}>
           {invalidDate && !error ? '유효하지 않은 날짜입니다.' : errorMsg}
         </ErrorMsg>
       )}

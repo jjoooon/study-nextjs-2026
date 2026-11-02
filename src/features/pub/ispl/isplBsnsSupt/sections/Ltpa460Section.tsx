@@ -280,9 +280,9 @@ export default function Ltpa460Section() {
           <Grid className="grid-rows-[auto_1fr] h-full w-full" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
               <FormTable
-                variant={'none'}
+                variant={'head'}
                 caption="검증화면 조회 테이블"
-                cols={['w-1', 'w-auto', 'w-1', 'w-auto', 'w-1', 'w-auto', 'w-1', 'w-auto']}
+                cols={['w-1', 'w-auto', 'w-1', 'w-auto', 'w-1', 'w-auto', 'w-1', 'w-auto', 'w-1', 'w-auto']}
               >
                 <FormRow>
                   <FormCell title={'조회기간'}>
@@ -316,8 +316,6 @@ export default function Ltpa460Section() {
                   <FormCell title={'발행후변경순번'}>
                     <Input aria-label="번호" width={60} value={''} />
                   </FormCell>
-                </FormRow>
-                <FormRow>
                   <FormCell title={'로그구분'}>
                     <NativeSelect aria-label="로그구분 선택" width={'auto'} value={''} onChange={() => {}}>
                       {[

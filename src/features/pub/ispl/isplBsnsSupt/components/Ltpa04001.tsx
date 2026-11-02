@@ -456,7 +456,7 @@ const Ltpa04001 = () => {
   // 그리드 데이터/페이징 상태
   // =====================
   // 무한 스크롤(더보기) 기능을 위한 설정
-  const pageSize = 5;
+  const pageSize = 10;
 
   // 초기 렌더는 첫 페이지만 표시
   const [rowData, setRowData] = React.useState<Ltpa040DummyDataRow[]>(() => Ltpa040DummyData.slice(0, pageSize));
@@ -695,11 +695,11 @@ const Ltpa04001 = () => {
           variant={'none'}
           lineTop={false}
           caption="추천설계명세 조회 테이블"
-          cols={['w-[5.6rem]', 'w-[auto]', 'w-[8rem]', 'w-[auto]']}
+          cols={['w-[5.6rem]', 'w-[38rem]', 'w-[8rem]', 'w-[auto]']}
         >
           <FormRow>
             <FormCell title={'고객특성'}>
-              <NativeSelect aria-label="연령구간 선택" width={120} value={''}>
+              <NativeSelect aria-label="연령구간 선택" width={'auto'} value={''}>
                 {[
                   { value: '연령구간 전체', label: '연령구간 전체' },
                   { value: '0~14세', label: '0~14세' },
@@ -713,7 +713,7 @@ const Ltpa04001 = () => {
                   </NativeSelectOption>
                 ))}
               </NativeSelect>
-              <NativeSelect aria-label="성별 선택" width={100} value={''}>
+              <NativeSelect aria-label="성별 선택" width={'auto'} value={''}>
                 {[
                   { value: '전체', label: '전체' },
                   { value: '남', label: '남' },
@@ -724,7 +724,7 @@ const Ltpa04001 = () => {
                   </NativeSelectOption>
                 ))}
               </NativeSelect>
-              <NativeSelect aria-label="직업급수 선택" width={120} value={''}>
+              <NativeSelect aria-label="직업급수 선택" width={'auto'} value={''}>
                 {[
                   { value: '직업급수 전체', label: '직업급수 전체' },
                   { value: '1급', label: '1급' },
@@ -738,7 +738,7 @@ const Ltpa04001 = () => {
               </NativeSelect>
             </FormCell>
             <FormCell title={'모집자'}>
-              <NativeSelect aria-label="모집자 선택" width={100} value={''}>
+              <NativeSelect aria-label="모집자 선택" width={'auto'} value={''}>
                 {[
                   { value: '전체', label: '전체' },
                   { value: '취급직원', label: '취급직원' },

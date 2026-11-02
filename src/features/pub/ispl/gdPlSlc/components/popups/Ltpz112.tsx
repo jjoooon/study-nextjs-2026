@@ -360,8 +360,8 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
           <QuestionMark color="var(--color-gray-50)" />
         </Button>
       </TooltipTrigger>
-      <TooltipContent side="bottom" sideOffset={-1} variant="default" className="z-[999] [&>span]:whitespace-auto!">
-        <>마지막 치료종료시기 (퇴원일 또는 수술일 등) 또는 경과년수를 입력해 주세요.</>
+      <TooltipContent side="right" sideOffset={-1} variant="default" className="z-[999] [&>span]:whitespace-auto!">
+        <p className="w-[26rem]">마지막 치료종료시기 (퇴원일 또는 수술일 등) 또는 경과년수를 입력해 주세요.</p>
       </TooltipContent>
     </Tooltip>
   );
@@ -421,6 +421,9 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
             <DatePickerInput
               mode="single"
               size="md"
+              error={true}
+              errorMsg="10년이내 날짜를 입력해주세요."
+              errorPs="br"
               value={localField5}
               onChange={handleDateChange}
               monthOnly={localDateType === 'month'}
@@ -448,8 +451,8 @@ const MAX_DISEASE_COUNT = 4;
 
 /** 많이 찾는 질병 목록 (CheckboxGroup 항목 + 입원/수술 정보 입력 테이블 추가용 데이터) */
 const POPULAR_DISEASES: Pick<DummyDataType, 'field1' | 'field2' | 'field3'>[] = [
-  { field1: 'K63.5', field2: '대장·직장용종', field3: ['부담보'] },
-  { field1: 'S13.4', field2: '척주염좌', field3: ['SI경증(감액)', '부담보'] },
+  { field1: 'K63.5', field2: '대장·직장용종대장·직장용종', field3: ['부담보'] },
+  { field1: 'S13.4', field2: '척주염좌척주염좌척주염좌 좌척주염좌 척주염좌', field3: ['SI경증(감액)', '부담보'] },
   { field1: 'M54.9', field2: '등통증', field3: ['SI경증'] },
   { field1: 'H26.9', field2: '후천성 백내장', field3: ['할증', '부담보'] },
   { field1: 'T14.1', field2: '열상·표재성손상', field3: ['SI경증'] },
@@ -764,7 +767,7 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
         </DialogHeader>
         <DialogSection className="w-full gap-3">
           <ResizablePanelGroup orientation="horizontal" className="w-full">
-            <ResizablePanel defaultSize={31} maxSize={290}>
+            <ResizablePanel defaultSize={260}>
               {/* 많이찾는질병 & 질병검색 */}
               <Grid placement={'ss'} className="w-full h-full overflow-hidden grid-rows-[auto_1fr]" gap={3}>
                 <Gcol className="w-full" placement={'ss'} gap={2}>
@@ -774,10 +777,10 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
                       className="gap-1"
                       value={popularSelectedValues}
                       onValueChange={handlePopularDiseaseChange}
-                      variant="button"
+                      variant="noCheckButton"
                     >
                       {POPULAR_DISEASES.map((item) => (
-                        <CheckboxGroupItem key={item.field2} value={item.field2}>
+                        <CheckboxGroupItem key={item.field2} value={item.field2} className="max-w-[12rem] truncate">
                           {item.field2}
                         </CheckboxGroupItem>
                       ))}
@@ -836,7 +839,7 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
               </Grid>
             </ResizablePanel>
             <ResizableHandle />
-            <ResizablePanel defaultSize={69}>
+            <ResizablePanel defaultSize={646}>
               <TableFold>
                 <TableFoldHead title="입원/수술 정보 입력(최대 4건)">
                   <Button variant={'outlined'} size={'md'} color={'gray'} onClick={handleDelete}>

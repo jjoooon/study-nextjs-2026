@@ -1155,7 +1155,6 @@ export const Ltpa35005 = () => {
                   </FormTable>
 
                   <TabPager
-                    variant={'default'}
                     data={Tabs}
                     active={TabActive}
                     hasTableBelow={true}

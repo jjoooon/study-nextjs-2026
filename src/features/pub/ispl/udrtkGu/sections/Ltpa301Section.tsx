@@ -192,13 +192,21 @@ export default function Ltpa301Section() {
         mainBody={
           <Grid className="w-full grid-rows-[auto_auto]" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'}>
-              <FormTable variant={'head'} lineTop={false} caption="증권번호 조회" cols={['w-[2rem]', 'flex-2']}>
+              <FormTable
+                variant={'head'}
+                className="w-full"
+                lineTop={false}
+                caption="증권번호 조회"
+                cols={['w-[2rem]', 'w-auto']}
+              >
                 <FormRow>
                   <FormCell title={'증권번호'}>
-                    <Input aria-label="증권번호 입력" />
-                    <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
-                      <SearchIcon color={'var(--color-primary-50)'} />
-                    </Button>
+                    <Grow placement="sc">
+                      <Input aria-label="증권번호 입력" />
+                      <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+                        <SearchIcon color={'var(--color-primary-50)'} />
+                      </Button>
+                    </Grow>
                   </FormCell>
                 </FormRow>
               </FormTable>
