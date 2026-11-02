@@ -225,7 +225,7 @@ export default function Ltpa301Section() {
                 <TableFoldBody>
                   <FormTable caption="정액담보점검내역 테이블" cols={['w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1']}>
                     <FormRow>
-                      <FormCell title={'증권번호'} tdClassName="flex-nowrap gap-1">
+                      <FormCell title={'증권번호'} tdClassName="flex-nowrap">
                         <Input aria-label="증권번호 입력" readOnly className="flex-1" />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
                           <ArrowNext color={'var(--color-primary-50)'} />
