@@ -10,12 +10,12 @@ import Image from 'next/image';
 import * as React from 'react';
 import { useState } from 'react';
 import { AiBotIcon } from '@/shared/components/features/AiBotIcon';
-import { cn } from '@/shared/lib/shadcn/utils';
 import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
-import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
+import { BulletList, BulletListItem } from '@common/BulletList';
 import { AiSpinner, PuzzleSpinner, Spinner } from '@common/SpinnerRoot';
+import { HeaderWithUnit } from '@grid/HeadRenderers';
 import {
   Ai2Icon,
   SelectDropIcon,
@@ -24,7 +24,6 @@ import {
   AdderIcon,
   ArrowNext,
   KebabIcon,
-  QuestionMark,
   PaperIcon,
   AiIcon,
 } from '@icons';
@@ -307,15 +306,25 @@ export function Ltpa02002({ userType }: { userType: string }) {
     },
     {
       headerName: '가입금액(만원)',
+      headerComponent: HeaderWithUnit,
+      headerComponentParams: {
+        label: '가입금액',
+        unit: '(만원)',
+      },
       field: 'field2',
       flex: 1,
-      minWidth: attributeColumnWidth(78),
+      minWidth: attributeColumnWidth(84),
       cellClass: 'text-right',
       headerClass: '!text-[1.1rem] leading-[2.6rem]',
       valueFormatter: numberValueFormatter<DummyDataListDetailType>,
     },
     {
       headerName: '보험료(원)',
+      headerComponent: HeaderWithUnit,
+      headerComponentParams: {
+        label: '보험료',
+        unit: '(원)',
+      },
       field: 'field3',
       flex: 1,
       minWidth: attributeColumnWidth(60),

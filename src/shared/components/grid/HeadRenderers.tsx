@@ -82,14 +82,14 @@ export const HeaderWithUnit = React.memo(function HeaderWithUnit({
       return (
         <span className="inline-flex items-center">
           <span className={cn(unitClassName, 'font-bold')}>{unit}</span>
-          <span>{label}</span>
+          <span className="text-[1.3rem]">{label}</span>
         </span>
       );
     }
 
     return (
       <span className="inline-flex items-center">
-        <span>{label}</span>
+        <span className="text-[1.3rem]">{label}</span>
         <span className={cn(unitClassName, 'font-bold')}>{unit}</span>
       </span>
     );

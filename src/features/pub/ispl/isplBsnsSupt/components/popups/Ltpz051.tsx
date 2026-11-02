@@ -442,7 +442,7 @@ const Ltpz051 = ({ data, loading }: Ltpz051Props) => {
               visibleCount={4}
               removable={false}
               className="overflow-hidden"
-              contentClass="relative overflow-hidden pr-1 grid grid-rows-[1fr_auto] gap-3"
+              contentClass="relative overflow-hidden pt-2 pr-1 grid grid-rows-[1fr_auto] gap-3"
             >
               {/* '직업정보(상해급수)변경대상' 탭 내용 */}
               {active === 'tab1' || active === 'basic' ? (

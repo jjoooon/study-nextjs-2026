@@ -872,6 +872,9 @@
   [data-layout='body'] [data-layout='main'] {
     min-width: 88rem !important;
   }
+  [role="dialog"] [data-layout='main'] {
+    min-width: 30rem !important;
+  }
   [data-layout='main'] {
     min-width: 115.6rem !important;
   }

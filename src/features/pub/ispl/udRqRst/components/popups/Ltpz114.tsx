@@ -20,7 +20,7 @@ const Ltpz114 = () => {
 
   return (
     <Dialog open onOpenChange={handleClose}>
-      <DialogContent showCloseButton resizable={true} size="2xl">
+      <DialogContent showCloseButton resizable={true} size={'2xl'}>
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
