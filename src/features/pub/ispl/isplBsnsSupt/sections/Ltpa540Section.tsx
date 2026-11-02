@@ -369,7 +369,7 @@ export default function Ltpa540Section() {
             <Grow placement="bwc" className="w-full" variant={'box-round'}>
               <FormTable variant={'head'} caption="유사담보관리 조회 테이블" cols={['w-[8rem]', 'w-auto']}>
                 <FormRow>
-                  <FormCell title={'조회구분'}>
+                  <FormCell title={'조회구분'} tdClassName="flex-nowrap gap-1">
                     <NativeSelect aria-label="고객유형 선택" width={200} readOnly={false} required={false}>
                       <NativeSelectOption value="">전체</NativeSelectOption>
                       <NativeSelectOption value="기준담보코드">기준담보코드</NativeSelectOption>

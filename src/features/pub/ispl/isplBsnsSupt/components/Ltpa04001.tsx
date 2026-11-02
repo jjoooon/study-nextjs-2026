@@ -695,7 +695,7 @@ const Ltpa04001 = () => {
           variant={'none'}
           lineTop={false}
           caption="추천설계명세 조회 테이블"
-          cols={['w-[5.6rem]', 'w-[10rem]', 'w-[8rem]', 'w-[auto]']}
+          cols={['w-[5.6rem]', 'w-[60rem]', 'w-[8rem]', 'w-[auto]']}
         >
           <FormRow>
             <FormCell title={'고객특성'}>

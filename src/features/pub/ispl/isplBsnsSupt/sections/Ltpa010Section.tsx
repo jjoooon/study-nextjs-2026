@@ -1006,7 +1006,7 @@ export default function Ltpa010Section() {
                 variant={'none'}
                 lineTop={false}
                 caption="설계번호"
-                cols={['w-1', 'w-1', 'w-1', 'w-1', 'w-1', 'w-auto']}
+                cols={['w-1', 'w-auto', 'w-1', 'w-1', 'w-1', 'w-auto']}
               >
                 <FormRow>
                   <FormCell title={'조회구분'}>

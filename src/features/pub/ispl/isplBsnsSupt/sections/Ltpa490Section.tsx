@@ -261,7 +261,7 @@ export default function Ltpa490Section() {
               <FormTable
                 variant={'none'}
                 caption="미사용청약서 관리 테이블"
-                cols={['w-1', 'w-1', 'w-1', 'w-1', 'w-1', 'w-auto']}
+                cols={['w-1', 'w-[40rem]', 'w-1', 'w-1', 'w-1', 'w-auto']}
               >
                 <FormRow>
                   <FormCell title={'조회구분'}>
