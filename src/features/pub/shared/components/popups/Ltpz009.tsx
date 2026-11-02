@@ -191,7 +191,7 @@ const Ltpz009 = () => {
                       placeholder={' 별명을 등록해주세요'}
                     />
                   </FormCell>
-                  <FormCell title={'입력'} tdClassName="flex-1">
+                  <FormCell title={'입력'} tdClassName="flex-1 flex-nowrap">
                     <Input
                       width={'full'}
                       placeholder="한글 20자 이내로 등록가능"
