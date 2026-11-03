@@ -25,6 +25,7 @@ import {
   ArrowNext,
   KebabIcon,
   PaperIcon,
+  FolderSearch,
   AiIcon,
 } from '@icons';
 import { Button } from '@uiux/Button';
@@ -1261,16 +1262,14 @@ export function Ltpa02002({ userType }: { userType: string }) {
                             <Grow gap={3}>
                               <Grid
                                 key={idx}
-                                className={`relative grid-rows-[minmax(0,1fr)_auto] w-full h-[14.8rem] rounded-[1rem] overflow-hidden gap-0 border-[0.1rem] border-[var(--color-primary-10)] bg-[var(--color-primary-5)]`}
+                                className={`relative grid-rows-[minmax(0,1fr)_auto] w-full h-[14.8rem] rounded-[1rem] overflow-hidden gap-0 border-[0.1rem] border-[var(--color-gray-10)]`}
                               >
-                                <Grow className="h-full" placement="cc">
-                                  <KebabIcon size={40} />
-                                </Grow>
-                                <Grow className="w-full h-[4rem] bg-[#fff] px-4" placement="cc">
-                                  <Typo tag="span" variant={'body-md'}>
+                                <Gcol className="w-full gap-2.5 bg-[#fff]" placement="cc">
+                                  <FolderSearch size={40} />
+                                  <Typo tag="span" variant={'body-md'} color={'gray'}>
                                     아쉽게도 적정한 설계를 찾지 못했어요.
                                   </Typo>
-                                </Grow>
+                                </Gcol>
                               </Grid>
                             </Grow>
                           )}
