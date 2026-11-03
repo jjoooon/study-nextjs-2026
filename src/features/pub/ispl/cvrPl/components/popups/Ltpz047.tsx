@@ -221,7 +221,7 @@ const Ltpz047 = () => {
                 <FormCell title={'대인(1사고당)'} colSpan={4}>
                   <NativeSelect
                     aria-label="선택"
-                    width={100}
+                    width={'auto'}
                     value={form.type05}
                     required
                     onChange={(e) => setFormField('type05', e.target.value)}
@@ -241,7 +241,7 @@ const Ltpz047 = () => {
                 <FormCell title={'종업원담보여부'} titleColSpan={2} colSpan={4}>
                   <NativeSelect
                     aria-label="선택"
-                    width={110}
+                    width={'auto'}
                     value={form.type06}
                     required
                     onChange={(e) => setFormField('type06', e.target.value)}
