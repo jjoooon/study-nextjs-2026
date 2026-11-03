@@ -49,7 +49,7 @@ const DummyData: DummyDataType[] = [
     field04: 'LA123456789012',
     field05: '김한화김한화',
     field06: '',
-    field07: 1000,
+    field07: 10000000000,
     field08: '2026-03-01',
     field09: '진행중',
   },
@@ -229,7 +229,7 @@ const Ltpz038 = () => {
     {
       headerName: '보험료',
       flex: 1,
-      minWidth: attributeColumnWidth(70),
+      minWidth: attributeColumnWidth(100),
       field: 'field07',
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,

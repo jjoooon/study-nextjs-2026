@@ -579,7 +579,7 @@ const Ltpz034 = ({
         </DialogHeader>
 
         <DialogSection className="grid grid-rows-[auto_1fr]">
-          <Gcol>
+          <Gcol placement="ss">
             <Grow className="w-full bg-[#374151]" variant="box-round">
               <FormTable variant="head" cols={['w-1', 'w-auto']}>
                 <FormRow>
@@ -661,7 +661,7 @@ const Ltpz034 = ({
           </Gcol>
           <Grid
             className={
-              isRegistered ? 'grid-cols-[24rem_1fr] gap-3' : 'grid-cols-[1fr_auto_1fr] grid-rows-[auto_minmax(0,1fr)]'
+              isRegistered ? 'grid-cols-[24rem_1fr] gap-3' : 'grid-cols-[1fr_auto_1fr] grid-rows-[minmax(0,1fr)]'
             }
           >
             {isRegistered ? (

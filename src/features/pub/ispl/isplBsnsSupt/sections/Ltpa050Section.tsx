@@ -1296,6 +1296,7 @@ export default function Ltpa050Section() {
                       setActiveB(val);
                     }}
                     onRemove={handleRemoveA}
+                    showPagination={false}
                     error={false}
                     errorMsg="에러 메시지 예시"
                     getValue={(tab) => String(tab.value)}
@@ -1489,6 +1490,7 @@ export default function Ltpa050Section() {
                       setActiveB(val);
                     }}
                     onRemove={handleRemoveB}
+                    showPagination={false}
                     error={false}
                     errorMsg="에러 메시지 예시"
                     getValue={(tab) => String(tab.value)}

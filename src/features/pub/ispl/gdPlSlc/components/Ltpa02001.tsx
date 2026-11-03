@@ -875,6 +875,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
                   active={active}
                   setActive={setActive}
                   hasTableBelow={true}
+                  showPagination={false}
                   className="w-full h-full min-h-0"
                   contentClass="w-full h-full min-h-0 relative"
                   getValue={(tab) => String(tab.value)}

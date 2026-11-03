@@ -232,8 +232,8 @@ const Ltpz008 = () => {
         </DialogHeader>
         <DialogSection className="grid grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
-            <FormTable caption="설계번호" variant="head" cols={['w-[1rem]', 'w-auto', 'w-[1rem]', 'w-auto']}>
-              <FormRow className="grid grid-cols-[1fr_auto] w-full">
+            <FormTable caption="설계번호" variant="head">
+              <FormRow className="flex justify-between w-full">
                 <FormCell title={'상품명'} className="shrink-0" tdClassName="flex-1">
                   <Input value={'한화 시그니처 여성 검강보험 3.0 2504 '} readOnly variant="info" />
                 </FormCell>

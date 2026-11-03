@@ -579,7 +579,12 @@ export const Ltpa35005 = () => {
                         </NativeSelect>
                       </FormCell>
                       <FormCell title={'영수일자 (보험시기)'}>
-                        <DatePickerInput mode={'single'} required />
+                        <Grow className="w-full" placement="bwc">
+                          <DatePickerInput mode={'single'} required />
+                          <Button color={'primary'} size={'lg'} variant={'contained'} onClick={() => {}}>
+                            보험시기수정
+                          </Button>
+                        </Grow>
                       </FormCell>
                     </FormRow>
 

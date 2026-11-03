@@ -314,10 +314,10 @@ export const FormTable = ({
    * - `head`: table 태그 대신 head 전용 레이아웃 분기
    */
   const variantStyles = {
-    default: `table-fixed w-full border-collapse ` + className,
-    primary: 'table-fixed data-[state=checked]:bg-orange-500 data-[state=checked]:border-orange-500',
-    favorite: 'table-fixed data-[state=checked]:bg-transparent border-0 w-[2rem] h-[2rem] shadow-none',
-    setting: `table-fixed w-full border-t-[0.6rem] border-b-[0.6rem] border-[#F4F4F4] border-collapse bg-[#F4F4F4] 
+    default: `w-full border-collapse ` + className,
+    primary: 'data-[state=checked]:bg-orange-500 data-[state=checked]:border-orange-500',
+    favorite: 'data-[state=checked]:bg-transparent border-0 w-[2rem] h-[2rem] shadow-none',
+    setting: `w-full border-t-[0.6rem] border-b-[0.6rem] border-[#F4F4F4] border-collapse bg-[#F4F4F4] 
       [&_th]:bg-[transparent]
       [&_th]:text-[#333] 
       [&_th]:font-bold 
@@ -327,7 +327,7 @@ export const FormTable = ({
       [&_th]:border-none 
       [&_td]:border-none! 
       [&_tr]:border-0`,
-    boxIn: `table-fixed w-full border-none 
+    boxIn: `w-full border-none 
       [&_th]:h-auto bg-[transparent] 
       [&_th]:bg-[transparent] 
       [&_th]:text-[#333] 
@@ -340,7 +340,7 @@ export const FormTable = ({
       [&_tr]:border-none 
       [&_td]:p-0`,
     head: '', // head는 별도 분기
-    none: `table-fixed border-0 bg-transparent 
+    none: `border-0 bg-transparent 
     [&>table>tbody>tr>th]:bg-transparent 
     [&>table>tbody>tr>th]:border-0 
     [&>table>tbody>tr>th]:py-0 
@@ -354,7 +354,7 @@ export const FormTable = ({
     [&>table>tbody>tr]:border-0! 
     [&>table>tbody>tr>td+th]:pl-[2.4rem] 
     [&>table>tbody>tr~tr>*]:pt-[0.6rem]`,
-    bottom: `table-fixed border-0 bg-transparent 
+    bottom: `border-0 bg-transparent 
     [&>table>tbody>tr>th]:bg-transparent 
     [&>table>tbody>tr>th]:border-0 
     [&>table>tbody>tr>th]:py-0 

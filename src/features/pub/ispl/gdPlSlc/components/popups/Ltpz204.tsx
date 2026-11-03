@@ -217,8 +217,8 @@ const Ltpz204 = () => {
       {
         headerName: '패키지명',
         field: 'field1',
-        flex: 2,
-        minWidth: attributeColumnWidth(130),
+        flex: 3,
+        minWidth: attributeColumnWidth(100),
         cellClass: 'text-center',
         autoHeight: true,
         spanRows: true,
@@ -226,8 +226,7 @@ const Ltpz204 = () => {
       {
         headerName: '선택',
         field: 'checked',
-        flex: 1,
-        minWidth: attributeColumnWidth(30),
+        width: attributeColumnWidth(30),
         sortable: false,
         editable: true,
         cellDataType: 'boolean',
@@ -239,7 +238,7 @@ const Ltpz204 = () => {
       {
         headerName: '세부',
         field: 'field2',
-        flex: 20,
+        flex: 4,
         autoHeight: true,
         cellClass: 'cursor-pointer',
       },

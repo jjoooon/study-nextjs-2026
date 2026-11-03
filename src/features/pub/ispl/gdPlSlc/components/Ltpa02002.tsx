@@ -503,7 +503,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
     const timer = setTimeout(() => {
       setDataList(dummyDataList);
       setLoadingAI(false);
-    }, 0);
+    }, 2000);
 
     return () => {
       clearTimeout(timer);
@@ -1150,7 +1150,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
       ) : (
         <>
           <Grid
-            className="w-[calc(100vw + 2rem)] h-full grid-rows-[minmax(0,1fr)] grid-cols-[minmax(73rem,2fr)_minmax(41rem,1fr)] gap-4 items-stretch overflow-hidden bg-[var(--color-gray-5)] p-[2rem]"
+            className="w-[calc(100vw + 2rem)] h-full grid-rows-[minmax(0,1fr)] grid-cols-[minmax(67rem,3fr)_minmax(41.3rem,2fr)] gap-4 items-stretch overflow-hidden bg-[var(--color-gray-5)] p-[2rem]"
             gap={3}
           >
             {/* 리스트 */}
@@ -1165,7 +1165,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                     {Array.from({ length: 3 }).map((_, i) => (
                       <Grid
                         key={i}
-                        className="w-full px-[2.4rem] py-[1.6rem] grid-cols-[1fr_auto] gap-4 place-items-center bg-white rounded-[3.2rem_0.6rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)] min-h-[19.1rem]"
+                        className="w-full px-[2.4rem] py-[1.6rem] grid-cols-[1fr_auto] gap-4  bg-white rounded-[1rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)] min-h-[18rem]"
                       >
                         <AiSpinner size={'10rem'} />
                       </Grid>
@@ -1182,137 +1182,100 @@ export function Ltpa02002({ userType }: { userType: string }) {
                     placement="ss"
                   >
                     {dataList.map((item, idx) => {
-                      if (idx === 1) {
-                        return (
-                          <Grid
-                            key={item.id}
-                            className="w-full px-[2.4rem] py-[1.6rem] grid-cols-[1fr_auto] gap-4  bg-white rounded-[1rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)]"
-                          >
-                            <Gcol gap={2} placement="bws" className="pt-1">
-                              <Gcol className="gap-y-3" placement="ss">
-                                <Typo tag="h3" variant="heading-lg" className="break-all" tooltip="2">
-                                  {item.field1}
-                                </Typo>
+                      return (
+                        <Grid
+                          key={item.id}
+                          className="w-full px-[2.4rem] py-[1.6rem] grid-cols-[1fr_41.4rem] gap-4  bg-white rounded-[1rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)]"
+                        >
+                          <Gcol gap={2} placement="bws" className="pt-1">
+                            <Gcol className="gap-y-3" placement="ss">
+                              <Typo tag="h3" variant="heading-lg" className="break-all" tooltip="2">
+                                {item.field1}
+                              </Typo>
+                              <Typo
+                                tag="p"
+                                variant="body-sm"
+                                className="text-[var(--color-blue-gray-60)] break-all leading-[2rem]"
+                              >
+                                {item.field2.map((v, idx) => (
+                                  <React.Fragment key={`field2-${idx}`}>
+                                    {idx > 0 && (
+                                      <span className="text-[var(--color-gray-30)] mx-[0.4rem] select-none">•</span>
+                                    )}
+                                    {v}
+                                  </React.Fragment>
+                                ))}
+                                {item.field3 && item.field3.length > 0 && (
+                                  <>
+                                    {item.field2 && item.field2.length > 0 && (
+                                      <span className="text-[var(--color-gray-30)] mx-[0.4rem] select-none">•</span>
+                                    )}
+                                    <span className="inline-flex items-center text-[var(--color-information-50)]">
+                                      {item.field3.map((v, idx) => (
+                                        <React.Fragment key={`field3-${idx}`}>
+                                          {idx > 0 && (
+                                            <span className="text-[var(--color-gray-30)] mx-[0.4rem] select-none">
+                                              •
+                                            </span>
+                                          )}
+                                          {v}
+                                        </React.Fragment>
+                                      ))}
+                                    </span>
+                                  </>
+                                )}
+                              </Typo>
+                            </Gcol>
+                            {item.field5 && (
+                              <Grow placement="ss">
                                 <Typo
                                   tag="p"
                                   variant="body-sm"
-                                  className="text-[var(--color-blue-gray-60)] break-all leading-[2rem]"
+                                  className="py-[0.5rem] px-[1rem] rounded-[0.6rem] bg-[var(--color-information-5)] text-[var(--color-gray-100)]"
                                 >
-                                  {item.field2.map((v, idx) => (
-                                    <React.Fragment key={`field2-${idx}`}>
-                                      {idx > 0 && (
-                                        <span className="text-[var(--color-gray-30)] mx-[0.4rem] select-none">•</span>
-                                      )}
-                                      {v}
-                                    </React.Fragment>
-                                  ))}
-                                  {item.field3 && item.field3.length > 0 && (
-                                    <>
-                                      {item.field2 && item.field2.length > 0 && (
-                                        <span className="text-[var(--color-gray-30)] mx-[0.4rem] select-none">•</span>
-                                      )}
-                                      <span className="inline-flex items-center text-[var(--color-information-50)]">
-                                        {item.field3.map((v, idx) => (
-                                          <React.Fragment key={`field3-${idx}`}>
-                                            {idx > 0 && (
-                                              <span className="text-[var(--color-gray-30)] mx-[0.4rem] select-none">
-                                                •
-                                              </span>
-                                            )}
-                                            {v}
-                                          </React.Fragment>
-                                        ))}
-                                      </span>
-                                    </>
-                                  )}
+                                  {item.field5}
                                 </Typo>
-                              </Gcol>
-                              {item.field5 && (
-                                <Grow placement="ss">
-                                  <Typo
-                                    tag="p"
-                                    variant="body-sm"
-                                    className="py-[0.5rem] px-[1rem] rounded-[0.6rem] bg-[var(--color-information-5)] text-[var(--color-gray-100)]"
-                                  >
-                                    {item.field5}
-                                  </Typo>
-                                </Grow>
-                              )}
-                            </Gcol>
+                              </Grow>
+                            )}
+                          </Gcol>
+                          {/* 생성중 */}
+                          {idx === 1 && (
                             <Grow gap={3}>
                               <Grid
                                 key={idx}
-                                className={`relative grid-rows-[minmax(0,1fr)_auto] w-[calc(13rem*3+2.4rem)] h-[14.8rem] rounded-[1rem] overflow-hidden gap-0 border-[0.1rem] border-[var(--color-primary-10)] bg-[var(--color-primary-5)]`}
+                                className={`relative grid-rows-[minmax(0,1fr)_auto] w-full h-[14.8rem] rounded-[1rem] overflow-hidden gap-0 border-[0.1rem] border-[var(--color-primary-10)] bg-[var(--color-primary-5)]`}
                               >
                                 <Grow className="h-full" placement="cc">
                                   <Spinner />
                                 </Grow>
                                 <Grow className="w-full h-[4rem] bg-[#fff] px-4" placement="cc">
                                   <Typo tag="span" variant={'body-md'}>
-                                    추천설계 생성중
+                                    추천설계를 생성중입니다.
                                   </Typo>
                                 </Grow>
                               </Grid>
                             </Grow>
-                          </Grid>
-                        );
-                      } else {
-                        return (
-                          <Grid
-                            key={item.id}
-                            className="w-full px-[2.4rem] py-[1.6rem] grid-cols-[1fr_auto] gap-4  bg-white rounded-[1rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)]"
-                          >
-                            <Gcol gap={2} placement="bws" className="pt-1">
-                              <Gcol className="gap-y-3" placement="ss">
-                                <Typo tag="h3" variant="heading-lg" className="break-all" tooltip={2}>
-                                  {item.field1}
-                                </Typo>
-                                <Typo
-                                  tag="p"
-                                  variant="body-sm"
-                                  className="text-[var(--color-blue-gray-60)] break-all  tooltip={2}leading-[2rem]"
-                                >
-                                  {item.field2.map((v, idx) => (
-                                    <React.Fragment key={`field2-${idx}`}>
-                                      {idx > 0 && (
-                                        <span className="text-[var(--color-gray-30)] mx-[0.4rem] select-none">•</span>
-                                      )}
-                                      {v}
-                                    </React.Fragment>
-                                  ))}
-                                  {item.field3 && item.field3.length > 0 && (
-                                    <>
-                                      {item.field2 && item.field2.length > 0 && (
-                                        <span className="text-[var(--color-gray-30)] mx-[0.4rem] select-none">•</span>
-                                      )}
-                                      <span className="inline-flex items-center text-[var(--color-information-50)]">
-                                        {item.field3.map((v, idx) => (
-                                          <React.Fragment key={`field3-${idx}`}>
-                                            {idx > 0 && (
-                                              <span className="text-[var(--color-gray-30)] mx-[0.4rem] select-none">
-                                                •
-                                              </span>
-                                            )}
-                                            {v}
-                                          </React.Fragment>
-                                        ))}
-                                      </span>
-                                    </>
-                                  )}
-                                </Typo>
-                              </Gcol>
-                              {item.field5 && (
-                                <Grow placement="ss">
-                                  <Typo
-                                    tag="p"
-                                    variant="body-sm"
-                                    className="py-[0.5rem] px-[1rem] rounded-[0.6rem] bg-[var(--color-information-5)] text-[var(--color-gray-100)]"
-                                  >
-                                    {item.field5}
+                          )}
+                          {/* 오류 */}
+                          {idx === 2 && (
+                            <Grow gap={3}>
+                              <Grid
+                                key={idx}
+                                className={`relative grid-rows-[minmax(0,1fr)_auto] w-full h-[14.8rem] rounded-[1rem] overflow-hidden gap-0 border-[0.1rem] border-[var(--color-primary-10)] bg-[var(--color-primary-5)]`}
+                              >
+                                <Grow className="h-full" placement="cc">
+                                  <KebabIcon size={40} />
+                                </Grow>
+                                <Grow className="w-full h-[4rem] bg-[#fff] px-4" placement="cc">
+                                  <Typo tag="span" variant={'body-md'}>
+                                    아쉽게도 적정한 설계를 찾지 못했어요.
                                   </Typo>
                                 </Grow>
-                              )}
-                            </Gcol>
+                              </Grid>
+                            </Grow>
+                          )}
+                          {/* 정상출력 */}
+                          {idx === 0 && (
                             <Grow gap={3}>
                               {item.field4.map((v, idx) => {
                                 const planKey = `${item.id}-${idx}`;
@@ -1320,7 +1283,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                                 return (
                                   <Grid
                                     key={idx}
-                                    className={`relative grid-rows-[minmax(0,1fr)_auto] w-[13rem] h-[14.8rem] rounded-[1rem] overflow-hidden gap-0 border-[0.1rem] border-[var(--color-gray-10)] ${
+                                    className={`relative grid-rows-[minmax(0,1fr)_auto] flex-1 w-[100%] h-[14.8rem] rounded-[1rem] overflow-hidden gap-0 border-[0.1rem] border-[var(--color-gray-10)] ${
                                       isSelected
                                         ? 'border-[#FF5C2E] bg-[var(--color-primary-10)] shadow-[0_0.4rem_0.8rem_0_rgba(255,92,46,0.20)]'
                                         : 'bg-[var(--color-primary-5)]'
@@ -1415,9 +1378,9 @@ export function Ltpa02002({ userType }: { userType: string }) {
                                 );
                               })}
                             </Grow>
-                          </Grid>
-                        );
-                      }
+                          )}
+                        </Grid>
+                      );
                     })}
                   </Gcol>
                 </div>

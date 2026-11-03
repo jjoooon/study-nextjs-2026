@@ -457,9 +457,9 @@ export function Ltpa35004({ onClose }: Ltpa35004Props = {}) {
                     tdStyle={{ width: '100%' }}
                     tdClassName="w-full"
                   >
-                    <Grid className="w-full grid-cols-[11.3rem_15rem_1fr_minmax(19rem,1fr)_11rem] gap-1">
+                    <Grid className="w-full grid-cols-[11.3rem_auto_1fr_minmax(19rem,1fr)_11rem] gap-1">
                       <Input aria-label="심사구분1" width={'full'} value={'신계약'} size={'md'} readOnly />
-                      <NativeSelect aria-label="심사구분2" width={'full'}>
+                      <NativeSelect aria-label="심사구분2" width={'auto'}>
                         {[
                           { label: '설계심사', value: '설계심사' },
                           { label: '설계심사2', value: '설계심사2' },
