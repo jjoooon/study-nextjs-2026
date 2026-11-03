@@ -118,7 +118,7 @@ export default function Ltpa020Section() {
               <RadioGroup
                 value={tabSelectValue}
                 onValueChange={(value) => setTabSelectValue(value)}
-                className="ltpa020-tab-item bg-[#fff] gap-[0.2rem] w-[36rem] rounded-2 relative after:content-[''] after:absolute after:block after:w-full after:h-full after:border after:border-[var(--color-secondary-15)] after:rounded-[0.8rem] after:z-0"
+                className="ltpa020-tab-item flex-nowrap bg-[#fff] gap-[0.2rem] w-[36rem] rounded-2 relative after:content-[''] after:absolute after:block after:w-full after:h-full after:border after:border-[var(--color-secondary-15)] after:rounded-[0.8rem] after:z-0"
               >
                 <RadioGroupItem
                   variant={'button'}
