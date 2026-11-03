@@ -789,7 +789,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
                 setOpen(false);
               }
             }}
-            className={`transition-[color,box-shadow] outline-none w-[8.4rem] ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
+            className={`transition-[color,box-shadow] outline-none ${monthOnly ? 'w-[5.6rem]' : 'w-[7.6rem]'} ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
             style={inputStyle}
             data-size={size}
             ref={fromInputRef}
@@ -817,7 +817,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
                 setOpen(false);
               }
             }}
-            className={`transition-[color,box-shadow] outline-none w-[8.4rem] ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
+            className={`transition-[color,box-shadow] outline-none ${monthOnly ? 'w-[5.6rem]' : 'w-[7.6rem]'} ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
             style={inputStyle}
             data-size={size}
             ref={toInputRef}
@@ -848,7 +848,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
               setOpen(false);
             }
           }}
-          className={`transition-[color,box-shadow] outline-none w-[8.4rem] ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
+          className={`transition-[color,box-shadow] outline-none ${monthOnly ? 'w-[5.6rem]' : 'w-[7.6rem]'} ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
           style={inputStyle}
           data-size={size}
           {...props}

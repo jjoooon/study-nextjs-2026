@@ -48,6 +48,7 @@ const badgeVariants = cva(
         bluegray: '',
         secondary: '',
         purple: '',
+        pink: '',
         yellow: '',
         orange: '',
         dark: '',
@@ -91,6 +92,11 @@ const badgeVariants = cva(
         class: 'bg-[var(--color-secondary-50)] text-[var(--color-gray-0)]',
       },
       { variant: ['contained', 'rounded'], color: 'purple', class: 'bg-[#F0E6FF] text-[#853EE2]' },
+      {
+        variant: ['contained', 'rounded'],
+        color: 'pink',
+        class: 'bg-[var(--color-pink-10)] text-[var(--color-pink-50)]',
+      },
       { variant: ['contained', 'rounded'], color: 'yellow', class: 'bg-[var(--color-warning-10)] text-[#FFB800]' },
       { variant: ['contained', 'rounded'], color: 'error', class: 'bg-[#E43939] text-[#FFF]' },
 
@@ -107,6 +113,7 @@ const badgeVariants = cva(
       { variant: 'dark', color: 'bluegray', class: 'bg-[var(--color-blue-gray-50)] text-[#FFF]' },
       { variant: 'dark', color: 'secondary', class: 'bg-[var(--color-secondary-50)] text-[#FFF]' },
       { variant: 'dark', color: 'purple', class: 'bg-[var(--color-purple-40)] text-[#FFF]' },
+      { variant: 'dark', color: 'pink', class: 'bg-[var(--color-pink-50)] text-[#FFF]' },
 
       // rounded 변형의 size별 예외 보정
       { variant: 'rounded', size: 'sm', class: 'pl-[0.4rem] pr-[0.6rem]' },
@@ -153,6 +160,11 @@ const badgeVariants = cva(
         color: 'purple',
         class: 'bg-[#F0E6FF] border-[#853EE2] text-[#853EE2]',
       },
+      {
+        variant: 'soft',
+        color: 'pink',
+        class: 'bg-[var(--color-pink-10)] border-[var(--color-pink-50)] text-[var(--color-pink-50)]',
+      },
 
       // outlined + color 조합
       {
@@ -184,6 +196,11 @@ const badgeVariants = cva(
       },
       {
         variant: 'outlined',
+        color: 'pink',
+        class: 'border-[var(--color-pink-50)] text-[var(--color-pink-50)]',
+      },
+      {
+        variant: 'outlined',
         color: 'secondary',
         class: 'border-[var(--color-secondary-50)] text-[var(--color-secondary-50)]',
       },
@@ -196,6 +213,7 @@ const badgeVariants = cva(
       { variant: 'ghost', color: 'primary', class: 'text-[var(--color-primary-50)]' },
       { variant: 'ghost', color: 'gray', class: 'text-[var(--color-gray-70)]' },
       { variant: 'ghost', color: 'purple', class: 'text-[#853EE2]' },
+      { variant: 'ghost', color: 'pink', class: 'text-[var(--color-pink-50)]' },
       { variant: 'ghost', color: 'secondary', class: 'text-[var(--color-secondary-50)]' },
 
       // status + color 조합 (Figma 스펙)
@@ -206,6 +224,7 @@ const badgeVariants = cva(
       { variant: 'status', color: 'yellow', class: 'bg-[#FEF4D4] text-[#DD9F00]' },
       { variant: 'status', color: ['red', 'danger'], class: 'bg-[#FFE0E0] text-[#E43939]' },
       { variant: 'status', color: 'orange', class: 'bg-[#FFE0E0] text-[#FF5C2E]' },
+      { variant: 'status', color: 'pink', class: 'bg-[var(--color-pink-10)] text-[var(--color-pink-50)]' },
     ],
     defaultVariants: {
       variant: 'contained',

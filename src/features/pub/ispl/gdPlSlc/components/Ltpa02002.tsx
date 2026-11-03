@@ -1261,10 +1261,10 @@ export function Ltpa02002({ userType }: { userType: string }) {
                             <Grow gap={3}>
                               <Grid
                                 key={idx}
-                                className={`relative grid-rows-[minmax(0,1fr)_auto] w-full h-[14.8rem] rounded-[1rem] overflow-hidden gap-0 border-[0.1rem] border-[var(--color-primary-10)] bg-[var(--color-primary-5)]`}
+                                className={`relative grid-rows-[minmax(0,1fr)_auto] w-full h-[14.8rem] rounded-[1rem] overflow-hidden gap-0 border-[0.1rem] border-[var(--color-primary-10)] bg-[var(--color-blue-gray-5)]`}
                               >
                                 <Grow className="h-full" placement="cc">
-                                  <KebabIcon size={40} />
+                                  <span className="ltpa020-plan-icon" aria-hidden="true" />
                                 </Grow>
                                 <Grow className="w-full h-[4rem] bg-[#fff] px-4" placement="cc">
                                   <Typo tag="span" variant={'body-md'}>
@@ -1305,41 +1305,10 @@ export function Ltpa02002({ userType }: { userType: string }) {
                                       onClick={() => setSelectedPlanKey(isSelected ? null : planKey)}
                                       aria-pressed={isSelected}
                                     >
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="32"
-                                        height="32"
-                                        viewBox="0 0 32 32"
-                                        fill="none"
-                                      >
-                                        <g clipPath="url(#clip0_5367_119012)">
-                                          <circle
-                                            cx="24.4"
-                                            cy="23.6"
-                                            r="7.6"
-                                            fill={isSelected ? 'rgba(255, 255, 255, 0.3)' : 'var(--color-primary-20)'}
-                                          />
-                                          <path
-                                            d="M15.1882 17.925C15.8067 17.925 16.3085 18.4267 16.3085 19.0453C16.3084 19.6638 15.8067 20.1656 15.1882 20.1656H9.44521C8.82669 20.1656 8.32496 19.6638 8.3249 19.0453C8.3249 18.4267 8.82666 17.925 9.44521 17.925H15.1882Z"
-                                            fill={isSelected ? '#FFFFFF' : '#61554F'}
-                                          />
-                                          <path
-                                            d="M18.1187 13.1195C18.7371 13.1196 19.2382 13.6213 19.2382 14.2398C19.2382 14.8583 18.7371 15.3599 18.1187 15.3601H9.44521C8.82666 15.3601 8.3249 14.8584 8.3249 14.2398C8.3249 13.6212 8.82666 13.1195 9.44521 13.1195H18.1187Z"
-                                            fill={isSelected ? '#FFFFFF' : '#61554F'}
-                                          />
-                                          <path
-                                            fillRule="evenodd"
-                                            clipRule="evenodd"
-                                            d="M19.0444 3.19995C20.4154 3.19997 21.7211 3.7862 22.6319 4.81089L26.3874 9.03589C27.1684 9.91453 27.5999 11.0494 27.5999 12.225V24.8C27.5999 27.4509 25.4509 29.6 22.7999 29.6H9.1999L8.95303 29.5937C6.41679 29.4652 4.3999 27.3681 4.3999 24.8V7.99995C4.3999 5.34898 6.54894 3.19995 9.1999 3.19995H19.0444ZM9.1999 5.27964C7.69769 5.27964 6.47959 6.49774 6.47959 7.99995V24.8C6.47959 26.3022 7.69769 27.5203 9.1999 27.5203H22.7999C24.3021 27.5203 25.5202 26.3022 25.5202 24.8V12.2398H22.7999C20.4582 12.2398 18.5601 10.3416 18.5601 7.99995V5.27964H9.1999ZM20.6397 7.99995C20.6397 9.19289 21.607 10.1601 22.7999 10.1601H24.6038L21.0772 6.19292C20.945 6.04416 20.7982 5.91157 20.6397 5.79683V7.99995Z"
-                                            fill={isSelected ? '#FFFFFF' : '#61554F'}
-                                          />
-                                        </g>
-                                        <defs>
-                                          <clipPath id="clip0_5367_119012">
-                                            <rect width="32" height="32" fill="white" />
-                                          </clipPath>
-                                        </defs>
-                                      </svg>
+                                      <span
+                                        className={`ltpa020-plan-icon ${isSelected ? 'is-selected' : ''}`}
+                                        aria-hidden="true"
+                                      />
 
                                       <Gcol placement="ss" gap={0}>
                                         <Typo
