@@ -861,7 +861,7 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   text-overflow: clip;
 }
 
-[role="checkbox"].truncate > div {
+[role='checkbox'].truncate > div {
   width: 100%;
   display: block;
   overflow: hidden;
@@ -2082,4 +2082,19 @@ html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked
   display: block;
   text-align: center;
   line-height: 1.1;
+}
+
+.ag-theme-alpine .ag-unselectable,
+.ag-unselectable {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  user-select: text !important;
+}
+
+
+.ag-theme-alpine .ag-unselectable,
+.ag-unselectable {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  user-select: text !important;
 }
