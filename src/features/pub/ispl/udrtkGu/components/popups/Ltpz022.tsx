@@ -223,7 +223,7 @@ const Ltpz022 = () => {
       <DialogContent
         showCloseButton
         resizable={true}
-        size="md"
+        size="xl"
         className="h-[50rem]"
         align="bottom-right"
         alignOffset={{ bottom: '7.5rem', right: '1.4rem' }}
@@ -265,8 +265,8 @@ const Ltpz022 = () => {
           {/* 중간: 탭 영역 및 위배 내역 그리드 */}
           <Table variant="default">
             <colgroup>
-              <col style={{ width: '9rem' }} />
-              <col style={{ width: '12rem' }} />
+              <col style={{ width: '7rem' }} />
+              <col style={{ width: '10rem' }} />
               <col style={{ width: 'auto' }} />
             </colgroup>
             <TableHeader className="sticky top-0 z-10">
@@ -324,7 +324,7 @@ const Ltpz022 = () => {
             </TableBody>
           </Table>
 
-          <Grow variant="box-detail" className="w-full gap-0">
+          <Grow variant="box-detail" className="w-full gap-0" placement="sc">
             <Typo icon={'ref'} variant={'body-sm'} color={'danger'}>
               <Badge variant={'rounded'} color={'primary'} size={'lg'} className="shrink-0 translate-[0.2rem] mr-1">
                 <AiIcon color={'var(--color-primary-50)'} color2={'var(--color-primary-50)'} />

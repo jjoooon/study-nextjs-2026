@@ -1113,7 +1113,7 @@ export const Ltpa35001 = ({
                                   <FormCell title="임신주수">
                                     <Input aria-label="임신주수" width={32} align="right" value={''} required />
                                     주 (출산예정일
-                                    <DatePickerInput mode={'single'} value={''} required />)
+                                    <DatePickerInput mode={'single'} value={''} required disabled />)
                                   </FormCell>
                                 )}
                               </FormRow>

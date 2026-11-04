@@ -239,7 +239,7 @@ export default function Ltpa301Section() {
                           <ArrowNext color={'var(--color-primary-50)'} />
                         </Button>
                       </FormCell>
-                      <FormCell title={'계약방법'}>
+                      <FormCell title={'계약상태'}>
                         <Input aria-label="계약방법 입력" readOnly />
                       </FormCell>
                     </FormRow>
@@ -350,7 +350,7 @@ export default function Ltpa301Section() {
                   </Typo>
                   <BulletList color={'warning'} size="sm">
                     <BulletListItem before="1." className="whitespace-nowrap" color="default" size="md" type="symbols">
-                      당사 : 기계약(보험료 미납해지 포함) 및 심사중인 건 포함
+                      당사 : 기계약(보험료 미납해지 포함) 및 청약완료 건 포함
                     </BulletListItem>
                     <BulletListItem before="2." className="whitespace-nowrap" color="default" size="md" type="symbols">
                       타사 : 한국신용정보원의 집적 기준 및 Data 사용

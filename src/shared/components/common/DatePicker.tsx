@@ -699,10 +699,6 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
     return `${numericValue.slice(0, 4)}-${numericValue.slice(4, 6)}-${numericValue.slice(6, 8)}`;
   })();
 
-  const inputStyle: React.CSSProperties | undefined = readOnly
-    ? { backgroundColor: '#F4F4F4', border: '0.1rem solid #F4F4F4' }
-    : undefined;
-
   const handleQuickSelect = (type: 'today' | 'week' | 'month' | '3months') => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -753,10 +749,10 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
         ? 'focus:border-[var(--color-input-border-highlight-bold)]'
         : 'focus:border-[var(--color-input-border-hover)]'
   } focus:ring-1 focus:ring-[var(--color-gray-5)] focus:border-[0.2rem] focus:px-[0.3rem]`;
-  const disabledClass = disabled
-    ? 'bg-[var(--color-input-surface-disabled)] text-[var(--color-gray-40)] cursor-not-allowed pointer-events-none'
-    : '';
-  const readOnlyClass = readOnly ? 'bg-[var(--color-gray-5)] border border-[var(--color-gray-20)]!' : '';
+  const disabledClass =
+    disabled || readOnly
+      ? 'bg-[var(--color-input-surface-disabled)] text-[var(--color-gray-40)] cursor-not-allowed pointer-events-none'
+      : '';
   const rangeSelected = selected && !Array.isArray(selected) && !(selected instanceof Date) ? selected : undefined;
   const singleSelected = selected instanceof Date ? selected : undefined;
   const multiSelected = Array.isArray(selected) ? selected : undefined;
@@ -789,8 +785,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
                 setOpen(false);
               }
             }}
-            className={`transition-[color,box-shadow] outline-none ${monthOnly ? 'w-[5.6rem]' : 'w-[7.6rem]'} ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
-            style={inputStyle}
+            className={`transition-[color,box-shadow] outline-none ${monthOnly ? 'w-[5.6rem]' : 'w-[7.6rem]'} ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass}`}
             data-size={size}
             ref={fromInputRef}
             {...props}
@@ -817,8 +812,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
                 setOpen(false);
               }
             }}
-            className={`transition-[color,box-shadow] outline-none ${monthOnly ? 'w-[5.6rem]' : 'w-[7.6rem]'} ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
-            style={inputStyle}
+            className={`transition-[color,box-shadow] outline-none ${monthOnly ? 'w-[5.6rem]' : 'w-[7.6rem]'} ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass}`}
             data-size={size}
             ref={toInputRef}
           />
@@ -848,8 +842,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
               setOpen(false);
             }
           }}
-          className={`transition-[color,box-shadow] outline-none ${monthOnly ? 'w-[5.6rem]' : 'w-[7.6rem]'} ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
-          style={inputStyle}
+          className={`transition-[color,box-shadow] outline-none ${monthOnly ? 'w-[5.6rem]' : 'w-[7.6rem]'} ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass}`}
           data-size={size}
           {...props}
         />
