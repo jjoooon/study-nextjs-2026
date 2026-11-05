@@ -66,6 +66,9 @@ const nextConfig: NextConfig = {
       'embla-carousel-react',
     ],
   },
+
+  // 정적 에셋(JS, CSS 청크 등)을 다른 도메인이나 경로에서 불러오도록 지정
+  // assetPrefix: process.env.NODE_ENV === 'production' ? 'https://cdn.example.com' : undefined,
 };
 
 // 번들 분석 도구와 함께 내보내기
