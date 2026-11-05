@@ -2639,8 +2639,10 @@ html.v109 [class*='bg-[var(--color-gray-5)]'][class*='bg-[var(--color-gray-50)]'
 html.v109 [class*='bg-[var(--color-primary-5)]']:disabled {
   background-color: var(--color-primary-5) !important;
 }
-html.v109 [class*='bg-[var(--color-primary-50)]'][class*='disabled:bg-[var(--color-gray-5)]']:disabled
-html.v109 [class*='disabled:bg-[var(--color-gray-5)]']:disabled,
+html.v109
+  [class*='bg-[var(--color-primary-50)]'][class*='disabled:bg-[var(--color-gray-5)]']:disabled
+  html.v109
+  [class*='disabled:bg-[var(--color-gray-5)]']:disabled,
 html.v109 [class*='disabled:bg-[var(--color-gray-5)]'].disabled {
   background-color: var(--color-gray-5) !important;
 }

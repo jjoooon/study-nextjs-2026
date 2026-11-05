@@ -3,7 +3,7 @@
  */
 
 import { Gcol } from '@atoms';
-import { SelectDrop } from '@common/SelectDrop';
+import { SelectDrop, type SelectDropAlign } from '@common/SelectDrop';
 import { SaveIcon } from '@icons';
 import { Accordion } from '@uiux/Accordion';
 import { Button } from '@uiux/Button';
@@ -25,7 +25,10 @@ interface MyPlanSelectProps<TItem extends ItemBase> {
   readOnly?: boolean;
   defaultValue?: TItem['value'][];
   placeholder?: string;
+  pnlWidth?: number;
   renderContent?: (content: TItem['content'][number], item: TItem, index: number) => string;
+  /** 드롭다운 레이어(패널) 가로 정렬 위치 ('left' | 'center' | 'right' | 'start' | 'end') */
+  align?: SelectDropAlign;
 }
 
 export const MyPlanSelect = <TItem extends ItemBase>({
@@ -33,15 +36,25 @@ export const MyPlanSelect = <TItem extends ItemBase>({
   readOnly = false,
   defaultValue,
   placeholder = '나만의 설계선택',
+  pnlWidth = 200,
   renderContent,
+  align = 'end',
 }: MyPlanSelectProps<TItem>) => {
   // defaultValue 미지정 시, 처음 3개 항목을 기본 펼침 상태로 사용
   const fallbackDefaultValue = items.slice(0, 3).map((item) => item.value);
 
   return (
     // SelectDrop + Accordion 조합으로 "드롭다운 내부 다중 펼침 목록" UI 구성
-    <SelectDrop typeMode="custom" size="md" width={120} placeholder={placeholder} readOnly={readOnly}>
-      <Gcol className="w-full p-[0.2rem]">
+    <SelectDrop
+      typeMode="custom"
+      size="md"
+      width={120}
+      pnlWidth={pnlWidth ? pnlWidth : 'full'}
+      placeholder={placeholder}
+      readOnly={readOnly}
+      align={align}
+    >
+      <Gcol className="p-[0.2rem] w-full">
         {/* 상단 고정 액션 버튼 */}
         <Button variant="outlined" size="md" className="w-full">
           <SaveIcon /> 나만의 설계

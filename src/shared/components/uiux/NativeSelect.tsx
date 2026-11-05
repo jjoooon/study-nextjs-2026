@@ -106,7 +106,7 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
       className,
       variant = 'default',
       size = 'lg',
-      width = 'full',
+      width = 'auto',
       required = false,
       readOnly = false,
       disabled = false,

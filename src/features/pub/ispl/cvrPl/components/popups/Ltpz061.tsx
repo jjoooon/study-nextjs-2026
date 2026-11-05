@@ -324,7 +324,7 @@ const Ltpz061 = () => {
                 '11개월',
                 '12개월',
               ],
-              valueListMaxHeight: 120,
+              valueListMaxHeight: 90,
             },
             cellClass: (params: CellClassParams<DummyDataType1>) => {
               const base = 'text-center flex [&>div>span]:h-auto! !px-0 editable-cell';
@@ -436,7 +436,7 @@ const Ltpz061 = () => {
                 '11개월',
                 '12개월',
               ],
-              maxHeight: 160,
+              valueListMaxHeight: 90,
             },
             cellClass: (params: CellClassParams<DummyDataType2>) => {
               const base = 'text-center flex [&>div>span]:h-auto! !px-0 editable-cell';

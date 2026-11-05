@@ -598,6 +598,11 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
     0 0.4rem 0.6rem -0.1rem rgb(0 0 0 / 0.1),
     0 0.2rem 0.4rem -0.2rem rgb(0 0 0 / 0.1);
   /* shadow-md */
+}
+
+.isStandard:not([data-msg]):after,
+.isStandard[data-msg='']:after {
+  content: '기준담보의 가입금액을 변경하세요.' !important;
   white-space: nowrap;
 }
 
@@ -915,7 +920,8 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 }
 
 .isStandard:after {
-  content: '기준담보의 가입금액을 변경하세요.' !important;
+  content: attr(data-msg) !important;
+  white-space: nowrap;
   display: none;
   align-items: center;
   position: absolute;
@@ -936,6 +942,11 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
     0 0.4rem 0.6rem -0.1rem rgb(0 0 0 / 0.1),
     0 0.2rem 0.4rem -0.2rem rgb(0 0 0 / 0.1);
   /* shadow-md */
+}
+
+.isStandard:not([data-msg]):after,
+.isStandard[data-msg='']:after {
+  content: '기준담보의 가입금액을 변경하세요.' !important;
 }
 
 .isStandard:before {
@@ -2090,7 +2101,6 @@ html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked
   -moz-user-select: text !important;
   user-select: text !important;
 }
-
 
 .ag-theme-alpine .ag-unselectable,
 .ag-unselectable {

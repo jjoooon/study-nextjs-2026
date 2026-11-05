@@ -306,8 +306,8 @@
   --color-purple-40: #a261f7;
   --color-purple-10: #ede7ff;
 
-  --color-pink-50: #EC4899;
-  --color-pink-10: #FCE7F3;
+  --color-pink-50: #ec4899;
+  --color-pink-10: #fce7f3;
 
   --color-gray-95: #131416;
   --color-gray-90: #1e2124;
@@ -872,7 +872,7 @@
   [data-layout='body'] [data-layout='main'] {
     min-width: 88rem !important;
   }
-  [role="dialog"] [data-layout='main'] {
+  [role='dialog'] [data-layout='main'] {
     min-width: 30rem !important;
   }
   [data-layout='main'] {
@@ -1643,7 +1643,6 @@ select,
 input {
   text-overflow: clip;
 }
-
 
 .ltpa020-plan-icon {
   display: inline-block;

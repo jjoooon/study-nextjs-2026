@@ -30,6 +30,22 @@ const WIDTH_MAP: Record<UIUXsize, string> = {
   '2xl': 'w-[18rem]',
 };
 
+/**
+ * 드롭다운 패널의 가로 정렬 위치 타입입니다.
+ * - 'left' | 'start': 좌측 정렬
+ * - 'center': 중앙 정렬
+ * - 'right' | 'end': 우측 정렬
+ */
+export type SelectDropAlign = 'left' | 'center' | 'right' | 'start' | 'end';
+
+const ALIGN_MAP: Record<SelectDropAlign, 'start' | 'center' | 'end'> = {
+  left: 'start',
+  start: 'start',
+  center: 'center',
+  right: 'end',
+  end: 'end',
+};
+
 const TRIGGER_VARIANT_MAP = {
   default: '',
 } as const;
@@ -60,7 +76,7 @@ export type SelectDropOption<TValue extends string = string> = {
  */
 export type SelectDropProps<TValue extends string = string> = Omit<
   React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>,
-  'children'
+  'children' | 'align'
 > & {
   /**
    * 드롭다운의 선택 동작 방식
@@ -103,6 +119,13 @@ export type SelectDropProps<TValue extends string = string> = Omit<
    */
   width?: UIUXsize | number | string;
   /**
+   * 드롭다운 옵션 레이어(패널)의 너비 지정
+   * - `full`, `auto`, `max`, `min`, 또는 크기 상수('xs', 'sm', 'md' 등)
+   * - rem 환산용 숫자형(ex: 120 -> 12rem) 또는 CSS 너비 스타일 문자열
+   * @default 'md'
+   */
+  pnlWidth?: UIUXsize | number | string;
+  /**
    * 트리거 버튼의 크기 (높이)
    * - `lg`: 2.8rem (기본)
    * - `md`: 2.5rem
@@ -132,6 +155,14 @@ export type SelectDropProps<TValue extends string = string> = Omit<
   minCount?: number;
   /** `typeMode="custom"` 상태일 때 드롭다운 팝오버 본문 내부에 표시할 임의의 리액트 컴포넌트 노드 */
   children?: React.ReactNode;
+  /**
+   * 드롭다운 옵션 레이어(패널)가 열리는 가로 정렬 위치
+   * - `left` (또는 `start`): 좌측 정렬
+   * - `center`: 중앙 정렬
+   * - `right` (또는 `end`): 우측 정렬
+   * @default 'start'
+   */
+  align?: SelectDropAlign;
 };
 
 /**
@@ -151,6 +182,7 @@ function SelectDrop<TValue extends string = string>({
   defaultCustomInputValue = '',
   onCustomInputValueChange,
   placeholder = '선택',
+  pnlWidth = 'md',
   width = 'md',
   triggerClassName,
   size = 'lg',
@@ -159,13 +191,17 @@ function SelectDrop<TValue extends string = string>({
   error = false,
   errorMsg = '입력은 필수입니다.',
   errorPs = 'bl',
+  align = 'start',
+  sideOffset,
   _sideOffset = 0,
   minCount = 1,
   children,
   ...contentProps
 }: SelectDropProps<TValue>) {
   const selectionMode = typeMode ?? 'checkbox';
+  const resolvedAlign = ALIGN_MAP[align] ?? 'start';
   const widthClass = (typeof width === 'string' && WIDTH_MAP[width as UIUXsize]) || '';
+  const pnlWidthClass = (typeof pnlWidth === 'string' && WIDTH_MAP[pnlWidth as UIUXsize]) || '';
 
   const inlineWidthStyle = (() => {
     if (typeof width === 'number') {
@@ -173,6 +209,15 @@ function SelectDrop<TValue extends string = string>({
     }
     if (typeof width === 'string' && !WIDTH_MAP[width as UIUXsize]) {
       return { width };
+    }
+    return undefined;
+  })();
+  const inlineWidthStylePnl = (() => {
+    if (typeof pnlWidth === 'number') {
+      return { width: `${pnlWidth / 10}rem` };
+    }
+    if (typeof pnlWidth === 'string' && !WIDTH_MAP[pnlWidth as UIUXsize]) {
+      return { width: pnlWidth };
     }
     return undefined;
   })();
@@ -350,10 +395,12 @@ function SelectDrop<TValue extends string = string>({
 
         <PopoverPrimitive.Portal>
           <PopoverPrimitive.Content
-            style={inlineWidthStyle}
+            align={resolvedAlign}
+            sideOffset={sideOffset ?? _sideOffset}
+            style={inlineWidthStylePnl}
             className={cn(
               'z-50 rounded-[0.4rem] bg-(--color-gray-0) shadow-[0px_2px_8px_0px_rgba(0,0,0,0.16)] cp-selectdrop-content',
-              widthClass
+              pnlWidthClass
             )}
             {...contentProps}
           >
