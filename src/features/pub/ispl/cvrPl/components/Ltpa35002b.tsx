@@ -44,6 +44,7 @@ import {
   productNameCellRenderer,
   searchButtonRenderer,
   uwIconRenderer,
+  type TooltipFetchCallback,
 } from '@grid/CellRenderers';
 import { HeaderWithUnit, AgGridProductNameHeader, UwStatusTooltipQ } from '@grid/HeadRenderers';
 import { PaperIcon, ResetIcon, SizeIcon, SizeOffIcon } from '@icons';
@@ -56,6 +57,12 @@ import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 
 import { dummyData } from '../data/ltpa35002bData';
 import type { DummyDataType } from '../data/ltpa35002bData';
+import {
+  fetchTooltipMessageFromServer,
+  sampleTooltipData,
+  sampleTooltipResolver,
+  type TooltipDataMap,
+} from '../data/tooltipSampleData';
 import { useGridReadyHandler } from '../hooks/useGridReadyHandler';
 import { useGridSelectionChangedHandler } from '../hooks/useGridSelectionChangedHandler';
 import { useHandleSelectionChanged } from '../hooks/useHandleSelectionChanged';
@@ -95,6 +102,9 @@ interface Ltpa35002Props {
   setIsWidthExpanded?: (value: boolean) => void;
   rowData?: AgGridRow[];
   setRowData?: React.Dispatch<React.SetStateAction<AgGridRow[]>>;
+  tooltipData?: TooltipDataMap;
+  getTooltipMessage?: (clickedRow: AgGridRow, targetRow: AgGridRow) => string | undefined;
+  onFetchTooltipMessage?: TooltipFetchCallback<AgGridRow>;
 }
 
 export function Ltpa35002b({
@@ -103,6 +113,9 @@ export function Ltpa35002b({
   setIsWidthExpanded,
   rowData: externalRowData,
   setRowData: externalSetRowData,
+  tooltipData = sampleTooltipData,
+  getTooltipMessage = sampleTooltipResolver,
+  onFetchTooltipMessage = fetchTooltipMessageFromServer,
 }: Ltpa35002Props) {
   // =====================
   // 상태 및 참조 관리
@@ -148,6 +161,9 @@ export function Ltpa35002b({
       onShowProductNameTooltipChange: handleShowProductNameTooltipChange,
       checkedMap,
       onCheckedChange: handleCheckedChange,
+      onFetchTooltipMessage,
+      tooltipData,
+      getTooltipMessage,
     }),
     [
       coverageName,
@@ -156,6 +172,9 @@ export function Ltpa35002b({
       handleShowProductNameTooltipChange,
       checkedMap,
       handleCheckedChange,
+      onFetchTooltipMessage,
+      tooltipData,
+      getTooltipMessage,
     ]
   );
 
@@ -224,7 +243,21 @@ export function Ltpa35002b({
         getExpiryRenderer,
         numberCellRenderer,
         'right',
-        DEFAULT_INSURED_AMOUNT_OPTIONS
+        DEFAULT_INSURED_AMOUNT_OPTIONS,
+        {
+          defaultTooltipMsg: '유방암 기준담보 금액을 먼저 확인해 주세요.',
+          onFetchTooltipMessage: async ({ clickedRow, targetRow }) => {
+            // [Ltpa35002b 전용 비동기 서버 통신 또는 조건 분기 로직]
+            const targetId = targetRow.id;
+            if (targetId === 3) {
+              return `${String(clickedRow.title ?? '')}은(는) 유방암 기준담보 금액과 1:1로 연동됩니다.`;
+            }
+            if (targetId === 7) {
+              return '주요순환계질환 기준금액을 먼저 변경해야 합니다.';
+            }
+            return targetRow.isStandard?.msg;
+          },
+        }
       ),
     [getExpiryRenderer, numberCellRenderer]
   );
@@ -299,7 +332,7 @@ export function Ltpa35002b({
         flex: 1,
         minWidth: attributeColumnWidth(60),
         cellClass: (params: CellClassParams<AgGridRow>) => {
-          const base = 'text-right [&_input]:text-right tooltip-on';
+          const base = 'text-right [&_input]:text-right ';
           return isInsuredAmountEditable(params.data, DEFAULT_INSURED_AMOUNT_OPTIONS)
             ? `${base} editable-cell`
             : `${base} no-edited`;

@@ -7,7 +7,11 @@ export type DummyDataType = {
   isStandard?: {
     group: boolean;
     edit: boolean;
+    msg?: string;
   }; // [isStandard, 기준이 되는 필드명]
+  _tooltipOn?: boolean;
+  _tooltipMsg?: string;
+  dataMsg?: string;
   num: number | null;
   title?: string | number | boolean | string[] | number[];
   field2?: string | number | boolean | string[] | number[];
@@ -132,7 +136,7 @@ export const dummyData: DummyDataType[] = [
     isChecked: false,
     isStandard: {
       group: true,
-      edit: false,
+      edit: true,
     },
     title: '유방암(수용체타입)진단비',
     field2: false,
@@ -140,11 +144,9 @@ export const dummyData: DummyDataType[] = [
     isSelectedInsuredAmount: false,
     field4: 4500,
     field4b: 100,
-
     field5: '80개월만기',
     field5b: '80세납',
     isEditedField5b: false,
-
     field6: '20년',
     isEditedField6: true,
     field8: ['조건부인수'],
@@ -155,7 +157,6 @@ export const dummyData: DummyDataType[] = [
         '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
       info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
     },
-
     locked: false,
     isHighlighted: false,
     badge: ['독립'],
@@ -168,7 +169,7 @@ export const dummyData: DummyDataType[] = [
     isChecked: true,
     isStandard: {
       group: true,
-      edit: true,
+      edit: false,
     },
 
     title: '유방암A타입진단비(호르몬수용체양성,HER2음성)',

@@ -602,7 +602,7 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 
 .isStandard:not([data-msg]):after,
 .isStandard[data-msg='']:after {
-  content: '기준담보의 가입금액을 변경하세요.' !important;
+  content: var(--tooltip-msg, '기준담보의 가입금액을 변경하세요.') !important;
   white-space: nowrap;
 }
 
@@ -920,7 +920,7 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 }
 
 .isStandard:after {
-  content: attr(data-msg) !important;
+  content: var(--tooltip-msg, attr(data-msg)) !important;
   white-space: nowrap;
   display: none;
   align-items: center;
@@ -946,7 +946,7 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 
 .isStandard:not([data-msg]):after,
 .isStandard[data-msg='']:after {
-  content: '기준담보의 가입금액을 변경하세요.' !important;
+  content: var(--tooltip-msg, '기준담보의 가입금액을 변경하세요.') !important;
 }
 
 .isStandard:before {

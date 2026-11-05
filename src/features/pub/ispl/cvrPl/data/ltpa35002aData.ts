@@ -7,7 +7,11 @@ export type DummyDataType = {
   isStandard?: {
     group: boolean;
     edit: boolean;
+    msg?: string;
   }; // [isStandard, 기준이 되는 필드명]
+  _tooltipOn?: boolean;
+  _tooltipMsg?: string;
+  dataMsg?: string;
   num?: number | null | undefined;
   title?: string | number | boolean;
   titleDetail?: {
@@ -143,7 +147,10 @@ export const dummyData: DummyDataType[] = [
     num: 46,
     filePath: ['set-46'],
     isChecked: true,
-    isStandard: { group: false, edit: false },
+    isStandard: {
+      group: true,
+      edit: true,
+    },
     title: '4대유사암진단비',
     field2: false,
     insuredAmount: 2400,
@@ -170,7 +177,7 @@ export const dummyData: DummyDataType[] = [
     num: null,
     filePath: ['set-46', 'set-46-1'],
     isChecked: true,
-    isStandard: { group: false, edit: false },
+    isStandard: { group: true, edit: false },
     title: '4대유사암진단비(기타피부암)',
     field2: false,
     insuredAmount: 600,
@@ -198,7 +205,7 @@ export const dummyData: DummyDataType[] = [
     num: null,
     filePath: ['set-46', 'set-46-2'],
     isChecked: true,
-    isStandard: { group: false, edit: false },
+    isStandard: { group: true, edit: false },
     title: '4대유사암진단비(제자리암)',
     field2: false,
     insuredAmount: 600,
@@ -226,7 +233,7 @@ export const dummyData: DummyDataType[] = [
     num: null,
     filePath: ['set-46', 'set-46-3'],
     isChecked: true,
-    isStandard: { group: false, edit: false },
+    isStandard: { group: true, edit: false },
     title: '4대유사암진단비(경계성종양)',
     field2: false,
     insuredAmount: 600,
@@ -254,7 +261,7 @@ export const dummyData: DummyDataType[] = [
     num: null,
     filePath: ['set-46', 'set-46-4'],
     isChecked: true,
-    isStandard: { group: false, edit: false },
+    isStandard: { group: true, edit: false },
     title: '4대유사암진단비(갑상선암)',
     field2: false,
     insuredAmount: 600,

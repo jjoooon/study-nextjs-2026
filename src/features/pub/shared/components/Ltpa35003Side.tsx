@@ -108,44 +108,23 @@ export function Ltpa35003Side<TData extends InfoContractBaseData = InfoContractB
                   <b>{info.diseaseCount}건</b>
                 </Grow>
               </BulletListItem>
-            </BulletList>
-            <Button variant={'outlined'} size={'sm'} color={'gray'} className="w-full">
-              보완 필요 질병력 확인
-            </Button>
 
-            <Divider dir="row" className="w-full my-[0.6rem]" />
-
-            {info.reviewers.length > 0 && (
-              <>
-                <BulletList className="w-full" type={'dot'} size={'xs'}>
-                  <BulletListItem>
-                    <Grow placement={'sc'}>
-                      <Typo variant="body-xs">심사자</Typo>
-                      <Divider />
-                      <b>{info.reviewers.length}건</b>
-                    </Grow>
-                  </BulletListItem>
-                </BulletList>
-                <Gcol variant={'box-line'} className="w-full py-[0.6rem]! border-none! shadow-none!" placement={'ss'}>
-                  <BulletList className="w-full" type={'dash'} size={'xs'}>
-                    {info.reviewers.map((reviewer, index) => (
-                      <BulletListItem key={`${reviewer[0]}-${index}`}>
-                        <Grow placement={'bwc'} className="w-full text-[1.1rem]">
-                          {reviewer[0]}, {reviewer[1]}
-                        </Grow>
-                      </BulletListItem>
-                    ))}
-                  </BulletList>
-                </Gcol>
-              </>
-            )}
-            <BulletList className="w-full" type={'dot'} size={'xs'}>
               <BulletListItem>
-                <Grow placement={'sc'}>
-                  <Typo variant="body-xs">시스템</Typo>
-                  <Divider />
-                  <b>{info.systems}건</b>
-                </Grow>
+                <Gcol placement={'ss'}>
+                  <Typo variant="body-xs">[시스템안내]질병확인이 필요해요</Typo>
+                  <Button variant={'outlined'} size={'sm'} color={'gray'} className="w-full">
+                    입력하기
+                  </Button>
+                </Gcol>
+              </BulletListItem>
+
+              <BulletListItem>
+                <Gcol placement={'ss'}>
+                  <Typo variant="body-xs">[심사자안내]질병확인이 필요해요</Typo>
+                  <Button variant={'outlined'} size={'sm'} color={'gray'} className="w-full">
+                    심사결과상세보기
+                  </Button>
+                </Gcol>
               </BulletListItem>
             </BulletList>
           </Gcol>

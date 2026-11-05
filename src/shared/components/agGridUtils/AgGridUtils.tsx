@@ -3134,7 +3134,11 @@ export interface InsuredAmountRowData {
   isStandard?: {
     group?: boolean;
     edit?: boolean;
+    msg?: string;
   };
+  _tooltipOn?: boolean;
+  _tooltipMsg?: string;
+  dataMsg?: string;
   [key: string]: unknown;
 }
 
