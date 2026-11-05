@@ -62,7 +62,7 @@ export function productNameCellRenderer<
   T extends ProductNameCellBase,
   D extends ProductTitleDetail = ProductTitleDetail,
 >(params: IGroupCellRendererParams<T & { titleDetail?: D }> & ICellRendererParams<T & { titleDetail?: D }>) {
-  const { data, context } = params;
+  const { data, context, api } = params;
   if (!data) return null;
 
   const coverageName = context?.coverageName;
@@ -121,6 +121,7 @@ export function productNameCellRenderer<
         <CoveragePopover
           text={highlightedTitle as unknown as string}
           items={data.titleDetail as ProductTitleDetail | undefined}
+          api={api}
         />
       ) : (
         <p className="truncate-no w-full pl-1.5 flex-1">{highlightedTitle}</p>
@@ -218,8 +219,7 @@ export function groupEditableButtonRenderer<
   optionsOrMsg?: string | GroupEditableButtonRendererOptions<T>
 ) {
   const Renderer = (params: ICellRendererParams<T>) => {
-    const defaultTooltipMsg =
-      typeof optionsOrMsg === 'string' ? optionsOrMsg : optionsOrMsg?.defaultTooltipMsg;
+    const defaultTooltipMsg = typeof optionsOrMsg === 'string' ? optionsOrMsg : optionsOrMsg?.defaultTooltipMsg;
     const fetchCallback =
       (typeof optionsOrMsg === 'object' ? optionsOrMsg?.onFetchTooltipMessage : undefined) ??
       (params.context as { onFetchTooltipMessage?: TooltipFetchCallback<T> } | undefined)?.onFetchTooltipMessage;

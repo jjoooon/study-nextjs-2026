@@ -2541,11 +2541,14 @@ export function useDynamicColumnWidths() {
 export const CoveragePopover = ({
   text,
   items,
+  api,
 }: {
   /** 트리거 버튼에 표시할 요약 텍스트 */
   text: string;
   /** 팝오버 상세 정보(없으면 일부 영역은 비어 있을 수 있음) */
   items?: { title: string; description: string; info: string[] };
+  /** ag-Grid API 인스턴스 (스크롤 감지용) */
+  api?: GridApi;
 }) => {
   /** 팝오버 열림 상태 */
   const [open, setOpen] = useState(false);
@@ -2554,6 +2557,24 @@ export const CoveragePopover = ({
 
   /** AI 질문하기(Ltpa120) 레이어 팝업 열림 상태 */
   const [isLtpa120Open, setIsLtpa120Open] = useState(false);
+
+  // 그리드 스크롤 시 팝오버 자동 닫기
+  useEffect(() => {
+    if (!open) return;
+
+    const handleScroll = () => {
+      setOpen(false);
+    };
+
+    api?.addEventListener('bodyScroll', handleScroll);
+    const viewportEl = triggerRef.current?.closest('.ag-body-viewport');
+    viewportEl?.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      api?.removeEventListener('bodyScroll', handleScroll);
+      viewportEl?.removeEventListener('scroll', handleScroll);
+    };
+  }, [open, api]);
 
   return (
     <>
