@@ -155,7 +155,7 @@ export default function NotificationTable<
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent
-                      align="start"
+                      align="end"
                       side="bottom"
                       sideOffset={0}
                       variant="default"

@@ -2626,8 +2626,9 @@ html.v109 [class*='disabled:bg-[var(--color-input-surface-disabled)]']:disabled,
 html.v109 [class*='bg-[var(--color-gray-5)]'][class*='bg-[var(--color-gray-0)]'] {
   background-color: var(--color-gray-0) !important;
 }
-html.v109 [class*='bg-[var(--color-gray-5)]'][class*='bg-[var(--color-primary-50)]'] {
-  background-color: var(--color-primary-50) !important;
+html.v109 [class*='bg-[var(--color-gray-5)]'][class*='bg-[var(--color-primary-30)]'] {
+  background-color: var(--color-gray-5) !important;
+  color: var(--cvolor-gray-50) !important;
 }
 html.v109 [class*='bg-[var(--color-gray-5)]'][class*='bg-[var(--color-primary-5)]'] {
   background-color: var(--color-primary-5) !important;

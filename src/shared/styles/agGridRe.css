@@ -71,7 +71,7 @@
 .ag-root-wrapper .ag-overlay-loading-wrapper > div {
   background-color: transparent !important;
 }
-.ag-center-cols-container > [role='row']:nth-child(2n) {
+.ag-center-cols-container > .ag-row-odd {
   background-color: transparent;
 }
 
