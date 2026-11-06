@@ -2,7 +2,7 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
-import type { ColDef } from 'ag-grid-enterprise';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
@@ -21,25 +21,27 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@uiux/Tooltip';
 
 import '@/shared/lib/agGridPub';
 
 type DummyDataType = {
-  id: number;
   isChecked: boolean;
+  field0: string;
   field1: string;
   field2: string;
   field3: string;
   field4: string;
   field5: string;
-  field6: string;
+  field6: string[];
   field7: string;
   field8: string;
   field9: string;
+  field10: string;
 };
 
 type DummyDataType2 = {
-  id: number;
+  id?: number;
   isChecked: boolean;
   field1: string;
   field2: string;
@@ -48,82 +50,32 @@ type DummyDataType2 = {
 
 const dummyData: DummyDataType[] = [
   {
-    id: 1,
     isChecked: false,
+    field0: '고지필요',
     field1: 'S98',
     field2: '발등 골절',
     field3: '2021-01-21',
     field4: '2021-01-21',
-    field5: '22(2021-01-21~2021-02-01)',
-    field6: '3',
-    field7: 'Y',
-    field8: '미고지',
-    field9: '고지필요',
+    field5: '2',
+    field6: ['1', '22(2021-01-21~2021-02-01)'],
+    field7: '1',
+    field8: '1',
+    field9: '',
+    field10: 'Y',
   },
   {
-    id: 2,
     isChecked: false,
-    field1: '',
-    field2: '발등 골절발등 골절발등 골절발등 골절발등 골절',
-    field3: '',
-    field4: '',
-    field5: '',
-    field6: '',
-    field7: '',
-    field8: '',
+    field0: '고지필요',
+    field1: 'S98',
+    field2: '발등 골절',
+    field3: '2021-01-21',
+    field4: '2021-01-21',
+    field5: '2',
+    field6: ['1', '12(2021-01-21~2021-02-01)'],
+    field7: '1',
+    field8: '1',
     field9: '',
-  },
-  {
-    id: 2,
-    isChecked: false,
-    field1: '',
-    field2: '발등 골절발등 골절발등 골절발등 골절발등 골절',
-    field3: '',
-    field4: '',
-    field5: '',
-    field6: '',
-    field7: '',
-    field8: '',
-    field9: '',
-  },
-  {
-    id: 2,
-    isChecked: false,
-    field1: '',
-    field2: '발등 골절발등 골절발등 골절발등 골절발등 골절',
-    field3: '',
-    field4: '',
-    field5: '',
-    field6: '',
-    field7: '',
-    field8: '',
-    field9: '',
-  },
-  {
-    id: 2,
-    isChecked: false,
-    field1: '',
-    field2: '발등 골절발등 골절발등 골절발등 골절발등 골절',
-    field3: '',
-    field4: '',
-    field5: '',
-    field6: '',
-    field7: '',
-    field8: '',
-    field9: '',
-  },
-  {
-    id: 2,
-    isChecked: false,
-    field1: '',
-    field2: '발등 골절발등 골절발등 골절발등 골절발등 골절',
-    field3: '',
-    field4: '',
-    field5: '',
-    field6: '',
-    field7: '',
-    field8: '',
-    field9: '',
+    field10: 'N',
   },
 ];
 
@@ -192,10 +144,17 @@ const Ltpz062 = () => {
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
     () => [
       {
+        headerName: '체크',
+        field: 'field0',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
         headerName: '대표질병코드',
         field: 'field1',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(94),
         cellClass: 'text-center',
       },
       {
@@ -206,60 +165,71 @@ const Ltpz062 = () => {
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field2' }),
       },
       {
-        headerName: '원사고발생일',
+        headerName: '치료시작일',
         field: 'field3',
         flex: 1,
         minWidth: attributeColumnWidth(80),
         cellClass: 'text-center',
       },
       {
-        headerName: '최종사고발생일',
+        headerName: '치료종료일',
         field: 'field4',
         flex: 1,
-        minWidth: attributeColumnWidth(92),
-        cellClass: 'text-center',
-      },
-      {
-        headerName: '입원',
-        field: 'field5',
-        flex: 1,
-        minWidth: attributeColumnWidth(160),
+        minWidth: attributeColumnWidth(80),
         cellClass: 'text-center',
       },
       {
         headerName: '통원',
+        field: 'field5',
+        flex: 1,
+        minWidth: attributeColumnWidth(60),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '입원',
         field: 'field6',
         flex: 1,
-        minWidth: attributeColumnWidth(30),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
+        cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+          console.log(params.value);
+          return (
+            <Tooltip>
+              <TooltipTrigger>{params.value[0]}</TooltipTrigger>
+              <TooltipContent side="bottom" sideOffset={0}>
+                {params.value[1]}
+              </TooltipContent>
+            </Tooltip>
+          );
+        },
       },
       {
         headerName: '수술',
         field: 'field7',
         flex: 1,
-        minWidth: attributeColumnWidth(30),
+        minWidth: attributeColumnWidth(60),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '발생횟수',
+        field: 'field8',
+        flex: 1,
+        minWidth: attributeColumnWidth(60),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '완치(가정)',
+        field: 'field9',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
         cellClass: 'text-center',
       },
       {
         headerName: '고지여부',
-        field: 'field8',
+        field: 'field10',
         flex: 1,
-        minWidth: attributeColumnWidth(50),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
-      },
-      {
-        headerName: '체크',
-        field: 'field9',
-        flex: 1,
-        minWidth: attributeColumnWidth(50),
-        cellClass: 'text-center',
-        cellRenderer: (params: { data: DummyDataType }) => (
-          <Gcol placement="cc" className="h-full">
-            <Typo tag={'span'} variant={'body-md'} className="text-[#006ff2]">
-              {params.data.field9}
-            </Typo>
-          </Gcol>
-        ),
       },
     ],
     [attributeColumnWidth]
@@ -293,7 +263,7 @@ const Ltpz062 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
