@@ -9,6 +9,7 @@ import useMounted from '@/shared/hooks/useMounted';
 import { cn } from '@/shared/lib/shadcn/utils';
 import log from '@/shared/utils/logger';
 import { Typo } from '@atoms';
+import { useDialogPortalContainer } from '@uiux/DialogContainerContext';
 
 /**
  * 에러 메시지 말풍선(anchor) 위치 토큰.
@@ -24,6 +25,19 @@ import { Typo } from '@atoms';
 type ErrorMsgPosition = 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
 
 /**
+ * 기본(인라인) 모드 위치 토큰 -> Tailwind class 매핑.
+ * 부모 relative 컨테이너 기준으로 배치되어 스크롤/이동 시 부모와 함께 자연스럽게 움직입니다.
+ */
+const positionStyles: Record<ErrorMsgPosition, string> = {
+  tl: 'bottom-[calc(100%+0.6rem)] left-0',
+  tc: 'bottom-[calc(100%+0.6rem)] left-1/2 -translate-x-1/2',
+  tr: 'bottom-[calc(100%+0.6rem)] right-0',
+  bl: 'top-[calc(100%+0.6rem)] left-0',
+  bc: 'top-[calc(100%+0.6rem)] left-1/2 -translate-x-1/2',
+  br: 'top-[calc(100%+0.6rem)] right-0',
+};
+
+/**
  * 위치 토큰 -> 말풍선 꼬리(after pseudo element) Tailwind class 매핑.
  */
 const arrowStyles: Record<ErrorMsgPosition, string> = {
@@ -36,7 +50,7 @@ const arrowStyles: Record<ErrorMsgPosition, string> = {
 };
 
 /**
- * 위치 토큰 -> absolute 포지션용 transform Tailwind class 매핑.
+ * 포탈 모드용 위치 토큰 -> absolute 포지션 transform Tailwind class 매핑.
  */
 const transformStyles: Record<ErrorMsgPosition, string> = {
   tl: 'translate-y-[-100%]',
@@ -67,6 +81,17 @@ type ErrorMsgProps = React.HTMLAttributes<HTMLSpanElement> & {
   onClose?: () => void;
   /** 외부 클릭/터치 시 자동 닫기 여부 */
   closeOnOutsideClick?: boolean;
+  /**
+   * 포탈(Portal) 렌더링 여부.
+   * - 기본값 `false`: 해당 영역(부모 relative 컨테이너) 내부의 absolute 위치에 렌더링되어 스크롤/이동 시 함께 자연스럽게 움직입니다.
+   * - `true`: overflow: hidden이나 z-index 간섭을 피해야 하는 특별한 경우에만 포탈로 렌더링합니다.
+   *          (모달 내부인 경우 모달 컨테이너 안으로, 그 외에는 document.body로 마운트됨)
+   */
+  usePortal?: boolean;
+  /** usePortal의 축약형 prop (호환성) */
+  portal?: boolean;
+  /** 포탈을 마운트할 특정 DOM 컨테이너 (미지정 시 자동 감지) */
+  portalContainer?: HTMLElement | null;
 };
 
 const logger = log.getLogger('Pub');
@@ -78,10 +103,16 @@ export function ErrorMsg({
   position = 'tl',
   onClose,
   closeOnOutsideClick = true,
+  usePortal = false,
+  portal,
+  portalContainer: portalContainerProp,
   className,
   style,
   ...props
 }: ErrorMsgProps) {
+  const isPortal = portal ?? usePortal;
+  const contextDialogContainer = useDialogPortalContainer();
+
   /** 앵커(원래 배치 위치) DOM 참조 */
   const anchorRef = useRef<HTMLSpanElement | null>(null);
   /** 말풍선 DOM 참조 (내부 클릭 판별용) */
@@ -89,57 +120,131 @@ export function ErrorMsg({
 
   const [mounted, setMounted] = useState(false);
   const [coords, setCoords] = useState<{ top: number; left: number } | null>(null);
+  const [resolvedPortalTarget, setResolvedPortalTarget] = useState<HTMLElement | null>(null);
 
   useMounted(() => {
     setMounted(true);
   });
 
-  /** 앵커 요소(또는 부모 요소)의 document.body 기준 절대 위치 계산 */
+  // 포탈 타겟 컨테이너 결정 (포탈 모드일 때만)
+  useEffect(() => {
+    if (!isPortal) {
+      setResolvedPortalTarget(null);
+      return;
+    }
+
+    if (portalContainerProp) {
+      setResolvedPortalTarget(portalContainerProp);
+      return;
+    }
+
+    if (contextDialogContainer) {
+      setResolvedPortalTarget(contextDialogContainer);
+      return;
+    }
+
+    // Context가 없는 다이얼로그나 팝업인 경우 DOM 트리 상위에서 다이얼로그 컨테이너 탐색
+    const modalEl = anchorRef.current?.closest(
+      '[data-slot="dialog-content"], [role="dialog"], .dialog-content'
+    ) as HTMLElement | null;
+
+    if (modalEl) {
+      setResolvedPortalTarget(modalEl);
+      return;
+    }
+
+    if (typeof document !== 'undefined') {
+      setResolvedPortalTarget(document.body);
+    }
+  }, [isPortal, portalContainerProp, contextDialogContainer, mounted]);
+
+  /** 포탈 모드일 때의 대상 기준 위치 계산 */
   const updatePosition = () => {
-    if (!anchorRef.current) return;
+    if (!anchorRef.current || !resolvedPortalTarget) return;
     const targetElement = anchorRef.current.parentElement || anchorRef.current;
     const rect = targetElement.getBoundingClientRect();
     if (rect.width === 0 && rect.height === 0) return;
 
     const gap = 6; // 0.6rem = 6px
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
 
-    let top = 0;
-    let left = 0;
+    if (resolvedPortalTarget === document.body) {
+      // document.body 기준 포탈 좌표 계산
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
 
-    switch (position) {
-      case 'tl':
-        top = rect.top + scrollTop - gap;
-        left = rect.left + scrollLeft;
-        break;
-      case 'tc':
-        top = rect.top + scrollTop - gap;
-        left = rect.left + scrollLeft + rect.width / 2;
-        break;
-      case 'tr':
-        top = rect.top + scrollTop - gap;
-        left = rect.right + scrollLeft;
-        break;
-      case 'bl':
-        top = rect.bottom + scrollTop + gap;
-        left = rect.left + scrollLeft;
-        break;
-      case 'bc':
-        top = rect.bottom + scrollTop + gap;
-        left = rect.left + scrollLeft + rect.width / 2;
-        break;
-      case 'br':
-        top = rect.bottom + scrollTop + gap;
-        left = rect.right + scrollLeft;
-        break;
+      let top = 0;
+      let left = 0;
+
+      switch (position) {
+        case 'tl':
+          top = rect.top + scrollTop - gap;
+          left = rect.left + scrollLeft;
+          break;
+        case 'tc':
+          top = rect.top + scrollTop - gap;
+          left = rect.left + scrollLeft + rect.width / 2;
+          break;
+        case 'tr':
+          top = rect.top + scrollTop - gap;
+          left = rect.right + scrollLeft;
+          break;
+        case 'bl':
+          top = rect.bottom + scrollTop + gap;
+          left = rect.left + scrollLeft;
+          break;
+        case 'bc':
+          top = rect.bottom + scrollTop + gap;
+          left = rect.left + scrollLeft + rect.width / 2;
+          break;
+        case 'br':
+          top = rect.bottom + scrollTop + gap;
+          left = rect.right + scrollLeft;
+          break;
+      }
+
+      setCoords({ top, left });
+    } else {
+      // 모달/특정 컨테이너 내부 기준 상대 좌표 계산
+      const containerRect = resolvedPortalTarget.getBoundingClientRect();
+      const baseTop = rect.top - containerRect.top + resolvedPortalTarget.scrollTop;
+      const baseLeft = rect.left - containerRect.left + resolvedPortalTarget.scrollLeft;
+
+      let top = 0;
+      let left = 0;
+
+      switch (position) {
+        case 'tl':
+          top = baseTop - gap;
+          left = baseLeft;
+          break;
+        case 'tc':
+          top = baseTop - gap;
+          left = baseLeft + rect.width / 2;
+          break;
+        case 'tr':
+          top = baseTop - gap;
+          left = baseLeft + rect.width;
+          break;
+        case 'bl':
+          top = baseTop + rect.height + gap;
+          left = baseLeft;
+          break;
+        case 'bc':
+          top = baseTop + rect.height + gap;
+          left = baseLeft + rect.width / 2;
+          break;
+        case 'br':
+          top = baseTop + rect.height + gap;
+          left = baseLeft + rect.width;
+          break;
+      }
+
+      setCoords({ top, left });
     }
-
-    setCoords({ top, left });
   };
 
   useLayoutEffect(() => {
-    if (!show) return;
+    if (!show || !isPortal) return;
     updatePosition();
 
     window.addEventListener('resize', updatePosition);
@@ -163,7 +268,7 @@ export function ErrorMsg({
         resizeObserver.disconnect();
       }
     };
-  }, [show, position, children]);
+  }, [show, position, isPortal, resolvedPortalTarget, children]);
 
   useEffect(() => {
     /** 표시 중이 아니거나 외부 클릭 닫기가 비활성화면 리스너 미등록 */
@@ -247,51 +352,94 @@ export function ErrorMsg({
           ))
       : children;
 
-  const tooltipPortal =
-    mounted && show && coords
-      ? createPortal(
-          <span
-            id={id}
-            /** 디버깅/자동화 선택자용 식별 데이터 속성 */
-            data-component="error-msg"
-            ref={containerRef}
-            style={{
-              top: `${coords.top}px`,
-              left: `${coords.left}px`,
-              ...style,
-            }}
-            className={cn(
-              // 말풍선 본체 스타일 (Portal rendering via absolute positioning)
-              'absolute z-[9999] shadow-md border border-[var(--color-input-border-error)] rounded-DEFAULT pointer-events-auto',
-              ' break-keep',
-              // 위치 및 transform 매핑
-              transformStyles[position],
-              className
-            )}
-            {...props}
-          >
-            <Typo
-              variant={'body-sm'}
-              tag={'span'}
-              className="block relative text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] px-2 py-[0.2rem] rounded-DEFAULT z-1 whitespace-nowrap"
-            >
-              {formattedChildren}
-            </Typo>
+  // 1) 특별한 경우: 포탈 모드 (usePortal={true})
+  // overflow: hidden이나 z-index 문제로 부모를 탈출해야 할 때 사용
+  // 모달 내부이면 모달 컨테이너 안으로, 그 외에는 document.body로 마운트
+  if (isPortal) {
+    const tooltipPortal =
+      mounted && show && coords && resolvedPortalTarget
+        ? createPortal(
             <span
+              id={id}
+              /** 디버깅/자동화 선택자용 식별 데이터 속성 */
+              data-component="error-msg"
+              ref={containerRef}
+              style={{
+                top: `${coords.top}px`,
+                left: `${coords.left}px`,
+                ...style,
+              }}
               className={cn(
-                'w-2 h-2 absolute border border-[var(--color-input-border-error)] bg-[var(--color-input-surface-error)] z-0 rounded-1',
-                arrowStyles[position]
+                // 말풍선 본체 스타일 (Portal rendering via absolute positioning)
+                'absolute z-[9999] shadow-md border border-[var(--color-input-border-error)] rounded-DEFAULT pointer-events-auto break-keep',
+                // 위치 및 transform 매핑
+                transformStyles[position],
+                className
               )}
-            ></span>
-          </span>,
-          document.body
-        )
-      : null;
+              {...props}
+            >
+              <Typo
+                variant={'body-sm'}
+                tag={'span'}
+                className="block relative text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] px-2 py-[0.2rem] rounded-DEFAULT z-1 whitespace-nowrap"
+              >
+                {formattedChildren}
+              </Typo>
+              <span
+                className={cn(
+                  'w-2 h-2 absolute border border-[var(--color-input-border-error)] bg-[var(--color-input-surface-error)] z-0 rounded-1',
+                  arrowStyles[position]
+                )}
+              />
+            </span>,
+            resolvedPortalTarget
+          )
+        : null;
+
+    return (
+      <>
+        <span ref={anchorRef} className="hidden" aria-hidden="true" />
+        {tooltipPortal}
+      </>
+    );
+  }
+
+  // 2) 기본 모드: 해당 영역(부모 relative 컨테이너) 내부의 absolute 위치에 렌더링
+  // 스크롤 및 모달 이동 시 부모와 함께 자연스럽게 이동하며 모달 내부에서는 당연히 모달 안에 뜸
+  if (!show) {
+    return null;
+  }
 
   return (
-    <>
+    <span
+      id={id}
+      /** 디버깅/자동화 선택자용 식별 데이터 속성 */
+      data-component="error-msg"
+      ref={containerRef}
+      style={style}
+      className={cn(
+        // 말풍선 본체 스타일 (부모 relative 컨테이너 기준 absolute 배치)
+        'block absolute z-20 shadow-md border border-[var(--color-input-border-error)] rounded-DEFAULT pointer-events-auto break-keep',
+        // 위치 토큰 적용
+        positionStyles[position],
+        className
+      )}
+      {...props}
+    >
       <span ref={anchorRef} className="hidden" aria-hidden="true" />
-      {tooltipPortal}
-    </>
+      <Typo
+        variant={'body-sm'}
+        tag={'span'}
+        className="block relative text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] px-2 py-[0.2rem] rounded-DEFAULT z-1 whitespace-nowrap"
+      >
+        {formattedChildren}
+      </Typo>
+      <span
+        className={cn(
+          'w-2 h-2 absolute border border-[var(--color-input-border-error)] bg-[var(--color-input-surface-error)] z-0 rounded-1',
+          arrowStyles[position]
+        )}
+      />
+    </span>
   );
 }
