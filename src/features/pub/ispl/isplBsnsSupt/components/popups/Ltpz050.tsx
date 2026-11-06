@@ -34,7 +34,7 @@ const Ltpz050 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_auto_1fr]">
+        <DialogSection className="grid-rows-[auto_1fr]">
           <FormTable
             caption="부실유의계약 선별인수 확인서"
             cols={['w-[9rem]', 'w-auto', 'w-[9rem]', 'w-auto']}
@@ -55,7 +55,7 @@ const Ltpz050 = () => {
               </FormCell>
             </FormRow>
           </FormTable>
-          <Gcol gap={2}>
+          <Gcol gap={2} placement="ss">
             <Gcol variant="box-warning" className="w-full" placement="ss">
               <Typo variant={'body-sm'} icon={'warning'}>
                 부실유의계약 해당 항목
