@@ -248,7 +248,7 @@ export const Ltpa35005 = () => {
                   <FormTable className="formTable-fixed" cols={['w-[17rem]', 'w-[24.8%]', 'w-[15.8rem]', 'w-[auto]']}>
                     <FormRow>
                       <FormCell title={'만기수익자'} colSpan={3}>
-                        <NativeSelect aria-label="주피와 관계 선택" width={100}>
+                        <NativeSelect aria-label="주피와 관계 선택" width={'auto'}>
                           {[
                             { value: '본인', label: '본인' },
                             { value: '본인', label: '본인' },
@@ -269,7 +269,7 @@ export const Ltpa35005 = () => {
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
                         <Input aria-label="만기수익자 이름" width={76} value={'김한화'} readOnly />
-                        <NativeSelect aria-label="만기수익자 은행선택" width={100}>
+                        <NativeSelect aria-label="만기수익자 은행선택" width={'auto'}>
                           {[
                             { value: '은행선택', label: '은행선택' },
                             { value: '우리은행', label: '우리은행' },

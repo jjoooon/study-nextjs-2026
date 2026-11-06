@@ -2351,10 +2351,20 @@
   padding-right: 0 !important;
 } */
 
+
 .v109 .ag-body-viewport.ag-layout-normal,
 .v109 .ag-body-viewport:where(.ag-layout-normal) {
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch;
+}
+
+.v109 .ag-header-cell-comp-wrapper,
+.v109 .ag-header-cell-label {
+  background-color: var(--color-gray-5);
+  
+}
+.v109 .ag-header-viewport {
+  border-bottom: 1px solid var(--color-gray-10);
 }
 
 /* MainBottomItem 하위 요소 크롬 109 호환 스타일 */
@@ -2532,9 +2542,9 @@ html.v109 [class*='disabled:bg-[var(--color-gray-5)]'].disabled {
 }
 
 /* AG Grid 가로/세로 구분선 Chrome 109 호환 스타일 */
-.v109 .ag-header-row {
+/* .v109 .ag-header-row {
   border-bottom: 1px solid var(--color-gray-10, #e5e5e5) !important;
-}
+} */
 
 .v109 .ag-header-cell {
   border-right: 1px solid var(--color-gray-10, #e5e5e5) !important;
@@ -2543,10 +2553,6 @@ html.v109 [class*='disabled:bg-[var(--color-gray-5)]'].disabled {
 .v109 .ag-header-cell.ag-column-last,
 .v109 .ag-header-group-cell.ag-column-last {
   border-right: 0 !important;
-}
-
-.v109 .ag-row {
-  border-bottom: 2px solid var(--color-gray-10, #e5e5e5) !important;
 }
 
 .v109 .ag-cell {

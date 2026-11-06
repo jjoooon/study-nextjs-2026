@@ -2558,21 +2558,31 @@ export const CoveragePopover = ({
   /** AI 질문하기(Ltpa120) 레이어 팝업 열림 상태 */
   const [isLtpa120Open, setIsLtpa120Open] = useState(false);
 
-  // 그리드 스크롤 시 팝오버 자동 닫기
+  // 그리드 스크롤 및 마우스 휠 조작 시 팝오버 즉시 닫기
   useEffect(() => {
     if (!open) return;
 
-    const handleScroll = () => {
+    const handleClose = () => {
       setOpen(false);
     };
 
-    api?.addEventListener('bodyScroll', handleScroll);
-    const viewportEl = triggerRef.current?.closest('.ag-body-viewport');
-    viewportEl?.addEventListener('scroll', handleScroll, { passive: true });
+    // 1. ag-Grid 내부 스크롤 이벤트
+    api?.addEventListener('bodyScroll', handleClose);
+
+    // 2. 마우스 휠(wheel) 이벤트: 스크롤 렌더링이 일어나기 직전 최우선 감지하여 시차 제거
+    window.addEventListener('wheel', handleClose, { capture: true, passive: true });
+
+    // 3. 브라우저/그리드 캡처링 스크롤 이벤트: 모든 스크롤 컨테이너에서의 스크롤을 즉시 감지
+    window.addEventListener('scroll', handleClose, { capture: true, passive: true });
+
+    // 4. 모바일/터치 스크롤 이벤트
+    window.addEventListener('touchmove', handleClose, { capture: true, passive: true });
 
     return () => {
-      api?.removeEventListener('bodyScroll', handleScroll);
-      viewportEl?.removeEventListener('scroll', handleScroll);
+      api?.removeEventListener('bodyScroll', handleClose);
+      window.removeEventListener('wheel', handleClose, { capture: true });
+      window.removeEventListener('scroll', handleClose, { capture: true });
+      window.removeEventListener('touchmove', handleClose, { capture: true });
     };
   }, [open, api]);
 
@@ -2589,7 +2599,13 @@ export const CoveragePopover = ({
             {text}
           </button>
         </PopoverTrigger>
-        <PopoverContent side="bottom" align="start" className="max-w-[42.5rem] select-text" closeButton={true}>
+        <PopoverContent
+          side="bottom"
+          align="start"
+          motion="none"
+          className="max-w-[42.5rem] select-text"
+          closeButton={true}
+        >
           <Gcol>
             <Grow className="w-full" placement="bws">
               <Typo variant={'heading-sm'}>{items?.title}</Typo>

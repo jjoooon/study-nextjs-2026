@@ -44,7 +44,6 @@ import {
   productNameCellRenderer,
   searchButtonRenderer,
   uwIconRenderer,
-  type TooltipFetchCallback,
 } from '@grid/CellRenderers';
 import { HeaderWithUnit, AgGridProductNameHeader, UwStatusTooltipQ } from '@grid/HeadRenderers';
 import { PaperIcon, ResetIcon, SizeIcon, SizeOffIcon } from '@icons';
@@ -57,12 +56,6 @@ import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 
 import { dummyData } from '../data/ltpa35002bData';
 import type { DummyDataType } from '../data/ltpa35002bData';
-import {
-  fetchTooltipMessageFromServer,
-  sampleTooltipData,
-  sampleTooltipResolver,
-  type TooltipDataMap,
-} from '../data/tooltipSampleData';
 import { useGridReadyHandler } from '../hooks/useGridReadyHandler';
 import { useGridSelectionChangedHandler } from '../hooks/useGridSelectionChangedHandler';
 import { useHandleSelectionChanged } from '../hooks/useHandleSelectionChanged';
@@ -102,9 +95,6 @@ interface Ltpa35002Props {
   setIsWidthExpanded?: (value: boolean) => void;
   rowData?: AgGridRow[];
   setRowData?: React.Dispatch<React.SetStateAction<AgGridRow[]>>;
-  tooltipData?: TooltipDataMap;
-  getTooltipMessage?: (clickedRow: AgGridRow, targetRow: AgGridRow) => string | undefined;
-  onFetchTooltipMessage?: TooltipFetchCallback<AgGridRow>;
 }
 
 export function Ltpa35002b({
@@ -113,9 +103,6 @@ export function Ltpa35002b({
   setIsWidthExpanded,
   rowData: externalRowData,
   setRowData: externalSetRowData,
-  tooltipData = sampleTooltipData,
-  getTooltipMessage = sampleTooltipResolver,
-  onFetchTooltipMessage = fetchTooltipMessageFromServer,
 }: Ltpa35002Props) {
   // =====================
   // 상태 및 참조 관리
@@ -161,9 +148,6 @@ export function Ltpa35002b({
       onShowProductNameTooltipChange: handleShowProductNameTooltipChange,
       checkedMap,
       onCheckedChange: handleCheckedChange,
-      onFetchTooltipMessage,
-      tooltipData,
-      getTooltipMessage,
     }),
     [
       coverageName,
@@ -172,9 +156,6 @@ export function Ltpa35002b({
       handleShowProductNameTooltipChange,
       checkedMap,
       handleCheckedChange,
-      onFetchTooltipMessage,
-      tooltipData,
-      getTooltipMessage,
     ]
   );
 
