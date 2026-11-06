@@ -27,12 +27,12 @@ type ErrorMsgPosition = 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
  * 위치 토큰 -> 말풍선 꼬리(after pseudo element) Tailwind class 매핑.
  */
 const arrowStyles: Record<ErrorMsgPosition, string> = {
-  tl: 'after:top-full after:left-[0.4rem] after:rotate-[45deg] after:translate-y-[-0.4rem]',
-  tc: 'after:top-full after:left-1/2 after:-translate-x-1/2 after:rotate-[45deg] after:translate-y-[-0.4rem]',
-  tr: 'after:top-full after:right-[0.4rem] after:rotate-[45deg] after:translate-y-[-0.4rem]',
-  bl: 'after:bottom-full after:left-[0.4rem] after:rotate-[225deg] after:translate-y-[0.4rem]',
-  bc: 'after:bottom-full after:left-1/2 after:-translate-x-1/2 after:rotate-[225deg] after:translate-y-[0.4rem] w-auto text-center',
-  br: 'after:bottom-full after:right-[0.4rem] after:rotate-[225deg] after:translate-y-[0.4rem]',
+  tl: 'top-full left-[0.4rem] rotate-[45deg] translate-y-[-0.4rem]',
+  tc: 'top-full left-1/2 -translate-x-1/2 rotate-[45deg] translate-y-[-0.4rem]',
+  tr: 'top-full right-[0.4rem] rotate-[45deg] translate-y-[-0.4rem]',
+  bl: 'bottom-full left-[0.4rem] rotate-[225deg] translate-y-[0.4rem]',
+  bc: 'bottom-full left-1/2 -translate-x-1/2 rotate-[225deg] translate-y-[0.4rem] w-auto text-center',
+  br: 'bottom-full right-[0.4rem] rotate-[225deg] translate-y-[0.4rem]',
 };
 
 /**
@@ -263,11 +263,8 @@ export function ErrorMsg({
             className={cn(
               // 말풍선 본체 스타일 (Portal rendering via absolute positioning)
               'absolute z-[9999] shadow-md border border-[var(--color-input-border-error)] rounded-DEFAULT pointer-events-auto',
-              // 말풍선 꼬리(after) 기본 스타일
-              "after:content-[''] after:w-2 after:h-2 after:absolute after:border after:border-[var(--color-input-border-error)]",
-              'after:bg-[var(--color-input-surface-error)] after:z-0 after:rounded-1 break-keep',
+              ' break-keep',
               // 위치 및 transform 매핑
-              arrowStyles[position],
               transformStyles[position],
               className
             )}
@@ -280,6 +277,12 @@ export function ErrorMsg({
             >
               {formattedChildren}
             </Typo>
+            <span
+              className={cn(
+                'w-2 h-2 absolute border border-[var(--color-input-border-error)] bg-[var(--color-input-surface-error)] z-0 rounded-1',
+                arrowStyles[position]
+              )}
+            ></span>
           </span>,
           document.body
         )

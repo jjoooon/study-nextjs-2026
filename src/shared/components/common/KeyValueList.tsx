@@ -101,6 +101,7 @@ interface KeyValueItemProps {
   children?: React.ReactNode;
   /** 추가 스타일 클래스 */
   className?: string;
+  dtClassName?: string;
   /**
    * 컴포넌트의 스타일 형태
    * - `default`: 기본 스타일
@@ -114,7 +115,7 @@ interface KeyValueItemProps {
 /**
  * KeyValueItem은 단일 항목의 Key와 Value를 구조화해서 표시해주는 서브 컴포넌트입니다.
  */
-export const KeyValueItem = ({ label, children, className, variant = 'default' }: KeyValueItemProps) => {
+export const KeyValueItem = ({ label, children, className, dtClassName, variant = 'default' }: KeyValueItemProps) => {
   const variantStyles = {
     default: '',
     info: 'flex gap-2 items-center [&>div+div]:text-[var(--color-gray-100)] [&>div+div]:font-bold',
@@ -135,7 +136,7 @@ export const KeyValueItem = ({ label, children, className, variant = 'default' }
   };
   return (
     <Grow className={cn(className, variantStyles[variant])} placement="sc">
-      <Typo tag="div" className={cn(className, dtStyle[variant])}>
+      <Typo tag="div" className={cn(className, dtClassName, dtStyle[variant])}>
         {label}
       </Typo>
       {variant === 'plan' && <Divider />}

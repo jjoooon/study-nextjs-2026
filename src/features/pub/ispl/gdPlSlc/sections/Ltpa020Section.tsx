@@ -200,7 +200,7 @@ export default function Ltpa020Section() {
                                   aria-label="고객 검색"
                                   width={136}
                                   col={2}
-                                  error={true}
+                                  error={!comboValues.user}
                                   errorMsg="추천설계를 위하여 고객정보를 입력해 주세요!"
                                   options={[{ value: '김한화 41세(여)', label: <td>김한화</td> }]}
                                   value={comboValues.user}
@@ -210,7 +210,13 @@ export default function Ltpa020Section() {
                                 <Button variant={'outlined'} color={'gray-light'} size={'lg'} only="icon">
                                   <SearchIcon color="var(--color-primary-50)" />
                                 </Button>
-                                <Button variant={'outlined'} color={'gray-light'} size={'lg'} only="icon">
+                                <Button
+                                  variant={'outlined'}
+                                  color={'gray-light'}
+                                  size={'lg'}
+                                  only="icon"
+                                  onClick={() => setComboValues((prev) => ({ ...prev, user: '' }))}
+                                >
                                   <ResetIcon color="var(--color-gray-60)" />
                                 </Button>
                               </Grow>
@@ -234,7 +240,8 @@ export default function Ltpa020Section() {
                               <KeyValueItem
                                 label={'연령'}
                                 variant="info"
-                                className="[&>div]:!text-[var(--color-gray-20)] [&>div+div]:!text-[#000] [&>div+div]:!font-normal"
+                                className="font-normal"
+                                dtClassName="text-[var(--color-gray-20)]!"
                               >
                                 <InputCombo
                                   aria-label="연령 검색"
@@ -374,14 +381,24 @@ export default function Ltpa020Section() {
                               </>
                             ) : (
                               <>
-                                <Typo variant={'body-sm'} icon={'info'} className="text-[#FFF]">
-                                  적정 고지유형을 찾는다면, 클릭해주세요.
-                                </Typo>
+                                {comboValues.age ? (
+                                  <Typo variant={'body-sm'} icon={'info'} className="text-[#FFF]">
+                                    적정 고지유형을 찾는다면, 클릭해주세요.
+                                  </Typo>
+                                ) : (
+                                  <Typo variant={'body-sm'} icon={'info'} className="text-[#FFF]">
+                                    고객정보를 먼저 입력해주세요
+                                  </Typo>
+                                )}
                               </>
                             )}
 
                             <Button
-                              disabled={!comboValues.user || comboValues?.user === '김한 32세(여)'}
+                              disabled={
+                                customerType === 'recent'
+                                  ? !comboValues.user || comboValues.user === '김한화 32세(여)'
+                                  : !comboValues.age
+                              }
                               size={'lg'}
                               onClick={() => setIsLtpz034Open(true)}
                             >
