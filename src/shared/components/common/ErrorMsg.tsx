@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import useMounted from '@/shared/hooks/useMounted';
 import { cn } from '@/shared/lib/shadcn/utils';
@@ -83,9 +83,10 @@ type ErrorMsgProps = React.HTMLAttributes<HTMLSpanElement> & {
   closeOnOutsideClick?: boolean;
   /**
    * 포탈(Portal) 렌더링 여부.
-   * - 기본값 `false`: 해당 영역(부모 relative 컨테이너) 내부의 absolute 위치에 렌더링되어 스크롤/이동 시 함께 자연스럽게 움직입니다.
-   * - `true`: overflow: hidden이나 z-index 간섭을 피해야 하는 특별한 경우에만 포탈로 렌더링합니다.
-   *          (모달 내부인 경우 모달 컨테이너 안으로, 그 외에는 document.body로 마운트됨)
+   * - 모달 내부(`role="dialog"`)에 위치한 경우: 자동으로 `role="dialog"` 직속 컨테이너로 포탈되어 모달 내부의 overflow(hidden/auto)에 잘리지 않고 온전하게 노출됩니다.
+   * - 일반 페이지(모달 외부)인 경우:
+   *   - `false`(기본값): 해당 입력 필드 영역에 absolute로 렌더링되어 스크롤 시 자연스럽게 함께 이동합니다.
+   *   - `true`: overflow: hidden이나 z-index 간섭을 피하기 위해 document.body로 포탈 렌더링합니다.
    */
   usePortal?: boolean;
   /** usePortal의 축약형 prop (호환성) */
@@ -110,7 +111,6 @@ export function ErrorMsg({
   style,
   ...props
 }: ErrorMsgProps) {
-  const isPortal = portal ?? usePortal;
   const contextDialogContainer = useDialogPortalContainer();
 
   /** 앵커(원래 배치 위치) DOM 참조 */
@@ -120,55 +120,60 @@ export function ErrorMsg({
 
   const [mounted, setMounted] = useState(false);
   const [coords, setCoords] = useState<{ top: number; left: number } | null>(null);
-  const [resolvedPortalTarget, setResolvedPortalTarget] = useState<HTMLElement | null>(null);
+  const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
 
   useMounted(() => {
     setMounted(true);
   });
 
-  // 포탈 타겟 컨테이너 결정 (포탈 모드일 때만)
-  useEffect(() => {
-    if (!isPortal) {
-      setResolvedPortalTarget(null);
-      return;
-    }
+  // 포탈 타겟 컨테이너 결정:
+  // 1) 전달받은 portalContainerProp이 있는 경우 최우선 사용
+  // 2) 모달 내부(Context 또는 DOM의 role="dialog")인 경우:
+  //    모달 내부의 overflow: hidden / auto에 잘리지 않도록 role="dialog" 컨테이너로 자동 지정
+  // 3) 모달 외부이면서 usePortal/portal=true인 경우: document.body로 지정
+  // 4) 그 외(모달 외부 기본): null (인라인 배치)
+  useLayoutEffect(() => {
+    if (!mounted) return;
+
+    let target: HTMLElement | null = null;
 
     if (portalContainerProp) {
-      setResolvedPortalTarget(portalContainerProp);
-      return;
+      target = portalContainerProp;
+    } else if (contextDialogContainer && contextDialogContainer.isConnected) {
+      target = contextDialogContainer;
+    } else if (anchorRef.current) {
+      const dialogEl = anchorRef.current.closest('[role="dialog"]') as HTMLElement | null;
+      if (dialogEl) {
+        target = dialogEl;
+      } else {
+        const dialogSlotEl = anchorRef.current.closest(
+          '[data-slot="dialog-content"], .dialog-content'
+        ) as HTMLElement | null;
+        if (dialogSlotEl) {
+          target = dialogSlotEl;
+        }
+      }
     }
 
-    if (contextDialogContainer) {
-      setResolvedPortalTarget(contextDialogContainer);
-      return;
+    if (!target && (portal ?? usePortal)) {
+      target = typeof document !== 'undefined' ? document.body : null;
     }
 
-    // Context가 없는 다이얼로그나 팝업인 경우 DOM 트리 상위에서 다이얼로그 컨테이너 탐색
-    const modalEl = anchorRef.current?.closest(
-      '[data-slot="dialog-content"], [role="dialog"], .dialog-content'
-    ) as HTMLElement | null;
+    setPortalTarget(target);
+  }, [mounted, portalContainerProp, contextDialogContainer, portal, usePortal]);
 
-    if (modalEl) {
-      setResolvedPortalTarget(modalEl);
-      return;
-    }
+  /** 포탈 대상 기준 위치 계산 */
+  const updatePosition = useCallback(() => {
+    if (!anchorRef.current || !portalTarget) return;
 
-    if (typeof document !== 'undefined') {
-      setResolvedPortalTarget(document.body);
-    }
-  }, [isPortal, portalContainerProp, contextDialogContainer, mounted]);
-
-  /** 포탈 모드일 때의 대상 기준 위치 계산 */
-  const updatePosition = () => {
-    if (!anchorRef.current || !resolvedPortalTarget) return;
     const targetElement = anchorRef.current.parentElement || anchorRef.current;
     const rect = targetElement.getBoundingClientRect();
     if (rect.width === 0 && rect.height === 0) return;
 
     const gap = 6; // 0.6rem = 6px
 
-    if (resolvedPortalTarget === document.body) {
-      // document.body 기준 포탈 좌표 계산
+    if (portalTarget === document.body) {
+      // document.body 기준 포탈 좌표 계산 (모달 외부 포탈 모드)
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
       const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
 
@@ -204,10 +209,11 @@ export function ErrorMsg({
 
       setCoords({ top, left });
     } else {
-      // 모달/특정 컨테이너 내부 기준 상대 좌표 계산
-      const containerRect = resolvedPortalTarget.getBoundingClientRect();
-      const baseTop = rect.top - containerRect.top + resolvedPortalTarget.scrollTop;
-      const baseLeft = rect.left - containerRect.left + resolvedPortalTarget.scrollLeft;
+      // role="dialog" 또는 특정 컨테이너 내부 기준 상대 좌표 계산
+      // 모달 내부의 overflow에 잘리지 않으면서 모달 컨테이너의 움직임/스크롤에 맞춰 위치 동기화
+      const containerRect = portalTarget.getBoundingClientRect();
+      const baseTop = rect.top - containerRect.top + portalTarget.scrollTop;
+      const baseLeft = rect.left - containerRect.left + portalTarget.scrollLeft;
 
       let top = 0;
       let left = 0;
@@ -241,13 +247,15 @@ export function ErrorMsg({
 
       setCoords({ top, left });
     }
-  };
+  }, [portalTarget, position]);
 
   useLayoutEffect(() => {
-    if (!show || !isPortal) return;
+    if (!show || !portalTarget) return;
+
     updatePosition();
 
     window.addEventListener('resize', updatePosition);
+    // 모달 내부 스크롤을 감지하기 위해 캡처링(true)으로 등록
     window.addEventListener('scroll', updatePosition, true);
 
     let resizeObserver: ResizeObserver | null = null;
@@ -268,7 +276,7 @@ export function ErrorMsg({
         resizeObserver.disconnect();
       }
     };
-  }, [show, position, isPortal, resolvedPortalTarget, children]);
+  }, [show, portalTarget, updatePosition, children]);
 
   useEffect(() => {
     /** 표시 중이 아니거나 외부 클릭 닫기가 비활성화면 리스너 미등록 */
@@ -326,12 +334,10 @@ export function ErrorMsg({
       }
     };
 
-    // 마우스/터치/키보드 포커스 이동을 모두 커버하기 위해 3종 이벤트 등록
     document.addEventListener('mousedown', handlePointerDown);
     document.addEventListener('touchstart', handlePointerDown);
     document.addEventListener('focusout', handleFocusOut, true);
 
-    // 언마운트/의존성 변경 시 리스너 정리
     return () => {
       document.removeEventListener('mousedown', handlePointerDown);
       document.removeEventListener('touchstart', handlePointerDown);
@@ -352,12 +358,12 @@ export function ErrorMsg({
           ))
       : children;
 
-  // 1) 특별한 경우: 포탈 모드 (usePortal={true})
-  // overflow: hidden이나 z-index 문제로 부모를 탈출해야 할 때 사용
-  // 모달 내부이면 모달 컨테이너 안으로, 그 외에는 document.body로 마운트
-  if (isPortal) {
+  // 1) 포탈 대상이 결정된 경우 (모달 내부이거나 usePortal=true인 경우)
+  // - 모달 내부: role="dialog" 직속 자식으로 포탈되어 내부 테이블/폼의 overflow: hidden/auto에 잘리지 않음
+  // - 모달 외부: document.body로 포탈되어 전체 overflow 간섭 해소
+  if (portalTarget) {
     const tooltipPortal =
-      mounted && show && coords && resolvedPortalTarget
+      mounted && show && coords
         ? createPortal(
             <span
               id={id}
@@ -392,7 +398,7 @@ export function ErrorMsg({
                 )}
               />
             </span>,
-            resolvedPortalTarget
+            portalTarget
           )
         : null;
 
@@ -404,10 +410,10 @@ export function ErrorMsg({
     );
   }
 
-  // 2) 기본 모드: 해당 영역(부모 relative 컨테이너) 내부의 absolute 위치에 렌더링
-  // 스크롤 및 모달 이동 시 부모와 함께 자연스럽게 이동하며 모달 내부에서는 당연히 모달 안에 뜸
+  // 2) 기본 모드 (모달 외부 일반 화면): 해당 영역(부모 relative 컨테이너) 내부의 absolute 위치에 렌더링
+  // 스크롤 및 부모 이동 시 자바스크립트 재계산 없이도 부모와 함께 자연스럽게 이동
   if (!show) {
-    return null;
+    return <span ref={anchorRef} className="hidden" aria-hidden="true" />;
   }
 
   return (
