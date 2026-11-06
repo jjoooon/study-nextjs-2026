@@ -1019,10 +1019,10 @@ export const Ltpa35001 = ({
                                 <FormCell title="주피와 관계" colSpan={3}>
                                   <Grow placement="bwc">
                                     <Grow>
-                                      <Input aria-label="피보험자명" width={'auto'} value={'주피(김한화)'} readOnly />의
+                                      <Input aria-label="피보험자명" width={106} value={'주피(김한화)'} readOnly />의
                                       <NativeSelect
                                         aria-label="주피와 관계 선택"
-                                        width={'auto'}
+                                        width={144}
                                         className="ml-[0.4rem]"
                                         required
                                       >
@@ -1233,7 +1233,7 @@ export const Ltpa35001 = ({
                               <FormRow>
                                 {_simpleMode ? (
                                   <FormCell colSpan={3} title={'소유자'} titleVariant="section">
-                                    <Input aria-label="소유자명" width={76} value={'김환화'} readOnly />
+                                    <Input aria-label="소유자명" width={86} value={'김환화'} readOnly />
                                     <Button
                                       aria-label="소유자 검색"
                                       variant={'outlined'}
@@ -1330,17 +1330,23 @@ export const Ltpa35001 = ({
                               </FormRow>
                               <FormRow>
                                 <FormCell title="가입업종">
-                                  <Input aria-label="가입업종코드" width={76} value={'12345'} readOnly />
-                                  <Button
-                                    aria-label="가입업종 검색"
-                                    variant={'outlined'}
-                                    only="icon"
-                                    size={'lg'}
-                                    color={'gray-light'}
-                                  >
-                                    <SearchIcon color={'var(--color-primary-50)'} />
-                                  </Button>
-                                  <Input aria-label="가입업종명" value={'학원(기원및 교육목적의 가죽목공방'} readOnly />
+                                  <Grid className="grid-cols-[auto_auto_1fr] w-full">
+                                    <Input aria-label="가입업종코드" width={76} value={'12345'} readOnly />
+                                    <Button
+                                      aria-label="가입업종 검색"
+                                      variant={'outlined'}
+                                      only="icon"
+                                      size={'lg'}
+                                      color={'gray-light'}
+                                    >
+                                      <SearchIcon color={'var(--color-primary-50)'} />
+                                    </Button>
+                                    <Input
+                                      aria-label="가입업종명"
+                                      value={'학원(기원및 교육목적의 가죽목공방'}
+                                      readOnly
+                                    />
+                                  </Grid>
                                 </FormCell>
                                 <FormCell title="건물급수">
                                   {_simpleMode ? (
@@ -1370,21 +1376,23 @@ export const Ltpa35001 = ({
                               </FormRow>
                               <FormRow>
                                 <FormCell title="요율적용업종" colSpan={_simpleMode ? 3 : 1}>
-                                  <Input aria-label="요율적용업종코드" width={76} value={'12345'} readOnly />
-                                  <Input
-                                    aria-label="요율적용업종명"
-                                    value={'학원(기원및 교육목적의 가죽목공방'}
-                                    readOnly
-                                  />
+                                  <Grid className="grid-cols-[auto_1fr] w-full">
+                                    <Input aria-label="요율적용업종코드" width={76} value={'12345'} readOnly />
+                                    <Input
+                                      aria-label="요율적용업종명"
+                                      value={'학원(기원및 교육목적의 가죽목공방'}
+                                      readOnly
+                                    />
+                                  </Grid>
                                 </FormCell>
                                 {!_simpleMode && (
                                   <FormCell title="건물상세">
                                     지상{' '}
-                                    <Input aria-label="건물 지상층" width={40} align="right" value={'2'} readOnly /> 층
+                                    <Input aria-label="건물 지상층" width={36} align="right" value={'2'} readOnly /> 층
                                     / 지하
-                                    <Input aria-label="건물 지하층" width={40} align="right" value={'1'} readOnly /> 층
+                                    <Input aria-label="건물 지하층" width={36} align="right" value={'1'} readOnly /> 층
                                     /
-                                    <Input aria-label="건물 폭" width={80} align="right" value={'100'} readOnly /> ㎡
+                                    <Input aria-label="건물 폭" width={54} align="right" value={'100'} readOnly /> ㎡
                                   </FormCell>
                                 )}
                               </FormRow>
@@ -1593,17 +1601,12 @@ export const Ltpa35001 = ({
                         {currentTab?.type !== '재물목적물' && (
                           <FormRow>
                             <FormCell title={currentTab?.type !== '연금저축' ? '계약자와 관계' : '주피와 관계'}>
-                              <Input aria-label="피보험자명" width={'auto'} value={'김한화'} readOnly />는{' '}
+                              <Input aria-label="피보험자명" width={106} value={'김한화'} readOnly />는{' '}
                               {currentTab?.type !== '연금저축' ? '계약자의' : ''}
-                              <NativeSelect
-                                aria-label="주피와 관계 선택"
-                                width={'auto'}
-                                className="ml-[0.4rem]"
-                                required
-                              >
+                              <NativeSelect aria-label="주피와 관계 선택" width={144} className="ml-[0.4rem]" required>
                                 {[
                                   { value: '본인', id: 'motorcycle-drives', label: '본인' },
-                                  { value: '배우자', id: 'motorcycle-nondriver', label: '배우자' },
+                                  { value: '배우자', id: 'motorcycle-nondriver', label: '배우자배우자' },
                                 ].map((option, index) => (
                                   <NativeSelectOption key={'주피와관계' + index} value={option.value}>
                                     {option.label}

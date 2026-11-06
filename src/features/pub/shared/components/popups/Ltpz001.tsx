@@ -601,8 +601,12 @@ const Ltpz001 = () => {
                         <Typo tag={'h3'} variant={'heading-sm'}>
                           팩스번호
                         </Typo>
-                        <Grow>
-                          <NativeSelect value={form.faxArea} onChange={(e) => setFormField('faxArea', e.target.value)}>
+                        <Grid className="grid-cols-[auto_auto_1fr_auto_1fr] w-full">
+                          <NativeSelect
+                            width={'auto'}
+                            value={form.faxArea}
+                            onChange={(e) => setFormField('faxArea', e.target.value)}
+                          >
                             <NativeSelectOption value="">02</NativeSelectOption>
                             <NativeSelectOption value="031">031</NativeSelectOption>
                             <NativeSelectOption value="051">051</NativeSelectOption>
@@ -619,7 +623,7 @@ const Ltpz001 = () => {
                             value={form.faxLast}
                             onChange={(e) => setFormField('faxLast', e.target.value)}
                           />
-                        </Grow>
+                        </Grid>
                       </Gcol>
                       <Divider dir="row" className="w-full" />
                       <Gcol placement={'ss'}>
@@ -683,7 +687,7 @@ const Ltpz001 = () => {
                         <Typo tag={'h3'} variant={'heading-sm'}>
                           휴대폰번호
                         </Typo>
-                        <Grow>
+                        <Grid className="grid-cols-[auto_auto_1fr_auto_1fr] w-full">
                           <NativeSelect
                             value={form.mobileArea}
                             onChange={(e) => setFormField('mobileArea', e.target.value)}
@@ -704,7 +708,7 @@ const Ltpz001 = () => {
                             value={form.mobileLast}
                             onChange={(e) => setFormField('mobileLast', e.target.value)}
                           />
-                        </Grow>
+                        </Grid>
                       </Gcol>
                       <Divider dir="row" className="w-full" />
                       <Gcol placement={'ss'}>
