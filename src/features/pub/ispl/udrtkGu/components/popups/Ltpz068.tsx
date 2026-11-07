@@ -4,15 +4,13 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import { numberValueFormatter, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo, Gcol, Grid } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { HeaderWithUnit } from '@grid/HeadRenderers';
 
-import { Ai2Icon } from '@icons';
+import { Ai2Icon, CheckIcon } from '@icons';
+import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -25,6 +23,10 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import type { ICellRendererParams, ColDef, ValueFormatterParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { cn } from '@/shared/lib/shadcn/utils';
 
 /**
  * AI인수지침 위배해소 그리드용 행 데이터 타입
@@ -789,10 +791,26 @@ const PLAN_COLS: Array<{
   key: PlanKey;
   leftField: keyof DummyDataType;
   rightField: keyof DummyDataType;
+  resolution: string[];
 }> = [
-  { key: 'A', leftField: 'insuredAmountA', rightField: 'premiumA' },
-  { key: 'B', leftField: 'insuredAmountB', rightField: 'premiumB' },
-  { key: 'C', leftField: 'insuredAmountC', rightField: 'premiumC' },
+  {
+    key: 'A',
+    leftField: 'insuredAmountA',
+    rightField: 'premiumA',
+    resolution: ['인수금지', '인수기준', '당사누적', '업계누적'],
+  },
+  {
+    key: 'B',
+    leftField: 'insuredAmountB',
+    rightField: 'premiumB',
+    resolution: ['인수금지', '인수기준', '당사누적'],
+  },
+  {
+    key: 'C',
+    leftField: 'insuredAmountC',
+    rightField: 'premiumC',
+    resolution: ['인수금지', '업계누적'],
+  },
 ];
 
 /**
@@ -830,41 +848,20 @@ const Ltpz068 = () => {
   }, []);
 
   /**
-   * 하단 고정(Pinned Bottom) 합계행 생성 로직
-   * - 현재설계액 및 A, B, C안의 보장 보험료의 누적 총합을 각각 합산하여 반환합니다.
+   * 현재 설계 및 각 제안 플랜(A, B, C안)별 보장보험료 합계 계산
    */
-  const sumRow = React.useMemo<DummyDataType[]>(() => {
-    const currentTotal = rowData.reduce((acc, row) => acc + toNumber(row.premium), 0);
-    const planATotal = rowData.reduce((acc, row) => acc + toNumber(row.premiumA), 0);
-    const planBTotal = rowData.reduce((acc, row) => acc + toNumber(row.premiumB), 0);
-    const planCTotal = rowData.reduce((acc, row) => acc + toNumber(row.premiumC), 0);
-
-    return [
-      {
-        id: -1,
-        field01: '',
-        field02: '',
-        insuredAmount: '보장보험료(합)',
-        premium: currentTotal,
-        insuredAmountA: '보장보험료(합)',
-        premiumA: planATotal,
-        insuredAmountB: '보장보험료(합)',
-        premiumB: planBTotal,
-        insuredAmountC: '보장보험료(합)',
-        premiumC: planCTotal,
+  const premiumTotals = React.useMemo(() => {
+    return rowData.reduce(
+      (acc, row) => {
+        acc.current += toNumber(row.premium);
+        acc.A += toNumber(row.premiumA);
+        acc.B += toNumber(row.premiumB);
+        acc.C += toNumber(row.premiumC);
+        return acc;
       },
-    ];
+      { current: 0, A: 0, B: 0, C: 0 }
+    );
   }, [rowData, toNumber]);
-
-  /**
-   * 금액 데이터를 천단위 콤마가 동봉된 포맷 문자열로 변환하는 함수
-   */
-  const numericFormatter = React.useCallback((value: string | number | null | undefined): string => {
-    if (value === null || value === undefined || value === '') return '';
-    if (typeof value === 'string' && isNaN(Number(value.replaceAll(',', '')))) return value;
-    const num = typeof value === 'number' ? value : Number(value.replaceAll(',', ''));
-    return Number.isFinite(num) ? num.toLocaleString() : String(value);
-  }, []);
 
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
@@ -881,32 +878,47 @@ const Ltpz068 = () => {
       {
         headerName: '담보명',
         field: 'field02',
-        flex: 7,
+        flex: 10,
         cellClass: 'text-left ',
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
       },
       {
         headerName: '가입금액(만원)',
+        headerComponent: HeaderWithUnit,
+        headerComponentParams: {
+          label: '가입금액',
+          unit: '(만원)',
+        },
         field: 'insuredAmount',
-        width: attributeColumnWidth(90),
+        width: attributeColumnWidth(92),
         cellClass: 'text-right',
-        valueFormatter: (p) => numericFormatter(p.value),
+        valueFormatter: numberValueFormatter<DummyDataType>,
       },
       {
         headerName: '보험료(원)',
+        headerComponent: HeaderWithUnit,
+        headerComponentParams: {
+          label: '보험료',
+          unit: '(원)',
+        },
         field: 'premium',
-        width: attributeColumnWidth(70),
+        width: attributeColumnWidth(92),
         cellClass: 'text-right',
-        valueFormatter: (p) => numericFormatter(p.value),
+        valueFormatter: numberValueFormatter<DummyDataType>,
       },
       // flatMap을 이용하여 A안, B안, C안의 가입금액 및 보험료 컬럼을 동적으로 이어붙임
       ...PLAN_COLS.flatMap(({ leftField, rightField }): ColDef<DummyDataType>[] => [
         {
           headerName: '가입금액(만원)',
+          headerComponent: HeaderWithUnit,
+          headerComponentParams: {
+            label: '가입금액',
+            unit: '(만원)',
+          },
           field: leftField,
-          width: attributeColumnWidth(90),
+          width: attributeColumnWidth(92),
           cellClass: 'text-right pr-2!',
-          valueFormatter: (p) => numericFormatter(p.value),
+          valueFormatter: numberValueFormatter<DummyDataType>,
           cellClassRules: {
             // 현재설계 가입금액 기준보다 제안액이 큰 경우 빨간색/주황색 하이라이트 클래스 부여
             'cell-greater': (params) => {
@@ -926,10 +938,15 @@ const Ltpz068 = () => {
         },
         {
           headerName: '보험료(원)',
+          headerComponent: HeaderWithUnit,
+          headerComponentParams: {
+            label: '보험료',
+            unit: '(원)',
+          },
           field: rightField,
-          width: attributeColumnWidth(70),
+          width: attributeColumnWidth(92),
           cellClass: 'text-right pr-2!',
-          valueFormatter: (p) => numericFormatter(p.value),
+          valueFormatter: numberValueFormatter<DummyDataType>,
           cellClassRules: {
             // 현재설계 보험료 기준보다 제안액이 큰 경우
             'cell-greater': (params) => {
@@ -949,11 +966,11 @@ const Ltpz068 = () => {
         },
       ]),
     ];
-  }, [numericFormatter, attributeColumnWidth, toNumber]);
+  }, [numberValueFormatter, attributeColumnWidth, toNumber]);
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="2xl" className="min-h-[60rem]">
+      <DialogContent showCloseButton resizable={true} size="2xl" className="min-h-[90vh]">
         {/* 다이얼로그 상단 타이틀 */}
         <DialogHeader>
           <DialogTitle>
@@ -967,76 +984,121 @@ const Ltpz068 = () => {
         </DialogHeader>
 
         {/* 다이얼로그 본문 섹션 */}
-        <DialogSection className="grid-rows-[auto_1fr_auto] gap-2 pt-[2rem]">
+        <DialogSection className="grid-rows-[auto_1fr] gap-0">
           {/* 상단 AI 해결안 가이드 멘트 */}
-          <Grow className="w-full justify-start">
-            <Ai2Icon color={'var(--color-information-50)'} />
-            <Typo variant={'body-lg'} className="font-bold">
-              <b className="text-[var(--color-information-50)]">AI의 해결안을 적용</b>하면 인수지침 위배 항목이{' '}
-              <b className="text-[var(--color-information-50)]">자동 해소</b>됩니다.
+          <Gcol className="w-full h-[16.8rem] pointer-events-none pb-[2rem]" gap={2} placement="cs">
+            <Gcol className="gap-[0.2rem]" placement="cs">
+              <Ai2Icon />
+              <Typo variant={'body-xl'} className="font-bold">
+                <b className="text-[var(--color-information-50)]">AI의 해결안을 적용</b>하면 <br />
+                인수지침 위배 항목이 <b className="text-[var(--color-information-50)]">자동 해소</b>됩니다.
+              </Typo>
+            </Gcol>
+            <Typo variant={'body-sm'} color={'gray'}>
+              본 사안은 AI가 제시한 인수 지침 해소 방안으로
+              <br />
+              개발 사안의 특성에 따라 일부를 해소하지 못할 수 있습니다.
             </Typo>
-          </Grow>
+          </Gcol>
 
-          {/* 중단: 추천 플랜(A안, B안, C안) 상단 탭바 & 그리드 영역 */}
-          {/* 
-            [디자인 특징] 
-            아래 Grid(tabs)는 Ag-Grid 테이블 본체의 헤더 윗부분과 절묘하게 오버랩되도록 
-            absolute absolute top-[-4rem] right-0 좌표로 고정 배치되어 
-            각 열(Column)들과 일정한 세로 구분선 영역을 형성합니다.
-          */}
           <div className="relative">
-            <Grid className="grid-cols-[15.8rem_16rem_16.2rem_17.6rem] h-[calc(100%+4rem)] absolute top-[-4rem] right-0 items-start gap-0 z-100 pointer-events-none ">
+            <Grid className="w-[calc(18.4rem*4)] grid-cols-[1fr_1fr_1fr_1fr] h-[calc(100%+16.8rem)] absolute top-[-16.8rem] right-[1.5rem] items-start gap-0 z-100 pointer-events-none ">
               {/* 현재 설계 고정 영역 */}
-              <div className="flex flex-col w-full cursor-pointer h-[100%]">
-                <Grow className="flex flex-col items-start justify-between h-[100%] p-0 rounded-t-[1rem] gap-0 ">
-                  <div className="flex flex-row items-center justify-between h-[4rem] py-2 px-4 rounded-t-[1rem] w-full pointer-events-auto bg-[var(--color-primary-50)]">
-                    <Typo className="text-[1.4rem] font-bold text-white">현재</Typo>
-                  </div>
-                  <div
-                    className="border w-[calc(100%+0.01rem)] h-[calc(100%-4rem)]"
-                    style={{ borderColor: 'var(--color-primary-50)', borderWidth: '0.2rem' }}
-                  ></div>
-                </Grow>
+              <div className="h-full w-full rounded-[1rem_0]">
+                <Grid className="grid-rows-[auto_1frm] w-full rounded-[1rem_1rem_0_0] h-[16.8rem] border border-[var(--color-gray-15)] bg-[var(--color-gray-5)]">
+                  <Grow placement="bwc" className="w-full h-[4rem] px-4 py-2">
+                    <Typo variant={'heading-lg'}>현재</Typo>
+                  </Grow>
+                  <Gcol className="px-4" placement="es">
+                    <Grow
+                      className="w-full pt-[0.5rem] pb-[0.8rem] border-t-[1px] border-t-[var(--color-gray-20)]"
+                      placement="bwc"
+                    >
+                      <Typo tag="b" variant={'body-sm'} color={'gray'}>
+                        보장보험료(합)
+                      </Typo>
+                      <Typo tag="b" variant={'body-lg'} color={'gray'}>
+                        {premiumTotals.current.toLocaleString()}원
+                      </Typo>
+                    </Grow>
+                  </Gcol>
+                </Grid>
               </div>
               {/* AI 제안 플랜 A안, B안, C안 선택 탭 */}
-              {PLAN_COLS.map(({ key: plan }) => {
+              {PLAN_COLS.map(({ key: plan, resolution: res }) => {
                 const isActive = selectedPlan === plan;
-                const bg = isActive ? 'var(--color-information-50)' : 'var(--color-secondary-50)';
+
                 return (
-                  <div
-                    role="button"
+                  <Grid
                     key={plan}
-                    className="flex flex-col w-full cursor-pointer h-[100%] focus:outline-none"
-                    tabIndex={0}
-                    onClick={() => setSelectedPlan(plan)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        setSelectedPlan(plan);
-                      }
-                    }}
-                    aria-pressed={isActive}
+                    className={cn(
+                      'grid-rows-[auto_1frm] w-full rounded-[1rem_1rem_0_0] h-full',
+                      isActive && 'border border-[var(--color-primary-50)] border-[0.2rem] overflow-hidden '
+                    )}
                   >
-                    <Grow className="flex flex-col items-start justify-between h-[100%] p-0 rounded-t-[1rem] gap-0 ">
-                      <div
-                        className="flex flex-row items-center justify-between h-[4rem] py-2 px-4 rounded-t-[1rem] w-full pointer-events-auto"
-                        style={{ backgroundColor: bg }}
+                    <Grid
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => setSelectedPlan(plan)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setSelectedPlan(plan);
+                        }
+                      }}
+                      aria-pressed={isActive}
+                      className={cn(
+                        'grid-rows-[auto_1frm] w-full overflow-hidden pointer-events-auto cursor-pointer',
+                        isActive
+                          ? 'h-[16.5rem]'
+                          : 'rounded-[1rem_1rem_0_0] border border-[var(--color-gray-15)] h-[16.7rem]'
+                      )}
+                    >
+                      <Grow
+                        placement="bwc"
+                        className={cn('w-full h-[4rem] px-4 py-2', isActive ? 'bg-[var(--color-primary-50)]' : '')}
+                        gap={0}
                       >
-                        <Typo className="text-[1.4rem] font-bold text-white">{plan}안</Typo>
+                        <b className={cn(isActive && 'text-[#fff]')}>{plan}안</b>
                         <RadioGroup
                           value={isActive ? plan : ''}
                           onValueChange={() => setSelectedPlan(plan)}
                           onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                          variant="default"
                         >
-                          <RadioGroupItem color="info" id={`plan-${plan}`} size="lg" value={plan} variant="default" />
+                          <RadioGroupItem id={`plan-${plan}`} size="lg" value={plan} />
                         </RadioGroup>
-                      </div>
-                      <div
-                        className="border w-[calc(100%+0.01rem)] h-[calc(100%-4rem)]"
-                        style={{ borderColor: bg, borderWidth: isActive ? '0.4rem' : '0.2rem' }}
-                      ></div>
-                    </Grow>
-                  </div>
+                      </Grow>
+                      <Gcol className={cn(isActive ? 'px-[1rem]' : 'px-3')} placement="es" gap={2.5}>
+                        <Gcol placement="ss">
+                          <Typo>해소범위</Typo>
+                          <Grid className="grid-cols-[1fr_1fr] grid-rows-[1fr_1fr] w-full gap-1">
+                            {res.map((v) => {
+                              const badgeColor = v === '당사누적' ? 'green' : v === '업계누적' ? 'blue' : 'primary';
+                              return (
+                                <Badge key={v} color={badgeColor} className="h-[2rem] w-full pt-[0.3rem] font-normal">
+                                  <CheckIcon />
+                                  {v}
+                                </Badge>
+                              );
+                            })}
+                          </Grid>
+                        </Gcol>
+                        <Grow
+                          className="w-full pt-[0.5rem] pb-[0.8rem] border-t-[1px] border-t-[var(--color-gray-20)]"
+                          placement="bwc"
+                        >
+                          <Typo tag="b" variant={'body-sm'} color={'gray'}>
+                            보장보험료(합)
+                          </Typo>
+                          <Typo tag="b" variant={'body-lg'} color={'gray'}>
+                            {premiumTotals[plan].toLocaleString()}원
+                          </Typo>
+                        </Grow>
+                      </Gcol>
+                    </Grid>
+                    <div></div>
+                  </Grid>
                 );
               })}
             </Grid>
@@ -1057,23 +1119,9 @@ const Ltpz068 = () => {
                 tooltipShowMode="standard"
                 tooltipShowDelay={0}
                 getRowStyle={(params) => (params.node.rowPinned ? { fontWeight: 'bold' } : undefined)}
-                pinnedBottomRowData={sumRow} // 하단 누적 합계 적용
               />
             </div>
           </div>
-          <Gcol variant="box-info" placement="ss">
-            <BulletList position="col" className="gap-0">
-              <BulletListItem type="dot" size="sm">
-                <b>A안 :</b> 인수금지 및 인수기준 지침 해소
-              </BulletListItem>
-              <BulletListItem type="dot" size="sm">
-                <b>B안 :</b> 인수금지, 인수기준, 청약완료불가(당사누적)
-              </BulletListItem>
-              <BulletListItem type="dot" size="sm">
-                <b>C안 :</b> 인수금지, 인수기준, 청약완료불가(당사누적), 청약완료불가, 청약완료불가(업계누적)
-              </BulletListItem>
-            </BulletList>
-          </Gcol>
         </DialogSection>
 
         {/* 다이얼로그 하단 푸터 버튼 */}
