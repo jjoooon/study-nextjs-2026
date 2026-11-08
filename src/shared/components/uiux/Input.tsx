@@ -459,7 +459,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
       ? 'bg-[transparent] cursor-pointer opacity-100 border-0 px-0 text-[#000] font-bold outline-none appearance-none field-sizing-[content] flex items-center'
       : '';
   const disabledStyle = '';
-  const sizeStyle = `${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
+  const sizeStyle = `${size === 'xl' ? 'h-[3.2rem]' : size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
 
   const infoStyle = cn(
     'rounded-[0.4rem] px-2 text-[1.3rem] border border-[0.1rem] box-border tracking-[-0.03rem] appearance-none truncate',
@@ -738,11 +738,11 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                 title={currentMasked ? '마스킹 해제' : '마스킹 적용'}
               >
                 {isMaskLoading ? (
-                  <SpinnerIcon size={size === 'lg' ? 20 : 18} className="animate-spin stroke-[1.8]" />
+                  <SpinnerIcon size={size === 'xl' || size === 'lg' ? 20 : 18} className="animate-spin stroke-[1.8]" />
                 ) : currentMasked ? (
-                  <MaskingOn size={size === 'lg' ? 20 : 18} />
+                  <MaskingOn size={size === 'xl' || size === 'lg' ? 20 : 18} />
                 ) : (
-                  <MaskingOff size={size === 'lg' ? 20 : 18} />
+                  <MaskingOff size={size === 'xl' || size === 'lg' ? 20 : 18} />
                 )}
               </Button>
             )}
@@ -817,7 +817,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                 }
               }}
             >
-              <InputClearIcon size={size === 'lg' ? 16 : 12} color="var(--color-gray-30)" />
+              <InputClearIcon size={size === 'xl' || size === 'lg' ? 16 : 12} color="var(--color-gray-30)" />
             </Button>
           )}
           {showMaskToggle && (
@@ -840,11 +840,11 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
               title={currentMasked ? '마스킹 해제' : '마스킹 적용'}
             >
               {isMaskLoading ? (
-                <SpinnerIcon size={size === 'lg' ? 16 : 14} className="animate-spin stroke-[1.8]" />
+                <SpinnerIcon size={size === 'xl' || size === 'lg' ? 16 : 14} className="animate-spin stroke-[1.8]" />
               ) : currentMasked ? (
-                <MaskingOn size={size === 'lg' ? 20 : 18} />
+                <MaskingOn size={size === 'xl' || size === 'lg' ? 20 : 18} />
               ) : (
-                <MaskingOff size={size === 'lg' ? 20 : 18} />
+                <MaskingOff size={size === 'xl' || size === 'lg' ? 20 : 18} />
               )}
             </Button>
           )}

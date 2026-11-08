@@ -34,21 +34,21 @@ export const ViewMode = ({
     ? `relative min-h-[2rem] rounded-[0.2rem] translate-[0.1rem] flex justify-center items-center gap-0 z-1 ${
         disabled ? 'bg-[var(--color-gray-5)] rounded-[0.6rem]' : 'bg-transparent cursor-pointer'
       }`
-    : `relative h-[2.8rem] p-[0.1rem] rounded-full border bg-white border-[var(--color-gray-15)] flex justify-center items-center gap-0 ${
+    : `relative h-[2.6rem] p-[0.1rem] rounded-[0.4rem] border bg-black border-[#000] flex justify-center items-center gap-0 ${
         disabled ? '' : 'cursor-pointer'
       }`;
 
   const itemBaseClass = isSecondary
     ? `h-[2rem] leading-1 flex items-center px-1 rounded-[0.2rem] text-[1.1rem] tracking-[-0.08rem] whitespace-nowrap`
-    : 'rounded-full flex items-center pl-1 pr-[0.6rem] h-full text-[1.1rem] tracking-[-0.08rem] whitespace-nowrap';
+    : 'rounded-[0.4rem] flex items-center px-2 h-full text-[1.1rem] tracking-[-0.08rem] whitespace-nowrap text-[var(--color-blue-gray-20)]';
 
   const activeItemClass = isSecondary
     ? `text-[var(--color-gray-0)] font-bold ${disabled ? 'bg-[var(--color-blue-gray-50)]' : 'bg-[var(--color-secondary-50)]'}`
-    : 'text-[var(--color-gray-0)] bg-gradient-to-r from-[#ff5c2e] to-[#ffb800] font-bold';
+    : 'text-[var(--color-blue-gray-70)] bg-white';
 
   const inactiveItemClass = isSecondary
     ? `bg-transparent font-normal ${disabled ? 'text-[var(--color-gray-30)]' : 'text-[var(--color-gray-100)]'}`
-    : 'text-[var(--color-gray-50)] bg-transparent font-normal';
+    : 'text-[var(--color-blue-gray-20)] bg-transparent font-normal';
 
   const isFirstActive = state;
   const isSecondActive = !state;

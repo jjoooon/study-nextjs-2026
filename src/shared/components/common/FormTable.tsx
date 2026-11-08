@@ -46,8 +46,10 @@ interface FormCellProps extends VariantProps<typeof FormCellVariants> {
   titleVariant?: 'default' | 'primary' | 'section' | 'blueGray';
   /** 셀의 값(Value) 영역에 표시할 컨텐츠 */
   children?: ReactNode;
-  /** 제목 셀(th)에 적용할 추가 CSS 클래스명 */
+  /** 제목 셀(th, dt)에 적용할 추가 CSS 클래스명 */
   className?: string;
+  /** 제목 텍스트(Typo)에 직접 적용할 추가 CSS 클래스명 */
+  titleClassName?: string;
   /** 내용 셀(td)의 열 병합(colSpan) 수 */
   colSpan?: number;
   /** 내용 셀(td)의 행 병합(rowSpan) 수 */
@@ -194,11 +196,13 @@ export const FormCell = ({
   children = null,
   variant,
   className,
+  titleClassName,
   colSpan,
   lineTop: _lineTop,
   rowSpan,
   titleColSpan,
   titleRowSpan,
+  style,
   tdClassName,
   tdStyle,
   tdNone = false,
@@ -212,30 +216,38 @@ export const FormCell = ({
   const usedVariant = variant ?? contextVariant ?? 'default';
 
   /**
-   * 제목 텍스트 색상 정책.
-   * - section 제목은 primary 고정
-   * - head/none/bottom 등 특수 variant는 별도 색상 정책 적용
+   * 제목 텍스트 기본 색상 클래스 정책.
+   * - dt / th 요소에 기본 적용되며, 호출부의 className(예: text-[#FFF])으로 덮어쓸 수 있다.
+   * - section / primary 제목은 primary 컬러 적용
+   * - blueGray 또는 head/none 특수 variant는 blueGray 컬러 적용
    */
-  const titleTypoColor =
-    titleVariant === 'section'
-      ? 'primary'
-      : contextVariant === 'none' || contextVariant === 'head'
-        ? 'blueGray'
-        : contextVariant === 'bottom'
-          ? 'default'
-          : 'default';
+  const titleColorClass =
+    titleVariant === 'section' || titleVariant === 'primary'
+      ? 'text-[var(--color-primary-50)]'
+      : titleVariant === 'blueGray' ||
+          contextVariant === 'none' ||
+          contextVariant === 'head' ||
+          usedVariant === 'none' ||
+          usedVariant === 'head'
+        ? 'text-[var(--color-blue-gray-50)]'
+        : contextVariant === 'bottom' || usedVariant === 'bottom'
+          ? 'text-[var(--color-gray-100)]'
+          : 'text-[var(--color-gray-100)]';
 
   if (contextVariant === 'head' || usedVariant === 'head') {
     return (
       <div className="flex items-center gap-2">
         {!thNone && title !== null && (
-          <dt className={cn('font-bold shrink-0', className)}>
-            <Typo
-              variant={'body-md'}
-              weight="bold"
-              color={titleTypoColor}
-              className={`${titleVariant === 'section' ? '!text-[1.5rem]' : ''}`}
-            >
+          <dt
+            className={cn(
+              'font-bold shrink-0 text-[1.3rem] leading-[normal] tracking-[-0.05rem]',
+              titleColorClass,
+              titleVariant === 'section' && '!text-[1.5rem]',
+              className
+            )}
+            style={style}
+          >
+            <Typo inherit className={titleClassName}>
               {title}
             </Typo>
           </dt>
@@ -258,18 +270,16 @@ export const FormCell = ({
             FormCellVariants({ variant: usedVariant }),
             'text-left py-[0.4rem]',
             'pr-[0.4rem]! pl-[0.6rem]!',
+            'font-bold text-[1.3rem] leading-[1.2] tracking-[-0.05rem]',
+            titleColorClass,
+            titleVariant === 'section' && '!text-[1.5rem]',
             className
           )}
+          style={style}
           {...(titleColSpan && { colSpan: titleColSpan })}
           {...(titleRowSpan && { rowSpan: titleRowSpan })}
         >
-          <Typo
-            tag="div"
-            variant={'body-md'}
-            weight="bold"
-            color={titleTypoColor}
-            className={`${titleVariant === 'section' ? '!text-[1.5rem]' : ''} leading-[1.2]`}
-          >
+          <Typo tag="div" inherit className={titleClassName}>
             {title}
           </Typo>
         </TableHead>

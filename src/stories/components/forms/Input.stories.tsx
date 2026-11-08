@@ -51,6 +51,7 @@ import { Input } from '@uiux/Input';
               gap={8}
               className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
             >
+              <Input size="xl" placeholder="xl: 3.2rem" />
               <Input size="lg" placeholder="lg: 2.8rem (기본)" />
               <Input size="sm" placeholder="sm: 2.5rem" />
             </Grow>
@@ -168,7 +169,7 @@ import { Input } from '@uiux/Input';
     },
     size: {
       control: { type: 'select' },
-      options: ['lg', 'md', 'sm', 'xs'],
+      options: ['xl', 'lg', 'md', 'sm', 'xs'],
       table: { category: '스타일 props' },
     },
     width: {

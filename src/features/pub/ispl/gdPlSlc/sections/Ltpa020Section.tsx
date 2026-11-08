@@ -3,9 +3,6 @@
  */
 'use client';
 
-import * as React from 'react';
-import { useCallback, useState } from 'react';
-import Ltpz034 from '@/features/pub/ispl/gdPlSlc/components/popups/Ltpz034';
 import { Gcol, Grow, Divider, Grid, Typo } from '@atoms';
 
 import { BottomBar } from '@common/BottomBar';
@@ -21,8 +18,11 @@ import { LayoutFoot, LayoutHead } from '@layout/BaseLayout';
 import { LayoutTemplatePx0 } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { useCallback, useState } from 'react';
+import * as React from 'react';
 import { Ltpa02001 } from '../components/Ltpa02001';
-import { Ltpa02002 } from '../components/Ltpa02002';
+import { Ltpa02002 } from '../components/Ltpa02003';
+import Ltpz034 from '@/features/pub/ispl/gdPlSlc/components/popups/Ltpz034';
 
 export default function Ltpa020Section() {
   // 상단 탭 상태
@@ -132,13 +132,13 @@ export default function Ltpa020Section() {
                   value="Ltpa02002"
                   className="relative z-1 [&>div]:hidden w-full flex-1 h-[3.6rem] bg-[transparent] border-0! flex items-center gap-1 justify-center rounded-2 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
                 >
-                  <span className="flex w-full justify-center items-center">추천설계</span>
-                  {/* 현재 탭 상태에 맞춰 AI 아이콘 색상을 전환해 선택 상태를 직관적으로 표시 */}
                   <AiIcon
-                    size={24}
+                    size={16}
                     color={tabSelectValue === 'Ltpa02002' ? '#ffffff' : '#006FF2'}
                     color2={tabSelectValue === 'Ltpa02002' ? '#ffffff' : '#A683FF'}
                   />
+                  <span className="flex justify-center items-center">추천설계</span>
+                  {/* 현재 탭 상태에 맞춰 AI 아이콘 색상을 전환해 선택 상태를 직관적으로 표시 */}
                 </RadioGroupItem>
               </RadioGroup>
               {userAdmin && (
@@ -178,11 +178,8 @@ export default function Ltpa020Section() {
               <Gcol placement="ss" className="bg-[var(--color-blue-gray-70)] rounded-[0.8rem] p-[1rem]">
                 <FormTable caption="" cols={['w-[6rem]', 'w-auto']} variant={'none'}>
                   <FormRow className="items-start!">
-                    <FormCell
-                      title={'고객정보'}
-                      className="[&>div]:!text-[var(--color-gray-20)] [&>div+div]:!text-[#fff]"
-                    >
-                      <Grow placement="ss" gap={5} className="w-full">
+                    <FormCell title={'고객정보'} className="text-[#FFF]">
+                      <Grow placement="ss" gap={5} className="w-full ml-1">
                         <ViewMode
                           label={['등록', '미등록']}
                           state={customerType === 'recent'}
@@ -314,6 +311,9 @@ export default function Ltpa020Section() {
                                   onChange={handleAgeComboChange}
                                 />
                                 <DatePickerInput value="1994-05-10" />
+                                <Button variant={'outlined'} color={'gray-light'} size={'lg'} only="icon">
+                                  <ResetIcon color="var(--color-gray-60)" />
+                                </Button>
                               </KeyValueItem>
                               <Divider color="gray-dark" />
 

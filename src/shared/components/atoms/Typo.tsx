@@ -20,6 +20,9 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 const typoVariants = cva('', {
   variants: {
     variant: {
+      /** 부모 요소의 타이포그래피(크기/줄간격/자간) 상속 */
+      inherit: '',
+
       /** 제목 계열(Heading): 섹션/카드 타이틀 */
       'heading-xl': 'heading-xl block text-[1.8rem] font-bold leading-[normal] tracking-[-0.05rem]',
       'heading-lg': 'heading-lg block text-[1.6rem] font-bold leading-[normal] tracking-[-0.05rem]',
@@ -66,6 +69,7 @@ const typoVariants = cva('', {
 
     /** 폰트 굵기 토큰 */
     weight: {
+      inherit: '',
       normal: 'font-normal!',
       bold: 'font-bold!',
       semibold: 'font-semibold!',
@@ -73,6 +77,7 @@ const typoVariants = cva('', {
 
     /** 텍스트 컬러 토큰 */
     color: {
+      inherit: '',
       default: 'text-[var(--color-gray-100)]',
       'gray-light': 'text-[var(--color-gray-50)]',
       gray: 'text-[var(--color-gray-70)]',
@@ -145,6 +150,12 @@ interface TypoProps extends VariantProps<typeof typoVariants> {
    * 툴팁 트리거와의 간격
    */
   tooltipSideOffset?: number;
+  /**
+   * 부모 요소의 텍스트 스타일(크기, 줄간격, 자간, 굵기, 색상) 상속 여부
+   * - true일 경우 별도로 지정하지 않은 variant, weight, color 속성을 부모로부터 상속('inherit')받습니다.
+   * @default false
+   */
+  inherit?: boolean;
 }
 
 /**
@@ -245,6 +256,7 @@ export const Typo = ({
   variant,
   weight,
   color,
+  inherit = false,
   children,
   className,
   icon,
@@ -307,8 +319,12 @@ export const Typo = ({
     ref: 'inline-block relative -indent-[1.4rem] ml-[1.4rem]',
   };
 
+  /** inherit 활성화 시 명시되지 않은 variant/weight/color는 부모 스타일을 상속받음 */
+  const effectiveVariant = variant ?? (inherit ? 'inherit' : undefined);
+  const effectiveWeight = weight ?? (inherit ? 'inherit' : undefined);
   /** info/warning/detail 의 기본색은 gray 이지만, color Prop이 명시되면 해당 color 가 우선 */
-  const effectiveColor = color ?? (icon === 'info' || icon === 'warning' || icon === 'detail' ? 'gray' : undefined);
+  const effectiveColor =
+    color ?? (inherit ? 'inherit' : icon === 'info' || icon === 'warning' || icon === 'detail' ? 'gray' : undefined);
   const indentClass = icon ? indentStyle[icon] : '';
 
   /** tooltip prop이 지정된 경우 말줄임 오버플로우 감지 툴팁 컴포넌트 렌더링 */
@@ -316,8 +332,8 @@ export const Typo = ({
     return (
       <TypoWithTooltip
         tag={tag}
-        variant={variant}
-        weight={weight}
+        variant={effectiveVariant}
+        weight={effectiveWeight}
         color={color}
         className={className}
         style={style}
@@ -338,7 +354,11 @@ export const Typo = ({
   return createElement(
     tag,
     {
-      className: cn(typoVariants({ variant, weight, color: effectiveColor }), indentClass, className),
+      className: cn(
+        typoVariants({ variant: effectiveVariant, weight: effectiveWeight, color: effectiveColor }),
+        indentClass,
+        className
+      ),
       style,
     },
     <>

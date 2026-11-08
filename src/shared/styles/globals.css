@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
 @import './agGridRe.css';
 @import './shardcnRe.css';
 @import './v109.css';
@@ -720,6 +719,8 @@
   body.font-noto .ag-cell.font-notosans {
     font-family: 'NotoSansKRNumber', 'Noto Sans KR', 'Noto Sans', sans-serif !important;
   }
+
+  .font-noto {font-family: 'NotoSansKRNumber', 'Noto Sans KR', 'Noto Sans', sans-serif !important;}
 
   #storybook-root {
     /* width: 1196px; */
