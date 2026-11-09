@@ -787,7 +787,7 @@
 /* ----------------------------------------------------
  * ViewMode (.cp-viewmode) 토글 스위치 109 호환 스타일
  * ---------------------------------------------------- */
-.v109 .cp-viewmode {
+/* .v109 .cp-viewmode {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -796,7 +796,6 @@
   align-items: center;
 }
 
-/* default (라운드 그라데이션) */
 .v109 .cp-viewmode:not(.cp-viewmode-secondary) label {
   position: relative;
   height: 2.8rem;
@@ -833,7 +832,6 @@
   white-space: nowrap;
 }
 
-/* default - 기본 상태 (첫 번째 탭 활성화: !checked) */
 .v109 .cp-viewmode:not(.cp-viewmode-secondary) input:not(:checked) + label .peer-1 {
   color: var(--color-gray-0, #ffffff);
   background-image: -webkit-linear-gradient(left, #ff5c2e, #ffb800);
@@ -849,7 +847,6 @@
   font-weight: normal;
 }
 
-/* default - 체크된 상태 (두 번째 탭 활성화: :checked) */
 .v109 .cp-viewmode:not(.cp-viewmode-secondary) input:checked + label .peer-1 {
   background-image: none;
   background-color: transparent;
@@ -865,7 +862,6 @@
   font-variation-settings: 'wght' 700;
 }
 
-/* secondary / box (그레이/세컨더리 박스형) */
 .v109 .cp-viewmode.cp-viewmode-secondary label {
   position: relative;
   min-height: 1.8rem;
@@ -903,7 +899,6 @@
   white-space: nowrap;
 }
 
-/* secondary - 기본 상태 (첫 번째 탭 활성화: !checked) */
 .v109 .cp-viewmode.cp-viewmode-secondary input:not(:checked) + label .peer-1 {
   background-image: none;
   background-color: var(--color-secondary-50);
@@ -919,7 +914,6 @@
   font-weight: normal;
 }
 
-/* secondary - 체크된 상태 (두 번째 탭 활성화: :checked) */
 .v109 .cp-viewmode.cp-viewmode-secondary input:checked + label .peer-1 {
   background-image: none;
   background-color: var(--color-secondary-5);
@@ -933,7 +927,7 @@
   color: var(--color-gray-0, #ffffff);
   font-weight: bold;
   font-variation-settings: 'wght' 700;
-}
+} */
 
 /* ----------------------------------------------------
  * Chrome 109 전용 grid-cols-[1fr_auto] & [&>div]:first-* 유틸리티 호환 스타일

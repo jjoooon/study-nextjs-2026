@@ -165,16 +165,14 @@ const Ltpz00503 = ({ onClose }: Ltpz00503Props) => {
       >
         <div className="overflow-x-hidden overflow-y-auto w-full h-full">
           <Grid className="w-full grid-rows-[auto_1fr_auto] h-full" gap={3}>
-            <Gcol gap={1}>
-              <Gcol variant={'box-info'} placement={'ss'} className="w-full">
-                <Typo variant={'body-sm'} icon={'info'}>
-                  고객 직업정보(상해급수)가 불일치하면 <b>체결이 불가능</b>하므로, 해당 신계약 청약완료 이전에 기계약의
-                  작업변경을 완료해주세요.
-                </Typo>
-                <Typo variant={'body-sm'} icon={'info'}>
-                  <b>신계약 청약서 발행하시기 전에 배서(청약중 이후) 진행</b>바랍니다.
-                </Typo>
-              </Gcol>
+            <Gcol variant={'box-info'} placement={'ss'} className="w-full">
+              <Typo variant={'body-sm'} icon={'info'}>
+                고객 직업정보(상해급수)가 불일치하면 <b>체결이 불가능</b>하므로, 해당 신계약 청약완료 이전에 기계약의
+                작업변경을 완료해주세요.
+              </Typo>
+              <Typo variant={'body-sm'} icon={'info'}>
+                <b>신계약 청약서 발행하시기 전에 배서(청약중 이후) 진행</b>바랍니다.
+              </Typo>
             </Gcol>
 
             <TabPager

@@ -127,7 +127,7 @@ export function PageTitleProduct({
         <Tooltip open={safeData.title?.trim() ? undefined : false}>
           <TooltipTrigger asChild>
             <Button variant="none" color="gray" className="px-0">
-              <Typo tag="h2" variant="heading-lg">
+              <Typo tag="h2" variant="heading-lg" className="truncate max-w-[32rem]">
                 {safeData.title}
               </Typo>
               <ArrowIcon color="var(--color-gray-60)" className="rotate-180" />
@@ -139,7 +139,7 @@ export function PageTitleProduct({
         </Tooltip>
 
         {/* 현재 플랜/상품군을 선택하는 셀렉트 박스 영역이다. */}
-        <NativeSelect aria-label="플랜 선택" width={200} readOnly={false} required={false}>
+        <NativeSelect aria-label="플랜 선택" width={'auto'} readOnly={false} required={false}>
           <NativeSelectOption value="1">차움건강검진할인형, 납입면제 강화형, 기본형</NativeSelectOption>
           <NativeSelectOption value="2">옵션 2</NativeSelectOption>
         </NativeSelect>
@@ -166,7 +166,7 @@ export function PageTitleProduct({
               <Input
                 aria-label="설계번호 입력"
                 type="text"
-                width={131}
+                width={'quoteNo'}
                 readOnly
                 value={planNumber[0]}
                 placeholder="설계번호 입력하세요"
@@ -175,7 +175,7 @@ export function PageTitleProduct({
               {/* 설계번호 구분자 표현 */}
               <span aria-hidden="true">-</span>
               {/* 설계번호 뒷자리는 짧은 고정 길이 입력으로 관리한다. */}
-              <Input aria-label="설계번호 입력" type="text" readOnly value={planNumber[1]} width={26} />
+              <Input aria-label="설계번호 입력" type="text" readOnly value={planNumber[1]} width={26} align="center" />
               {/* 설계번호 입력 오른쪽에는 계약자명 입력과 조회 버튼을 함께 배치한다. */}
               <Grow className="ml-1.5">
                 {/* 입력창 hover/focus 시 값이 있는 경우에만 툴팁으로 전체 내용을 제공한다. */}

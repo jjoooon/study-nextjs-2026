@@ -276,7 +276,7 @@ const Ltpz096 = () => {
             value="[시스템심사 : 보완요청] - 대장직장용종 : [수술無_불가] 고지해당 안되는 유형으로 변경바랍니다.(질병 및 상해 전담보)"
             readOnly
           />
-          <Grid className="grid-rows-[1fr_auto]" gap={2}>
+          <Grid className="grid-rows-[1fr_auto_auto]" gap={2}>
             <TableFold variant="default">
               <TableFoldHead title="질병고지" />
               <TableFoldBody>
@@ -306,6 +306,10 @@ const Ltpz096 = () => {
                 일부 자동입력 가능한 영역만 적용되므로 꼭 입력사항을 재확인바랍니다.
               </Typo>
             </Gcol>
+            <Textarea
+              value="[시스템심사 : 보완요청] - 대장직장용종 : [수술無_불가] 고지해당 안되는 유형으로 변경바랍니다.(질병 및 상해 전담보)"
+              readOnly
+            />
           </Grid>
           <Grid placement="ss" className="grid-rows-[auto_1fr]">
             <Grow placement="sc">

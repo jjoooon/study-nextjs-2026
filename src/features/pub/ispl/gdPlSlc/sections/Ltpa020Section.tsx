@@ -3,6 +3,9 @@
  */
 'use client';
 
+import { useCallback, useState } from 'react';
+import * as React from 'react';
+import Ltpz034 from '@/features/pub/ispl/gdPlSlc/components/popups/Ltpz034';
 import { Gcol, Grow, Divider, Grid, Typo } from '@atoms';
 
 import { BottomBar } from '@common/BottomBar';
@@ -18,11 +21,8 @@ import { LayoutFoot, LayoutHead } from '@layout/BaseLayout';
 import { LayoutTemplatePx0 } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { useCallback, useState } from 'react';
-import * as React from 'react';
 import { Ltpa02001 } from '../components/Ltpa02001';
 import { Ltpa02002 } from '../components/Ltpa02003';
-import Ltpz034 from '@/features/pub/ispl/gdPlSlc/components/popups/Ltpz034';
 
 export default function Ltpa020Section() {
   // 상단 탭 상태

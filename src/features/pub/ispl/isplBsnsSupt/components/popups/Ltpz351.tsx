@@ -139,6 +139,31 @@ const Ltpz351 = ({ noticeType = 'B', isPayExempt = true }: Ltpz351Props) => {
 
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
+  const popupHeight = React.useMemo(() => {
+    switch (selectedNotice) {
+      case 'A':
+        return 424;
+      case 'B':
+        return 612;
+      case 'C':
+        return 514;
+      case 'D':
+        return 672;
+      case 'E':
+        return 439;
+      case 'F':
+        return 486;
+      case 'G':
+        return 514;
+      case 'H':
+        return 630;
+      case 'I':
+        return 390;
+      default:
+        return 608;
+    }
+  }, [selectedNotice]);
+
   const renderNoticeContent = () => {
     switch (selectedNotice) {
       case 'A':
@@ -417,7 +442,7 @@ const Ltpz351 = ({ noticeType = 'B', isPayExempt = true }: Ltpz351Props) => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="sm">
+      <DialogContent showCloseButton resizable={true} size="sm" iframeHeight={popupHeight}>
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

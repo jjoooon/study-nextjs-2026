@@ -4,6 +4,13 @@
 
 'use client';
 
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import Image from 'next/image';
+import { useState } from 'react';
+import * as React from 'react';
+import { AiBotIcon } from '@/shared/components/features/AiBotIcon';
+import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -36,13 +43,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import Image from 'next/image';
-import { useState } from 'react';
-import * as React from 'react';
-import { AiBotIcon } from '@/shared/components/features/AiBotIcon';
-import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 
 import '@/shared/lib/agGridPub';
 
@@ -1142,7 +1142,8 @@ export function Ltpa02002({ userType }: { userType: string }) {
           {/* 안내 */}
           <Grow className="col-span-2 pb-[1.8rem] pt-[0.4rem]" placement="sc">
             <Typo icon="ref" variant={'body-md'} color={'gray'}>
-              AI가 최근 데이터와 입력하신 정보를 분석하여 최적의 설계를 제안합니다. <b>편리한 설계의 출발점</b>으로 추천설계를 활용해 보세요.
+              AI가 최근 데이터와 입력하신 정보를 분석하여 최적의 설계를 제안합니다. <b>편리한 설계의 출발점</b>으로
+              추천설계를 활용해 보세요.
             </Typo>
           </Grow>
         </Grid>

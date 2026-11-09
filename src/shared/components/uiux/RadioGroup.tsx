@@ -3,11 +3,11 @@
  */
 'use client';
 
-import { ErrorMsg } from '@common/ErrorMsg';
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { ErrorMsg } from '@common/ErrorMsg';
 
 /**
  * RadioGroup 내부 아이템들에 에러 및 필수 상태를 전파하기 위한 컨텍스트입니다.

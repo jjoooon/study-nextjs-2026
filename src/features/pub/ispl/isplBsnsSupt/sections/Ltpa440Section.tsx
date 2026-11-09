@@ -235,7 +235,7 @@ export default function Ltpa440Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-rows-[auto_1fr]" gap={3}>
+          <Grid className="grid-rows-[auto_1fr] w-full h-full" gap={3}>
             <Grow placement="bwc" className="w-full" variant={'box-round'} gap={6}>
               <FormTable className="flex" variant={'none'} lineTop={false} cols={['w-1', 'w-auto']}>
                 <FormRow>
@@ -277,7 +277,7 @@ export default function Ltpa440Section() {
                 </Button>
               </Grow>
             </Grow>
-            <Grid placement="ss" className="w-full grid-rows-[1fr]" gap={3}>
+            <Grid placement="ss" className="w-full grid-rows-[1fr_auto_auto]" gap={3}>
               <div className="ag-theme-alpine inner-scroll" data-row={DummyData.length}>
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}

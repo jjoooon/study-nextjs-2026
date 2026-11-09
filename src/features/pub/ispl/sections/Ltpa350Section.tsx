@@ -105,7 +105,7 @@ const data: Ltpa350DataType = {
     },
     pageTitle: {
       simpleMode: false, // true 심플모드 | false 상세모드
-      title: '한화 시그니처 여성 건강보험4.0 2604',
+      title: '한화 3N5 더간편건강보험(세만기형) 무배당 시그니처 여성 건강보험4.0 2604',
       options: ['100세만기 월납 / 20년납'], //셀렉트박스 옵션값
       planNumber: ['LA260706315118', '2'],
       contractHolder: '3999999 김한손',

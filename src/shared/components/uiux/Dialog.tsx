@@ -188,7 +188,17 @@ const resolveSizeValue = (value?: DialogSizeValue, presetMap?: Record<string, st
   return undefined;
 };
 
-const getInitialSectionWidth = (size?: DialogSize, className?: string, predefinedWidth?: string): string => {
+const getInitialSectionWidth = (
+  size?: DialogSize,
+  className?: string,
+  predefinedWidth?: string,
+  overrideWidth?: DialogSizeValue
+): string => {
+  const explicitWidth = overrideWidth ?? (isDialogSizeConfig(size) ? size.width : undefined);
+  if (explicitWidth !== undefined) {
+    const cssW = toCssSize(explicitWidth);
+    return `calc(${cssW} - 4.8rem)`;
+  }
   if (predefinedWidth) {
     return `calc(${predefinedWidth} - 4.8rem)`;
   }
@@ -198,10 +208,6 @@ const getInitialSectionWidth = (size?: DialogSize, className?: string, predefine
   if (typeof size === 'string' && size in DIALOG_PRESET_WIDTH) {
     const presetW = DIALOG_PRESET_WIDTH[size as Exclude<DialogSizePreset, 'full'>];
     return `calc(${presetW} - 4.8rem)`;
-  }
-  if (isDialogSizeConfig(size) && size.width !== undefined) {
-    const cssW = toCssSize(size.width);
-    return `calc(${cssW} - 4.8rem)`;
   }
   const classW = parseWidthStrFromClassName(className);
   if (classW) {
@@ -214,7 +220,9 @@ const resolveDialogSize = (
   size?: DialogSize,
   viewportWidth?: number | null,
   className?: string,
-  predefinedSize?: { width?: DialogSizeValue; height?: DialogSizeValue }
+  predefinedSize?: { width?: DialogSizeValue; height?: DialogSizeValue },
+  overrideHeight?: DialogSizeValue,
+  overrideWidth?: DialogSizeValue
 ) => {
   if (size === 'full') {
     return {
@@ -227,53 +235,62 @@ const resolveDialogSize = (
     };
   }
 
-  // dialogSizesData 에 정의된 값이 있는 경우 해당 값을 우선 적용
+  // 외부 prop(width/height 또는 size 객체 내의 width/height)이 있는 경우 최우선 적용, 없을 경우 predefinedSize(dialogSizes.json) 적용
+  const explicitWidth = overrideWidth ?? (isDialogSizeConfig(size) ? size.width : undefined);
+  const explicitHeight = overrideHeight ?? (isDialogSizeConfig(size) ? size.height : undefined);
+
   const predefinedWidthCss = resolveSizeValue(predefinedSize?.width, DIALOG_PRESET_WIDTH);
   const predefinedHeightCss = resolveSizeValue(predefinedSize?.height, DIALOG_PRESET_HEIGHT);
 
-  const isPredefinedHeightFull =
-    predefinedSize?.height === 'full' || predefinedHeightCss === 'full' || predefinedHeightCss === DIALOG_FULL_HEIGHT;
-  const isPredefinedWidthFull =
-    predefinedSize?.width === 'full' || predefinedWidthCss === 'full' || predefinedWidthCss === DIALOG_FULL_WIDTH;
+  const effectiveWidthCss = explicitWidth !== undefined ? toCssSize(explicitWidth) : predefinedWidthCss;
+  const effectiveHeightCss = explicitHeight !== undefined ? toCssSize(explicitHeight) : predefinedHeightCss;
+
+  const effectiveWidth = explicitWidth !== undefined ? explicitWidth : predefinedSize?.width;
+  const effectiveHeight = explicitHeight !== undefined ? explicitHeight : predefinedSize?.height;
+
+  const isHeightFull =
+    effectiveHeight === 'full' || effectiveHeightCss === 'full' || effectiveHeightCss === DIALOG_FULL_HEIGHT;
+  const isWidthFull =
+    effectiveWidth === 'full' || effectiveWidthCss === 'full' || effectiveWidthCss === DIALOG_FULL_WIDTH;
 
   const targetWidth =
-    predefinedWidthCss !== undefined ? parseCssSizeToPx(predefinedWidthCss) : getTargetWidthPx(size, className);
+    effectiveWidthCss !== undefined ? parseCssSizeToPx(effectiveWidthCss) : getTargetWidthPx(size, className);
 
   // 모달 목표 가로 크기가 브라우저 뷰포트 크기 - 20px 이상이면 가로만 풀사이즈(width: DIALOG_FULL_WIDTH)로 반환 (세로는 제외)
   if (viewportWidth && targetWidth !== undefined && targetWidth >= viewportWidth - 20) {
     return {
       width: DIALOG_FULL_WIDTH,
-      height: isPredefinedHeightFull ? DIALOG_FULL_HEIGHT : predefinedHeightCss,
+      height: isHeightFull ? DIALOG_FULL_HEIGHT : effectiveHeightCss,
       maxWidth: DIALOG_FULL_WIDTH,
-      maxHeight: isPredefinedHeightFull
+      maxHeight: isHeightFull
         ? DIALOG_FULL_HEIGHT
         : ((isDialogSizeConfig(size) ? toCssSize(size.maxHeight) : undefined) ?? DIALOG_DEFAULT_MAX_HEIGHT),
-      isFullSize: isPredefinedHeightFull,
+      isFullSize: isHeightFull,
       isFullWidth: true,
     };
   }
 
-  if (predefinedWidthCss !== undefined || predefinedHeightCss !== undefined) {
+  if (effectiveWidthCss !== undefined || effectiveHeightCss !== undefined) {
     const isConfig = isDialogSizeConfig(size);
-    const hasConfigHeight = isConfig && size.height !== undefined;
-    const defaultMaxH = isPredefinedHeightFull
+    const hasConfigHeight = explicitHeight !== undefined || (isConfig && size.height !== undefined);
+    const defaultMaxH = isHeightFull
       ? DIALOG_FULL_HEIGHT
       : hasConfigHeight && (!isConfig || size.maxHeight === undefined)
         ? undefined
         : DIALOG_DEFAULT_MAX_HEIGHT;
 
     return {
-      width: isPredefinedWidthFull
+      width: isWidthFull
         ? DIALOG_FULL_WIDTH
-        : (predefinedWidthCss ??
+        : (effectiveWidthCss ??
           (typeof size === 'string' && size in DIALOG_PRESET_WIDTH
             ? DIALOG_PRESET_WIDTH[size as Exclude<DialogSizePreset, 'full'>]
             : isDialogSizeConfig(size)
               ? toCssSize(size.width)
               : undefined)),
-      height: isPredefinedHeightFull
+      height: isHeightFull
         ? DIALOG_FULL_HEIGHT
-        : (predefinedHeightCss ??
+        : (effectiveHeightCss ??
           (typeof size === 'string' && size in DIALOG_PRESET_HEIGHT
             ? DIALOG_PRESET_HEIGHT[size as DialogSizePreset]
             : isDialogSizeConfig(size)
@@ -281,12 +298,12 @@ const resolveDialogSize = (
               : undefined)),
       minWidth: isDialogSizeConfig(size) ? toCssSize(size.minWidth) : undefined,
       minHeight: isDialogSizeConfig(size) ? toCssSize(size.minHeight) : undefined,
-      maxWidth: isPredefinedWidthFull
+      maxWidth: isWidthFull
         ? DIALOG_FULL_WIDTH
         : ((isDialogSizeConfig(size) ? toCssSize(size.maxWidth) : undefined) ?? DIALOG_FULL_WIDTH),
       maxHeight: defaultMaxH,
-      isFullSize: isPredefinedHeightFull && isPredefinedWidthFull,
-      isFullWidth: isPredefinedWidthFull,
+      isFullSize: isHeightFull && isWidthFull,
+      isFullWidth: isWidthFull,
     };
   }
 
@@ -1041,6 +1058,14 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
    */
   size?: DialogSize;
   /**
+   * 다이얼로그 가로 너비 직접 지정 (지정 시 dialogSizes.json의 width 보다 우선 적용됩니다)
+   */
+  width?: DialogSizeValue;
+  /**
+   * 다이얼로그 세로 높이 직접 지정 (지정 시 dialogSizes.json의 height 보다 우선 적용됩니다)
+   */
+  height?: DialogSizeValue;
+  /**
    * 다이얼로그의 초기 출력 기준 오프셋 좌표 (x, y)
    */
   defaultPosition?: {
@@ -1137,6 +1162,8 @@ function DialogContent({
   resizable: _resizable = false,
   zIndex,
   size,
+  width: widthProp,
+  height: heightProp,
   defaultPosition,
   align = 'center',
   alignOffset,
@@ -1297,26 +1324,33 @@ function DialogContent({
       // 가로 너비 결정
       const predefinedWidthCss = resolveSizeValue(predefined?.width, DIALOG_PRESET_WIDTH);
       const targetWidthPx =
-        predefinedWidthCss !== undefined ? parseCssSizeToPx(predefinedWidthCss) : getTargetWidthPx(size, className);
+        widthProp !== undefined
+          ? parseCssSizeToPx(toCssSize(widthProp))
+          : isDialogSizeConfig(size) && size.width !== undefined
+            ? parseCssSizeToPx(toCssSize(size.width))
+            : predefinedWidthCss !== undefined
+              ? parseCssSizeToPx(predefinedWidthCss)
+              : getTargetWidthPx(size, className);
 
       if (!targetWidthPx) return;
 
       // 세로 높이 결정
-      const rawHeight = iframeHeight ?? predefined?.height;
+      const rawHeight =
+        heightProp ?? iframeHeight ?? (isDialogSizeConfig(size) ? size.height : undefined) ?? predefined?.height;
       const isHeightFull = rawHeight === 'full';
       const parsedIframeHeight =
         typeof rawHeight === 'number'
           ? rawHeight
           : isHeightFull
             ? typeof window !== 'undefined'
-              ? window.innerHeight - 20
+              ? window.innerHeight
               : 900
             : rawHeight !== undefined
               ? parseCssSizeToPx(resolveSizeValue(rawHeight, DIALOG_PRESET_HEIGHT))
               : undefined;
 
       const contentHeight = parsedIframeHeight ?? getTargetHeightPx(size, className) ?? 650;
-      const finalIframeHeight = Math.max(0, contentHeight - 25); //ncrm 높이값
+      const finalIframeHeight = contentHeight;
 
       const popupTitle = titleProp ?? predefined?.title ?? '';
 
@@ -1332,7 +1366,18 @@ function DialogContent({
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [isIframeState, size, className, iframeHeight, popupId, titleProp, scridProp]);
+  }, [
+    isIframeState,
+    explicitIframe,
+    size,
+    className,
+    widthProp,
+    heightProp,
+    iframeHeight,
+    popupId,
+    titleProp,
+    scridProp,
+  ]);
 
   const resolvedShowCloseButton = showCloseButton;
   const currentCleanId = (popupId || getCurrentPopupIdFromUrl())?.trim().toUpperCase();
@@ -1407,16 +1452,18 @@ function DialogContent({
   const predefinedSize = isIframeState ? rawPredefinedSize : undefined;
   const predefinedWidthCss = resolveSizeValue(predefinedSize?.width, DIALOG_PRESET_WIDTH);
 
+  const effectiveHeight = heightProp ?? iframeHeight;
+
   const resolvedSize = React.useMemo(
-    () => resolveDialogSize(size, viewportWidth, className, predefinedSize),
-    [size, viewportWidth, className, predefinedSize]
+    () => resolveDialogSize(size, viewportWidth, className, predefinedSize, effectiveHeight, widthProp),
+    [size, viewportWidth, className, predefinedSize, effectiveHeight, widthProp]
   );
   const isFullSize = size === 'full' || resolvedSize.isFullSize;
   const isFullWidth = isFullSize || resolvedSize.isFullWidth || isContentOverflowing;
   const isAutoFullWidth = isFullWidth && size !== 'full';
   const initialSectionWidth = React.useMemo(
-    () => getInitialSectionWidth(size, className, predefinedWidthCss),
-    [size, className, predefinedWidthCss]
+    () => getInitialSectionWidth(size, className, predefinedWidthCss, widthProp),
+    [size, className, predefinedWidthCss, widthProp]
   );
   const [position, setPosition] = React.useState(defaultPosition ?? { x: 0, y: 0 });
   const [isInitialized, setIsInitialized] = React.useState(false);

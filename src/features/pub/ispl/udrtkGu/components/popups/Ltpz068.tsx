@@ -4,6 +4,10 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ICellRendererParams, ColDef, ValueFormatterParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { cn } from '@/shared/lib/shadcn/utils';
 import { numberValueFormatter, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo, Gcol, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -23,10 +27,6 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ICellRendererParams, ColDef, ValueFormatterParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { cn } from '@/shared/lib/shadcn/utils';
 
 /**
  * AI인수지침 위배해소 그리드용 행 데이터 타입

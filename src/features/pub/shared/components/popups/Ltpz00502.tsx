@@ -314,11 +314,22 @@ const GROUP_TABS: GroupTabItem[] = [
   },
 ];
 
+export type NoticePlanItem = {
+  planName: string;
+  noticeType: string;
+};
+
+const defaultNoticePlan: NoticePlanItem = {
+  planName: '3.10.5간편고지형(고당지뇌심과(통풍포함)폐추가고지)(프리미엄올인원플랜)(1,7,8,9형)(15-80세)',
+  noticeType: '고지유형',
+};
+
 interface Ltpz00502Props {
   onClose?: () => void;
+  noticePlan?: NoticePlanItem;
 }
 
-const Ltpz00502 = ({ onClose }: Ltpz00502Props) => {
+const Ltpz00502 = ({ onClose, noticePlan = defaultNoticePlan }: Ltpz00502Props) => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const [groupTabValue, setGroupTabValue] = React.useState<string>('tab1');
   const [accumOptionValue, setAccumOptionValue] = React.useState<string>('option1');
@@ -557,7 +568,7 @@ const Ltpz00502 = ({ onClose }: Ltpz00502Props) => {
     100%+1rem]] h-full rounded-tr-[1rem] overflow-hidden rounded-br-[1rem] rounded-bl-[1rem] border-[0.1rem]! border-solid border-[#ccc]"
       >
         <div className="overflow-x-hidden overflow-y-auto w-full h-full">
-          <Gcol className="w-full" gap={2} placement="ss">
+          <Grid className="w-full grid-rows-[auto_1fr] h-full" gap={3}>
             <Gcol variant={'box-info'} placement={'ss'} className="w-full">
               <Typo variant={'body-sm'} icon={'info'}>
                 청약완료불가(당사누적) 및 청약완료불가(업계누적)은 청약완료 전 까지만 해소하면 됩니다.
@@ -581,92 +592,97 @@ const Ltpz00502 = ({ onClose }: Ltpz00502Props) => {
                 </Button>
               }
             >
-              <Grid className="w-full mt-2 grid-cols-[auto_1fr] gap-6">
-                <RadioGroup
-                  className="gap-1"
-                  errorMsg="하나를 선택해주세요."
-                  errorPs="bl"
-                  onValueChange={setAccumOptionValue}
-                  value={accumOptionValue}
-                  width="auto"
-                >
-                  {[
-                    {
-                      value: 'option1',
-                      label: '인수기준',
-                      count: '3',
-                    },
-                    {
-                      value: 'option2',
-                      label: '청약완료불가',
-                      subLabel: '(당사누적)',
-                      count: '0',
-                    },
-                    {
-                      value: 'option3',
-                      label: '청약완료불가',
-                      subLabel: '(업계누적)',
-                      count: '2',
-                    },
-                  ].map((option) => (
-                    <RadioGroupItem
-                      key={option.value}
-                      size="lg"
-                      value={option.value}
-                      variant="tabBadge"
-                      width="auto"
-                      className="gap-2"
-                    >
-                      <Grow className="gap-1">
-                        <span className="text-bold">{option.label}</span>
-                        {option.subLabel && <span className="sub-label">{option.subLabel}</span>}
-                      </Grow>
-                      <span className="count-badge ">{option.count}</span>
-                    </RadioGroupItem>
-                  ))}
-                </RadioGroup>
+              <Grid className="w-full h-full grid-rows-[auto_1fr]">
+                <Grid className="w-full mt-2 grid-cols-[auto_1fr] gap-6">
+                  <RadioGroup
+                    className="gap-1"
+                    errorMsg="하나를 선택해주세요."
+                    errorPs="bl"
+                    onValueChange={setAccumOptionValue}
+                    value={accumOptionValue}
+                    width="auto"
+                  >
+                    {[
+                      {
+                        value: 'option1',
+                        label: '인수기준',
+                        count: '3',
+                      },
+                      {
+                        value: 'option2',
+                        label: '청약완료불가',
+                        subLabel: '(당사누적)',
+                        count: '0',
+                      },
+                      {
+                        value: 'option3',
+                        label: '청약완료불가',
+                        subLabel: '(업계누적)',
+                        count: '2',
+                      },
+                    ].map((option) => (
+                      <RadioGroupItem
+                        key={option.value}
+                        size="lg"
+                        value={option.value}
+                        variant="tabBadge"
+                        width="auto"
+                        className="gap-2"
+                      >
+                        <Grow className="gap-1">
+                          <span className="text-bold">{option.label}</span>
+                          {option.subLabel && <span className="sub-label">{option.subLabel}</span>}
+                        </Grow>
+                        <span className="count-badge ">{option.count}</span>
+                      </RadioGroupItem>
+                    ))}
+                  </RadioGroup>
 
-                <KeyValueItem label={'플랜명/고지유형'} variant="plan">
-                  <Typo tag="span" variant={'body-sm'} color={'gray'}>
-                    3.10.5간편고지형(고당지뇌심과(통풍포함)폐추가고지)(프리미엄올인원플랜)(1,7,8,9형)(15-80세){' '}
-                    <b className="inline-block px-1 font-[900] text-[var(--color-gray-60)]">•</b>
-                    고지유형
-                  </Typo>
-                </KeyValueItem>
+                  <KeyValueItem label={'플랜명/고지유형'} variant="plan">
+                    <Typo tag="span" variant={'body-sm'} color={'gray'}>
+                      {noticePlan.planName}
+                      {noticePlan.planName && noticePlan.noticeType && (
+                        <b className="inline-block px-1 font-[900] text-[var(--color-gray-60)]">•</b>
+                      )}
+                      {noticePlan.noticeType}
+                    </Typo>
+                  </KeyValueItem>
+                </Grid>
+
+                <Gcol gap={2} placement="ss" className="h-full">
+                  <Grow className="f-full" placement="bwe">
+                    <Typo tag={'strong'} variant={'body-lg'}>
+                      확인사항
+                    </Typo>
+                    <Typo variant={'body-md'}>단위: 원</Typo>
+                  </Grow>
+
+                  <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
+                    <AgGridReact<DummyDataType2>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={rowData}
+                      columnDefs={columnDefs2}
+                      onCellValueChanged={handleCellValueChanged}
+                      onGridReady={(params) => {
+                        gridApiRef.current = params.api;
+                      }}
+                      defaultColDef={{
+                        sortable: true,
+                        resizable: true,
+                      }}
+                      singleClickEdit={true}
+                      enableCellSpan={true}
+                      domLayout="normal"
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                      animateRows={false}
+                    />
+                  </div>
+                </Gcol>
               </Grid>
             </TabPager>
-            <Gcol>
-              <Grow className="f-full" placement="bwe">
-                <Typo tag={'strong'} variant={'body-lg'}>
-                  확인사항
-                </Typo>
-                <Typo variant={'body-md'}>단위: 원</Typo>
-              </Grow>
-
-              <div className="ag-theme-alpine min-h-[12.3rem]">
-                <AgGridReact<DummyDataType2>
-                  getRowId={(params) => String(params.data.id)}
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={rowData}
-                  columnDefs={columnDefs2}
-                  onCellValueChanged={handleCellValueChanged}
-                  onGridReady={(params) => {
-                    gridApiRef.current = params.api;
-                  }}
-                  defaultColDef={{
-                    sortable: true,
-                    resizable: true,
-                  }}
-                  singleClickEdit={true}
-                  enableCellSpan={true}
-                  domLayout="autoHeight"
-                  tooltipShowMode="whenTruncated"
-                  tooltipShowDelay={0}
-                  animateRows={false}
-                />
-              </div>
-            </Gcol>
-          </Gcol>
+          </Grid>
         </div>
       </div>
       <Grow className="w-full" placement="ec">

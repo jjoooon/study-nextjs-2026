@@ -46,7 +46,7 @@ export const Default = (args: Ltpz351Props) => {
 };
 Default.storyName = '기본';
 Default.args = {
-  noticeType: 'B',
+  noticeType: 'A',
   isPayExempt: true,
 };
 
