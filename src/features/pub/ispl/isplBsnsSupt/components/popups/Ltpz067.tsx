@@ -3,7 +3,7 @@
  */
 'use client';
 
-import type { ColDef } from 'ag-grid-enterprise';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
@@ -23,7 +23,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { Input } from '@uiux/Input';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -155,12 +154,17 @@ const Ltpz067 = () => {
         minWidth: attributeColumnWidth(60),
         autoHeight: true,
         cellClass: 'text-center',
+        cellRenderer: (params: ICellRendererParams<DummyDataType1>) => {
+          if (params.value === null || params.value === undefined || params.value === '') return '';
+          const num = String(params.value).replace(/[^\d]/g, '');
+          return num ? `${num}회차` : String(params.value);
+        },
       },
       {
         headerName: '보장보험료',
         field: 'field02',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(74),
         autoHeight: true,
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter,
@@ -169,7 +173,7 @@ const Ltpz067 = () => {
         headerName: '적립보험료',
         field: 'field03',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(74),
         autoHeight: true,
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter,
@@ -178,7 +182,7 @@ const Ltpz067 = () => {
         headerName: '합계보험료',
         field: 'field04',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(74),
         autoHeight: true,
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter,
@@ -187,7 +191,7 @@ const Ltpz067 = () => {
         headerName: '납입보험료',
         field: 'field05',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(74),
         autoHeight: true,
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter,
@@ -210,7 +214,7 @@ const Ltpz067 = () => {
         headerName: '할인명',
         field: 'field01',
         width: attributeColumnWidth(200),
-        cellClass: '!leading-[1.4] !py-1 break-all text-center',
+        cellClass: '!leading-[1.4] !py-1 break-all text-center cell-align-top',
         autoHeight: true,
         wrapText: true,
       },
@@ -227,7 +231,7 @@ const Ltpz067 = () => {
   );
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -246,10 +250,10 @@ const Ltpz067 = () => {
                 {/* 2026-05-27 variant 추가 */}
                 <FormRow>
                   <FormCell title={'보험기간'}>
-                    <Input aria-label="" variant="info" width={180} value={'2026-02-01 ~ 2046-02-03'} readOnly />
+                    <b>2026-02-01 ~ 2046-02-03</b>
                   </FormCell>
-                  <FormCell title={'만기납기'}>
-                    <Input aria-label="" variant="info" width={200} value={'20년만기/전기납'} readOnly />
+                  <FormCell title={'만기/납기'}>
+                    <b>20년만기/전기납</b>
                   </FormCell>
                 </FormRow>
               </FormTable>
@@ -260,7 +264,7 @@ const Ltpz067 = () => {
               <TableFoldBody className="gap-2">
                 {/* 2026-05-27 Grid 추가 */}
                 <Grid placement={'ss'} className="grid-rows-[1fr_auto] gap-2">
-                  <div className="ag-theme-alpine inner-scroll" data-row={DummyData1.length}>
+                  <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType1>
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
@@ -271,11 +275,12 @@ const Ltpz067 = () => {
                         resizable: true,
                       }}
                       animateRows={false}
+                      domLayout="autoHeight"
                     />
                   </div>
                   <Gcol variant="box-info" className="w-full" placement="ss">
                     <Typo variant={'body-sm'} icon={'info'}>
-                      납입보험료 변동이 예상되는 시점만 표기하였으며 상황에 따라 변동 될 수 있으므로 안내에 유의 필요
+                      납입보험료 변동이 예상되는 시점만 표기하였으며 상황에 따라 변동 될 수 있으므로 안내 유의
                     </Typo>
                   </Gcol>
                 </Grid>
@@ -285,7 +290,7 @@ const Ltpz067 = () => {
             <TableFold>
               <TableFoldHead title="할인종류" />
               <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[20rem]">
+                <div className="ag-theme-alpine inner-scroll inner-min-scroll" data-row={5}>
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}

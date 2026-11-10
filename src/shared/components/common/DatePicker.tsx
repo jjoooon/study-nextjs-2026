@@ -897,6 +897,8 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
                 }
               }}
               onClose={() => setOpen(false)}
+              startMonth={minDate}
+              endMonth={maxDate}
               fromDate={minDate}
               toDate={maxDate}
               disabled={disabledDays}
@@ -919,6 +921,8 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
               month={month}
               onMonthChange={setMonth}
               numberOfMonths={2}
+              startMonth={minDate}
+              endMonth={maxDate}
               fromDate={minDate}
               toDate={maxDate}
               disabled={disabledDays}
@@ -944,6 +948,8 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
               captionLayout={'dropdown'}
               month={month}
               onMonthChange={setMonth}
+              startMonth={minDate}
+              endMonth={maxDate}
               fromDate={minDate}
               toDate={maxDate}
               disabled={disabledDays}
@@ -967,6 +973,8 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
               month={month}
               onMonthChange={setMonth}
               required={true}
+              startMonth={minDate}
+              endMonth={maxDate}
               fromDate={minDate}
               toDate={maxDate}
               disabled={disabledDays}

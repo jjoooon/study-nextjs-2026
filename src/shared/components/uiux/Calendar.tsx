@@ -15,6 +15,8 @@ type CalendarProps = React.ComponentProps<typeof DayPicker> & {
   buttonVariant?: React.ComponentProps<typeof Button>['variant'];
   monthOnly?: boolean;
   onMonthSelect?: (month: number) => void;
+  fromDate?: Date;
+  toDate?: Date;
   /**
    * monthOnly 모드에서 월 클릭 시 호출됨
    * @param value { year: number; month: number }
@@ -83,8 +85,20 @@ function Calendar({
     didInitRef.current = true;
   }
   const renderMonthOnlyGrid = () => {
-    // Year range: 10 years before and after current year
-    const yearOptions = Array.from({ length: 21 }, (_, i) => currentYear - 10 + i);
+    // Year range: min/max 기반 연도 목록 생성 (기본: 과거 100년 ~ 미래 100년으로 전 범위 확장)
+    const minYear =
+      props.startMonth instanceof Date
+        ? props.startMonth.getFullYear()
+        : props.fromDate instanceof Date
+          ? props.fromDate.getFullYear()
+          : currentYear - 100;
+    const maxYear =
+      props.endMonth instanceof Date
+        ? props.endMonth.getFullYear()
+        : props.toDate instanceof Date
+          ? props.toDate.getFullYear()
+          : currentYear + 100;
+    const yearOptions = Array.from({ length: Math.max(1, maxYear - minYear + 1) }, (_, i) => minYear + i);
 
     // 연도 변경 핸들러: 해당 연도에 저장된 월 복원
     const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -270,6 +284,17 @@ function Calendar({
     );
   }
 
+  const currentFullYear = today.getFullYear();
+  const resolvedStartMonth =
+    props.startMonth ??
+    props.fromDate ??
+    new Date(currentFullYear - 100, 0, 1);
+
+  const resolvedEndMonth =
+    props.endMonth ??
+    props.toDate ??
+    new Date(currentFullYear + 100, 11, 31);
+
   return (
     <div className="cp-datepicker-calendar-wrapper flex flex-col">
       <DayPicker
@@ -399,6 +424,8 @@ function Calendar({
           ...components,
         }}
         {...props}
+        startMonth={resolvedStartMonth}
+        endMonth={resolvedEndMonth}
       />
       {showFooter && (
         <div className="px-4">

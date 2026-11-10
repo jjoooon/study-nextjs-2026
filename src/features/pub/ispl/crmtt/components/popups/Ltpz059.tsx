@@ -891,7 +891,7 @@ const Ltpz059 = () => {
                 {buildingSelectType === '건물구조선택' && (
                   <Grid className="w-full h-full grid-cols-[1fr_1fr_1fr_1fr] gap-3">
                     {/* 기둥 그리드 */}
-                    <div className="ag-theme-alpine radio-mode">
+                    <div className="ag-theme-alpine radio-mode small">
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
@@ -919,7 +919,7 @@ const Ltpz059 = () => {
                       />
                     </div>
                     {/* 지붕 그리드 */}
-                    <div className="ag-theme-alpine radio-mode">
+                    <div className="ag-theme-alpine radio-mode small">
                       <AgGridReact<DummyDataType2>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
@@ -947,7 +947,7 @@ const Ltpz059 = () => {
                       />
                     </div>
                     {/* 외벽 그리드 */}
-                    <div className="ag-theme-alpine radio-mode">
+                    <div className="ag-theme-alpine radio-mode small">
                       <AgGridReact<DummyDataType3>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
@@ -976,7 +976,7 @@ const Ltpz059 = () => {
                     </div>
                     {/* 건축물대장 그리드 및 주의사항 */}
                     <Grid className="grid-rows-[1fr_auto]">
-                      <div className="ag-theme-alpine">
+                      <div className="ag-theme-alpine small">
                         <AgGridReact<DummyDataType4>
                           getRowId={(params) => String(params.data.id)}
                           noRowsOverlayComponent={AgGridEmptyComponent}
@@ -988,7 +988,6 @@ const Ltpz059 = () => {
                           }}
                           groupHeaderHeight={30}
                           headerHeight={0}
-                          getRowHeight={(params) => (params.data?.rowType === 'spacer' ? 30 : 30)}
                           singleClickEdit={true}
                           domLayout="autoHeight"
                         />
@@ -1038,7 +1037,11 @@ const Ltpz059 = () => {
             <TableFold variant="accordion">
               <TableFoldHead title="소재지">
                 <Grow>
-                  <Button variant={'contained'} color={'primary'} onClick={() => {}}>
+                  <Button
+                    variant={selectedHoValue ? 'contained' : 'outlined'}
+                    color={selectedHoValue ? 'primary' : 'secondary'}
+                    onClick={() => {}}
+                  >
                     층/면적반영
                   </Button>
                   {/* 2026-05-22 button 추가 */}

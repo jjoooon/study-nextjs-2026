@@ -2,7 +2,7 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 
-import { Gcol } from '@atoms';
+import { Gcol, Typo } from '@atoms';
 import { SelectDrop, type SelectDropAlign } from '@common/SelectDrop';
 import { SaveIcon } from '@icons';
 import { Accordion } from '@uiux/Accordion';
@@ -65,19 +65,25 @@ export const MyPlanSelect = <TItem extends ItemBase>({
           {items.map((item) => (
             <Accordion.Item key={item.value} value={item.value}>
               <Accordion.Trigger className="w-full group flex justify-between items-center text-[1.3rem] font-bold min-h-[2.5rem]">
-                {item.trigger}
+                <Typo inherit className="min-w-0 flex-1 text-left truncate">
+                  {item.trigger}
+                </Typo>
               </Accordion.Trigger>
               <Accordion.Content className="px-2">
-                {item.content.map((text, index) => (
-                  // renderContent가 있으면 외부 포맷 함수를 사용, 없으면 문자열로 기본 출력
-                  <Button
-                    variant={'none'}
-                    key={`${item.value}-${index}`}
-                    className="overflow-hidden text-ellipsis whitespace-nowrap w-full justify-start px-0"
-                  >
-                    {renderContent ? renderContent(text, item, index) : String(text)}
-                  </Button>
-                ))}
+                {item.content.map((text, index) => {
+                  const contentText = renderContent ? renderContent(text, item, index) : String(text);
+                  return (
+                    <Button
+                      variant={'none'}
+                      key={`${item.value}-${index}`}
+                      className="w-full justify-start px-0 min-w-0 overflow-hidden hover:underline"
+                    >
+                      <Typo inherit className="w-full text-left truncate">
+                        {contentText}
+                      </Typo>
+                    </Button>
+                  );
+                })}
               </Accordion.Content>
             </Accordion.Item>
           ))}

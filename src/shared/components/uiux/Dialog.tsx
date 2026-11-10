@@ -1333,7 +1333,7 @@ function DialogContent({
               : getTargetWidthPx(size, className);
 
       if (!targetWidthPx) return;
-
+      alert(iframeHeight);
       // 세로 높이 결정
       const rawHeight =
         heightProp ?? iframeHeight ?? (isDialogSizeConfig(size) ? size.height : undefined) ?? predefined?.height;
@@ -1350,7 +1350,7 @@ function DialogContent({
               : undefined;
 
       const contentHeight = parsedIframeHeight ?? getTargetHeightPx(size, className) ?? 650;
-      const finalIframeHeight = contentHeight;
+      const finalIframeHeight = contentHeight - 30;
 
       const popupTitle = titleProp ?? predefined?.title ?? '';
 

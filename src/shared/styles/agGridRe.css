@@ -1374,6 +1374,13 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   max-height: 100% !important;
   overflow-y: auto !important;
 }
+.ag-theme-alpine.inner-scroll.inner-min-scroll[data-row='5'] .ag-root-wrapper-body .ag-overlay,
+.ag-theme-alpine.inner-scroll.inner-min-scroll[data-row='5'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
+  height: 15rem !important;
+  min-height: 15rem !important;
+  max-height: 100% !important;
+  overflow-y: auto !important;
+}
 
 /* 트리 그룹 확장 시 부모 행 체크박스 스타일 */
 .children-checked .ag-theme-alpine .ag-row.ag-row-group-expanded .ag-checkbox-input-wrapper.ag-checked {
@@ -2107,4 +2114,41 @@ html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked
   -webkit-user-select: text !important;
   -moz-user-select: text !important;
   user-select: text !important;
+}
+
+.cell-align-top .ag-cell-wrapper {
+  align-items: flex-start;
+}
+.ag-body-viewport {
+  overflow-y: scroll !important;
+}
+
+/* 소형(24px) 그리드 (.small) 높이 설정 */
+.ag-theme-alpine.small {
+  --ag-row-height: 2.4rem;
+  --ag-header-height: 2.4rem;
+  --ag-group-header-height: 2.4rem;
+}
+
+.ag-theme-alpine.small .ag-header {
+  height: 2.4rem !important;
+  min-height: 2.4rem !important;
+}
+
+.ag-theme-alpine.small .ag-header-row,
+.ag-theme-alpine.small .ag-header-cell,
+.ag-theme-alpine.small .ag-header-group-cell {
+  height: 2.4rem !important;
+}
+
+.ag-theme-alpine.small .ag-cell {
+  min-height: 2.3rem; /* 2.4rem 행 높이 내부 보더(1px) 고려 */
+  line-height: 2.3rem;
+}
+
+/* 셀 내부 인풋/셀렉트 에디터 높이 보정 */
+.ag-theme-alpine.small .ag-picker-field-wrapper,
+.ag-theme-alpine.small .ag-input-field-input {
+  height: 2rem !important;
+  min-height: 2rem !important;
 }

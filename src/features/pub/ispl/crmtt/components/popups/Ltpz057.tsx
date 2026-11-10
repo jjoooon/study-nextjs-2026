@@ -89,7 +89,7 @@ const Ltpz057 = () => {
                     }
                   >
                     <CheckboxGroup defaultValue={['Industry2', 'Industry4']} className="@container">
-                      <Grid className="grid-cols-[repeat(auto-fill,minmax(180px,1fr))] @[750px]:grid-cols-[minmax(19rem,1fr)_minmax(16rem,1fr)_minmax(15rem,1fr)_minmax(10rem,1fr)_1fr] gap-x-4 gap-y-2 w-full">
+                      <Grid className="grid-cols-[19rem_16rem_15rem_10rem_minmax(8.6rem,1fr)] @[750px]:grid-cols-[minmax(19rem,1fr)_minmax(16rem,1fr)_minmax(15rem,1fr)_minmax(10rem,1fr)_1fr] gap-x-4 gap-y-2 w-full">
                         {[
                           { value: 'Industry1', label: '이용원, 미용원, 기타미용실' },
                           { value: 'Industry2', label: '학원(기관 및 교육목적)' },

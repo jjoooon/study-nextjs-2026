@@ -319,7 +319,7 @@ export function Ltpa35002a({
       headerName: '담보명',
       headerComponent: AgGridProductNameHeader,
       field: 'id' as const,
-      flex: 10,
+      flex: 20,
       cellClass: 'text-left !p-0',
       cellRenderer: productNameCellRenderer<AgGridRow>,
       tooltipValueGetter: (params: { data?: AgGridRow }) => params.data?.title ?? '',
@@ -369,7 +369,7 @@ export function Ltpa35002a({
           unit: '(만원)',
         },
         field: 'field4',
-        flex: 2,
+        flex: 1,
         minWidth: attributeColumnWidth(86),
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter<AgGridRow>,
@@ -383,7 +383,7 @@ export function Ltpa35002a({
         },
         sortable: true,
         field: 'insuredAmount',
-        flex: 2,
+        flex: 1,
         minWidth: attributeColumnWidth(86),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           const base = 'text-right [&_input]:text-right [&_input]:tracking-normal';
@@ -448,7 +448,7 @@ export function Ltpa35002a({
         },
         sortable: true,
         field: 'field7',
-        flex: 2,
+        flex: 1,
         minWidth: attributeColumnWidth(60),
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter<AgGridRow>,
@@ -456,7 +456,7 @@ export function Ltpa35002a({
       {
         headerName: '만기',
         field: 'field5',
-        flex: 2,
+        flex: 1,
         minWidth: attributeColumnWidth(88),
         // width: attributeColumnWidth[7],
         cellClassRules: editableCellClassRules<AgGridRow>(),
@@ -477,7 +477,7 @@ export function Ltpa35002a({
       {
         headerName: '납기',
         field: 'field6',
-        flex: 2,
+        flex: 1,
         minWidth: attributeColumnWidth(68),
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
@@ -506,8 +506,8 @@ export function Ltpa35002a({
         },
         sortable: true,
         field: 'field8',
-        width: attributeColumnWidth(46),
-        // width: attributeColumnWidth[6],
+        flex: 1,
+        minWidth: attributeColumnWidth(46),
         cellClass: 'text-center px-0! tracking-tighter',
         cellRenderer: uwIconRenderer,
       },
@@ -639,10 +639,10 @@ export function Ltpa35002a({
                       value: 'item-1',
                       trigger: '기관플랜(5)',
                       content: [
-                        '(지점)올인원플랜(15~40세)',
-                        '(지점)올인원플랜(15~40세)',
-                        '(지점)올인원플랜(15~40세)',
-                        '(지점)올인원플랜(15~40세)',
+                        '(지점)올인원플랜(15~40세)(지점)올인원플랜(15~40세)(지점)올인원플랜(15~40세)(지점)올인원플랜(15~40세)(지점)올인원플랜(15~40세)',
+                        '(지점)올인원플랜(15~40세)(지점)올인원플랜(15~40세)(지점)올인원플랜(15~40세)(지점)올인원플랜(15~40세)(지점)올인원플랜(15~40세)',
+                        '(지점)올인원플랜(15~40세)(지점)올인원플랜(15~40세)(지점)올인원플랜(15~40세)(지점)올인원플랜(15~40세)(지점)올인원플랜(15~40세)',
+                        '(지점)올인원플랜(15~40세)(지점)올인원플랜(15~40세)(지점)올인원플랜(15~40세)(지점)올인원플랜(15~40세)(지점)올인원플랜(15~40세)',
                       ],
                     },
                     {
@@ -725,6 +725,7 @@ export function Ltpa35002a({
                 suppressColumnMoveAnimation={true} // 컬럼 이동 애니메이션 비활성화
                 suppressRowTransform={true} // 절대좌표(Transform) 대신 Top 스타일을 사용하여 스크롤 성능 최적화
                 animateRows={false} // 행 이동/추가 시 애니메이션 비활성화
+                alwaysShowVerticalScroll={true}
               />
             </div>
           </LayoutScrollItem>

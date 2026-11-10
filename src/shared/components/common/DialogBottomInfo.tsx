@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { Grow, Typo } from '@atoms';
+import { Grow, Typo, Grid } from '@atoms';
 import { DialogListIcon, DialogResetIcon, DialogPocIcon } from '@icons';
 import { TextBabbleIcon } from '@icons';
 import { Button } from '@uiux/Button';
@@ -15,17 +15,27 @@ import { Button } from '@uiux/Button';
  * - 상태 메시지와 여러 액션 버튼을 포함한다.
  */
 export const DialogBottomInfo = () => {
-  const stateText = '자료가 조회되었습니다.';
+  const stateText =
+    '자료가 조회되었습니다.자료가 조회되었습니다.자료가 조회되었습니다.자료가 조회되었습니다.자료가 조회되었습니다.자료가 조회되었습니다.자료가 조회되었습니다.자료가 조회되었습니다.자료가 조회되었습니다.자료가 조회되었습니다.자료가 조회되었습니다.자료가 조회되었습니다.';
 
   return (
-    <Grow variant={'box'} className="w-full py-0 px-2.5 border-t border-[var(--color-gray-20)]" placement={'bwc'}>
+    <Grid
+      variant={'box'}
+      className="grid-cols-[minmax(0,1fr)_auto] items-center w-full py-0 px-2.5 border-t border-[var(--color-gray-20)]"
+      placement={'bwc'}
+    >
       <Grow gap={1} placement={'sc'}>
         <TextBabbleIcon />
-        <Typo variant={'body-xs'} color={'gray'} className="leading-[1.1]">
+        <Typo
+          tag="p"
+          variant={'body-xs'}
+          color={'gray'}
+          className="leading-[1.1] overflow-hidden text-ellipsis whitespace-nowrap"
+        >
           {stateText}
         </Typo>
       </Grow>
-      <Grow>
+      <Grow placement="ec">
         <Button variant={'none'} className="text-[1.1rem]">
           <DialogPocIcon color={'var(--color-secondary-50)'} />
           화면담당자
@@ -38,6 +48,6 @@ export const DialogBottomInfo = () => {
           <DialogResetIcon color={'var(--color-secondary-50)'} />
         </Button>
       </Grow>
-    </Grow>
+    </Grid>
   );
 };

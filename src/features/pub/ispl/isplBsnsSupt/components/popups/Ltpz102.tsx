@@ -258,7 +258,7 @@ export const Ltpz102 = () => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="xl">
+      <DialogContent showCloseButton resizable={false} size="2xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
