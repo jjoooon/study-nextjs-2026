@@ -168,9 +168,12 @@ const Ltpz01602 = () => {
       flex: 1,
       minWidth: attributeColumnWidth(120),
       cellClass: 'text-center editable-cell',
-      cellEditor: 'agSelectCellEditor',
+      cellEditor: 'agRichSelectCellEditor',
       editable: true,
-      cellEditorParams: { values: ['선택', '선택1', '선택2'] },
+      cellEditorParams: {
+        values: ['선택', '선택1', '선택2'],
+        valueListMaxWidth: 90,
+      },
       cellRenderer: expiryCellRenderer('center'),
     },
     {
@@ -214,8 +217,11 @@ const Ltpz01602 = () => {
       minWidth: attributeColumnWidth(100),
       cellClass: 'text-center editable-cell',
       editable: true,
-      cellEditor: 'agSelectCellEditor',
-      cellEditorParams: { values: ['선택1', '선택2'] },
+      cellEditor: 'agRichSelectCellEditor',
+      cellEditorParams: {
+        values: ['선택', '선택1', '선택2'],
+        valueListMaxWidth: 90,
+      },
       cellRenderer: expiryCellRenderer('center'),
     },
     {
@@ -264,7 +270,11 @@ const Ltpz01602 = () => {
       editable: true,
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
-      cellEditor: 'agSelectCellEditor',
+      cellEditor: 'agRichSelectCellEditor',
+      cellEditorParams: {
+        values: ['선택', '선택1', '선택2'],
+        valueListMaxWidth: 90,
+      },
       cellRenderer: expiryCellRenderer('center'),
     },
     {
@@ -276,7 +286,11 @@ const Ltpz01602 = () => {
       editable: true,
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
-      cellEditor: 'agSelectCellEditor',
+      cellEditor: 'agRichSelectCellEditor',
+      cellEditorParams: {
+        values: ['선택', '선택1', '선택2'],
+        valueListMaxWidth: 90,
+      },
       cellRenderer: expiryCellRenderer('center'),
     },
     {
@@ -302,7 +316,11 @@ const Ltpz01602 = () => {
       //     (에어바운스)
       //   </div>
       // ),
-      cellEditor: 'agSelectCellEditor',
+      cellEditor: 'agRichSelectCellEditor',
+      cellEditorParams: {
+        values: ['선택', '선택1', '선택2'],
+        valueListMaxWidth: 90,
+      },
       cellRenderer: expiryCellRenderer('center'),
     },
     {

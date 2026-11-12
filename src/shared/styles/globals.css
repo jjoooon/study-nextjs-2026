@@ -1645,6 +1645,9 @@
   table-layout: fixed;
 }
 
+.formTable-fixed.style-sm table th,
+.formTable-fixed.style-sm table td {height: auto; padding:0.3rem 0.4rem}
+
 select,
 input {
   text-overflow: clip;

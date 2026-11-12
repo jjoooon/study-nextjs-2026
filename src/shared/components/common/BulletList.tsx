@@ -217,7 +217,7 @@ export const BulletListItem = ({
   return (
     <li
       className={cn(
-        `relative flex justify-start items-start gap-[0.2rem] w-full ${onClick ? 'cursor-pointer' : ''}`,
+        `relative flex justify-start items-start gap-[0.2rem] w-full ${onClick ? 'cursor-pointer tracking-[-0.05rem]' : ''}`,
         itemColor[resolvedColor],
         itemSize[resolvedSize],
         className
@@ -255,7 +255,7 @@ export const BulletListItem = ({
         {resolvedType === 'hash' && <HashIcon size={10} />}
         {resolvedType === 'symbols' && before}
       </div>
-      <div className="flex-1 tracking-[-0.05rem] w-full">{children}</div>
+      <div className="flex-1 text-inherit font-inherit w-full">{children}</div>
     </li>
   );
 };

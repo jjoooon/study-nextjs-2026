@@ -3374,7 +3374,8 @@ export function setActiveCellTooltipContext<T extends CellTooltipRowBase>(contex
   const resolvedCellEl =
     context.cellEl ??
     (lastDomCellInfo && Date.now() - lastDomCellInfo.timestamp < 2000 ? lastDomCellInfo.cellEl : null);
-  const gridRootEl = (resolvedCellEl?.closest?.('.ag-root-wrapper') as HTMLElement | null) ?? lastDomCellInfo?.gridRootEl ?? null;
+  const gridRootEl =
+    (resolvedCellEl?.closest?.('.ag-root-wrapper') as HTMLElement | null) ?? lastDomCellInfo?.gridRootEl ?? null;
   const inferredColId = context.colId ?? resolvedCellEl?.getAttribute?.('col-id') ?? lastDomCellInfo?.colId;
 
   activeCellTooltipContext = {
@@ -3387,12 +3388,19 @@ export function setActiveCellTooltipContext<T extends CellTooltipRowBase>(contex
 }
 
 /**
+ * 런타임 안전하게 `HTMLElement` 여부를 판별하는 타입 가드
+ */
+function isHtmlElement(value: unknown): value is HTMLElement {
+  return typeof HTMLElement !== 'undefined' && value instanceof HTMLElement;
+}
+
+/**
  * 전달된 2번째 인자가 `CellTooltipOptions` 객체인지 판별하는 타입 가드
  */
 function isCellTooltipOptions<T extends CellTooltipRowBase>(
   arg: CellTooltipOptions<T> | CellTooltipParamsLike<T> | HTMLElement | null | undefined
 ): arg is CellTooltipOptions<T> {
-  if (!arg || typeof arg !== 'object' || (typeof HTMLElement !== 'undefined' && arg instanceof HTMLElement)) {
+  if (!arg || typeof arg !== 'object' || isHtmlElement(arg)) {
     return false;
   }
   return (
@@ -3437,18 +3445,15 @@ export function hideCellTooltip(): void {
 /**
  * 툴팁을 마운트할 대상 `.ag-cell` DOM 엘리먼트를 해석합니다.
  */
-function resolveTargetCellElement<T extends CellTooltipRowBase>(
-  options: CellTooltipOptions<T>
-): HTMLElement | null {
+function resolveTargetCellElement<T extends CellTooltipRowBase>(options: CellTooltipOptions<T>): HTMLElement | null {
   if (typeof document === 'undefined') return null;
 
   // 1) target에 직접 HTMLElement가 지정된 경우
-  if (options.target && typeof HTMLElement !== 'undefined' && options.target instanceof HTMLElement) {
+  if (isHtmlElement(options.target)) {
     return (options.target.closest('.ag-cell') as HTMLElement | null) ?? options.target;
   }
 
-  const targetMode: CellTooltipTargetMode =
-    typeof options.target === 'string' ? options.target : 'self';
+  const targetMode: CellTooltipTargetMode = typeof options.target === 'string' ? options.target : 'self';
 
   const explicitParams = options.params;
 
@@ -3593,7 +3598,7 @@ export function showCellTooltip<T extends CellTooltipRowBase = CellTooltipRowBas
   let normalizedOptions: CellTooltipOptions<T>;
   if (!targetOrOptions) {
     normalizedOptions = {};
-  } else if (typeof HTMLElement !== 'undefined' && targetOrOptions instanceof HTMLElement) {
+  } else if (isHtmlElement(targetOrOptions)) {
     normalizedOptions = { target: targetOrOptions };
   } else if (isCellTooltipOptions<T>(targetOrOptions)) {
     normalizedOptions = targetOrOptions;

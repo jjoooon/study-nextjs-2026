@@ -870,7 +870,7 @@ const Ltpz059 = () => {
               </TableFoldHead>
               <TableFoldBody className="gap-3 flex flex-col">
                 {/* 입력 선택 라디오 그룹 */}
-                <Grow placement="bwc" className="w-full" variant={'box-round'}>
+                <Grow placement="bwc" className="w-full py-2" variant={'box-round'}>
                   <RadioGroup
                     defaultValue="건물구조선택"
                     onValueChange={(value) => setBuildingSelectType(value)}
@@ -998,10 +998,12 @@ const Ltpz059 = () => {
                           <b>주의사항</b>
                         </Typo>
                         <BulletList position="col">
-                          <BulletListItem type="dotBig">
-                            조회결과를 참고하여 건물구조를 선택하시기 바랍니다.
+                          <BulletListItem type="dot" size="sm" className="tracking-[-0.1rem]!">
+                            조회결과를 참고하여 건물구조를 선택하세요.
                           </BulletListItem>
-                          <BulletListItem type="dotBig">조회결과는 저장되지 않습니다.</BulletListItem>
+                          <BulletListItem type="dot" size="sm">
+                            조회결과는 저장되지 않습니다.
+                          </BulletListItem>
                         </BulletList>
                       </Gcol>
                     </Grid>
@@ -1052,7 +1054,7 @@ const Ltpz059 = () => {
               </TableFoldHead>
               <TableFoldBody>
                 <FormTable
-                  className="formTable-fixed"
+                  className="formTable-fixed style-sm"
                   caption="사업자"
                   cols={['w-[10rem]', 'w-[25rem]', 'w-[10rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
                 >
@@ -1074,9 +1076,16 @@ const Ltpz059 = () => {
                   <FormRow>
                     <FormCell title={'건물급수'}>
                       <Grid className="w-full grid-flow-col items-center justify-start">
-                        <Input value={'11'} width={50} readOnly />
+                        <Input size="sm" value={'11'} width={50} readOnly />
                         <Typo variant="body-sm">급(적용급수)</Typo>
-                        <NativeSelect aria-label="조회구분 선택" value={'선택'} width={60} required onChange={() => ''}>
+                        <NativeSelect
+                          size="sm"
+                          aria-label="조회구분 선택"
+                          value={'선택'}
+                          width={'auto'}
+                          required
+                          onChange={() => ''}
+                        >
                           {[
                             { value: 'selection', id: 'type01', label: '선택' },
                             { value: 'selection2', id: 'type02', label: '1급' },
@@ -1092,7 +1101,7 @@ const Ltpz059 = () => {
                       </Grid>
                     </FormCell>
                     <FormCell title={'사용승인년도'}>
-                      <Input width={50} required={!isUnknownApprovalYear} readOnly={isUnknownApprovalYear} />
+                      <Input size="sm" width={50} required={!isUnknownApprovalYear} readOnly={isUnknownApprovalYear} />
                       <Checkbox
                         checked={isUnknownApprovalYear}
                         onCheckedChange={(checked) => setIsUnknownApprovalYear(Boolean(checked))}
@@ -1112,7 +1121,7 @@ const Ltpz059 = () => {
                       titleRowSpan={4}
                       rowSpan={4}
                     >
-                      <RadioGroup className="gap-3 flex-col items-start">
+                      <RadioGroup className="gap-1 flex-col items-start">
                         {[
                           { value: '0', label: '건물주(전체사용)' },
                           { value: '1', label: '건물주(전체임대)' },
@@ -1130,12 +1139,12 @@ const Ltpz059 = () => {
                   <FormRow>
                     <FormCell title={'전체층수'}>
                       지상
-                      <Input width={40} align="right" required />
+                      <Input size="sm" width={40} align="right" required />
                       층 / 지하
-                      <Input width={32} align="right" required />층
+                      <Input size="sm" width={32} align="right" required />층
                     </FormCell>
                     <FormCell title={'전체면적'} className="has-r-border">
-                      <Input width={60} align="right" required />㎡
+                      <Input size="sm" width={60} align="right" required />㎡
                     </FormCell>
                   </FormRow>
                   {/* 보험가입층수 라디오 및 가입면적 노출 행 */}
@@ -1164,9 +1173,9 @@ const Ltpz059 = () => {
                       </RadioGroup>
                     </FormCell>
                     <FormCell title={'가입면적'} className="has-r-border">
-                      <Input width={70} align="right" readOnly />
+                      <Input size="sm" width={70} align="right" readOnly />
                       ㎡ ↔
-                      <Input width={70} align="right" readOnly />평
+                      <Input size="sm" width={70} align="right" readOnly />평
                     </FormCell>
                   </FormRow>
                   {/* 세부장소 입력 행 */}
@@ -1175,6 +1184,7 @@ const Ltpz059 = () => {
                       <Grid className="w-full grid-cols-[1fr_auto] place-items-center">
                         <Input
                           value={detailPlace}
+                          size="sm"
                           onChange={(e) => setDetailPlace(e.target.value)}
                           // 가입층수가 '전체'일 경우 읽기 전용 및 플레이스홀더 제공
                           readOnly={insuredFloorType === '전체'}
