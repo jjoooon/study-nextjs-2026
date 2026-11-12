@@ -1070,13 +1070,20 @@ const Ltpz068 = () => {
                         </RadioGroup>
                       </Grow>
                       <Gcol className={cn(isActive ? 'px-[1rem]' : 'px-3')} placement="es" gap={2.5}>
-                        <Gcol placement="ss">
-                          <Typo>해소범위</Typo>
+                        <Gcol placement="ss" gap={2}>
+                          <Typo variant={'body-sm'} weight={'bold'}>
+                            해소범위
+                          </Typo>
                           <Grid className="grid-cols-[1fr_1fr] grid-rows-[1fr_1fr] w-full gap-1">
                             {res.map((v) => {
-                              const badgeColor = v === '당사누적' ? 'green' : v === '업계누적' ? 'blue' : 'primary';
+                              const badgeColor = v === '당사누적' ? 'green' : v === '업계누적' ? 'blue' : 'orange';
                               return (
-                                <Badge key={v} color={badgeColor} className="h-[2rem] w-full pt-[0.3rem] font-normal">
+                                <Badge
+                                  variant={'rounded'}
+                                  key={v}
+                                  color={badgeColor}
+                                  className="h-[2.2rem] w-full font-normal font-bold"
+                                >
                                   <CheckIcon />
                                   {v}
                                 </Badge>

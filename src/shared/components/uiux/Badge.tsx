@@ -99,6 +99,11 @@ const badgeVariants = cva(
       },
       { variant: ['contained', 'rounded'], color: 'yellow', class: 'bg-[var(--color-warning-10)] text-[#FFB800]' },
       { variant: ['contained', 'rounded'], color: 'error', class: 'bg-[#E43939] text-[#FFF]' },
+      {
+        variant: ['contained', 'rounded'],
+        color: 'orange',
+        class: 'bg-[var(--color-danger-5)] text-[var(--color-danger-50)]',
+      },
 
       // dark + color 조합
       {
