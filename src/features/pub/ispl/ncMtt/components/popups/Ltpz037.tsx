@@ -46,173 +46,181 @@ const Ltpz037 = ({ type = 'customer', diseaseAgree = 'Y' }: Ltpz037Props) => {
         </DialogHeader>
 
         <DialogSection className="flex flex-col justify-start">
-          <Gcol placement={'ss'} gap={2} className="sticky top-0 z-10 bg-[#fff]">
+          <Gcol placement={'ss'} gap={3} className="sticky top-0 z-10 bg-[#fff]">
             <Typo variant="body-lg">피보험자의 보험금 지급정보를 조회하는 동의[문자 동의 LMS]를 발송합니다.</Typo>
-            <Typo variant="body-lg" weight={'bold'}>
-              취급자 정보
-            </Typo>
-            <Typo variant="body-md">
-              지급정보는 민감정보로서 <b>고객권익목적으로만 활용</b>해야 합니다.<br></br> 목적 이외 용도로 활용 또는{' '}
-              <b>외부유출 시 법적처벌</b>을 받습니다.
-            </Typo>
-            <Grid className="w-full grid-cols-[8rem_2.8rem_8rem_13rem] items-center gap-1 px-2.5 py-2 bg-[var(--color-gray-5)] rounded-[0.6rem]">
-              <Input value={'1234567'} readOnly />
-              <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
-                <SearchIcon color={'var(--color-primary-50)'} />
-              </Button>
-              <Input value={'김한화'} readOnly />
-              <Input aria-label="취급자 전화번호" width={120} readOnly masking value={'010-1234-1234'} />
-            </Grid>
-            <Gcol variant={'box-warning-line'} placement={'ss'} className="w-full">
-              <Typo variant={'body-sm'} className="text-[var(--color-danger-50)]">
-                <Checkbox color="primary">타인에게 유출되지 않도록 처리하는 것에 동의합니다.</Checkbox>
+            <Gcol placement="ss">
+              <Typo variant="body-lg" weight={'bold'}>
+                취급자 정보
               </Typo>
+              <Grid className="w-full grid-cols-[8rem_2.8rem_8rem_13rem] items-center gap-1 px-2.5 py-2 bg-[var(--color-gray-5)] rounded-[0.6rem]">
+                <Input value={'1234567'} readOnly />
+                <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
+                  <SearchIcon color={'var(--color-primary-50)'} />
+                </Button>
+                <Input value={'김한화'} readOnly />
+                <Input aria-label="취급자 전화번호" width={120} readOnly masking value={'010-1234-1234'} />
+              </Grid>
+              <Gcol variant={'box-warning-line'} placement={'ss'} className="w-full">
+                <Typo variant="body-md">
+                  지급정보는 민감정보로서 <b>고객권익목적으로만 활용</b>해야 합니다.<br></br> 목적 이외 용도로 활용 또는{' '}
+                  <b>외부유출 시 법적처벌</b>을 받습니다.
+                </Typo>
+                <Typo variant={'body-sm'} className="text-[var(--color-danger-50)]">
+                  <Checkbox color="primary">타인에게 유출되지 않도록 처리하는 것에 동의합니다.</Checkbox>
+                </Typo>
+              </Gcol>
             </Gcol>
-          </Gcol>
 
-          <Gcol placement={'ss'} gap={2}>
-            <Typo variant="body-lg" weight={'bold'}>
-              고객정보
-            </Typo>
-            <Typo variant="body-sm">고객 휴대폰번호는 고객등록화면에서 수정해주세요.</Typo>
-            <Table variant="default">
-              <colgroup>
-                <col style={{ width: '14rem' }} />
-                <col style={{ width: 'auto' }} />
-              </colgroup>
-              <TableBody>
-                <TableRow>
-                  <TableHead className="text-left">고객명</TableHead>
-                  <TableCell>
-                    <Grow placement="bwc">
-                      <Grow>
-                        <Input width={76} value={'김한화화화'} readOnly />
-                        <Input aria-label="고객 주민등록번호" width={126} readOnly masking value={'900110-1234567'} />
-                        <Button
-                          aria-label="검색"
-                          variant={'outlined'}
-                          only="icon"
-                          size={'lg'}
-                          color={'gray-light'}
-                          disabled
-                        >
-                          <SearchIcon color={'var(--color-primary-50)'} />
-                        </Button>
-                      </Grow>
-                      {/* 질병동의 여부 플래그 따라서 Y|N */}
-                      {diseaseAgree === 'N' ? (
-                        <Badge color="red" size="md" variant="contained">
-                          FP질병제공동의 N
-                        </Badge>
-                      ) : (
-                        <Badge color="green" size="md" variant="contained">
-                          FP질병제공동의 Y
-                        </Badge>
-                      )}
-                    </Grow>
-                  </TableCell>
-                </TableRow>
-                {type === 'customer' && (
+            <Gcol placement="ss">
+              <Typo variant="body-lg" weight={'bold'}>
+                고객정보
+              </Typo>
+              <Typo variant="body-sm">고객 휴대폰번호는 고객등록화면에서 수정해주세요.</Typo>
+              <Table variant="default">
+                <colgroup>
+                  <col style={{ width: '14rem' }} />
+                  <col style={{ width: 'auto' }} />
+                </colgroup>
+                <TableBody>
                   <TableRow>
-                    <TableHead className="text-left">휴대폰번호</TableHead>
+                    <TableHead className="text-left">고객명</TableHead>
                     <TableCell>
-                      <Grow placement="ss">
-                        <NativeSelect aria-label="통신사" width={80} required>
-                          {[
-                            { value: 'SKT', label: 'SKT' },
-                            { value: 'LG U+', label: 'LG U+' },
-                            { value: 'KT', label: 'KT' },
-                            { value: '알뜰폰', label: '알뜰폰' },
-                          ].map((option) => (
-                            <NativeSelectOption key={option.value} value={option.value}>
-                              {option.label}
-                            </NativeSelectOption>
-                          ))}
-                        </NativeSelect>
-                        <Input aria-label="고객 휴대폰번호" width={120} readOnly masking value={'010-0000-0000'} />
-                        <Button size={'lg'}>인증번호 발송</Button>
+                      <Grow placement="bwc">
+                        <Grow>
+                          <Input width={76} value={'김한화화화'} readOnly />
+                          <Input aria-label="고객 주민등록번호" width={126} readOnly masking value={'900110-1234567'} />
+                          <Button
+                            aria-label="검색"
+                            variant={'outlined'}
+                            only="icon"
+                            size={'lg'}
+                            color={'gray-light'}
+                            disabled
+                          >
+                            <SearchIcon color={'var(--color-primary-50)'} />
+                          </Button>
+                        </Grow>
+                        {/* 질병동의 여부 플래그 따라서 Y|N */}
+                        {diseaseAgree === 'N' ? (
+                          <Badge color="red" size="md" variant="contained">
+                            FP질병제공동의 N
+                          </Badge>
+                        ) : (
+                          <Badge color="green" size="md" variant="contained">
+                            FP질병제공동의 Y
+                          </Badge>
+                        )}
                       </Grow>
                     </TableCell>
                   </TableRow>
-                )}
-                {type === 'parent' && (
-                  <>
+                  {type === 'customer' && (
                     <TableRow>
-                      <TableHead className="text-left">친권자명</TableHead>
-                      <TableCell>
-                        <Grow placement="bwc">
-                          <Grow>
-                            <Input width={76} value={'김한화화화'} readOnly />
-                            <Input
-                              aria-label="친권자 주민등록번호"
-                              width={126}
-                              readOnly
-                              masking
-                              value={'900110-1234567'}
-                            />
-                            <Button
-                              aria-label="검색"
-                              variant={'outlined'}
-                              only="icon"
-                              size={'lg'}
-                              color={'gray-light'}
-                              disabled
-                            >
-                              <SearchIcon color={'var(--color-primary-50)'} />
-                            </Button>
-                          </Grow>
-                        </Grow>
-                      </TableCell>
-                    </TableRow>
-
-                    <TableRow>
-                      <TableHead className="text-left">친권자 휴대폰번호</TableHead>
+                      <TableHead className="text-left">휴대폰번호</TableHead>
                       <TableCell>
                         <Grow placement="ss">
-                          <NativeSelect aria-label="통신사" width={100} required>
+                          <NativeSelect aria-label="통신사" width={80} required>
                             {[
-                              { value: '', label: '선택' },
                               { value: 'SKT', label: 'SKT' },
                               { value: 'LG U+', label: 'LG U+' },
                               { value: 'KT', label: 'KT' },
-                              { value: 'SK 알뜰폰', label: 'SK 알뜰폰' },
-                              { value: 'KT 알뜰폰', label: 'KT 알뜰폰' },
-                              { value: 'LG U+ 알뜰폰', label: 'LG U+ 알뜰폰' },
+                              { value: '알뜰폰', label: '알뜰폰' },
                             ].map((option) => (
                               <NativeSelectOption key={option.value} value={option.value}>
                                 {option.label}
                               </NativeSelectOption>
                             ))}
                           </NativeSelect>
-                          <Input aria-label="친권자 휴대폰번호" width={120} readOnly masking value={'010-0000-0000'} />
+                          <Input aria-label="고객 휴대폰번호" width={120} readOnly masking value={'010-0000-0000'} />
                           <Button size={'lg'}>인증번호 발송</Button>
                         </Grow>
                       </TableCell>
                     </TableRow>
-                  </>
-                )}
-                <TableRow>
-                  <TableHead className="text-left">인증번호</TableHead>
-                  <TableCell>
-                    <Grow placement="ss">
-                      <Input width={110} value={''} required />
-                      <Button variant={'outlined'} size={'lg'} color={'gray-light'}>
-                        인증확인
-                      </Button>
-                    </Grow>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-            <Gcol variant={'box-warning'} placement={'ss'}>
-              <Typo variant={'body-sm'} icon={'warning'} color={'gray'}>
-                통신사별 인증대기시간 경과 후 인증처리 불가합니다.
-              </Typo>
-              <BulletList position="col" className="pl-[2.2rem]">
-                <BulletListItem size="md" type="dash">
-                  SK / LG : 15분, KT : 7분
-                </BulletListItem>
-              </BulletList>
+                  )}
+                  {type === 'parent' && (
+                    <>
+                      <TableRow>
+                        <TableHead className="text-left">친권자명</TableHead>
+                        <TableCell>
+                          <Grow placement="bwc">
+                            <Grow>
+                              <Input width={76} value={'김한화화화'} readOnly />
+                              <Input
+                                aria-label="친권자 주민등록번호"
+                                width={126}
+                                readOnly
+                                masking
+                                value={'900110-1234567'}
+                              />
+                              <Button
+                                aria-label="검색"
+                                variant={'outlined'}
+                                only="icon"
+                                size={'lg'}
+                                color={'gray-light'}
+                                disabled
+                              >
+                                <SearchIcon color={'var(--color-primary-50)'} />
+                              </Button>
+                            </Grow>
+                          </Grow>
+                        </TableCell>
+                      </TableRow>
+
+                      <TableRow>
+                        <TableHead className="text-left">친권자 휴대폰번호</TableHead>
+                        <TableCell>
+                          <Grow placement="ss">
+                            <NativeSelect aria-label="통신사" width={'auto'} required>
+                              {[
+                                { value: '', label: '선택' },
+                                { value: 'SKT', label: 'SKT' },
+                                { value: 'LG U+', label: 'LG U+' },
+                                { value: 'KT', label: 'KT' },
+                                { value: 'SK 알뜰폰', label: 'SK 알뜰폰' },
+                                { value: 'KT 알뜰폰', label: 'KT 알뜰폰' },
+                                { value: 'LG U+ 알뜰폰', label: 'LG U+ 알뜰폰' },
+                              ].map((option) => (
+                                <NativeSelectOption key={option.value} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
+                              ))}
+                            </NativeSelect>
+                            <Input
+                              aria-label="친권자 휴대폰번호"
+                              width={120}
+                              readOnly
+                              masking
+                              value={'010-0000-0000'}
+                            />
+                            <Button size={'lg'}>인증번호 발송</Button>
+                          </Grow>
+                        </TableCell>
+                      </TableRow>
+                    </>
+                  )}
+                  <TableRow>
+                    <TableHead className="text-left">인증번호</TableHead>
+                    <TableCell>
+                      <Grow placement="ss">
+                        <Input width={110} value={''} required />
+                        <Button variant={'outlined'} size={'lg'} color={'gray-light'}>
+                          인증확인
+                        </Button>
+                      </Grow>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+              <Gcol variant={'box-warning'} placement={'ss'}>
+                <Typo variant={'body-sm'} icon={'warning'} color={'gray'}>
+                  통신사별 인증대기시간 경과 후 인증처리 불가합니다.
+                </Typo>
+                <BulletList position="col" className="pl-[2.2rem]">
+                  <BulletListItem size="md" type="dash">
+                    SK / LG : 15분, KT : 7분
+                  </BulletListItem>
+                </BulletList>
+              </Gcol>
             </Gcol>
             <Grow
               placement="bwc"
@@ -231,7 +239,7 @@ const Ltpz037 = ({ type = 'customer', diseaseAgree = 'Y' }: Ltpz037Props) => {
             <Typo icon="info" variant="body-sm" weight={'bold'}>
               LMS 발송 문구
             </Typo>
-            <div>
+            <div className="text-[1.2rem] leading-[1.6]">
               [한화손보] 인수심사판단을 위한 보험금지급 정보 모집인 제공 동의 인증번호 : 000000 안녕하세요. 김한화
               고객님. 보험가입 심사과정에서 고객님께서 이전에 보험금을 받으신 이력중, 미처 알려ㄷ주지 않은 부분이
               확인되었습니다. [한화손보] 인수심사판단을 위한 보험금지급 정보 모집인 제공 동의 인증번호 : 000000
