@@ -29,6 +29,7 @@ import {
   AmountWithPopoverCellEditor,
   getInsuredAmountOptions,
   isInsuredAmountEditable,
+  showCellTooltip,
 } from '@aggrid';
 import { Divider, Gcol, Grow, Typo, Grid } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -225,19 +226,8 @@ export function Ltpa35002b({
         numberCellRenderer,
         'right',
         DEFAULT_INSURED_AMOUNT_OPTIONS,
-        {
-          defaultTooltipMsg: '유방암 기준담보 금액을 먼저 확인해 주세요.',
-          onFetchTooltipMessage: async ({ clickedRow, targetRow }) => {
-            // [Ltpa35002b 전용 비동기 서버 통신 또는 조건 분기 로직]
-            const targetId = targetRow.id;
-            if (targetId === 3) {
-              return `${String(clickedRow.title ?? '')}은(는) 유방암 기준담보 금액과 1:1로 연동됩니다.`;
-            }
-            if (targetId === 7) {
-              return '주요순환계질환 기준금액을 먼저 변경해야 합니다.';
-            }
-            return targetRow.isStandard?.msg;
-          },
+        () => {
+          showCellTooltip('기준담보의 가입금액을 변경하세요.');
         }
       ),
     [getExpiryRenderer, numberCellRenderer]
@@ -324,7 +314,6 @@ export function Ltpa35002b({
             getInsuredAmountOptions(params.data, DEFAULT_INSURED_AMOUNT_OPTIONS).length > 1,
           isStandardGroup: (params) => !!(params.data?.isStandard?.group && !params.data?.isStandard?.edit),
           isStandard: (params) => !!params.data?.isStandard?.edit,
-          'tooltip-on': (params) => !!params.data?._tooltipOn,
         },
         cellEditorSelector: (params: EditableCallbackParams<AgGridRow>): CellEditorSelectorResult | undefined => {
           if (!isInsuredAmountEditable(params.data, DEFAULT_INSURED_AMOUNT_OPTIONS)) {

@@ -42,6 +42,7 @@ import {
   AmountWithPopoverCellEditor,
   getInsuredAmountOptions,
   isInsuredAmountEditable,
+  showCellTooltip,
 } from '@aggrid';
 import { Divider, Gcol, Grow, Grid } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -308,7 +309,10 @@ export function Ltpa35002d({
         getExpiryRenderer,
         numberCellRenderer,
         'right',
-        DEFAULT_INSURED_AMOUNT_OPTIONS
+        DEFAULT_INSURED_AMOUNT_OPTIONS,
+        () => {
+          showCellTooltip('기준담보의 가입금액을 변경하세요.');
+        }
       ),
     [getExpiryRenderer, numberCellRenderer]
   );
@@ -394,7 +398,6 @@ export function Ltpa35002d({
             getInsuredAmountOptions(params.data, DEFAULT_INSURED_AMOUNT_OPTIONS).length > 1, // 리스트 선택식 금액 입력일 때 테두리 스타일
           isStandardGroup: (params) => !!(params.data?.isStandard?.group && !params.data?.isStandard?.edit), // 수정 불가 기본형 담보 그룹 스타일
           isStandard: (params) => !!params.data?.isStandard?.edit, // 수정 가능 담보 스타일
-          'tooltip-on': (params) => !!params.data?._tooltipOn, // 툴팁 활성화 상태 스타일
         },
         cellEditorSelector: (params: EditableCallbackParams<AgGridRow>): CellEditorSelectorResult | undefined => {
           // 1. 담보 그룹 기준값이면서 개별 수정을 막아야 하는 경우 또는 옵션 1개 이하일 때는 에디터를 띄우지 않음 (undefined 반환)

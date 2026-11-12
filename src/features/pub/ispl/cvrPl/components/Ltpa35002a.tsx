@@ -31,6 +31,7 @@ import {
   AmountWithPopoverCellEditor,
   getInsuredAmountOptions,
   isInsuredAmountEditable,
+  showCellTooltip,
 } from '@aggrid';
 import { Divider, Gcol, Grow, Grid } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -279,23 +280,12 @@ export function Ltpa35002a({
   // 그룹 편집 버튼 렌더러 메모이제이션
   const groupEditableRenderer = useMemo(
     () =>
-      groupEditableButtonRenderer<AgGridRow>(getExpiryRenderer, numberCellRenderer, 'right', undefined, {
-        defaultTooltipMsg: '4대유사암 가입금액을 변경하세요.',
-        onFetchTooltipMessage: async ({ clickedRow, targetRow }) => {
-          // [Ltpa35002a 전용 비동기 서버 통신 또는 조건 분기 로직]
-          // const res = await axios.get('/api/cvrPl/35002a-tooltip', { params: { clickedId: clickedRow.id } });
-          // return res.data.message;
-          const targetId = targetRow.id;
-          const clickedId = clickedRow.id;
-          if (targetId === 4) {
-            if (clickedId === 5) return '기타피부암은 4대유사암 기준금액의 20% 이내로만 설정할 수 있습니다.';
-            if (clickedId === 6) return '제자리암 보장 한도는 4대유사암 가입금액에 연동되어 변경됩니다.';
-            if (clickedId === 7) return '경계성종양은 4대유사암 기준금액을 먼저 증액해야 합니다.';
-            if (clickedId === 8) return '갑상선암 가입금액은 4대유사암 기준금액을 초과할 수 없습니다.';
-            return '4대유사암 가입금액을 변경하세요.';
-          }
-          return targetRow.isStandard?.msg;
-        },
+      groupEditableButtonRenderer<AgGridRow>(getExpiryRenderer, numberCellRenderer, 'right', undefined, () => {
+        showCellTooltip('기준담보의 가입금액을 변경하세요222.', {
+          variant: 'danger', // 'default' | 'danger' | 'dark' | 'light'
+          target: 'self', // 'self'(현재 셀 고정) | 'standard'(기준담보 셀)
+          duration: 3000, // 기본값 3000ms (3초)
+        });
       }),
     [getExpiryRenderer, numberCellRenderer]
   );
@@ -395,7 +385,6 @@ export function Ltpa35002a({
             !!params.data?.isSelectedInsuredAmount && getInsuredAmountOptions(params.data).length > 1,
           isStandardGroup: (params) => !!(params.data?.isStandard?.group && !params.data?.isStandard?.edit),
           isStandard: (params) => !!params.data?.isStandard?.edit,
-          'tooltip-on': (params) => !!params.data?._tooltipOn,
         },
         cellEditorSelector: (params: EditableCallbackParams<AgGridRow>): CellEditorSelectorResult | undefined => {
           if (!isInsuredAmountEditable(params.data)) {

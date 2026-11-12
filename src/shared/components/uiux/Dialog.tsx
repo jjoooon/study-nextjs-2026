@@ -421,6 +421,33 @@ export const getPopupIdFromElement = (element?: HTMLElement | null): string | un
 };
 
 /**
+ * React children 노드 트리에서 팝업 ID 텍스트(예: LTPZ998, LTPA060)를 동기적으로 추출합니다.
+ */
+export const getPopupIdFromReactNode = (node: React.ReactNode): string | undefined => {
+  if (!node) return undefined;
+  if (typeof node === 'string' || typeof node === 'number') {
+    const match = String(node).match(/\b(LTP[A-Z0-9_-]+|LTR[A-Z0-9_-]+)\b/i);
+    return match?.[1];
+  }
+  if (Array.isArray(node)) {
+    for (const item of node) {
+      const found = getPopupIdFromReactNode(item);
+      if (found) return found;
+    }
+    return undefined;
+  }
+  if (React.isValidElement(node)) {
+    const props = node.props as { scrid?: string; popupId?: string; children?: React.ReactNode } | undefined;
+    if (props?.scrid) return props.scrid;
+    if (props?.popupId) return props.popupId;
+    if (props?.children) {
+      return getPopupIdFromReactNode(props.children);
+    }
+  }
+  return undefined;
+};
+
+/**
  * dialogSizes.json의 isIframe 설정 또는 URL 기반으로 현재 창의 iframe 모드 여부를 검사합니다.
  * - 단, 부모 iframe ID가 'storybook-preview-iframe'인 경우 Storybook 환경이므로 false를 반환합니다.
  */
@@ -1284,11 +1311,17 @@ function DialogContent({
   const [isIframeState, setIsIframeState] = React.useState(() => {
     if (explicitIframe !== undefined) return explicitIframe;
     if (typeof window === 'undefined') return false;
-    return isExternalOrCustomIframe(popupId);
+    const initialId = scridProp || popupId || getCurrentPopupIdFromUrl() || getPopupIdFromReactNode(children);
+    return isExternalOrCustomIframe(initialId);
   });
 
   useIsomorphicLayoutEffect(() => {
-    const currentId = popupId || getCurrentPopupIdFromUrl() || getPopupIdFromElement(contentRef.current);
+    const currentId =
+      scridProp ||
+      popupId ||
+      getCurrentPopupIdFromUrl() ||
+      getPopupIdFromReactNode(children) ||
+      getPopupIdFromElement(contentRef.current);
     const inIframe = explicitIframe !== undefined ? explicitIframe : isExternalOrCustomIframe(currentId);
 
     setIsIframeState(inIframe);
@@ -1301,7 +1334,7 @@ function DialogContent({
     } else if (typeof document !== 'undefined') {
       document.body.classList.remove('is-iframe');
     }
-  }, [popupId, explicitIframe]);
+  }, [scridProp, popupId, explicitIframe, children]);
 
   // iframe 환경일 때 부모 창으로 다이얼로그의 지정된 크기 및 화면 정보 전송 (dialogSizes.json 기반 단일화)
   React.useEffect(() => {
@@ -1540,6 +1573,23 @@ function DialogContent({
   }
 
   const contentStyle = React.useMemo<React.CSSProperties>(() => {
+    if (isIframeState) {
+      return {
+        ...(props.style ?? {}),
+        position: 'fixed',
+        top: '0px',
+        left: '0px',
+        width: '100%',
+        height: '100%',
+        maxWidth: '100%',
+        maxHeight: '100%',
+        transform: 'none',
+        transition: 'none',
+        borderRadius: '0px',
+        zIndex: parallelZIndex,
+      };
+    }
+
     if (isSplit) {
       return {
         ...(props.style ?? {}),
@@ -1686,6 +1736,7 @@ function DialogContent({
     isFullSize,
     isFullWidth,
     isRelative,
+    isIframeState,
   ]);
 
   // 1. 상태 변수에 초기값을 저장할 변수 추가 (isResizing과 함께 관리)
@@ -1863,7 +1914,7 @@ function DialogContent({
             className={cn(
               isRelative ? 'relative w-full' : 'fixed w-full',
               'grid grid-rows-[auto_1fr_auto] gap-5 !pointer-events-auto bg-white rounded-[0.2rem] border border-[#1f1f1f] px-0 py-0 shadow-[0_0.2rem_1.2rem_0_#222222] outline-none',
-              disableMotion || isDragging || !!isResizing || isSplit || isFullscreen
+              disableMotion || isDragging || !!isResizing || isSplit || isFullscreen || isIframeState
                 ? 'transition-none'
                 : 'dialog-bounce-transition',
               isIframeState && 'is-iframe',

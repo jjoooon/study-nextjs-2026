@@ -237,7 +237,6 @@ export function Ltpa35002c({
           'style-select': (params) =>
             !!params.data?.isSelectedInsuredAmount &&
             getInsuredAmountOptions(params.data, DEFAULT_INSURED_AMOUNT_OPTIONS).length > 1,
-          'tooltip-on': (params) => !!params.data?._tooltipOn,
         },
         cellEditorSelector: (params: EditableCallbackParams<AgGridRow>): CellEditorSelectorResult | undefined => {
           if (!isInsuredAmountEditable(params.data, DEFAULT_INSURED_AMOUNT_OPTIONS)) {
@@ -444,8 +443,6 @@ export function Ltpa35002c({
             !!(params.data?.isStandard?.group && !params.data?.isStandard?.edit),
           // 기준담보 편집 가능 행 스타일
           isStandard: (params: CellClassParams<AgGridRow2>) => !!params.data?.isStandard?.edit,
-          // 커스텀 툴팁 활성화 상태
-          'tooltip-on': (params: CellClassParams<AgGridRow2>) => !!params.data?._tooltipOn,
         },
         cellEditorSelector: (params: EditableCallbackParams<AgGridRow2>): CellEditorSelectorResult | undefined => {
           if (!isInsuredAmountEditable(params.data, DEFAULT_INSURED_AMOUNT_OPTIONS)) {

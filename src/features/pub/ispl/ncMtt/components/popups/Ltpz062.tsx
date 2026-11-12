@@ -26,6 +26,7 @@ import { Tooltip, TooltipTrigger, TooltipContent } from '@uiux/Tooltip';
 import '@/shared/lib/agGridPub';
 
 type DummyDataType = {
+  id?: number;
   isChecked: boolean;
   field0: string;
   field1: string;
@@ -50,6 +51,7 @@ type DummyDataType2 = {
 
 const dummyData: DummyDataType[] = [
   {
+    id: 1,
     isChecked: false,
     field0: '고지필요',
     field1: 'S98',
@@ -64,6 +66,7 @@ const dummyData: DummyDataType[] = [
     field10: 'Y',
   },
   {
+    id: 2,
     isChecked: false,
     field0: '고지필요',
     field1: 'S98',
@@ -148,7 +151,7 @@ const Ltpz062 = () => {
         field: 'field0',
         flex: 1,
         minWidth: attributeColumnWidth(80),
-        cellClass: 'text-center',
+        cellClass: 'text-center text-[var(--color-information-50)]',
       },
       {
         headerName: '대표질병코드',

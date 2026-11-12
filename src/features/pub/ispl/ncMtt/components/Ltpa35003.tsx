@@ -401,7 +401,7 @@ export function Ltpa35003({ simpleMode: _simpleMode, isSubmitted: initialSubmitt
         </LayoutMain>
       </form>
 
-      <Dialog open={isAlert01} onOpenChange={setAlert01}>
+      <Dialog open={isAlert01} onOpenChange={setAlert01} isIframe={false}>
         <DialogContent showCloseButton resizable={false} className="w-[35rem]">
           <DialogHeader>
             <DialogTitle>

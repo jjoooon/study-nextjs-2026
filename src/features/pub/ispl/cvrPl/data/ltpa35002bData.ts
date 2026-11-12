@@ -7,11 +7,9 @@ export type DummyDataType = {
   isStandard?: {
     group: boolean;
     edit: boolean;
-    msg?: string;
   }; // [isStandard, 기준이 되는 필드명]
   _tooltipOn?: boolean;
   _tooltipMsg?: string;
-  dataMsg?: string;
   num: number | null;
   title?: string | number | boolean | string[] | number[];
   field2?: string | number | boolean | string[] | number[];

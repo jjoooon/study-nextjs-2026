@@ -17,12 +17,15 @@ import type {
   GridApi,
   GridReadyEvent,
   CellValueChangedEvent,
+  IRowNode,
 } from 'ag-grid-enterprise';
 import type { AgGridReact, CustomLoadingOverlayProps, CustomCellEditorProps, CustomHeaderProps } from 'ag-grid-react';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState, useImperativeHandle, forwardRef } from 'react';
 import type { RefObject } from 'react';
+import { createRoot, type Root } from 'react-dom/client';
 import useMounted from '@/shared/hooks/useMounted';
+import { cn } from '@/shared/lib/shadcn/utils';
 import { SCALE_CHANGE_EVENT } from '@/shared/utils/scale';
 import { Typo, Grow, Grid, Gcol } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -521,10 +524,21 @@ export function createSelectionChangedHandler<RowType, IDType = unknown>(
  */
 export function createCellClickSelectionToggleHandler<RowType>() {
   return (params: CellClickedEvent<RowType>) => {
-    const { event, node, api } = params;
-    if (!event || !('target' in event) || !event.target) return;
+    const { event, node, api, data, column, colDef } = params;
+    const eventTarget = event && 'target' in event ? (event.target as HTMLElement | null) : null;
+    const cellEl = (eventTarget?.closest?.('.ag-cell') as HTMLElement | null) ?? null;
 
-    const target = event.target as HTMLElement;
+    setActiveCellTooltipContext({
+      api: api as unknown as GridApi<InsuredAmountRowData>,
+      data: data as unknown as InsuredAmountRowData | undefined,
+      node: node as unknown as IRowNode<InsuredAmountRowData>,
+      colId: column?.getColId?.() ?? colDef?.field,
+      cellEl,
+    });
+
+    if (!eventTarget) return;
+
+    const target = eventTarget;
     const isSelected = node.isSelected();
 
     if (!isSelected) {
@@ -3165,19 +3179,556 @@ export function createHeaderWithSort(label: string, className: string = 'text-[1
  * 가입금액 행의 기본 데이터 인터페이스 (옵션 목록 및 기준 담보 여부)
  */
 export interface InsuredAmountRowData {
+  id?: string | number;
+  filePath?: string[];
   isSelectedInsuredAmount?: boolean;
   insuredAmountOptions?: (number | string)[];
   options?: (number | string)[];
   isStandard?: {
     group?: boolean;
     edit?: boolean;
-    msg?: string;
   };
   _tooltipOn?: boolean;
   _tooltipMsg?: string;
-  dataMsg?: string;
   [key: string]: unknown;
 }
+
+/** 셀 툴팁 제어를 위한 최소 행 데이터 구조 */
+export interface CellTooltipRowBase {
+  id?: string | number;
+  filePath?: string[];
+  isStandard?: {
+    group?: boolean;
+    edit?: boolean;
+  };
+  _tooltipOn?: boolean;
+  _tooltipMsg?: string;
+}
+
+/** 셀 툴팁 노출을 위한 최근 클릭/이벤트 셀 컨텍스트 */
+export interface CellTooltipContext<T extends CellTooltipRowBase = CellTooltipRowBase> {
+  api?: GridApi<T>;
+  data?: T;
+  node?: IRowNode<T>;
+  colId?: string;
+  cellEl?: HTMLElement | null;
+}
+
+/** AG Grid 이벤트 파라미터(CellClickedEvent, CellValueChangedEvent, ICellRendererParams 등) 호환 인터페이스 */
+export interface CellTooltipParamsLike<T extends CellTooltipRowBase = CellTooltipRowBase> {
+  api?: GridApi<T>;
+  data?: T;
+  node?: IRowNode<T>;
+  column?: { getColId?: () => string } | null;
+  colDef?: { field?: string; colId?: string } | null;
+  eGridCell?: HTMLElement | null;
+  event?: Event | null;
+  colId?: string;
+  cellEl?: HTMLElement | null;
+}
+
+/**
+ * 셀 툴팁 생성 위치 모드
+ * - `'self'` (기본값): 그룹 여부와 무관하게 이벤트가 발생한(클릭한) 해당 셀 영역에 직접 생성
+ * - `'standard'`: 동일 그룹(`filePath[0]`) 내 기준 담보(`isStandard.edit === true`) 셀 영역에 생성 (없으면 해당 셀 폴백)
+ */
+export type CellTooltipTargetMode = 'self' | 'standard';
+
+/** `showCellTooltip` 세부 설정 옵션 */
+export interface CellTooltipOptions<T extends CellTooltipRowBase = CellTooltipRowBase> {
+  /** AG Grid 이벤트 파라미터(onCellClicked, onCellValueChanged, cellRenderer params 등) */
+  params?: CellTooltipParamsLike<T>;
+  /** 툴팁을 생성할 대상 셀 모드 또는 직접 지정할 DOM 엘리먼트 (기본값: `'self'`) */
+  target?: CellTooltipTargetMode | HTMLElement | null;
+  /** 특정 컬럼(col-id / field)의 셀에 툴팁을 띄우고자 할 때 지정 */
+  colId?: string;
+  /** 특정 행(row-id)의 셀에 툴팁을 띄우고자 할 때 지정 */
+  rowId?: string | number;
+  /** 자동 삭제 대기 시간(ms) (기본값: `3000` - 3초) */
+  duration?: number;
+  /** `@uiux/Tooltip` 스타일 변형 (기본값: `'default'`) */
+  variant?: 'default' | 'dark' | 'light' | 'danger';
+  /** 툴팁 노출 방향 (기본값: `'top'`) */
+  side?: 'top' | 'bottom' | 'left' | 'right';
+  /** 툴팁 정렬 위치 (기본값: `'start'`) */
+  align?: 'start' | 'center' | 'end';
+  /** 툴팁과 셀 간격 오프셋 (기본값: `-4`) */
+  sideOffset?: number;
+  /** 툴팁 정렬 축 오프셋 (기본값: `4`) */
+  alignOffset?: number;
+  /** 화살표 숨김 여부 (기본값: `false`) */
+  hideArrow?: boolean;
+  /** `TooltipContent`에 추가할 커스텀 클래스 */
+  className?: string;
+}
+
+/** 최근 상호작용이 발생한 AG Grid 셀의 DOM 메타 정보 */
+interface TrackedDomCellInfo {
+  cellEl: HTMLElement;
+  gridRootEl: HTMLElement | null;
+  colId?: string;
+  rowId?: string;
+  rowIndex?: string;
+  timestamp: number;
+}
+
+/** 최근 명시적으로 저장된 그리드 셀 컨텍스트 */
+interface StoredCellTooltipContext extends CellTooltipContext<CellTooltipRowBase> {
+  gridRootEl?: HTMLElement | null;
+  timestamp: number;
+}
+
+let activeCellTooltipContext: StoredCellTooltipContext | null = null;
+let lastDomCellInfo: TrackedDomCellInfo | null = null;
+let isGlobalCellTrackerInitialized = false;
+
+/** 싱글톤 툴팁 타이머 및 마운트 인스턴스 관리 변수 */
+let activeTooltipTimer: ReturnType<typeof setTimeout> | null = null;
+let activeReconnectRaf: number | null = null;
+let cleanupScrollListeners: (() => void) | null = null;
+let singletonAnchorEl: HTMLDivElement | null = null;
+let singletonTooltipRoot: Root | null = null;
+let tooltipRenderSeq = 0;
+
+/**
+ * 전역 document 캡처 리스너를 1회 등록하여,
+ * 프로젝트 내 어떤 AG Grid에서든 셀 클릭/포커스 시 해당 `.ag-cell` 영역을 자동 추적합니다.
+ */
+function ensureGlobalCellTracker(): void {
+  if (isGlobalCellTrackerInitialized || typeof document === 'undefined') return;
+  isGlobalCellTrackerInitialized = true;
+
+  const recordCellFromEvent = (e: Event) => {
+    const target = e.target;
+    if (!(target instanceof HTMLElement)) return;
+    const cellEl = target.closest('.ag-cell') as HTMLElement | null;
+    if (!cellEl) return;
+
+    const rowEl = cellEl.closest('.ag-row') as HTMLElement | null;
+    const gridRootEl = cellEl.closest('.ag-root-wrapper') as HTMLElement | null;
+
+    lastDomCellInfo = {
+      cellEl,
+      gridRootEl,
+      colId: cellEl.getAttribute('col-id') ?? undefined,
+      rowId: rowEl?.getAttribute('row-id') ?? undefined,
+      rowIndex: rowEl?.getAttribute('row-index') ?? undefined,
+      timestamp: Date.now(),
+    };
+  };
+
+  document.addEventListener('pointerdown', recordCellFromEvent, true);
+  document.addEventListener('mousedown', recordCellFromEvent, true);
+  document.addEventListener('click', recordCellFromEvent, true);
+  document.addEventListener('focusin', recordCellFromEvent, true);
+}
+
+// 클라이언트 환경에서 모듈 로드 시 자동 추적기 초기화
+if (typeof window !== 'undefined') {
+  ensureGlobalCellTracker();
+}
+
+/**
+ * CSS 속성 선택자 내 특수문자 이스케이프 헬퍼
+ */
+function escapeSelectorAttr(value: string): string {
+  if (typeof CSS !== 'undefined' && typeof CSS.escape === 'function') {
+    return CSS.escape(value);
+  }
+  return value.replace(/["\\]/g, '\\$&');
+}
+
+/**
+ * 특정 그리드 루트(또는 document)에서 rowId/rowIndex와 colId에 해당하는 `.ag-cell` DOM 요소를 탐색합니다.
+ */
+function queryGridCellElement(
+  scopeEl: ParentNode,
+  colId: string | undefined,
+  rowId?: string | number | null,
+  rowIndex?: string | number | null
+): HTMLElement | null {
+  const colSelector = colId ? `.ag-cell[col-id="${escapeSelectorAttr(colId)}"]` : '.ag-cell';
+
+  if (rowId !== undefined && rowId !== null && String(rowId) !== '') {
+    const byRowId = scopeEl.querySelector(
+      `.ag-row[row-id="${escapeSelectorAttr(String(rowId))}"] ${colSelector}`
+    ) as HTMLElement | null;
+    if (byRowId) return byRowId;
+  }
+
+  if (rowIndex !== undefined && rowIndex !== null && String(rowIndex) !== '') {
+    const byRowIndex = scopeEl.querySelector(
+      `.ag-row[row-index="${escapeSelectorAttr(String(rowIndex))}"] ${colSelector}`
+    ) as HTMLElement | null;
+    if (byRowIndex) return byRowIndex;
+  }
+
+  return null;
+}
+
+/**
+ * 셀 클릭 또는 이벤트 발생 시 현재 셀의 컨텍스트(api, data, node, colId, cellEl)를 저장합니다.
+ */
+export function setActiveCellTooltipContext<T extends CellTooltipRowBase>(context: CellTooltipContext<T>): void {
+  ensureGlobalCellTracker();
+  const resolvedCellEl =
+    context.cellEl ??
+    (lastDomCellInfo && Date.now() - lastDomCellInfo.timestamp < 2000 ? lastDomCellInfo.cellEl : null);
+  const gridRootEl = (resolvedCellEl?.closest?.('.ag-root-wrapper') as HTMLElement | null) ?? lastDomCellInfo?.gridRootEl ?? null;
+  const inferredColId = context.colId ?? resolvedCellEl?.getAttribute?.('col-id') ?? lastDomCellInfo?.colId;
+
+  activeCellTooltipContext = {
+    ...(context as unknown as CellTooltipContext<CellTooltipRowBase>),
+    colId: inferredColId,
+    cellEl: resolvedCellEl,
+    gridRootEl,
+    timestamp: Date.now(),
+  };
+}
+
+/**
+ * 전달된 2번째 인자가 `CellTooltipOptions` 객체인지 판별하는 타입 가드
+ */
+function isCellTooltipOptions<T extends CellTooltipRowBase>(
+  arg: CellTooltipOptions<T> | CellTooltipParamsLike<T> | HTMLElement | null | undefined
+): arg is CellTooltipOptions<T> {
+  if (!arg || typeof arg !== 'object' || (typeof HTMLElement !== 'undefined' && arg instanceof HTMLElement)) {
+    return false;
+  }
+  return (
+    'params' in arg ||
+    'target' in arg ||
+    'duration' in arg ||
+    'variant' in arg ||
+    'side' in arg ||
+    'align' in arg ||
+    'sideOffset' in arg ||
+    'alignOffset' in arg ||
+    'hideArrow' in arg ||
+    'className' in arg ||
+    'rowId' in arg
+  );
+}
+
+/**
+ * 현재 열려 있는 셀 툴팁과 타이머(`setTimeout`), 스크롤 리스너를 즉시 제거합니다.
+ */
+export function hideCellTooltip(): void {
+  if (activeTooltipTimer !== null) {
+    clearTimeout(activeTooltipTimer);
+    activeTooltipTimer = null;
+  }
+  if (activeReconnectRaf !== null && typeof cancelAnimationFrame !== 'undefined') {
+    cancelAnimationFrame(activeReconnectRaf);
+    activeReconnectRaf = null;
+  }
+  if (cleanupScrollListeners) {
+    cleanupScrollListeners();
+    cleanupScrollListeners = null;
+  }
+  if (singletonTooltipRoot) {
+    singletonTooltipRoot.render(null);
+  }
+  if (singletonAnchorEl?.parentNode) {
+    singletonAnchorEl.parentNode.removeChild(singletonAnchorEl);
+  }
+}
+
+/**
+ * 툴팁을 마운트할 대상 `.ag-cell` DOM 엘리먼트를 해석합니다.
+ */
+function resolveTargetCellElement<T extends CellTooltipRowBase>(
+  options: CellTooltipOptions<T>
+): HTMLElement | null {
+  if (typeof document === 'undefined') return null;
+
+  // 1) target에 직접 HTMLElement가 지정된 경우
+  if (options.target && typeof HTMLElement !== 'undefined' && options.target instanceof HTMLElement) {
+    return (options.target.closest('.ag-cell') as HTMLElement | null) ?? options.target;
+  }
+
+  const targetMode: CellTooltipTargetMode =
+    typeof options.target === 'string' ? options.target : 'self';
+
+  const explicitParams = options.params;
+
+  // 최근 DOM 추적 셀과 저장된 컨텍스트 중 유효한 정보 결합
+  const isContextRecent =
+    activeCellTooltipContext &&
+    (!lastDomCellInfo || activeCellTooltipContext.timestamp >= lastDomCellInfo.timestamp - 50);
+
+  const api = (explicitParams?.api ?? (isContextRecent ? activeCellTooltipContext?.api : undefined)) as
+    | GridApi<CellTooltipRowBase>
+    | undefined;
+  const data = (explicitParams?.data ?? (isContextRecent ? activeCellTooltipContext?.data : undefined)) as
+    | CellTooltipRowBase
+    | undefined;
+  const node = (explicitParams?.node ?? (isContextRecent ? activeCellTooltipContext?.node : undefined)) as
+    | IRowNode<CellTooltipRowBase>
+    | undefined;
+
+  const eventTarget =
+    explicitParams?.event && 'target' in explicitParams.event
+      ? (explicitParams.event.target as HTMLElement | null)
+      : null;
+
+  const directCellEl =
+    explicitParams?.eGridCell ??
+    explicitParams?.cellEl ??
+    (eventTarget?.closest?.('.ag-cell') as HTMLElement | null) ??
+    (isContextRecent ? activeCellTooltipContext?.cellEl : null) ??
+    lastDomCellInfo?.cellEl ??
+    null;
+
+  const scopeRootEl: ParentNode =
+    (directCellEl?.closest?.('.ag-root-wrapper') as HTMLElement | null) ??
+    (isContextRecent ? activeCellTooltipContext?.gridRootEl : null) ??
+    lastDomCellInfo?.gridRootEl ??
+    document;
+
+  const colId =
+    options.colId ??
+    explicitParams?.colId ??
+    explicitParams?.column?.getColId?.() ??
+    explicitParams?.colDef?.colId ??
+    explicitParams?.colDef?.field ??
+    directCellEl?.getAttribute?.('col-id') ??
+    (isContextRecent ? activeCellTooltipContext?.colId : undefined) ??
+    lastDomCellInfo?.colId ??
+    'insuredAmount';
+
+  // 2) 명시적 rowId가 지정된 경우
+  if (options.rowId !== undefined) {
+    const targetNode = api?.getRowNode?.(String(options.rowId));
+    const foundByRowId = queryGridCellElement(scopeRootEl, colId, options.rowId, targetNode?.rowIndex);
+    if (foundByRowId) return foundByRowId;
+  }
+
+  // 3) 명시적으로 target: 'standard'를 지정한 경우에만 기준 담보(isStandard.edit) 셀 탐색
+  //    기본값('self')일 때는 무조건 클릭/이벤트가 발생한 현재 셀(directCellEl)에 생성
+  const shouldFindStandardCell = targetMode === 'standard';
+
+  if (shouldFindStandardCell && api && data?.filePath?.[0]) {
+    const groupRoot = data.filePath[0];
+    let standardNode: IRowNode<CellTooltipRowBase> | null = null;
+
+    api.forEachNode((candidate) => {
+      if (!standardNode && candidate.data?.filePath?.[0] === groupRoot && candidate.data?.isStandard?.edit) {
+        standardNode = candidate;
+      }
+    });
+
+    if (standardNode) {
+      const matchedNode = standardNode as IRowNode<CellTooltipRowBase>;
+      const candidateRowId = matchedNode.id ?? matchedNode.data?.id;
+      const standardCellEl = queryGridCellElement(scopeRootEl, colId, candidateRowId, matchedNode.rowIndex);
+      if (standardCellEl) {
+        return standardCellEl;
+      }
+    }
+  }
+
+  // 4) 이벤트가 발생한 셀(directCellEl)이 현재 DOM에 연결되어 있고 동일한 컬럼이면 즉시 반환
+  if (directCellEl && directCellEl.isConnected) {
+    if (!options.colId || directCellEl.getAttribute('col-id') === options.colId) {
+      return directCellEl;
+    }
+    const siblingCell = directCellEl
+      .closest('.ag-row')
+      ?.querySelector(`.ag-cell[col-id="${escapeSelectorAttr(options.colId)}"]`) as HTMLElement | null;
+    if (siblingCell) return siblingCell;
+  }
+
+  // 5) setRowData / 셀 편집 종료 등으로 인해 기존 셀 DOM이 재생성된 경우 rowId / rowIndex + colId로 재탐색
+  const fallbackRowId = node?.id ?? data?.id ?? lastDomCellInfo?.rowId;
+  const fallbackRowIndex = node?.rowIndex ?? lastDomCellInfo?.rowIndex;
+  const requeriedCellEl = queryGridCellElement(scopeRootEl, colId, fallbackRowId, fallbackRowIndex);
+  if (requeriedCellEl) {
+    return requeriedCellEl;
+  }
+
+  // 6) 최후 폴백: 현재 포커스된 그리드 셀
+  if (scopeRootEl instanceof HTMLElement) {
+    const focusedCell = scopeRootEl.querySelector('.ag-cell-focus') as HTMLElement | null;
+    if (focusedCell) return focusedCell;
+  }
+
+  return directCellEl;
+}
+
+/**
+ * [공통 유틸] AG Grid 셀 이벤트(클릭, 값 변경 등)에서 비즈니스 로직/조건 검증 후 호출하여
+ * 대상 셀 영역에 `@uiux/Tooltip` 기반 툴팁을 생성하고 3초 후 자동 삭제하는 함수
+ *
+ * - **툴팁 생성 위치**: 이벤트가 발생한 해당 셀 영역 (단, `isStandard` 종속 담보 그룹 행 클릭 시에는 기준 담보 셀 영역으로 자동 안내하며 `target: 'self'`로 현재 셀 고정 가능)
+ * - **타이머/중복 관리**: 싱글톤 `setTimeout` 기반으로 3초(`duration: 3000`) 후 자동 삭제되며, 동일 셀 재실행이나 다른 셀 툴팁 실행 시 기존 타이머와 툴팁을 즉시 정리 후 재생성
+ * - **태그 및 ReactNode 지원**: 문자열 내 HTML 태그(`<b>`, `<br/>`, `<span>` 등)와 JSX(`React.ReactNode`) 모두 지원
+ * - **범용 사용성**: 어떤 AG Grid에서든 별도 rowData 수정(`_tooltipOn` 등)이나 CSS 가상요소(`:after`) 없이 `showCellTooltip('내용')` 한 줄로 사용 가능
+ *
+ * @example
+ * // 1) 가장 기본적인 사용 (인자 1개, HTML 태그 사용 가능)
+ * showCellTooltip('<b>기준담보</b>의 가입금액을 변경하세요.');
+ *
+ * @example
+ * // 2) 셀 이벤트에서 여러 조건/로직 수행 후 동적 결정
+ * onCellValueChanged: (params) => {
+ *   if (params.colDef.field !== 'insuredAmount') return;
+ *   if (Number(params.newValue) > 5000) {
+ *     showCellTooltip('최대 가입금액은 <b>5,000만원</b>입니다.', {
+ *       params,
+ *       variant: 'danger',
+ *       target: 'self',
+ *     });
+ *   }
+ * }
+ */
+export function showCellTooltip<T extends CellTooltipRowBase = CellTooltipRowBase>(
+  content: React.ReactNode = '기준담보의 가입금액을 변경하세요.',
+  targetOrOptions?: CellTooltipOptions<T> | CellTooltipParamsLike<T> | HTMLElement | null
+): void {
+  if (typeof window === 'undefined' || typeof document === 'undefined') return;
+  ensureGlobalCellTracker();
+
+  // 옵션 정규화
+  let normalizedOptions: CellTooltipOptions<T>;
+  if (!targetOrOptions) {
+    normalizedOptions = {};
+  } else if (typeof HTMLElement !== 'undefined' && targetOrOptions instanceof HTMLElement) {
+    normalizedOptions = { target: targetOrOptions };
+  } else if (isCellTooltipOptions<T>(targetOrOptions)) {
+    normalizedOptions = targetOrOptions;
+  } else {
+    normalizedOptions = { params: targetOrOptions };
+  }
+
+  // params가 직접 전달된 경우 컨텍스트도 최신화
+  if (normalizedOptions.params) {
+    const p = normalizedOptions.params;
+    const pEventTarget = p.event && 'target' in p.event ? (p.event.target as HTMLElement | null) : null;
+    setActiveCellTooltipContext({
+      api: p.api,
+      data: p.data,
+      node: p.node,
+      colId: p.colId ?? p.column?.getColId?.() ?? p.colDef?.colId ?? p.colDef?.field,
+      cellEl: p.eGridCell ?? p.cellEl ?? (pEventTarget?.closest?.('.ag-cell') as HTMLElement | null) ?? null,
+    });
+  }
+
+  // 기존 실행 중인 타이머 및 스크롤 리스너 즉시 정리 (중복 실행 및 다른 툴팁 실행 대응)
+  if (activeTooltipTimer !== null) {
+    clearTimeout(activeTooltipTimer);
+    activeTooltipTimer = null;
+  }
+  if (activeReconnectRaf !== null) {
+    cancelAnimationFrame(activeReconnectRaf);
+    activeReconnectRaf = null;
+  }
+  if (cleanupScrollListeners) {
+    cleanupScrollListeners();
+    cleanupScrollListeners = null;
+  }
+
+  const targetCellEl = resolveTargetCellElement(normalizedOptions);
+  if (!targetCellEl) {
+    hideCellTooltip();
+    return;
+  }
+
+  // 싱글톤 앵커 DOM 및 React Root 보장
+  if (!singletonAnchorEl) {
+    singletonAnchorEl = document.createElement('div');
+    singletonAnchorEl.setAttribute('data-ag-cell-tooltip-anchor', 'true');
+    singletonAnchorEl.style.position = 'absolute';
+    singletonAnchorEl.style.inset = '0';
+    singletonAnchorEl.style.width = '100%';
+    singletonAnchorEl.style.height = '100%';
+    singletonAnchorEl.style.pointerEvents = 'none';
+    singletonAnchorEl.style.zIndex = '1';
+  }
+  if (!singletonTooltipRoot) {
+    singletonTooltipRoot = createRoot(singletonAnchorEl);
+  }
+
+  // 대상 셀에 앵커 부착
+  if (singletonAnchorEl.parentElement !== targetCellEl) {
+    targetCellEl.appendChild(singletonAnchorEl);
+  }
+
+  const {
+    duration = 3000,
+    variant = 'default',
+    side = 'top',
+    align = 'start',
+    sideOffset = -4,
+    alignOffset = 4,
+    hideArrow = false,
+    className,
+  } = normalizedOptions;
+
+  const currentSeq = ++tooltipRenderSeq;
+
+  // @uiux/Tooltip 컴포넌트를 제어 모드(open={true})로 렌더링
+  singletonTooltipRoot.render(
+    <Tooltip key={currentSeq} open={true}>
+      <TooltipTrigger asChild>
+        <span
+          aria-hidden="true"
+          style={{
+            display: 'block',
+            width: '100%',
+            height: '100%',
+            pointerEvents: 'none',
+          }}
+        />
+      </TooltipTrigger>
+      <TooltipContent
+        variant={variant}
+        side={side}
+        align={align}
+        sideOffset={sideOffset}
+        alignOffset={alignOffset}
+        hideArrow={hideArrow}
+        className={cn('pointer-events-none whitespace-nowrap [&>div]:whitespace-nowrap', className)}
+      >
+        {content}
+      </TooltipContent>
+    </Tooltip>
+  );
+
+  // onCellValueChanged 등에서 setRowData 직후 AG Grid가 셀 DOM을 교체하는 경우를 대비해 다음 프레임에 재부착 보정
+  activeReconnectRaf = requestAnimationFrame(() => {
+    activeReconnectRaf = requestAnimationFrame(() => {
+      activeReconnectRaf = null;
+      if (singletonAnchorEl && !singletonAnchorEl.isConnected) {
+        const refreshedCellEl = resolveTargetCellElement(normalizedOptions);
+        if (refreshedCellEl) {
+          refreshedCellEl.appendChild(singletonAnchorEl);
+        }
+      }
+    });
+  });
+
+  // 그리드 스크롤 발생 시 포탈 툴팁이 허공에 남지 않도록 즉시 닫기
+  const handleScrollDismiss = () => {
+    hideCellTooltip();
+  };
+  window.addEventListener('wheel', handleScrollDismiss, { passive: true, capture: true });
+  window.addEventListener('scroll', handleScrollDismiss, { passive: true, capture: true });
+  cleanupScrollListeners = () => {
+    window.removeEventListener('wheel', handleScrollDismiss, { capture: true });
+    window.removeEventListener('scroll', handleScrollDismiss, { capture: true });
+  };
+
+  // 지정된 시간(기본 3초) 후 자동 삭제
+  if (duration > 0) {
+    activeTooltipTimer = setTimeout(() => {
+      hideCellTooltip();
+    }, duration);
+  }
+}
+
+/** showCellTooltip 별칭 */
+export const cellTooltip = showCellTooltip;
 
 /**
  * 가입금액 셀렉트 옵션 목록 조회 공용 함수

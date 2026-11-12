@@ -3,11 +3,16 @@
  */
 'use client';
 
-import type { ICellRendererParams, IGroupCellRendererParams, IRowNode, GridApi } from 'ag-grid-enterprise';
-import { useEffect, type ReactNode } from 'react';
+import type { ICellRendererParams, IGroupCellRendererParams } from 'ag-grid-enterprise';
+import { type ReactNode } from 'react';
 import { DotColor } from '@/shared/components/common/DotColor';
 
-import { editableSelectCellRenderer, CoveragePopover, getInsuredAmountOptions } from '@aggrid';
+import {
+  editableSelectCellRenderer,
+  CoveragePopover,
+  getInsuredAmountOptions,
+  setActiveCellTooltipContext,
+} from '@aggrid';
 import { Gcol, Grow } from '@atoms';
 import { SearchIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
@@ -161,49 +166,31 @@ export function uwIconRenderer<T>(params: ICellRendererParams<T>) {
 }
 
 /**
- * [공용 셀 렌더러] 그룹/leaf 편집 row에서 버튼 노출 및 그룹 전체 tooltip-on 부여
+ * [공용 셀 렌더러] 그룹/하위(leaf) 담보 편집 행에서 조건부 셀 UI 렌더링
+ *
+ * 행 데이터의 상태(`isStandard`, `isSelectedInsuredAmount`)에 따라 다음과 같이 분기 렌더링합니다:
+ * 1. **그룹/연동 행 (`isStandard.group === true`)**:
+ *    - 셀 값을 클릭 가능한 버튼 형태로 렌더링합니다.
+ *    - 클릭 시 현재 셀 컨텍스트를 기록하고 전달받은 `onClick` 콜백을 실행합니다.
+ *    - 컴포넌트 측에서 필요한 비즈니스 로직 수행 후 `showCellTooltip('메세지')`를 호출하면 3초간 툴팁이 노출됩니다.
+ * 2. **가입금액 선택 활성 행 (`isSelectedInsuredAmount === true`)**:
+ *    - 선택 가능한 옵션(`getInsuredAmountOptions`)이 2개 이상이면 셀렉트형 렌더러(`getExpiryRenderer`)를 렌더링합니다.
+ *    - 옵션이 1개 이하이면 화살표 없이 일반 숫자 포맷터(`numberValueFormatter`)로 렌더링합니다.
+ * 3. **일반 행**:
+ *    - 전달받은 `numberValueFormatter`를 통해 기본 포맷팅된 값을 렌더링합니다.
+ *
+ * @template T - 그리드 행 데이터 타입
+ * @param getExpiryRenderer - 가입금액 등 셀렉트 편집이 가능한 셀을 렌더링하는 고차 렌더러 함수
+ * @param numberValueFormatter - 일반 숫자/텍스트 셀을 포맷팅하여 렌더링하는 기본 렌더러 함수
+ * @param align - 셀렉트 렌더러 내부 텍스트 정렬 방향 (기본값: `'right'`)
+ * @param defaultOptions - 행 데이터에 개별 옵션이 없을 때 사용할 기본 가입금액 옵션 목록
+ * @param onClick - 그룹 셀 버튼 클릭 시 실행할 콜백 함수
+ * @returns AG Grid `cellRenderer`에 전달할 수 있는 React 함수형 렌더러 컴포넌트
  */
-
-/**
- * 클릭 시 동적/비동기(서버 API 호출 등)로 툴팁 문구를 가져오기 위한 콜백 매개변수
- */
-export interface TooltipFetchParams<T> {
-  /** 사용자가 클릭한 행 데이터 (하위/자식 담보 등) */
-  clickedRow: T;
-  /** 툴팁이 표시될 대상 기준 행 데이터 (isStandard.edit === true) */
-  targetRow: T;
-  /** AG Grid API 인스턴스 */
-  api: GridApi<T>;
-  /** 그리드에 주입된 context 객체 */
-  context?: unknown;
-}
-
-/**
- * 툴팁 문구를 반환하는 콜백 함수 타입 (동기 문자열 또는 비동기 Promise 지원)
- */
-export type TooltipFetchCallback<T> = (
-  params: TooltipFetchParams<T>
-) => Promise<string | undefined> | string | undefined;
-
-/** 그룹 편집 버튼 렌더러 옵션 인터페이스 */
-export interface GroupEditableButtonRendererOptions<T> {
-  /** 기본 공통 툴팁 문구 */
-  defaultTooltipMsg?: string;
-  /** 클릭 시 서버 비동기 조회 또는 맞춤 조건으로 문구를 산출하는 콜백 함수 */
-  onFetchTooltipMessage?: TooltipFetchCallback<T>;
-}
-
-/** 활성화된 툴팁 타이머를 관리하는 맵 (연속 클릭 시 이전 타이머 즉시 취소) */
-const activeTooltipTimerMap = new Map<string | number, NodeJS.Timeout>();
-/** 비동기 서버 통신 간 경쟁 상태(Race condition) 방지용 최신 요청 ID */
-let latestTooltipRequestId = 0;
-
 export function groupEditableButtonRenderer<
   T extends {
     id?: number | string;
-    title?: unknown;
-    isStandard?: { group?: boolean; edit?: boolean; msg?: string };
-    dataMsg?: string;
+    isStandard?: { group?: boolean; edit?: boolean };
     _tooltipMsg?: string;
     filePath?: string[];
     isSelectedInsuredAmount?: boolean;
@@ -216,43 +203,16 @@ export function groupEditableButtonRenderer<
   numberValueFormatter: (params: ICellRendererParams<T>) => ReactNode,
   align: 'left' | 'center' | 'right' = 'right',
   defaultOptions?: (number | string)[],
-  optionsOrMsg?: string | GroupEditableButtonRendererOptions<T>
+  onClick?: (params: ICellRendererParams<T>) => void
 ) {
   const Renderer = (params: ICellRendererParams<T>) => {
-    const defaultTooltipMsg = typeof optionsOrMsg === 'string' ? optionsOrMsg : optionsOrMsg?.defaultTooltipMsg;
-    const fetchCallback =
-      (typeof optionsOrMsg === 'object' ? optionsOrMsg?.onFetchTooltipMessage : undefined) ??
-      (params.context as { onFetchTooltipMessage?: TooltipFetchCallback<T> } | undefined)?.onFetchTooltipMessage;
-
-    const isEdit = !!params.data?.isStandard?.edit;
-    const msg =
-      params.data?._tooltipMsg ??
-      params.data?.isStandard?.msg ??
-      (params.data as Record<string, unknown> | undefined)?.['data-msg'] ??
-      (params.data as Record<string, unknown> | undefined)?.dataMsg ??
-      defaultTooltipMsg;
-
-    // 셀 DOM에 인라인 style(--tooltip-msg) 및 data-msg 속성 동시 적용
-    useEffect(() => {
-      const cellEl = params.eGridCell;
-      if (!cellEl) return;
-
-      if (isEdit && msg) {
-        // 1) style에서 직접 content 제어: CSS 변수 설정
-        cellEl.style.setProperty('--tooltip-msg', `"${String(msg)}"`);
-        // 2) data-msg 속성 설정 (호환성 보장)
-        cellEl.setAttribute('data-msg', String(msg));
-      } else {
-        cellEl.style.removeProperty('--tooltip-msg');
-        cellEl.removeAttribute('data-msg');
-      }
-    }, [params.eGridCell, isEdit, msg]);
-
     const isSelectedInsuredAmount = params.data?.isSelectedInsuredAmount ?? false;
 
-    if (params.data?.isStandard?.group) {
+    // [분기 1] 그룹 연동 비편집 행(isStandard.group === true && !isStandard.edit): 클릭 가능한 버튼 렌더링
+    if (params.data?.isStandard?.group && !params.data?.isStandard?.edit) {
       const value = params.value;
       let display = value;
+      // 가입금액 선택 모드가 아닐 경우 숫자에 천 단위 콤마 포맷팅 적용
       if (!isSelectedInsuredAmount) {
         if (typeof value === 'number') {
           display = value.toLocaleString();
@@ -262,120 +222,15 @@ export function groupEditableButtonRenderer<
         }
       }
 
-      const handleClick = async () => {
-        const groupRoot = params.data?.filePath?.[0];
-        const clickedRow = params.data;
-        if (!clickedRow) return;
-
-        // 1. 기존 실행 중인 이전 타이머들을 모두 정리 (연속 클릭 시 툴팁이 바로 꺼지는 현상 방지)
-        activeTooltipTimerMap.forEach((timer) => clearTimeout(timer));
-        activeTooltipTimerMap.clear();
-        const currentRequestId = ++latestTooltipRequestId;
-
-        const targetNodes: IRowNode<T>[] = [];
-
-        // 외부 context에서 툴팁 데이터 맵, 동기 리졸버 함수 또는 비동기 콜백 함수 조회
-        const context = params.context as
-          | {
-              tooltipData?: Record<string | number, string | Record<string | number, string>>;
-              getTooltipMessage?: (clickedRow: T, targetRow: T) => string | undefined;
-              onFetchTooltipMessage?: TooltipFetchCallback<T>;
-            }
-          | undefined;
-
-        params.api.forEachNode((node) => {
-          // 다른 그룹에 열려 있던 기존 툴팁이 있으면 닫음
-          if (node.data?._tooltipOn && node.data?.filePath?.[0] !== groupRoot) {
-            node.setData({
-              ...node.data,
-              _tooltipOn: false,
-              _tooltipMsg: undefined,
-            });
-          }
-          if (node.data?.filePath?.[0] === groupRoot && node.data?.isStandard?.edit) {
-            targetNodes.push(node);
-          }
+      const handleClick = () => {
+        setActiveCellTooltipContext({
+          api: params.api,
+          data: params.data,
+          node: params.node,
+          colId: params.column?.getColId?.() ?? params.colDef?.field,
+          cellEl: params.eGridCell,
         });
-
-        if (targetNodes.length === 0) return;
-        const targetNode = targetNodes[0];
-        if (!targetNode.data) return;
-
-        let dynamicMsg: string | undefined;
-
-        // 1순위: onFetchTooltipMessage 콜백 (Renderer 옵션 또는 gridOptions.context)
-        const activeFetchCallback = fetchCallback ?? context?.onFetchTooltipMessage;
-        if (activeFetchCallback) {
-          try {
-            const result = activeFetchCallback({
-              clickedRow,
-              targetRow: targetNode.data,
-              api: params.api,
-              context: params.context,
-            });
-            dynamicMsg = result instanceof Promise ? await result : result;
-          } catch (error) {
-            console.error('[groupEditableButtonRenderer] onFetchTooltipMessage error:', error);
-          }
-        }
-
-        // 연속 클릭에 의해 이미 새로운 요청이 들어온 경우 이전 비동기 작업 무시
-        if (currentRequestId !== latestTooltipRequestId) {
-          return;
-        }
-
-        // 2순위: 동기 리졸버 함수 (context.getTooltipMessage)
-        if (!dynamicMsg && context?.getTooltipMessage) {
-          dynamicMsg = context.getTooltipMessage(clickedRow, targetNode.data);
-        }
-
-        // 3순위: 외부 툴팁 데이터 맵 (context.tooltipData)
-        if (!dynamicMsg && context?.tooltipData) {
-          const targetId = targetNode.data.id;
-          const mapItem =
-            (targetId !== undefined ? context.tooltipData[targetId] : undefined) ??
-            (groupRoot ? context.tooltipData[groupRoot] : undefined);
-
-          if (typeof mapItem === 'string') {
-            dynamicMsg = mapItem;
-          } else if (mapItem && typeof mapItem === 'object') {
-            dynamicMsg =
-              (clickedRow.id !== undefined ? mapItem[clickedRow.id] : undefined) ??
-              (typeof clickedRow.title === 'string' ? mapItem[clickedRow.title] : undefined) ??
-              mapItem['default'];
-          }
-        }
-
-        // 4순위: 기본 행 설정 또는 렌더러 기본 메시지
-        if (!dynamicMsg) {
-          dynamicMsg = targetNode.data.isStandard?.msg ?? defaultTooltipMsg;
-        }
-
-        targetNodes.forEach((node) => {
-          if (node.data) {
-            node.setData({
-              ...node.data,
-              _tooltipOn: true,
-              _tooltipMsg: dynamicMsg,
-            });
-          }
-        });
-
-        // 2. 새로운 3초 타이머 등록 (이후 클릭이 없으면 3초 후 정상 종료)
-        const timerKey = groupRoot ?? params.data?.id ?? 'default';
-        const timerId = setTimeout(() => {
-          targetNodes.forEach((node) => {
-            if (node.data) {
-              node.setData({
-                ...node.data,
-                _tooltipOn: false,
-                _tooltipMsg: undefined,
-              });
-            }
-          });
-          activeTooltipTimerMap.delete(timerKey);
-        }, 3000);
-        activeTooltipTimerMap.set(timerKey, timerId);
+        onClick?.(params);
       };
 
       return (
@@ -389,7 +244,8 @@ export function groupEditableButtonRenderer<
       );
     }
 
-    // isSelectedInsuredAmount인 경우에도 셀렉트 옵션이 1개 이하이면 화살표 대신 일반 숫자 포맷터로 렌더링
+    // [분기 2] 가입금액 선택 활성 행(isSelectedInsuredAmount === true):
+    // 선택 옵션이 1개 이하이면 화살표 대신 일반 숫자 포맷터로 렌더링하고, 2개 이상이면 셀렉트 렌더러로 렌더링
     if (isSelectedInsuredAmount) {
       const options = getInsuredAmountOptions(params.data, defaultOptions);
       if (options.length <= 1) {
@@ -398,6 +254,7 @@ export function groupEditableButtonRenderer<
       return getExpiryRenderer(align)(params);
     }
 
+    // [분기 3] 일반 행: 기본 숫자 포맷터로 렌더링
     return numberValueFormatter(params);
   };
 
