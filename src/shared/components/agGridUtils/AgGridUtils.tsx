@@ -18,6 +18,7 @@ import type {
   GridReadyEvent,
   CellValueChangedEvent,
   IRowNode,
+  PostProcessPopupParams,
 } from 'ag-grid-enterprise';
 import type { AgGridReact, CustomLoadingOverlayProps, CustomCellEditorProps, CustomHeaderProps } from 'ag-grid-react';
 import * as React from 'react';
@@ -3774,4 +3775,278 @@ export function isInsuredAmountEditable<T extends InsuredAmountRowData>(
     }
   }
   return true;
+}
+
+export type RichSelectPopupAlign = 'left' | 'center' | 'right' | 'auto';
+
+export type RichSelectParamsOptions = {
+  /**
+   * 팝업 창 정렬 기준 (기본값: 'auto')
+   * - 'left': 셀의 좌측 끝에 맞춰 오른쪽으로 확장
+   * - 'right': 셀의 우측 끝에 맞춰 왼쪽으로 확장
+   * - 'center': 셀의 중심에 맞춰 중앙 정렬 확장
+   * - 'auto': 셀의 text 정렬 클래스 및 화면 경계에 따라 우측/좌측 자동 판단
+   */
+  align?: RichSelectPopupAlign;
+  [key: string]: unknown;
+};
+
+/**
+ * agRichSelectCellEditor 전용 파라미터 자동 생성 공용 헬퍼 함수
+ * - values 목록 중 가장 긴 문자열을 기준으로 valueListMaxWidth와 valueListMinWidth를 자동 계산합니다.
+ * - AG Grid 가상 스크롤(VirtualList)의 너비가 0으로 접히거나 창 크기가 작아지는 현상을 방지합니다.
+ * - 우측/좌측/중앙/자동(align) 정렬 기준을 함께 지정할 수 있습니다.
+ *
+ * @param values 셀렉트 옵션 목록 배열
+ * @param additionalParams 추가로 전달할 cellEditorParams 옵션 (선택 사항, { align: 'right' } 등)
+ */
+export function createRichSelectCellEditorParams<T = string | number>(
+  values: T[],
+  additionalParams?: RichSelectParamsOptions
+) {
+  const align: RichSelectPopupAlign = additionalParams?.align ?? 'auto';
+
+  if (!Array.isArray(values) || values.length === 0) {
+    return {
+      values: [],
+      valueListMaxWidth: 90,
+      valueListMinWidth: 90,
+      align,
+      ...additionalParams,
+    };
+  }
+
+  // 한글/영문/숫자 폭 가중치 계산 (한글 약 13px, 영문/숫자 약 8px)
+  const maxPixelWidth = values.reduce((max, val) => {
+    const str = String(val ?? '');
+    let textWidth = 0;
+    for (let i = 0; i < str.length; i++) {
+      const code = str.charCodeAt(i);
+      if (code > 0x7f) {
+        textWidth += 10;
+      } else {
+        textWidth += 8;
+      }
+    }
+    return Math.max(max, textWidth);
+  }, 0);
+
+  // 좌우 패딩 + 스크롤바 영역 + 여유분 고려 (최소 90px 보장)
+  const calculatedWidth = Math.ceil(Math.max(90, maxPixelWidth + 40));
+
+  return {
+    values,
+    valueListMaxWidth: calculatedWidth,
+    valueListMinWidth: calculatedWidth,
+    align,
+    ...additionalParams,
+  };
+}
+
+/**
+ * AG-Grid 셀 에디터(RichSelect 등) 팝업 정렬 기준 자동 보정 공용 함수
+ * - colDef.cellEditorParams.align 또는 셀 렌더러/클래스를 분석하여
+ *   우측('right'), 좌측('left'), 중앙('center'), 자동('auto') 기준 위치로 팝업을 재배치합니다.
+ */
+export function defaultPostProcessPopup(params: PostProcessPopupParams): void {
+  const popupEl = params.ePopup;
+  if (!popupEl) return;
+
+  // RichSelect 또는 셀렉트 팝업인지 판별
+  const isSelectPopup =
+    params.type === 'cellEditor' ||
+    params.type === 'richSelect' ||
+    params.type === 'popup' ||
+    popupEl.querySelector('.ag-rich-select-popup, .ag-rich-select-list, .ag-select-list') !== null ||
+    popupEl.classList.contains('ag-rich-select-popup') ||
+    popupEl.classList.contains('ag-popup-editor');
+
+  if (!isSelectPopup) return;
+
+  const colDef = params.column?.getColDef();
+  let editorParams = colDef?.cellEditorParams;
+  if (typeof editorParams === 'function') {
+    try {
+      editorParams = editorParams(params as unknown as ICellEditorParams);
+    } catch {
+      // ignore
+    }
+  }
+
+  let align: RichSelectPopupAlign =
+    (editorParams?.align as RichSelectPopupAlign) ??
+    (colDef?.cellRendererParams?.align as RichSelectPopupAlign) ??
+    'auto';
+
+  // 렌더링 프레임 후 실제 너비를 정밀 측정하여 팝업 위치 보정
+  requestAnimationFrame(() => {
+    if (!popupEl.isConnected) return;
+
+    // 대상 셀 요소 탐색
+    const cellEl = ((params.eventSource as HTMLElement)?.closest?.('.ag-cell') ??
+      params.eventSource ??
+      document.querySelector('.ag-cell-inline-editing') ??
+      document.querySelector('.ag-cell-focus')) as HTMLElement | null;
+
+    if (!cellEl) return;
+
+    if (align === 'auto') {
+      const cellClass = typeof colDef?.cellClass === 'string' ? colDef.cellClass : '';
+      const cellClassFuncResult =
+        typeof colDef?.cellClass === 'function'
+          ? (colDef.cellClass as (p: unknown) => string)({ ...params, data: params.rowNode?.data })
+          : '';
+      const combinedClass = `${cellClass} ${cellClassFuncResult}`;
+
+      if (combinedClass.includes('text-right') || combinedClass.includes('right')) {
+        align = 'right';
+      } else if (combinedClass.includes('text-center') || combinedClass.includes('center')) {
+        align = 'center';
+      } else {
+        // 화면 오른쪽 경계 초과 여부 확인
+        const cellRect = cellEl.getBoundingClientRect();
+        const popupWidth = popupEl.offsetWidth || popupEl.getBoundingClientRect().width;
+        if (cellRect.left + popupWidth > (typeof window !== 'undefined' ? window.innerWidth - 20 : 1000)) {
+          align = 'right';
+        } else {
+          align = 'left';
+        }
+      }
+    }
+
+    if (align === 'left') {
+      popupEl.style.transform = '';
+      return;
+    }
+
+    const cellWidth = cellEl.offsetWidth || cellEl.getBoundingClientRect().width;
+    const popupWidth = popupEl.offsetWidth || popupEl.getBoundingClientRect().width;
+    const diff = popupWidth - cellWidth;
+
+    if (diff > 0) {
+      if (align === 'right') {
+        popupEl.style.transform = `translateX(-${diff}px)`;
+      } else if (align === 'center') {
+        popupEl.style.transform = `translateX(-${Math.round(diff / 2)}px)`;
+      }
+    } else {
+      popupEl.style.transform = '';
+    }
+  });
+}
+
+/**
+ * AG Grid Rich Select 팝업 위치 정렬 글로벌 자동 보정기 (실시간 실측 기반)
+ * - postProcessPopup 콜백 호출 여부와 무관하게 화면에 팝업이 뜨는 즉시 100% 위치를 보정합니다.
+ */
+function adjustRichSelectPopupPosition(): void {
+  const popupChild = document.querySelector('.ag-popup-child') as HTMLElement | null;
+  const editingCell = (document.querySelector('.ag-cell.ag-cell-inline-editing') ??
+    document.querySelector('.ag-cell.ag-cell-focus') ??
+    lastDomCellInfo?.cellEl) as HTMLElement | null;
+
+  if (!popupChild || !editingCell) return;
+
+  const colId = editingCell.getAttribute('col-id');
+  let align: RichSelectPopupAlign = 'auto';
+
+  // 컬럼 정의 또는 셀 렌더러 정렬 확인
+  const colDef = activeCellTooltipContext?.api?.getColumn?.(colId ?? '')?.getColDef();
+  let editorParams = colDef?.cellEditorParams;
+  if (typeof editorParams === 'function') {
+    try {
+      editorParams = editorParams({} as any);
+    } catch {
+      // ignore
+    }
+  }
+  if (editorParams?.align) {
+    align = editorParams.align as RichSelectPopupAlign;
+  } else if (colDef?.cellRendererParams?.align) {
+    align = colDef.cellRendererParams.align as RichSelectPopupAlign;
+  }
+
+  // auto인 경우 셀 텍스트 정렬 클래스 확인
+  if (align === 'auto') {
+    const className = editingCell.className || '';
+    if (className.includes('text-right') || className.includes('right')) {
+      align = 'right';
+    } else if (className.includes('text-center') || className.includes('center')) {
+      align = 'center';
+    } else {
+      const cellRect = editingCell.getBoundingClientRect();
+      const popupWidth = popupChild.offsetWidth || 120;
+      if (cellRect.left + popupWidth > (typeof window !== 'undefined' ? window.innerWidth - 20 : 1000)) {
+        align = 'right';
+      } else {
+        align = 'left';
+      }
+    }
+  }
+
+  if (align === 'left') return;
+
+  const cellRect = editingCell.getBoundingClientRect();
+  const popupRect = popupChild.getBoundingClientRect();
+
+  if (align === 'right') {
+    const diff = popupRect.right - cellRect.right;
+    if (Math.abs(diff) > 2) {
+      const currentTransform = popupChild.style.transform || '';
+      const match = currentTransform.match(/translateX\(([-0-9.]+)px\)/);
+      const currentX = match ? parseFloat(match[1]) : 0;
+      const newX = currentX - diff;
+      popupChild.style.setProperty('transform', `translateX(${newX}px)`, 'important');
+    }
+  } else if (align === 'center') {
+    const cellCenter = cellRect.left + cellRect.width / 2;
+    const popupCenter = popupRect.left + popupRect.width / 2;
+    const diff = popupCenter - cellCenter;
+    if (Math.abs(diff) > 2) {
+      const currentTransform = popupChild.style.transform || '';
+      const match = currentTransform.match(/translateX\(([-0-9.]+)px\)/);
+      const currentX = match ? parseFloat(match[1]) : 0;
+      const newX = currentX - diff;
+      popupChild.style.setProperty('transform', `translateX(${newX}px)`, 'important');
+    }
+  }
+}
+
+/**
+ * AG Grid Rich Select 팝업 위치 정렬 글로벌 자동 감시기 (MutationObserver 기반)
+ * - postProcessPopup 콜백이 호출되지 않는 인라인 셀렉트 드롭다운도 100% 감지하여 위치를 실시간 보정합니다.
+ */
+let isRichSelectObserverInitialized = false;
+
+export function initRichSelectPopupAlignObserver(): void {
+  if (typeof window === 'undefined' || typeof document === 'undefined') return;
+  if (isRichSelectObserverInitialized) return;
+  isRichSelectObserverInitialized = true;
+
+  const triggerAdjust = () => {
+    requestAnimationFrame(() => {
+      adjustRichSelectPopupPosition();
+      requestAnimationFrame(adjustRichSelectPopupPosition);
+    });
+  };
+
+  const observer = new MutationObserver(() => {
+    triggerAdjust();
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['style', 'class'],
+  });
+
+  document.addEventListener('pointerdown', triggerAdjust, true);
+  document.addEventListener('click', triggerAdjust, true);
+  document.addEventListener('keydown', triggerAdjust, true);
+}
+
+// 클라이언트 환경에서 모듈 로드 시 자동 초기화
+if (typeof window !== 'undefined') {
+  initRichSelectPopupAlignObserver();
 }

@@ -573,7 +573,7 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
     var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
     var(--tw-shadow);
 }
-
+/* 
 .ag-cell.required.ag-cell-error-border.ag-cell-inline-editing:after,
 .ag-cell.required.ag-cell-error-border.ag-cell-focus:after,
 .ag-cell.required.ag-cell-error-border:focus-within:after {
@@ -590,14 +590,11 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   font-size: 1.2rem;
   color: var(--color-text-danger);
   background-color: var(--color-input-surface-error);
-  /* 배경색 (after와 맞춤) */
   border: 0.1rem solid var(--color-input-border-error);
   border-radius: 0.4rem;
-  /* rounded-DEFAULT 기준 */
   box-shadow:
     0 0.4rem 0.6rem -0.1rem rgb(0 0 0 / 0.1),
     0 0.2rem 0.4rem -0.2rem rgb(0 0 0 / 0.1);
-  /* shadow-md */
 }
 
 .isStandard:not([data-msg]):after,
@@ -606,7 +603,6 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   white-space: nowrap;
 }
 
-/* 🔥 수동 지정 클래스(.tooltip-right)가 지정된 셀만 툴팁 우측 정렬 (우측 기준, 좌측 방향 펴짐) */
 .ag-cell.required.ag-cell-error-border.tooltip-right.ag-cell-inline-editing:after,
 .ag-cell.required.ag-cell-error-border.tooltip-right.ag-cell-focus:after,
 .ag-cell.required.ag-cell-error-border.tooltip-right:focus-within:after {
@@ -614,13 +610,14 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   right: 0.4rem !important;
 }
 
-/* 🔥 화살표 삼각 위치도 우측으로 이동 */
 .ag-cell.required.ag-cell-error-border.tooltip-right.ag-cell-inline-editing:before,
 .ag-cell.required.ag-cell-error-border.tooltip-right.ag-cell-focus:before,
 .ag-cell.required.ag-cell-error-border.tooltip-right:focus-within:before {
   left: auto !important;
   right: 1rem !important;
 }
+ */
+
 
 /* cellClassRules로 지정하는 메시지 클래스별 content 오버라이딩 */
 .ag-cell.err-msg-empty.ag-cell-inline-editing:after,
@@ -1079,8 +1076,8 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   max-height: 18rem !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
-  width: max-content !important;
-  min-width: 8.5rem !important; /* 브라우저가 유효하게 인식하는 최소 8.5rem(85px) 보장 */
+  width: 100% !important;
+  min-width: 100% !important;
   letter-spacing: 0 !important;
   white-space: nowrap !important;
   box-sizing: border-box !important;
@@ -1091,6 +1088,7 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 .ag-rich-select-popup .ag-rich-select-list,
 .ag-rich-select-popup .ag-virtual-list-viewport {
   width: 100% !important;
+  min-width: 100% !important;
   height: auto !important;
   overflow: visible !important;
   border: none !important;
@@ -1102,6 +1100,7 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   height: auto !important;
   min-height: auto !important;
   width: 100% !important;
+  min-width: 100% !important;
   position: relative !important;
 }
 
@@ -1315,15 +1314,20 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   width: 100% !important;
 }
 
+.ag-theme-alpine.inner-scroll.inner-min-scroll .ag-root-wrapper-body .ag-body.ag-layout-normal {
+  height: 3rem !important;
+  min-height: 3rem !important;
+  max-height: 100% !important;
+  overflow-y: auto !important;
+}
+
 /* inner-min-scroll: data-row={2} 일 때 5개 행(15rem)이 아닌 2개 행(6rem) 기준으로 높이에 따라 가변 동작 */
-.ag-theme-alpine.inner-scroll.inner-min-scroll[data-row='2'] .ag-root-wrapper-body .ag-overlay,
 .ag-theme-alpine.inner-scroll.inner-min-scroll[data-row='2'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height: 6rem !important;
   min-height: 6rem !important;
   max-height: 100% !important;
   overflow-y: auto !important;
 }
-.ag-theme-alpine.inner-scroll.inner-min-scroll[data-row='5'] .ag-root-wrapper-body .ag-overlay,
 .ag-theme-alpine.inner-scroll.inner-min-scroll[data-row='5'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height: 15rem !important;
   min-height: 15rem !important;
@@ -2100,4 +2104,11 @@ html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked
 .ag-theme-alpine.small .ag-input-field-input {
   height: 2rem !important;
   min-height: 2rem !important;
+}
+.ag-theme-alpine.inner-scroll.inner-min-scroll .ag-root-wrapper:has(.ag-overlay-loading-wrapper) .ag-body.ag-layout-normal,
+.ag-theme-alpine.inner-scroll.inner-min-scroll .ag-root-wrapper:has(.ag-overlay-no-rows-wrapper) .ag-body.ag-layout-normal{
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  overflow-y: auto !important;
 }

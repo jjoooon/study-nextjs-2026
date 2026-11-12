@@ -488,6 +488,36 @@ export const isExternalOrCustomIframe = (popupId?: string): boolean => {
   return false;
 };
 
+/**
+ * 1차 iframe(직접 부모)의 도메인(document.referrer)에 'hwsfa'가 포함되어 있는지 판별합니다.
+ * 도메인이 다른 Cross-Origin 환경에서도 브라우저의 document.referrer는 안전하게 읽을 수 있습니다.
+ */
+export const checkIsHwsfa = (): boolean => {
+  if (typeof window === 'undefined') return false;
+
+  // 1. 1차 iframe 부모의 도메인/주소 검사 (Cross-Origin 차단 없음)
+  const referrer = document.referrer;
+  if (referrer && /6006/i.test(referrer)) {
+    return true;
+  }
+
+  // 2. 현재 창 URL 및 파라미터 검사
+  if (/6006/i.test(window.location.href)) {
+    return true;
+  }
+
+  // 3. Same-Origin일 때 보조 검사
+  try {
+    if (window.parent && window.parent !== window && /6006/i.test(window.parent.location.href)) {
+      return true;
+    }
+  } catch {
+    // Cross-origin 에러 무시
+  }
+
+  return false;
+};
+
 type DialogContextValue = {
   depth: number;
   dialogId: string | null;
@@ -507,6 +537,7 @@ type DialogContextValue = {
   open: boolean;
   isIframe?: boolean;
   autoFocus?: boolean;
+  allowOverflowDrag?: boolean;
 };
 
 const DialogDepthContext = React.createContext<DialogContextValue>({
@@ -527,6 +558,7 @@ const DialogDepthContext = React.createContext<DialogContextValue>({
   open: false,
   isIframe: false,
   autoFocus: false,
+  allowOverflowDrag: false,
 });
 
 type DialogSizeContextValue = {
@@ -623,6 +655,13 @@ interface DialogProps extends React.ComponentPropsWithoutRef<typeof DialogPrimit
    * @default false
    */
   autoFocus?: boolean;
+  /**
+   * 드래그 이동 시 화면 밖(뷰포트 외부)으로 이동 허용 여부
+   * - true: 화면 경계를 벗어나 화면 밖으로 자유롭게 드래그 가능 (최소 60px은 화면에 남아 다시 잡을 수 있도록 안전 마진 유지)
+   * - false: 뷰포트 화면 안에서만 이동 가능 (기본값)
+   * @default false
+   */
+  allowOverflowDrag?: boolean;
 }
 
 /**
@@ -649,6 +688,7 @@ function Dialog({
   iframe: iframeProp,
   isIframe: isIframeProp,
   autoFocus = false,
+  allowOverflowDrag = true,
   ...props
 }: DialogProps) {
   const parentDialogContext = React.useContext(DialogDepthContext);
@@ -804,6 +844,7 @@ function Dialog({
         open: isOpen,
         isIframe: isIframeEnv,
         autoFocus,
+        allowOverflowDrag,
       }}
     >
       <DialogPrimitive.Root
@@ -1155,6 +1196,13 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
    * @default false
    */
   autoFocus?: boolean;
+  /**
+   * 드래그 이동 시 화면 밖(뷰포트 외부)으로 이동 허용 여부
+   * - true: 화면 경계를 벗어나 화면 밖으로 자유롭게 드래그 가능 (최소 60px은 화면에 남아 다시 잡을 수 있도록 안전 마진 유지)
+   * - false: 뷰포트 화면 안에서만 이동 가능 (기본값)
+   * @default false
+   */
+  allowOverflowDrag?: boolean;
 }
 
 /**
@@ -1204,6 +1252,7 @@ function DialogContent({
   iframe: iframeProp,
   isIframe: isIframeProp,
   autoFocus: autoFocusProp,
+  allowOverflowDrag: allowOverflowDragProp,
   onOpenAutoFocus,
   ...props
 }: DialogContentProps) {
@@ -1222,7 +1271,10 @@ function DialogContent({
     open,
     setModalOverride,
     isIframe: contextIsIframe,
+    allowOverflowDrag: contextAllowOverflowDrag,
   } = React.useContext(DialogDepthContext);
+
+  const resolvedAllowOverflowDrag = allowOverflowDragProp ?? contextAllowOverflowDrag ?? false;
 
   const explicitIframe = iframeProp ?? isIframeProp ?? contextIsIframe;
 
@@ -1315,6 +1367,10 @@ function DialogContent({
     return isExternalOrCustomIframe(initialId);
   });
 
+  const [isHwsfaState, setIsHwsfaState] = React.useState(() => {
+    return checkIsHwsfa();
+  });
+
   useIsomorphicLayoutEffect(() => {
     const currentId =
       scridProp ||
@@ -1323,17 +1379,30 @@ function DialogContent({
       getPopupIdFromReactNode(children) ||
       getPopupIdFromElement(contentRef.current);
     const inIframe = explicitIframe !== undefined ? explicitIframe : isExternalOrCustomIframe(currentId);
+    // isIframe이 false(일반 모달 형태)이면서 부모/호출 도메인이 hwsfa인 경우
+    const inHwsfa = !inIframe && checkIsHwsfa();
 
     setIsIframeState(inIframe);
+    setIsHwsfaState(inHwsfa);
 
     if (inIframe && typeof document !== 'undefined') {
       document.body.classList.add('is-iframe');
-      return () => {
-        document.body.classList.remove('is-iframe');
-      };
     } else if (typeof document !== 'undefined') {
       document.body.classList.remove('is-iframe');
     }
+
+    if (inHwsfa && typeof document !== 'undefined') {
+      document.body.classList.add('is-hwsfa');
+    } else if (typeof document !== 'undefined') {
+      document.body.classList.remove('is-hwsfa');
+    }
+
+    return () => {
+      if (typeof document !== 'undefined') {
+        document.body.classList.remove('is-iframe');
+        document.body.classList.remove('is-hwsfa');
+      }
+    };
   }, [scridProp, popupId, explicitIframe, children]);
 
   // iframe 환경일 때 부모 창으로 다이얼로그의 지정된 크기 및 화면 정보 전송 (dialogSizes.json 기반 단일화)
@@ -1576,7 +1645,7 @@ function DialogContent({
     if (isIframeState) {
       return {
         ...(props.style ?? {}),
-        position: 'fixed',
+        position: 'absolute',
         top: '0px',
         left: '0px',
         width: '100%',
@@ -1593,7 +1662,7 @@ function DialogContent({
     if (isSplit) {
       return {
         ...(props.style ?? {}),
-        position: 'fixed',
+        position: 'absolute',
         top: '0px',
         right: '0px',
         left: 'auto',
@@ -1611,7 +1680,7 @@ function DialogContent({
     if (isFullscreen) {
       return {
         ...(props.style ?? {}),
-        position: 'fixed',
+        position: 'absolute',
         top: '0px',
         left: '0px',
         width: '100vw',
@@ -1699,6 +1768,8 @@ function DialogContent({
       transformValue = `${transformValue} translate(${position.x}px, ${position.y}px)`;
     }
 
+    const effectiveMaxWidth = resolvedAllowOverflowDrag ? 'none' : DIALOG_FULL_WIDTH;
+
     return {
       ...(props.style ?? {}),
       left: isFullSize ? '50%' : initialLeft,
@@ -1713,7 +1784,7 @@ function DialogContent({
           : resolvedSize.height,
       minWidth: resolvedSize.minWidth,
       minHeight: resolvedSize.minHeight,
-      maxWidth: DIALOG_FULL_WIDTH,
+      maxWidth: effectiveMaxWidth,
       maxHeight: isFullSize ? DIALOG_FULL_HEIGHT : resolvedSize.maxHeight,
       zIndex: parallelZIndex,
     };
@@ -1737,6 +1808,7 @@ function DialogContent({
     isFullWidth,
     isRelative,
     isIframeState,
+    resolvedAllowOverflowDrag,
   ]);
 
   // 1. 상태 변수에 초기값을 저장할 변수 추가 (isResizing과 함께 관리)
@@ -1808,11 +1880,24 @@ function DialogContent({
 
         if (contentRef.current) {
           const rect = contentRef.current.getBoundingClientRect();
-          const maxX = Math.max(0, window.innerWidth - rect.width);
-          const maxY = Math.max(0, window.innerHeight - rect.height);
 
-          newX = Math.min(Math.max(0, newX), maxX);
-          newY = Math.min(Math.max(0, newY), maxY);
+          if (resolvedAllowOverflowDrag) {
+            // 화면 밖으로 드래그 허용: 완전히 사라지지 않고 최소 60px은 화면에 걸치도록 경계 설정
+            const minVisible = 60;
+            const minX = -(rect.width - minVisible);
+            const maxX = window.innerWidth - minVisible;
+            const minY = 0; // 화면 위쪽(상단)으로 완전히 넘어가서 헤더를 잃어버리는 것은 방지
+            const maxY = window.innerHeight - minVisible;
+
+            newX = Math.min(Math.max(minX, newX), maxX);
+            newY = Math.min(Math.max(minY, newY), maxY);
+          } else {
+            const maxX = Math.max(0, window.innerWidth - rect.width);
+            const maxY = Math.max(0, window.innerHeight - rect.height);
+
+            newX = Math.min(Math.max(0, newX), maxX);
+            newY = Math.min(Math.max(0, newY), maxY);
+          }
         }
 
         setPosition({ x: newX, y: newY });
@@ -1873,7 +1958,7 @@ function DialogContent({
         document.removeEventListener('mouseup', handleMouseUp);
       };
     }
-  }, [isDragging, isResizing, dragStart, resizedSize, initialCapture]);
+  }, [isDragging, isResizing, dragStart, resizedSize, initialCapture, resolvedAllowOverflowDrag]);
 
   const resolvedAutoFocus = autoFocusProp ?? parentDialogContext.autoFocus ?? false;
 
@@ -1911,13 +1996,15 @@ function DialogContent({
             style={contentStyle}
             data-isminimize={isMinimized ? 'true' : 'false'}
             data-is-iframe={isIframeState ? 'true' : undefined}
+            data-is-hwsfa={isHwsfaState ? 'true' : undefined}
             className={cn(
-              isRelative ? 'relative w-full' : 'fixed w-full',
+              isRelative ? 'relative w-full' : 'absolute w-full',
               'grid grid-rows-[auto_1fr_auto] gap-5 !pointer-events-auto bg-white rounded-[0.2rem] border border-[#1f1f1f] px-0 py-0 shadow-[0_0.2rem_1.2rem_0_#222222] outline-none',
               disableMotion || isDragging || !!isResizing || isSplit || isFullscreen || isIframeState
                 ? 'transition-none'
                 : 'dialog-bounce-transition',
               isIframeState && 'is-iframe',
+              isHwsfaState && 'is-hwsfa',
               className
             )}
             onOpenAutoFocus={(event) => {

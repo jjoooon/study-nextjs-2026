@@ -18,6 +18,7 @@ import * as React from 'react';
 import { toast } from 'sonner';
 import {
   AgGridEmptyComponent,
+  CustomGridLoadingOverlay,
   createSpanRowsByField,
   createTooltipValueGetter,
   numberValueFormatter,
@@ -57,178 +58,179 @@ type DummyDataType3 = DummyDataType2;
 type DummyDataType4 = DummyDataType2;
 
 // 누적 인수기준
-const DummyData2: DummyDataType2[] = [
-  {
-    id: 1,
-    accumName: '암(유사암제외)진단비(암진단비)',
-    accumType: '증권',
-    pseudoAccumAmount: '-',
-    totalAmount: '30,000',
-    limitAmount: '10,000',
-    guaranteeName: '암(유사암제외)진단비(암진단비)',
-    designAmount: '10,000',
-    multiplier: '1.0',
-    appliedAmount: '10,000',
-    excessAmount: '20,000',
-  },
-  {
-    id: 2,
-    accumName: '암(유사암제외)진단비(암진단비)',
-    accumType: '증권',
-    pseudoAccumAmount: '-',
-    totalAmount: '30,000',
-    limitAmount: '10,000',
-    guaranteeName:
-      '암(유사암제외)진단비(암진단비)(갱신형) 암(유사암제외)진단비(암진단비)(갱신형) 암(유사암제외)진단비(암진단비)(갱신형)암(유사암제외)진단비(암진단비)(갱신형)',
-    designAmount: '10,000',
-    multiplier: '1.0',
-    appliedAmount: '10,000',
-    excessAmount: '20,000',
-  },
-  {
-    id: 3,
-    accumName: '암(유사암제외)진단비(암진단비)',
-    accumType: '증권',
-    pseudoAccumAmount: '-',
-    totalAmount: '30,000',
-    limitAmount: '10,000',
-    guaranteeName: '-여성통합암(4대유사암제외)진단비II(특정소화기관암)',
-    designAmount: '10,000',
-    multiplier: '1.0',
-    appliedAmount: '10,000',
-    excessAmount: '20,000',
-  },
-  {
-    id: 4,
-    accumName: '유사암진단비(기타피부암)',
-    accumType: '전체',
-    pseudoAccumAmount: '12,300',
-    totalAmount: '14,300',
-    limitAmount: '13,000',
-    guaranteeName: '-4대유사암(기타피부암)',
-    designAmount: '800',
-    multiplier: '2.5',
-    appliedAmount: '2,000',
-    excessAmount: '1,300',
-  },
-  {
-    id: 5,
-    accumName: '유사암진단비',
-    accumType: '전체',
-    pseudoAccumAmount: '2,300',
-    totalAmount: '4,300',
-    limitAmount: '3,000',
-    guaranteeName: '-4대유사암(기타피부암)',
-    designAmount: '800',
-    multiplier: '2.5',
-    appliedAmount: '2,000',
-    excessAmount: '0',
-  },
-  {
-    id: 6,
-    accumName: '유사암진단비',
-    accumType: '전체',
-    pseudoAccumAmount: '2,300',
-    totalAmount: '4,300',
-    limitAmount: '3,000',
-    guaranteeName: '-4대유사암(기타피부암)',
-    designAmount: '800',
-    multiplier: '2.5',
-    appliedAmount: '2,000',
-    excessAmount: '0',
-  },
-  {
-    id: 7,
-    accumName: '유사암진단비',
-    accumType: '전체',
-    pseudoAccumAmount: '2,300',
-    totalAmount: '4,300',
-    limitAmount: '3,000',
-    guaranteeName: '-4대유사암(기타피부암)',
-    designAmount: '800',
-    multiplier: '2.5',
-    appliedAmount: '2,000',
-    excessAmount: '0',
-  },
-  {
-    id: 8,
-    accumName: '유사암진단비',
-    accumType: '전체',
-    pseudoAccumAmount: '2,300',
-    totalAmount: '4,300',
-    limitAmount: '3,000',
-    guaranteeName: '-4대유사암(기타피부암)',
-    designAmount: '800',
-    multiplier: '2.5',
-    appliedAmount: '2,000',
-    excessAmount: '0',
-  },
-  {
-    id: 9,
-    accumName: '유사암진단비',
-    accumType: '전체',
-    pseudoAccumAmount: '2,300',
-    totalAmount: '4,300',
-    limitAmount: '3,000',
-    guaranteeName: '-4대유사암(기타피부암)',
-    designAmount: '800',
-    multiplier: '2.5',
-    appliedAmount: '2,000',
-    excessAmount: '0',
-  },
-  {
-    id: 10,
-    accumName: '유사암진단비',
-    accumType: '전체',
-    pseudoAccumAmount: '2,300',
-    totalAmount: '4,300',
-    limitAmount: '3,000',
-    guaranteeName: '-4대유사암(기타피부암)',
-    designAmount: '800',
-    multiplier: '2.5',
-    appliedAmount: '2,000',
-    excessAmount: '0',
-  },
-  {
-    id: 11,
-    accumName: '유사암진단비',
-    accumType: '전체',
-    pseudoAccumAmount: '2,300',
-    totalAmount: '4,300',
-    limitAmount: '3,000',
-    guaranteeName: '-4대유사암(기타피부암)',
-    designAmount: '800',
-    multiplier: '2.5',
-    appliedAmount: '2,000',
-    excessAmount: '0',
-  },
-  {
-    id: 12,
-    accumName: '유사암진단비',
-    accumType: '전체',
-    pseudoAccumAmount: '2,300',
-    totalAmount: '4,300',
-    limitAmount: '3,000',
-    guaranteeName: '-4대유사암(기타피부암)',
-    designAmount: '800',
-    multiplier: '2.5',
-    appliedAmount: '2,000',
-    excessAmount: '0',
-  },
-  {
-    id: 13,
-    accumName: '유사암진단비',
-    accumType: '전체',
-    pseudoAccumAmount: '2,300',
-    totalAmount: '4,300',
-    limitAmount: '3,000',
-    guaranteeName: '-4대유사암(기타피부암)',
-    designAmount: '800',
-    multiplier: '2.5',
-    appliedAmount: '2,000',
-    excessAmount: '0',
-  },
-];
+const DummyData2: DummyDataType2[] = [];
+// const DummyData2: DummyDataType2[] = [
+//   {
+//     id: 1,
+//     accumName: '암(유사암제외)진단비(암진단비)',
+//     accumType: '증권',
+//     pseudoAccumAmount: '-',
+//     totalAmount: '30,000',
+//     limitAmount: '10,000',
+//     guaranteeName: '암(유사암제외)진단비(암진단비)',
+//     designAmount: '10,000',
+//     multiplier: '1.0',
+//     appliedAmount: '10,000',
+//     excessAmount: '20,000',
+//   },
+//   {
+//     id: 2,
+//     accumName: '암(유사암제외)진단비(암진단비)',
+//     accumType: '증권',
+//     pseudoAccumAmount: '-',
+//     totalAmount: '30,000',
+//     limitAmount: '10,000',
+//     guaranteeName:
+//       '암(유사암제외)진단비(암진단비)(갱신형) 암(유사암제외)진단비(암진단비)(갱신형) 암(유사암제외)진단비(암진단비)(갱신형)암(유사암제외)진단비(암진단비)(갱신형)',
+//     designAmount: '10,000',
+//     multiplier: '1.0',
+//     appliedAmount: '10,000',
+//     excessAmount: '20,000',
+//   },
+//   {
+//     id: 3,
+//     accumName: '암(유사암제외)진단비(암진단비)',
+//     accumType: '증권',
+//     pseudoAccumAmount: '-',
+//     totalAmount: '30,000',
+//     limitAmount: '10,000',
+//     guaranteeName: '-여성통합암(4대유사암제외)진단비II(특정소화기관암)',
+//     designAmount: '10,000',
+//     multiplier: '1.0',
+//     appliedAmount: '10,000',
+//     excessAmount: '20,000',
+//   },
+//   {
+//     id: 4,
+//     accumName: '유사암진단비(기타피부암)',
+//     accumType: '전체',
+//     pseudoAccumAmount: '12,300',
+//     totalAmount: '14,300',
+//     limitAmount: '13,000',
+//     guaranteeName: '-4대유사암(기타피부암)',
+//     designAmount: '800',
+//     multiplier: '2.5',
+//     appliedAmount: '2,000',
+//     excessAmount: '1,300',
+//   },
+//   {
+//     id: 5,
+//     accumName: '유사암진단비',
+//     accumType: '전체',
+//     pseudoAccumAmount: '2,300',
+//     totalAmount: '4,300',
+//     limitAmount: '3,000',
+//     guaranteeName: '-4대유사암(기타피부암)',
+//     designAmount: '800',
+//     multiplier: '2.5',
+//     appliedAmount: '2,000',
+//     excessAmount: '0',
+//   },
+//   {
+//     id: 6,
+//     accumName: '유사암진단비',
+//     accumType: '전체',
+//     pseudoAccumAmount: '2,300',
+//     totalAmount: '4,300',
+//     limitAmount: '3,000',
+//     guaranteeName: '-4대유사암(기타피부암)',
+//     designAmount: '800',
+//     multiplier: '2.5',
+//     appliedAmount: '2,000',
+//     excessAmount: '0',
+//   },
+//   {
+//     id: 7,
+//     accumName: '유사암진단비',
+//     accumType: '전체',
+//     pseudoAccumAmount: '2,300',
+//     totalAmount: '4,300',
+//     limitAmount: '3,000',
+//     guaranteeName: '-4대유사암(기타피부암)',
+//     designAmount: '800',
+//     multiplier: '2.5',
+//     appliedAmount: '2,000',
+//     excessAmount: '0',
+//   },
+//   {
+//     id: 8,
+//     accumName: '유사암진단비',
+//     accumType: '전체',
+//     pseudoAccumAmount: '2,300',
+//     totalAmount: '4,300',
+//     limitAmount: '3,000',
+//     guaranteeName: '-4대유사암(기타피부암)',
+//     designAmount: '800',
+//     multiplier: '2.5',
+//     appliedAmount: '2,000',
+//     excessAmount: '0',
+//   },
+//   {
+//     id: 9,
+//     accumName: '유사암진단비',
+//     accumType: '전체',
+//     pseudoAccumAmount: '2,300',
+//     totalAmount: '4,300',
+//     limitAmount: '3,000',
+//     guaranteeName: '-4대유사암(기타피부암)',
+//     designAmount: '800',
+//     multiplier: '2.5',
+//     appliedAmount: '2,000',
+//     excessAmount: '0',
+//   },
+//   {
+//     id: 10,
+//     accumName: '유사암진단비',
+//     accumType: '전체',
+//     pseudoAccumAmount: '2,300',
+//     totalAmount: '4,300',
+//     limitAmount: '3,000',
+//     guaranteeName: '-4대유사암(기타피부암)',
+//     designAmount: '800',
+//     multiplier: '2.5',
+//     appliedAmount: '2,000',
+//     excessAmount: '0',
+//   },
+//   {
+//     id: 11,
+//     accumName: '유사암진단비',
+//     accumType: '전체',
+//     pseudoAccumAmount: '2,300',
+//     totalAmount: '4,300',
+//     limitAmount: '3,000',
+//     guaranteeName: '-4대유사암(기타피부암)',
+//     designAmount: '800',
+//     multiplier: '2.5',
+//     appliedAmount: '2,000',
+//     excessAmount: '0',
+//   },
+//   {
+//     id: 12,
+//     accumName: '유사암진단비',
+//     accumType: '전체',
+//     pseudoAccumAmount: '2,300',
+//     totalAmount: '4,300',
+//     limitAmount: '3,000',
+//     guaranteeName: '-4대유사암(기타피부암)',
+//     designAmount: '800',
+//     multiplier: '2.5',
+//     appliedAmount: '2,000',
+//     excessAmount: '0',
+//   },
+//   {
+//     id: 13,
+//     accumName: '유사암진단비',
+//     accumType: '전체',
+//     pseudoAccumAmount: '2,300',
+//     totalAmount: '4,300',
+//     limitAmount: '3,000',
+//     guaranteeName: '-4대유사암(기타피부암)',
+//     designAmount: '800',
+//     multiplier: '2.5',
+//     appliedAmount: '2,000',
+//     excessAmount: '0',
+//   },
+// ];
 
 // 누적 청약완료불가(당수누적)
 const DummyData3: DummyDataType3[] = [
@@ -334,6 +336,7 @@ const Ltpz00502 = ({ onClose, noticePlan = defaultNoticePlan }: Ltpz00502Props) 
   const [groupTabValue, setGroupTabValue] = React.useState<string>('tab1');
   const [accumOptionValue, setAccumOptionValue] = React.useState<string>('option1');
   const [rowData, setRowData] = React.useState<DummyDataType2[]>(DummyData2);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const gridApiRef = React.useRef<GridApi<DummyDataType2> | null>(null);
 
   React.useEffect(() => {
@@ -654,13 +657,27 @@ const Ltpz00502 = ({ onClose, noticePlan = defaultNoticePlan }: Ltpz00502Props) 
                     <Typo tag={'strong'} variant={'body-lg'}>
                       확인사항
                     </Typo>
-                    <Typo variant={'body-md'}>단위: 원</Typo>
+                    <Grow className="gap-2">
+                      <Button
+                        size="xs"
+                        variant="outlined"
+                        color={isLoading ? 'primary' : 'gray'}
+                        onClick={() => setIsLoading((prev) => !prev)}
+                      >
+                        로딩 토글 ({isLoading ? 'ON' : 'OFF'})
+                      </Button>
+                      <Typo variant={'body-md'}>단위: 원</Typo>
+                    </Grow>
                   </Grow>
 
-                  <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
+                  <div className="ag-theme-alpine inner-scroll inner-min-scroll">
                     <AgGridReact<DummyDataType2>
+                      loading={isLoading}
+                      loadingOverlayComponent={CustomGridLoadingOverlay}
+                      loadingOverlayComponentParams={{ loadingMessage: '조회 중입니다...' }}
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
+                      noRowsOverlayComponentParams={{ message: '조회정보가 없습니다.' }}
                       rowData={rowData}
                       columnDefs={columnDefs2}
                       onCellValueChanged={handleCellValueChanged}

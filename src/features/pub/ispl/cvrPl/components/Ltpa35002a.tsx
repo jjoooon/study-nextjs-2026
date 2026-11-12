@@ -32,6 +32,8 @@ import {
   getInsuredAmountOptions,
   isInsuredAmountEditable,
   showCellTooltip,
+  createRichSelectCellEditorParams,
+  defaultPostProcessPopup,
 } from '@aggrid';
 import { Divider, Gcol, Grow, Grid } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -450,17 +452,17 @@ export function Ltpa35002a({
         // width: attributeColumnWidth[7],
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
-          const base = 'tracking-tighter';
+          const base = 'tracking-tighter text-right';
           return params.data?.isEditedField5 === true ? `${base} editable-cell px-0` : `${base} no-edited`;
         },
         editable: (params: EditableCallbackParams) => {
           return params.data?.isEditedField5 === true;
         },
         cellEditor: 'agRichSelectCellEditor',
-        cellEditorParams: {
-          values: ['05년만기', '20세만기', '100세만기', '무제한'],
-          valueListMaxWidth: 90,
-        },
+        cellEditorParams: createRichSelectCellEditorParams(
+          ['05년만기', '20세만기', '100세만기100세만기100세만기100세만기', '무제한'],
+          { align: 'right' }
+        ),
         cellRenderer: getExpiryRenderer('right'),
       },
       {
@@ -470,17 +472,17 @@ export function Ltpa35002a({
         minWidth: attributeColumnWidth(68),
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
-          const base = 'tracking-tighter';
+          const base = 'tracking-tighter text-right';
           return params.data?.isEditedField6 === true ? `${base} editable-cell px-0` : `${base} no-edited`;
         },
         editable: (params: EditableCallbackParams) => {
           return params.data?.isEditedField6 === true;
         },
         cellEditor: 'agRichSelectCellEditor',
-        cellEditorParams: {
-          values: ['5년납', '10년납', '15년납', '20년납', '25년납', '30년납', '35년납', '전기납'],
-          valueListMaxWidth: 90,
-        },
+        cellEditorParams: createRichSelectCellEditorParams(
+          ['5년납', '10년납', '15년납', '20년납', '25년납', '30년납', '35년납', '전기납'],
+          { align: 'right' }
+        ),
         cellRenderer: getExpiryRenderer('right'),
       },
 
@@ -715,6 +717,7 @@ export function Ltpa35002a({
                 suppressRowTransform={true} // 절대좌표(Transform) 대신 Top 스타일을 사용하여 스크롤 성능 최적화
                 animateRows={false} // 행 이동/추가 시 애니메이션 비활성화
                 alwaysShowVerticalScroll={true}
+                postProcessPopup={defaultPostProcessPopup}
               />
             </div>
           </LayoutScrollItem>

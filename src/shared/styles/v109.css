@@ -448,15 +448,15 @@
 .v109 button[role='checkbox'][data-state='checked'] {
   box-shadow: 0 0.1rem 0.1rem 0 rgba(255, 92, 46, 0.2);
 }
-.v109 .cp-checkbox[class*='disabled:data-[state=checked]:text-[var(--color-gray-30)]']:disabled[data-state='checked'],
+.v109 .cp-checkbox:disabled[data-state='checked'],
 .v109 [data-slot='checkbox']:disabled[data-state='checked'] {
   color: var(--color-gray-30);
 }
-.v109 .cp-checkbox[class*='disabled:data-[state=checked]:bg-[var(--color-gray-10)]']:disabled[data-state='checked'],
+.v109 .cp-checkbox:disabled[data-state='checked'],
 .v109 [data-slot='checkbox']:disabled[data-state='checked'] {
   background-color: var(--color-gray-10);
 }
-.v109 .cp-checkbox[class*='disabled:data-[state=checked]:border-[var(--color-gray-20)]']:disabled[data-state='checked'],
+.v109 .cp-checkbox:disabled[data-state='checked'],
 .v109 [data-slot='checkbox']:disabled[data-state='checked'] {
   border-color: var(--color-gray-20);
 }
@@ -498,29 +498,29 @@
 }
 
 /* data-required="true" 상태 (체크박스 한정) */
-.v109 .cp-checkbox[class*='data-[required=true]:hover:border-[var(--color-primary-50)]'][data-required='true']:hover,
+.v109 .cp-checkbox[data-required='true']:hover,
 .v109 [data-slot='checkbox'][data-required='true']:hover {
   border-color: var(--color-primary-50);
 }
-.v109 .cp-checkbox[class*='data-[required=true]:bg-[var(--color-warning-10)]'][data-required='true'],
+.v109 .cp-checkbox[data-required='true'],
 .v109 [data-slot='checkbox'][data-required='true'] {
   background-color: var(--color-warning-10);
 }
-.v109 .cp-checkbox[class*='data-[required=true]:border-[var(--color-warning-30)]'][data-required='true'],
+.v109 .cp-checkbox[data-required='true'],
 .v109 [data-slot='checkbox'][data-required='true'] {
   border-color: var(--color-warning-30);
 }
 
 /* data-invalid="true" 에러 상태 (체크박스 한정) */
-.v109 .cp-checkbox[class*='data-[invalid=true]:bg-[var(--color-input-surface-error)]'][data-invalid='true'],
+.v109 .cp-checkbox[data-invalid='true'],
 .v109 [data-slot='checkbox'][data-invalid='true'] {
   background-color: var(--color-input-surface-error) !important;
 }
-.v109 .cp-checkbox[class*='data-[invalid=true]:border-[var(--color-input-border-error)]'][data-invalid='true'],
+.v109 .cp-checkbox[data-invalid='true'],
 .v109 [data-slot='checkbox'][data-invalid='true'] {
   border-color: var(--color-input-border-error) !important;
 }
-.v109 .cp-checkbox[class*='data-[invalid=true]:border-[0.2rem]'][data-invalid='true'],
+.v109 .cp-checkbox[data-invalid='true'],
 .v109 [data-slot='checkbox'][data-invalid='true'] {
   border-style: solid !important;
   border-width: 0.2rem !important;
@@ -1828,35 +1828,6 @@
   .v109 .data-\[required\=true\]\:hover\:border-\[var\(--color-primary-50\)\][data-required='true']:hover {
     border-color: var(--color-primary-50) !important;
   }
-}
-
-.v109 .data-\[required\=true\]\:bg-\[var\(--color-warning-10\)\][data-required='true'] {
-  background-color: var(--color-warning-10) !important;
-}
-
-.v109 .data-\[required\=true\]\:border-\[var\(--color-warning-30\)\][data-required='true'] {
-  border-color: var(--color-warning-30) !important;
-}
-
-.v109 .data-\[invalid\=true\]\:bg-\[var\(--color-input-surface-error\)\][data-invalid='true'] {
-  background-color: var(--color-input-surface-error) !important;
-}
-
-.v109 .data-\[invalid\=true\]\:border-\[var\(--color-input-border-error\)\][data-invalid='true'] {
-  border-color: var(--color-input-border-error) !important;
-}
-
-.v109 .data-\[invalid\=true\]\:border-\[0\.2rem\][data-invalid='true'] {
-  border-style: solid !important;
-  border-width: 0.2rem !important;
-}
-
-.v109 .disabled\:bg-\[var\(--color-gray-10\)\]:disabled {
-  background-color: var(--color-gray-10) !important;
-}
-
-.v109 .disabled\:border-\[var\(--color-gray-20\)\]:disabled {
-  border-color: var(--color-gray-20) !important;
 }
 
 .v109 .disabled\:cursor-not-allowed:disabled {

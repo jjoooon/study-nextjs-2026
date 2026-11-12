@@ -663,6 +663,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: auto;
+    overflow-x: auto !important;
   }
 
   /* 2. 브라우저 기본 스타일로 인해 상속이 끊기는 폼/인터랙션 요소 강제 상속 */
@@ -1228,6 +1229,14 @@
     padding-top: 2rem !important;
     border-radius: 0 !important;
     border: 0 !important;
+  }
+  /* hwsfa 환경(isIframe이 false인 일반 모달)일 때 모달 스타일 (테두리 제거, 그림자 제거, 라운드 적용) */
+  .is-hwsfa[data-slot='dialog-content'],
+  body.is-hwsfa [data-slot='dialog-content'] {
+    border: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0.8rem !important;
+    overflow: hidden;
   }
   .is-iframe [data-slot='dialog-footer'] {
     border-radius: 0 !important;

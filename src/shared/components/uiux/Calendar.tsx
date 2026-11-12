@@ -285,15 +285,9 @@ function Calendar({
   }
 
   const currentFullYear = today.getFullYear();
-  const resolvedStartMonth =
-    props.startMonth ??
-    props.fromDate ??
-    new Date(currentFullYear - 100, 0, 1);
+  const resolvedStartMonth = props.startMonth ?? props.fromDate ?? new Date(currentFullYear - 100, 0, 1);
 
-  const resolvedEndMonth =
-    props.endMonth ??
-    props.toDate ??
-    new Date(currentFullYear + 100, 11, 31);
+  const resolvedEndMonth = props.endMonth ?? props.toDate ?? new Date(currentFullYear + 100, 11, 31);
 
   return (
     <div className="cp-datepicker-calendar-wrapper flex flex-col">

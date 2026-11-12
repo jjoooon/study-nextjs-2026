@@ -1124,7 +1124,9 @@ export const Ltpa35001 = ({
                           {currentTab?.type === '일반' && (
                             <FormRow>
                               <FormCell title={'할인적용'} colSpan={3}>
-                                <Checkbox color="primary">가족연계할인</Checkbox>
+                                <Checkbox color="primary" required>
+                                  가족연계할인
+                                </Checkbox>
                                 <Button
                                   aria-label="피보험자 검색"
                                   variant="outlined"
