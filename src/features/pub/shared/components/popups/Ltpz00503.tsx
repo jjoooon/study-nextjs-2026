@@ -27,28 +27,7 @@ type JobDataType = {
 };
 
 // 직업
-const JobDummyData: JobDataType[] = [
-  {
-    id: 1,
-    targetStatus: '변경대상',
-    policyNumber: 'LA12345678901',
-    changedDesignNumber: '계약변경설계이동',
-    beforeInjuryGrade: '1',
-    beforeJobName: '회사 사무직 종사자',
-    afterInjuryGrade: '1',
-    afterJobName: '-',
-  },
-  {
-    id: 2,
-    targetStatus: '변경대상',
-    policyNumber: 'LA12345678901',
-    changedDesignNumber: '계약변경설계이동',
-    beforeInjuryGrade: '2',
-    beforeJobName: '회사 사무직 종사자',
-    afterInjuryGrade: '2',
-    afterJobName: '회사 사무직 종사자',
-  },
-];
+const JobDummyData: JobDataType[] = [];
 
 type GroupTabItem = {
   id: number;
@@ -222,6 +201,7 @@ const Ltpz00503 = ({ onClose }: Ltpz00503Props) => {
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
                       animateRows={false}
+                      noRowsOverlayComponentParams={{ message: '조회정보가 없습니다.' }}
                     />
                   </div>
                 </Gcol>
