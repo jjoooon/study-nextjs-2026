@@ -2105,10 +2105,13 @@ html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked
   height: 2rem !important;
   min-height: 2rem !important;
 }
-.ag-theme-alpine.inner-scroll.inner-min-scroll .ag-root-wrapper:has(.ag-overlay-loading-wrapper) .ag-body.ag-layout-normal,
-.ag-theme-alpine.inner-scroll.inner-min-scroll .ag-root-wrapper:has(.ag-overlay-no-rows-wrapper) .ag-body.ag-layout-normal{
+
+.ag-theme-alpine.inner-scroll[data-row].is-loading .ag-body.ag-layout-normal,
+.ag-theme-alpine.inner-scroll[data-row].is-empty .ag-body.ag-layout-normal,
+.ag-theme-alpine.inner-scroll.inner-min-scroll.is-loading .ag-body.ag-layout-normal,
+.ag-theme-alpine.inner-scroll.inner-min-scroll.is-empty .ag-body.ag-layout-normal {
   height: 0 !important;
-  min-height: 0 !important;
+  min-height: 1px !important;
   max-height: 100% !important;
   overflow-y: auto !important;
 }

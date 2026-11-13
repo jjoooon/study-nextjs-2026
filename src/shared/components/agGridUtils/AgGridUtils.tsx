@@ -4046,7 +4046,73 @@ export function initRichSelectPopupAlignObserver(): void {
   document.addEventListener('keydown', triggerAdjust, true);
 }
 
+/**
+ * 오버레이 요소가 현재 화면에 표시 중인지 판별합니다.
+ */
+function isAgOverlayVisible(wrapperEl: Element | null): boolean {
+  if (!wrapperEl) return false;
+  const overlayEl = wrapperEl.closest('.ag-overlay') as HTMLElement | null;
+  if (!overlayEl) return false;
+  if (overlayEl.classList.contains('ag-hidden')) return false;
+  if (overlayEl.style.display === 'none') return false;
+  return true;
+}
+
+/**
+ * 화면 내 모든 .ag-theme-alpine 요소에 오버레이 상태 클래스(is-loading, is-empty)를 동기화합니다.
+ */
+function syncAgGridOverlayStateClasses(): void {
+  const gridElements = document.querySelectorAll('.ag-theme-alpine');
+  gridElements.forEach((gridEl) => {
+    const isLoading = isAgOverlayVisible(gridEl.querySelector('.ag-overlay-loading-wrapper'));
+    const isEmpty = !isLoading && isAgOverlayVisible(gridEl.querySelector('.ag-overlay-no-rows-wrapper'));
+
+    if (gridEl.classList.contains('is-loading') !== isLoading) {
+      gridEl.classList.toggle('is-loading', isLoading);
+    }
+    if (gridEl.classList.contains('is-empty') !== isEmpty) {
+      gridEl.classList.toggle('is-empty', isEmpty);
+    }
+  });
+}
+
+let isAgGridOverlayObserverInitialized = false;
+
+/**
+ * AG Grid 로딩/빈 데이터 상태에 따라 상위 .ag-theme-alpine에
+ * 'is-loading', 'is-empty' 클래스를 자동으로 부여하는 전역 감시기 (Chrome 109 호환)
+ */
+export function initAgGridOverlayStateObserver(): void {
+  if (typeof window === 'undefined' || typeof document === 'undefined') return;
+  if (isAgGridOverlayObserverInitialized) return;
+  isAgGridOverlayObserverInitialized = true;
+
+  let rafId: number | null = null;
+  const scheduleSync = () => {
+    if (rafId !== null) return;
+    rafId = requestAnimationFrame(() => {
+      rafId = null;
+      syncAgGridOverlayStateClasses();
+    });
+  };
+
+  // 초기 1회 동기화
+  scheduleSync();
+
+  const observer = new MutationObserver(() => {
+    scheduleSync();
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['class', 'style'],
+  });
+}
+
 // 클라이언트 환경에서 모듈 로드 시 자동 초기화
 if (typeof window !== 'undefined') {
   initRichSelectPopupAlignObserver();
+  initAgGridOverlayStateObserver();
 }
