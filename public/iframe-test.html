@@ -536,7 +536,7 @@
         <div
           class="iframe-wrapper active-glow"
           id="iframeWrapper"
-          style="width: 1000px; display: flex; flex-direction: column; background-color: #fff"
+          style="width: 1000px; height: 700px; display: flex; flex-direction: column; background-color: #fff"
         >
           <div
             style="
@@ -547,6 +547,7 @@
               width: 100%;
               border-bottom: 1px solid #e5e7eb;
               height: 30px;
+              flex-shrink: 0;
             "
           >
             <div
@@ -586,7 +587,7 @@
               </svg>
             </button>
           </div>
-          <div class="dialogpopup" style="width: 100%; height: 700px">
+          <div class="dialogpopup" style="width: 100%; flex: 1; min-height: 0">
             <iframe src="" id="testIframe" style="flex: 1; border: 0; width: 100%; height: 100%"></iframe>
           </div>
         </div>
@@ -677,7 +678,8 @@
       function updateDialogPopupHeight(heightPx) {
         const dialogPopup = document.querySelector('.dialogpopup');
         if (dialogPopup) {
-          dialogPopup.style.height = heightPx + 'px';
+          // 전체 팝업 높이(heightPx)에서 상단 헤더(30px)를 제외한 영역을 iframe 컨테이너에 할당
+          dialogPopup.style.height = Math.max(0, Number(heightPx) - 30) + 'px';
         }
       }
 
@@ -1057,8 +1059,8 @@
             widthVal.value = w;
           }
           if (predefined.height && predefined.height !== 'auto') {
-            // dialogSizes의 헤더 포함 전체 크기에서 헤더 30px 차감한 값 적용
-            const h = Math.max(0, Number(predefined.height) - 30);
+            // 최종 아이프레임 팝업(#iframeWrapper) 높이가 전달된 height 값과 동일하게 보이도록 적용
+            const h = Math.max(0, Number(predefined.height));
             iframeWrapper.style.height = h + 'px';
             updateDialogPopupHeight(h);
             heightSlider.value = h;
