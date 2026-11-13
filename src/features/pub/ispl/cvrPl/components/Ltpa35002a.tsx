@@ -32,6 +32,7 @@ import {
   getInsuredAmountOptions,
   isInsuredAmountEditable,
   showCellTooltip,
+  calculateRichSelectWidth,
   createRichSelectCellEditorParams,
   defaultPostProcessPopup,
 } from '@aggrid';
@@ -407,7 +408,10 @@ export function Ltpa35002a({
             const baseOptions = getInsuredAmountOptions(params.data);
             return {
               component: 'agRichSelectCellEditor',
-              params: { values: baseOptions, valueListMaxWidth: 80 },
+              params: {
+                values: baseOptions,
+                valueListMaxWidth: calculateRichSelectWidth(baseOptions),
+              },
             };
           }
         },

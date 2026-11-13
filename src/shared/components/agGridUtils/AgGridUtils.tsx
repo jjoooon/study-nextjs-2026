@@ -3792,31 +3792,18 @@ export type RichSelectParamsOptions = {
 };
 
 /**
- * agRichSelectCellEditor 전용 파라미터 자동 생성 공용 헬퍼 함수
- * - values 목록 중 가장 긴 문자열을 기준으로 valueListMaxWidth와 valueListMinWidth를 자동 계산합니다.
- * - AG Grid 가상 스크롤(VirtualList)의 너비가 0으로 접히거나 창 크기가 작아지는 현상을 방지합니다.
- * - 우측/좌측/중앙/자동(align) 정렬 기준을 함께 지정할 수 있습니다.
+ * agRichSelectCellEditor 옵션 목록 중 가장 긴 문자열을 기준으로 팝업 너비(px)를 계산합니다.
+ * - 한글(비ASCII) 10px, 영문/숫자 8px 가중치 + 좌우 패딩/여유분 40px 적용
  *
  * @param values 셀렉트 옵션 목록 배열
- * @param additionalParams 추가로 전달할 cellEditorParams 옵션 (선택 사항, { align: 'right' } 등)
+ * @param minWidth 최소 보장 너비 (기본값: 90)
  */
-export function createRichSelectCellEditorParams<T = string | number>(
-  values: T[],
-  additionalParams?: RichSelectParamsOptions
-) {
-  const align: RichSelectPopupAlign = additionalParams?.align ?? 'auto';
-
+export function calculateRichSelectWidth<T = string | number>(values: T[], minWidth = 90): number {
   if (!Array.isArray(values) || values.length === 0) {
-    return {
-      values: [],
-      valueListMaxWidth: 90,
-      valueListMinWidth: 90,
-      align,
-      ...additionalParams,
-    };
+    return minWidth;
   }
 
-  // 한글/영문/숫자 폭 가중치 계산 (한글 약 13px, 영문/숫자 약 8px)
+  // 한글/영문/숫자 폭 가중치 계산 (비ASCII 10px, ASCII 8px)
   const maxPixelWidth = values.reduce((max, val) => {
     const str = String(val ?? '');
     let textWidth = 0;
@@ -3831,8 +3818,35 @@ export function createRichSelectCellEditorParams<T = string | number>(
     return Math.max(max, textWidth);
   }, 0);
 
-  // 좌우 패딩 + 스크롤바 영역 + 여유분 고려 (최소 90px 보장)
-  const calculatedWidth = Math.ceil(Math.max(90, maxPixelWidth + 40));
+  // 좌우 패딩 + 스크롤바 영역 + 여유분 고려 (최소 minWidth 보장)
+  return Math.ceil(Math.max(minWidth, maxPixelWidth + 40));
+}
+
+/**
+ * agRichSelectCellEditor 전용 파라미터 자동 생성 공용 헬퍼 함수
+ * - values 목록 중 가장 긴 문자열을 기준으로 valueListMaxWidth와 valueListMinWidth를 자동 계산합니다.
+ * - AG Grid 가상 스크롤(VirtualList)의 너비가 0으로 접히거나 창 크기가 작아지는 현상을 방지합니다.
+ * - 우측/좌측/중앙/자동(align) 정렬 기준을 함께 지정할 수 있습니다.
+ *
+ * @param values 셀렉트 옵션 목록 배열
+ * @param additionalParams 추가로 전달할 cellEditorParams 옵션 (선택 사항, { align: 'right' } 등)
+ */
+export function createRichSelectCellEditorParams<T = string | number>(
+  values: T[],
+  additionalParams?: RichSelectParamsOptions
+) {
+  const align: RichSelectPopupAlign = additionalParams?.align ?? 'auto';
+  const calculatedWidth = calculateRichSelectWidth(values);
+
+  if (!Array.isArray(values) || values.length === 0) {
+    return {
+      values: [],
+      valueListMaxWidth: calculatedWidth,
+      valueListMinWidth: calculatedWidth,
+      align,
+      ...additionalParams,
+    };
+  }
 
   return {
     values,
