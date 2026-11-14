@@ -16,7 +16,6 @@ import {
   ResetIcon,
   AdderIcon,
   ArrowNext,
-  KebabIcon,
   PaperIcon,
   QuestionBubbleIcon,
   FolderSearch,
@@ -44,7 +43,6 @@ import { AgGridReact } from 'ag-grid-react';
 import Image from 'next/image';
 import * as React from 'react';
 import { useState } from 'react';
-import { AiBotIcon } from '@/shared/components/features/AiBotIcon';
 import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import '@/shared/lib/agGridPub';
 
