@@ -3,11 +3,11 @@
  */
 'use client';
 
+import { ErrorMsg } from '@common/ErrorMsg';
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { ErrorMsg } from '@common/ErrorMsg';
 
 /**
  * RadioGroup 내부 아이템들에 에러 및 필수 상태를 전파하기 위한 컨텍스트입니다.
@@ -122,7 +122,7 @@ const radioGroupItemVariants = cva(
         variant: 'button',
         size: 'xl',
         className:
-          'min-h-[4.8rem] h-auto pl-[4.2rem] pr-[1.6rem] py-[1.2rem] text-[1.3rem] tracking-[-0.05rem] w-auto inline-flex items-center text-left whitespace-normal',
+          'min-h-[4.4rem] h-auto p-[1.2rem] pl-[3.6rem] text-[1.3rem] tracking-[-0.05rem] w-auto inline-flex items-center text-left whitespace-normal',
       },
       {
         variant: 'button',
@@ -545,7 +545,7 @@ const RadioGroupItem = React.forwardRef<
                     : resolvedSize === 'md'
                       ? 'top-[0.45rem] h-[1.4rem] w-[1.4rem]'
                       : resolvedSize === 'xl'
-                        ? 'top-[1.5rem] left-[1.6rem] h-[1.4rem] w-[1.4rem]'
+                        ? 'top-[1.2rem] left-[1.2rem] h-[2rem] w-[2rem]'
                         : 'top-[0.55rem] h-[1.4rem] w-[1.4rem]'
                 )
               )}

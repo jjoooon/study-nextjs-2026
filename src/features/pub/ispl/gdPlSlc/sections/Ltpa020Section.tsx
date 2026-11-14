@@ -3,9 +3,6 @@
  */
 'use client';
 
-import { useCallback, useState } from 'react';
-import * as React from 'react';
-import Ltpz034 from '@/features/pub/ispl/gdPlSlc/components/popups/Ltpz034';
 import { Gcol, Grow, Divider, Grid, Typo } from '@atoms';
 
 import { BottomBar } from '@common/BottomBar';
@@ -16,13 +13,16 @@ import { KeyValueItem } from '@common/KeyValueList';
 import { ViewMode } from '@common/ViewMode';
 import { EmpInput } from '@features/EmpInput';
 import { PageID } from '@features/PageID';
-import { SearchIcon, AiIcon, PlusIcon, ResetIcon } from '@icons';
+import { SearchIcon, AiIcon, PlusIcon, ResetIcon, ArrowIcon } from '@icons';
 import { LayoutFoot, LayoutHead } from '@layout/BaseLayout';
 import { LayoutTemplatePx0 } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import * as React from 'react';
+import { useCallback, useState } from 'react';
 import { Ltpa02001 } from '../components/Ltpa02001';
-import { Ltpa02002 } from '../components/Ltpa02003';
+import { Ltpa02002 } from '../components/Ltpa02002New';
+import Ltpz034 from '@/features/pub/ispl/gdPlSlc/components/popups/Ltpz034';
 
 export default function Ltpa020Section() {
   // 상단 탭 상태
@@ -365,16 +365,16 @@ export default function Ltpa020Section() {
                               <>
                                 {comboValues.user ? (
                                   comboValues.user === '김한화 32세(여)' ? (
-                                    <Typo variant={'body-sm'} icon={'warning'} className="text-[#FFF]">
+                                    <Typo variant={'body-sm'} className="text-[#FFF]">
                                       [이용제한] 고지유형찾기 서비스 점검중입니다
                                     </Typo>
                                   ) : (
-                                    <Typo variant={'body-sm'} icon={'info'} className="text-[#FFF]">
+                                    <Typo variant={'body-sm'} className="text-[#FFF]">
                                       적정 고지유형을 찾는다면, 클릭해주세요.
                                     </Typo>
                                   )
                                 ) : (
-                                  <Typo variant={'body-sm'} icon={'info'} className="text-[#FFF]">
+                                  <Typo variant={'body-sm'} className="text-[#FFF]">
                                     고객정보를 먼저 입력해주세요
                                   </Typo>
                                 )}
@@ -382,11 +382,11 @@ export default function Ltpa020Section() {
                             ) : (
                               <>
                                 {comboValues.age ? (
-                                  <Typo variant={'body-sm'} icon={'info'} className="text-[#FFF]">
+                                  <Typo variant={'body-sm'} className="text-[#FFF]">
                                     적정 고지유형을 찾는다면, 클릭해주세요.
                                   </Typo>
                                 ) : (
-                                  <Typo variant={'body-sm'} icon={'info'} className="text-[#FFF]">
+                                  <Typo variant={'body-sm'} className="text-[#FFF]">
                                     고객정보를 먼저 입력해주세요
                                   </Typo>
                                 )}
@@ -402,8 +402,8 @@ export default function Ltpa020Section() {
                               size={'lg'}
                               onClick={() => setIsLtpz034Open(true)}
                             >
-                              {isLtpz034Open && <PlusIcon size={16} className="translate-y-[-.1rem]" />}
-                              {isLtpz034Open ? '예상고지유형 다시보기' : '예상고지유형'}
+                              {!isLtpz034Open ? '예상고지유형 다시보기' : '예상고지유형'}
+                              {!isLtpz034Open ? <ArrowIcon className="rotate-180" /> : <SearchIcon />}
                             </Button>
                           </Grow>
                         </Grow>
