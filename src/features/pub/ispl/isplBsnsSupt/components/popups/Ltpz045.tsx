@@ -68,7 +68,7 @@ const Ltpz045 = () => {
                       readOnly
                       variant="info"
                       masking
-                      value={'900315-1234567'}
+                      value={'900315-1******'}
                     />
                   </FormCell>
                 </FormRow>
@@ -91,7 +91,7 @@ const Ltpz045 = () => {
                         readOnly
                         variant="info"
                         masking
-                        value={'900315-1234567'}
+                        value={'900315-1******'}
                       />
                     </FormCell>
                     <FormCell title={'국적'}>대한민국</FormCell>
@@ -113,7 +113,7 @@ const Ltpz045 = () => {
                         readOnly
                         variant="info"
                         masking
-                        value={'example@example.com'}
+                        value={'ex***@***.***'}
                       />
                     </FormCell>
                   </FormRow>
@@ -152,7 +152,7 @@ const Ltpz045 = () => {
                     <FormCell title={'영문명'}>Kim Hanhwa</FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'사업자번호'}>000000-0000000</FormCell>
+                    <FormCell title={'사업자번호'}>000000-0******</FormCell>
                     <FormCell title={'설립일'}>2025-01-01</FormCell>
                   </FormRow>
                   <FormRow>
@@ -344,7 +344,7 @@ const Ltpz045 = () => {
                             width={126}
                             readOnly
                             masking
-                            value={'900315-1234567'}
+                            value={'900315-1******'}
                           />
                           김한화 와의 관계
                           <NativeSelect

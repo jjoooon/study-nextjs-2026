@@ -4,6 +4,12 @@
 
 'use client';
 
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import Image from 'next/image';
+import * as React from 'react';
+import { useState } from 'react';
+import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -38,12 +44,6 @@ import {
 import { Input } from '@uiux/Input';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import Image from 'next/image';
-import * as React from 'react';
-import { useState } from 'react';
-import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import '@/shared/lib/agGridPub';
 
 type DummyDataListDetailType = {
@@ -146,7 +146,7 @@ const dummyDataList: DummyDataListType[] = [
       {
         field1: 103695,
         field2:
-          '고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.',
+          '고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.',
         field3: coverageDummyList,
       },
       {
@@ -1490,8 +1490,8 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         <div className="flex flex-col gap-1 w-full">
                           <strong className="font-bold text-[1.5rem]">보장내용 상세보기</strong>
                           <p className="text-[1.3rem] leading-[150%] break-keep text-[var(--color-blue-gray-60)]">
-                            <b className="text-[var(--color-information-50)]">추천결과 카드를 선택</b>하여,
-                            <br /> 자세한 보장내용과 보험료를 확인해 보세요.
+                            <b className="text-[var(--color-information-50)]">추천결과 카드를 선택</b>하여, 자세한
+                            보장내용과 보험료를 확인해 보세요.
                           </p>
                         </div>
                       </li>
@@ -1502,7 +1502,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         <div className="flex flex-col gap-1 w-full">
                           <strong className="font-bold text-[1.5rem]">추천설계 비교하기</strong>
                           <p className="text-[1.3rem] leading-[150%] break-keep text-[var(--color-blue-gray-60)]">
-                            카드별 ‘비교하기’ 체크하신 후, <br />
+                            카드별 ‘비교하기’ 체크하신 후,{' '}
                             <b className="text-[var(--color-information-50)]">[추천설계비교]를 클릭하여 비교</b>해
                             보세요. <br />
                             3개까지 가능해요.
@@ -1520,8 +1520,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                             눌러보세요.
                             <br />
                             최대 3개까지 자동으로 설계가 생성됩니다. <br />
-                            가입설계 화면에서 담보 조정 등으로 <br />
-                            최적의 설계를 진행하세요.
+                            가입설계 화면에서 담보 조정 등으로 최적의 설계를 진행하세요.
                           </p>
                         </div>
                       </li>
@@ -1574,7 +1573,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                   <ArrowNext size={16} />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent side="top" align="start" className="max-w-[42.5rem]" closeButton={true}>
+              <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
                 <Grid className="w-full grid-cols-[1fr] gap-1">
                   {comparedPlanKeys.map((planKey, idx) => (
                     <Button key={planKey} variant={'outlined'} color={'gray'} size={'lg'}>

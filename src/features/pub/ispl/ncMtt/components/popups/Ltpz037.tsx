@@ -88,7 +88,7 @@ const Ltpz037 = ({ type = 'customer', diseaseAgree = 'Y' }: Ltpz037Props) => {
                       <Grow placement="bwc">
                         <Grow>
                           <Input width={76} value={'김한화화화'} readOnly />
-                          <Input aria-label="고객 주민등록번호" width={126} readOnly masking value={'900110-1234567'} />
+                          <Input aria-label="고객 주민등록번호" width={126} readOnly masking value={'900110-1******'} />
                           <Button
                             aria-label="검색"
                             variant={'outlined'}
@@ -149,7 +149,7 @@ const Ltpz037 = ({ type = 'customer', diseaseAgree = 'Y' }: Ltpz037Props) => {
                                 width={126}
                                 readOnly
                                 masking
-                                value={'900110-1234567'}
+                                value={'900110-1******'}
                               />
                               <Button
                                 aria-label="검색"

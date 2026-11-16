@@ -30,14 +30,14 @@ const DummyData: DummyDataType[] = [
     id: 1,
     isCheck: true,
     field01: '010-5678-1234',
-    field02: '000000-0000000',
+    field02: '000000-0******',
     field03: '이한화',
   },
   {
     id: 2,
     isCheck: false,
     field01: '010-5678-1234',
-    field02: '000000-0000000',
+    field02: '000000-0******',
     field03: '김한화',
   },
 ];

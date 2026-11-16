@@ -73,7 +73,7 @@ const Ltpz047 = () => {
                     size="lg"
                     readOnly
                     masking
-                    value={'000000-0123456'}
+                    value={'000000-0******'}
                     variant="default"
                     width={126}
                   />

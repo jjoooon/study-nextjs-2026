@@ -534,7 +534,7 @@ export default function Ltpa560Section() {
               </Grow>
             </Grow>
             <Grid className="grid-rows-[1fr_auto]">
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine ltpa560-grid">
                 <AgGridReact<Ltpa560DummyDataRow>
                   ref={gridRef}
                   noRowsOverlayComponent={AgGridEmptyComponent}

@@ -98,7 +98,7 @@ const Ltpz025 = () => {
             width={126}
             readOnly
             masking
-            value={'900101-1234567'}
+            value={'900101-1******'}
           />
         ),
       },

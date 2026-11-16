@@ -304,7 +304,7 @@ export const Ltpa35006 = () => {
                             width={126}
                             readOnly
                             masking
-                            value={'000000-0123456'}
+                            value={'000000-0******'}
                           />
                         </FormCell>
                         <FormCell title={'수금자'}>
@@ -333,7 +333,7 @@ export const Ltpa35006 = () => {
                             width={126}
                             readOnly
                             masking
-                            value={'000000-0123456'}
+                            value={'000000-0******'}
                           />
                         </FormCell>
                         {/* 입금 주체 선택 라디오 버튼 */}

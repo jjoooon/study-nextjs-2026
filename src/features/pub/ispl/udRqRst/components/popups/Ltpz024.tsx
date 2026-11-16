@@ -121,7 +121,7 @@ const Ltpz024 = () => {
                       <FormCell title={'고객명'}>
                         <Grid className="grid-cols-[1fr_auto_auto] items-center gap-1 w-full">
                           <Input placeholder="" value="김한화" readOnly />
-                          <Input aria-label="주민등록번호" width={126} readOnly masking value={'900101-1234567'} />
+                          <Input aria-label="주민등록번호" width={126} readOnly masking value={'900101-1******'} />
                           {/* M1. 수정 */}
                           <Button
                             aria-label="검색"

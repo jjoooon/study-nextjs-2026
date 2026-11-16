@@ -561,7 +561,7 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
                               width={126}
                               readOnly
                               masking
-                              value={'900101-1234567'}
+                              value={'900101-1******'}
                             />
                           </Grow>
                         </Grow>
@@ -586,7 +586,7 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
                     <FormRow>
                       <FormCell title={'계약자'}>
                         <Input aria-label="" width={70} value={'김한화'} readOnly />
-                        <Input aria-label="계약자 주민등록번호" width={126} readOnly masking value={'900101-1234567'} />
+                        <Input aria-label="계약자 주민등록번호" width={126} readOnly masking value={'900101-1******'} />
                       </FormCell>
                       <FormCell title={'주피와관계'} colSpan={3}>
                         주피보험자(김한화)는 계약자(김한화)의

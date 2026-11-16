@@ -3,6 +3,9 @@
  */
 'use client';
 
+import * as React from 'react';
+import { useCallback, useState } from 'react';
+import Ltpz034 from '@/features/pub/ispl/gdPlSlc/components/popups/Ltpz034';
 import { Gcol, Grow, Divider, Grid, Typo } from '@atoms';
 
 import { BottomBar } from '@common/BottomBar';
@@ -18,11 +21,8 @@ import { LayoutFoot, LayoutHead } from '@layout/BaseLayout';
 import { LayoutTemplatePx0 } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import * as React from 'react';
-import { useCallback, useState } from 'react';
 import { Ltpa02001 } from '../components/Ltpa02001';
 import { Ltpa02002 } from '../components/Ltpa02002New';
-import Ltpz034 from '@/features/pub/ispl/gdPlSlc/components/popups/Ltpz034';
 
 export default function Ltpa020Section() {
   // 상단 탭 상태
@@ -113,7 +113,7 @@ export default function Ltpa020Section() {
       </LayoutHead>
       <LayoutTemplatePx0
         mainBody={
-          <Grid className="w-full h-full grid-rows-[auto_auto_minmax(0,1fr)]" gap={2} placement="ss">
+          <Grid className="w-full h-full grid-rows-[auto_auto_minmax(0,1fr)]" gap={2}>
             <Grow placement={'bwc'} gap={3} className="w-full pt-1 px-3 pt-1 ltpa020-tab-group">
               <RadioGroup
                 value={tabSelectValue}
@@ -175,11 +175,11 @@ export default function Ltpa020Section() {
                 - 등록/미등록 모드에 따라 입력 UI가 완전히 분기됨
                 - 고지유형찾기 팝업 호출 버튼 포함 */}
             <div className="w-full px-[1rem] ltpa020-info relative z-1">
-              <Gcol placement="ss" className="bg-[var(--color-blue-gray-70)] rounded-[0.8rem] p-[1rem]">
+              <Gcol placement="sc" className="bg-[var(--color-blue-gray-70)] rounded-[0.8rem] p-[1rem]">
                 <FormTable caption="" cols={['w-[6rem]', 'w-auto']} variant={'none'}>
                   <FormRow className="items-start!">
                     <FormCell title={'고객정보'} className="text-[#FFF]">
-                      <Grow placement="ss" gap={5} className="w-full ml-1">
+                      <Grow placement="sc" gap={3} className="w-full ml-1">
                         <ViewMode
                           label={['등록', '미등록']}
                           state={customerType === 'recent'}
@@ -218,7 +218,7 @@ export default function Ltpa020Section() {
                                 </Button>
                               </Grow>
 
-                              <Grow placement="sc" gap={3}>
+                              <Grow placement="sc" gap={2}>
                                 <KeyValueItem
                                   label={'직업'}
                                   variant="info"
@@ -233,7 +233,7 @@ export default function Ltpa020Section() {
                           {/* 미등록 고객 모드
                               - 나이 추천 선택 시 성별/직업급수가 자동 반영되도록 구성 */}
                           {customerType === 'new' && (
-                            <Grow placement="sc" gap={3}>
+                            <Grow placement="sc" gap={2}>
                               <KeyValueItem
                                 label={'연령'}
                                 variant="info"

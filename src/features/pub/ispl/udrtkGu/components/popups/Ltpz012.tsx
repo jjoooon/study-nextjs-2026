@@ -416,7 +416,7 @@ const Ltpz012 = () => {
                     readOnly
                     variant="info"
                     masking
-                    value={'900101-1234567'}
+                    value={'900101-1******'}
                   />
                 </FormCell>
               </FormRow>

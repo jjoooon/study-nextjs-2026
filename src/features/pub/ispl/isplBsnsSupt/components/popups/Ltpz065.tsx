@@ -340,7 +340,7 @@ const Ltpz065 = () => {
                       readOnly
                       variant="info"
                       masking
-                      value={'000000-0123456'}
+                      value={'000000-0******'}
                     />
                   </FormCell>
                   <FormCell title={'조회건수'}>

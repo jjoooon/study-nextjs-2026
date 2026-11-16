@@ -376,7 +376,7 @@ export default function Ltpa250Section() {
                       readOnly
                       variant="info"
                       masking
-                      value={'900101-1234567'}
+                      value={'900101-1******'}
                     />
                     <span className="ml-[-0.1rem] font-bold text-[#000] text-[1.3rem] inline-flex items-center h-[2.8rem]">
                       )

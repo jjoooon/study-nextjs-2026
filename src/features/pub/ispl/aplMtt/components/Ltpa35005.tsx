@@ -261,7 +261,7 @@ export const Ltpa35005 = () => {
                         <Input
                           aria-label="만기수익자 주민등록번호"
                           width={128}
-                          value={'000000-0000000'}
+                          value={'000000-0******'}
                           readOnly
                           masking
                         />
@@ -1202,7 +1202,7 @@ export const Ltpa35005 = () => {
                           <Input
                             aria-label="법정상속인 주민등록번호"
                             width={128}
-                            value={'000000-0000000'}
+                            value={'000000-0******'}
                             readOnly
                             masking
                           />
@@ -1237,7 +1237,7 @@ export const Ltpa35005 = () => {
                           <Input
                             aria-label="사망외수익자 주민등록번호"
                             width={128}
-                            value={'000000-0000000'}
+                            value={'000000-0******'}
                             readOnly
                             masking
                           />
@@ -1319,7 +1319,7 @@ export const Ltpa35005 = () => {
                           <Input
                             aria-label="대리청구인1 주민등록번호"
                             width={128}
-                            value={'000000-0000000'}
+                            value={'000000-0******'}
                             readOnly
                             masking
                           />
@@ -1354,7 +1354,7 @@ export const Ltpa35005 = () => {
                           <Input
                             aria-label="대리청구인2 주민등록번호"
                             width={128}
-                            value={'000000-0000000'}
+                            value={'000000-0******'}
                             readOnly
                             masking
                           />
@@ -1386,7 +1386,7 @@ export const Ltpa35005 = () => {
                             <Input
                               aria-label="법정대리인1 주민등록번호"
                               width={128}
-                              value={'000000-0000000'}
+                              value={'000000-0******'}
                               readOnly
                               masking
                             />
@@ -1426,7 +1426,7 @@ export const Ltpa35005 = () => {
                           <Input
                             aria-label="법정대리인2 주민등록번호"
                             width={128}
-                            value={'000000-0000000'}
+                            value={'000000-0******'}
                             readOnly
                             masking
                           />

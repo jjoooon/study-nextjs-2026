@@ -994,6 +994,24 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   background-color: var(--color-primary-10) !important;
   color: var(--color-primary-50) !important;
 }
+
+/* Ltpa560 중간합계 행 전용 스타일 (총합계와 구분) */
+.ltpa560-grid .ag-row.ag-row-subtotal,
+.ltpa560-grid .ag-row.ag-row-subtotal .ag-cell,
+.ltpa560-grid .ag-row.ag-row-subtotal:hover,
+.ltpa560-grid .ag-row.ag-row-subtotal:hover .ag-cell,
+.ltpa560-grid .ag-row.ag-row-subtotal.ag-row-hover,
+.ltpa560-grid .ag-row.ag-row-subtotal.ag-row-hover .ag-cell,
+.ltpa560-grid .ag-row.ag-row-subtotal.ag-row-focus,
+.ltpa560-grid .ag-row.ag-row-subtotal.ag-row-focus .ag-cell {
+  background-color: var(--color-primary-5) !important;
+  color: #000 !important;
+  font-weight: 700;
+}
+
+.ltpa560-grid .ag-row.ag-row-subtotal {
+  border-top: 1px solid var(--color-primary-20) !important;
+}
 .modify-cell {
   background-color: #cbe3ff !important;
 }
@@ -2120,3 +2138,6 @@ html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked
   min-height: 2rem !important;
 }
 
+.ag-pinned-left-cols-container{
+  border:0 !important
+}

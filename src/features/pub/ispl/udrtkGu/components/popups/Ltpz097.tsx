@@ -257,12 +257,12 @@ const Ltpz097 = () => {
                         {
                           value: 'selection',
                           id: 'type03-1',
-                          label: '김한화(000000-1234567)',
+                          label: '김한화(000000-1******)',
                         },
                         {
                           value: 'selection2',
                           id: 'type03-2',
-                          label: '박한화(000000-1234567)',
+                          label: '박한화(000000-1******)',
                         },
                       ].map((option) => (
                         <NativeSelectOption key={option.id} value={option.value}>

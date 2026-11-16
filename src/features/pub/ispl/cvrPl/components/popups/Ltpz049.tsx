@@ -196,7 +196,7 @@ const Ltpz049 = () => {
                     variant="info"
                     width={126}
                     masking
-                    value={'000000-0123456'}
+                    value={'000000-0******'}
                   />
                   <span className="font-bold text-[#000] text-[1.3rem] inline-flex items-center h-[2.8rem]">)</span>
                 </FormCell>

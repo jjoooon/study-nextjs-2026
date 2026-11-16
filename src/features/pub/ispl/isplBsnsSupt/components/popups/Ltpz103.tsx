@@ -61,7 +61,7 @@ const Ltpz103 = () => {
             </FormRow>
             <FormRow>
               <FormCell title={'주민등록번호'}>
-                <Input aria-label="주민등록번호" width={126} masking value={'900101-1234567'} />
+                <Input aria-label="주민등록번호" width={126} masking value={'900101-1******'} />
                 <Button
                   aria-label="검색"
                   variant={'outlined'}
@@ -85,7 +85,7 @@ const Ltpz103 = () => {
             </FormRow>
             <FormRow>
               <FormCell title={'친권자주민등록번호'}>
-                <Input aria-label="친권자주민등록번호" width={126} readOnly masking value={'700101-1234567'} />
+                <Input aria-label="친권자주민등록번호" width={126} readOnly masking value={'700101-1******'} />
                 <Button
                   aria-label="검색"
                   variant={'outlined'}
@@ -110,7 +110,7 @@ const Ltpz103 = () => {
             </FormRow>
             <FormRow>
               <FormCell title={'후견인주민등록번호'}>
-                <Input aria-label="후견인주민등록번호" width={126} readOnly masking value={'650101-1234567'} />
+                <Input aria-label="후견인주민등록번호" width={126} readOnly masking value={'650101-1******'} />
                 <Button
                   aria-label="검색"
                   variant={'outlined'}

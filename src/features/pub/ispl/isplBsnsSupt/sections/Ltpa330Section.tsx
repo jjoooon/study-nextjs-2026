@@ -649,7 +649,7 @@ export default function Ltpa330Section() {
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input aria-label="조직구분명 입력" width={114} value={'000000-0000000'} readOnly />
+                    <Input aria-label="조직구분명 입력" width={114} value={'000000-0******'} readOnly />
                   </FormCell>
                   <FormCell title={'문서발급일자'}>
                     <DatePickerInput

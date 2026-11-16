@@ -145,7 +145,7 @@ const Ltpz120 = () => {
               </Typo>
               <BulletList position="col">
                 <BulletListItem className="whitespace-nowrap" type="dot" size="sm">
-                  계약자 : 김한화 010-2345-6789 / hanhwa@gmail.com
+                  계약자 : 김한화 010-2345-6789 / han***@***.***
                 </BulletListItem>
                 <BulletListItem className="whitespace-nowrap" type="dot" size="sm">
                   취급자 : 김한화 010-2345-6789 (6012345)

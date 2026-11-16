@@ -198,7 +198,7 @@ const Ltpz053 = () => {
                       <Input aria-label="" value={'김환화환하'} required />
                     </FormCell>
                     <FormCell title={'주민등록번호'}>
-                      <Input aria-label="주민등록번호" width={126} required masking value={'000000-0123456'} />
+                      <Input aria-label="주민등록번호" width={126} required masking value={'000000-0******'} />
                     </FormCell>
                     <FormCell title={'발급일자'}>
                       <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" required />
@@ -231,7 +231,7 @@ const Ltpz053 = () => {
                         <Input aria-label="성명" value={'김환화환하'} required />
                       </FormCell>
                       <FormCell title={'외국인번호'}>
-                        <Input aria-label="외국인번호" required masking value={'000000-5123456'} />
+                        <Input aria-label="외국인번호" required masking value={'000000-5******'} />
                       </FormCell>
                       <FormCell title={'발급일자'}>
                         <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" required />

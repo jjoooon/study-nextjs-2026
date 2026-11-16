@@ -946,7 +946,7 @@ export const Ltpa35001 = ({
                                         width={126}
                                         readOnly
                                         masking
-                                        value={'000000-0123456'}
+                                        value={'000000-0******'}
                                       />
                                       <Button
                                         aria-label="피보험자 검색"
@@ -1154,7 +1154,7 @@ export const Ltpa35001 = ({
                                       width={126}
                                       readOnly
                                       masking
-                                      value={'000000-0000000'}
+                                      value={'000000-0******'}
                                     />
                                     <Button
                                       aria-label="피보험자 검색"
@@ -1259,7 +1259,7 @@ export const Ltpa35001 = ({
                                           width={126}
                                           required
                                           masking
-                                          value={'000000-0123456'}
+                                          value={'000000-0******'}
                                         />
                                         <Button
                                           aria-label="소유자 검색"
@@ -1575,7 +1575,7 @@ export const Ltpa35001 = ({
                                     width={126}
                                     readOnly
                                     masking
-                                    value={'000000-0123456'}
+                                    value={'000000-0******'}
                                   />
                                   <Button
                                     aria-label="피보험자 검색"
@@ -1688,7 +1688,7 @@ export const Ltpa35001 = ({
                               readOnly
                               variant="info"
                               masking
-                              value={'example@example.com'}
+                              value={'ex***@***.***'}
                             />
                           </FormCell>
                         </FormRow>

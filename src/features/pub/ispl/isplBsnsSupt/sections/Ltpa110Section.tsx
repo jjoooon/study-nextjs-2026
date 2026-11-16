@@ -441,7 +441,7 @@ export default function Ltpa110Section() {
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input aria-label="임산부 주민등록번호" width={126} readOnly masking value={'900101-1234567'} />
+                    <Input aria-label="임산부 주민등록번호" width={126} readOnly masking value={'900101-1******'} />
                   </FormCell>
                   <FormCell title={'출산예정년월'}>
                     <DatePickerInput
