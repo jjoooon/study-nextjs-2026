@@ -60,22 +60,15 @@ export function PageProcess({
     }
   };
 
-  // 단계별 상태 계산
-  // - 'active'   : 현재 활성 단계
-  // - 'complete' : 완료 단계
-  // - ''         : 아직 진행 전 단계
-  const getStepState = (step: number) => {
-    if (resolvedActiveStep === step) return 'active';
-
-    // completeSteps가 전달된 경우, 전달값만 완료로 취급(자동 완료 계산 비활성)
+  // 단계별 완료 여부 계산
+  // - completeSteps가 전달된 경우, 전달값만 완료로 취급(자동 완료 계산 비활성)
+  // - completeSteps가 없으면 활성 단계보다 앞선 단계는 완료 처리
+  const isStepComplete = (step: number) => {
     if (completeStepSet.size > 0) {
-      if (completeStepSet.has(step)) return 'complete';
-      return '';
+      return completeStepSet.has(step);
     }
 
-    // completeSteps가 없으면 활성 단계보다 앞선 단계는 완료 처리
-    if (resolvedActiveStep > step) return 'complete';
-    return '';
+    return resolvedActiveStep > step;
   };
 
   return (
@@ -88,9 +81,9 @@ export function PageProcess({
         {items.map((item) => (
           <Fragment key={item.step}>
             {(() => {
-              const stepState = getStepState(item.step);
-              const isActive = stepState === 'active';
-              const isComplete = stepState === 'complete';
+              const isActive = resolvedActiveStep === item.step;
+              const isComplete = isStepComplete(item.step);
+              const stepState = isActive ? 'active' : isComplete ? 'complete' : '';
               const isEffectTarget = item.step === effectStep;
               const effectClass = isEffectTarget && activeEffect ? `button-${activeEffect}-animate` : '';
 
@@ -101,12 +94,12 @@ export function PageProcess({
                   data-process={stepState}
                   onAnimationEnd={isEffectTarget ? handleAnimationEnd : undefined}
                   className={`relative flex flex-col w-[2.9rem] gap-1 items-center justify-center -mt-[1px] rounded-tl-[0.8rem] border border-[1px] border-[var(--color-gray-15)] border-r-0 rounded-bl-[0.8rem] hover:bg-[var(--color-secondary-5)] bg-[#fff] text-[var(--color-gray-70)] z-0 shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.10)] py-[2rem] [@media(max-height:630px)]:py-[1rem] ${
-                    isActive &&
-                    'w-[3.3rem] text-white z-1 border-y-[1px] border-l-[1px] border-r-0 border-transparent rounded-l-xl rounded-r-none bg-origin-border [background-clip:padding-box,_border-box] [background-image:linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%),linear-gradient(to_bottom,#ffad4f,#e5561c)]'
-                  }
-                  ${isComplete && 'bg-[var(--color-secondary-30)] text-white hover:bg-[var(--color-secondary-40)] border-[#89807c]'}
-                  ${effectClass}
-                  `}
+                    isActive
+                      ? 'w-[3.3rem] text-white z-1 border-y-[1px] border-l-[1px] border-r-0 border-transparent rounded-l-xl rounded-r-none bg-origin-border [background-clip:padding-box,_border-box] [background-image:linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%),linear-gradient(to_bottom,#ffad4f,#e5561c)]'
+                      : isComplete
+                        ? 'bg-[var(--color-secondary-30)] text-white hover:bg-[var(--color-secondary-40)] border-[#89807c]'
+                        : ''
+                  } ${effectClass}`}
                   onClick={() => onStepChange?.(item.step)}
                 >
                   <b
@@ -119,8 +112,8 @@ export function PageProcess({
                     }`}
                   >
                     {isComplete ? (
-                      // 완료 단계: 체크 아이콘
-                      <CheckBoldIcon color="var(--color-secondary-30)" />
+                      // 완료 단계: 체크 아이콘 (활성 상태일 때는 active 색상 적용)
+                      <CheckBoldIcon color={isActive ? '#FF5C2E' : 'var(--color-secondary-30)'} />
                     ) : isActive ? (
                       // 활성 단계: 회전 아이콘
                       <ProcessActiveIcon className="animate-spin [animation-duration:4s]" />

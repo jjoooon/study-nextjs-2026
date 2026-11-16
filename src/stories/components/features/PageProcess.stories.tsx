@@ -144,7 +144,7 @@ export const WithDefaultActiveOnly: Story = {
     items: demoItems,
     completeSteps: [1, 2],
     activeStep: undefined,
-    defaultActiveStep: 3,
+    defaultActiveStep: 2,
   },
 };
 
