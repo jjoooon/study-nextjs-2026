@@ -179,7 +179,7 @@ function Checkbox({
     }
   };
 
-  const hasErrorState = error && checkedState !== true;
+  const hasErrorState = Boolean(error);
 
   // text variant는 실제 체크박스를 숨기고 텍스트만 클릭 가능하게 만든다.
   if (isText) {
@@ -553,7 +553,7 @@ function CheckboxGroup({
   const selectedCount = selectAllValue ? values.filter((item) => item !== selectAllValue).length : values.length;
   const countError = selectedCount < minSelected;
   const hasStartedValidation = validateMode === 'auto' ? true : hasValidationStarted;
-  const isError = usesCountValidation ? (hasStartedValidation ? countError : false) : error;
+  const isError = Boolean(error) || (usesCountValidation ? (hasStartedValidation ? countError : false) : false);
 
   React.useEffect(() => {
     onErrorChange?.(isError);

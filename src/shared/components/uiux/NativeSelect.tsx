@@ -165,13 +165,7 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
       }
     };
 
-    const isValidValue = (val: string | number | readonly string[] | undefined) => {
-      if (val === undefined || val === null) return false;
-      const strVal = String(val).trim();
-      return strVal !== '' && strVal !== 'false';
-    };
-
-    const isErrorActive = error && !isValidValue(selectedValue);
+    const isErrorActive = Boolean(error);
 
     const resolvedWidth =
       typeof width === 'number' ? `${width / 10}rem` : width === 'full' ? '100%' : width === 'auto' ? 'auto' : width;

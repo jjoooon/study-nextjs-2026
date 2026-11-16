@@ -287,7 +287,7 @@ export const Ltpa35005 = () => {
                     </FormRow>
                     <FormRow>
                       <FormCell title={'우편물수령처'} colSpan={3}>
-                        <RadioGroup defaultValue="자택" required>
+                        <RadioGroup defaultValue="자택" required error={true} errorMsg={'에러입니다.'}>
                           {[
                             { value: '자택', label: '자택' },
                             { value: '직장', label: '직장' },
