@@ -23,11 +23,16 @@ ModuleRegistry.registerModules([
   // 필요시 엔터프라이즈 모듈 추가
 ]);
 
-// [전역 AG-Grid 설정] 애니메이션 비활성화
+// [전역 AG-Grid 설정] 애니메이션 비활성화 및 셀 선택(Fill Handle) 활성화
 provideGlobalGridOptions({
   animateRows: false,
   suppressAnimationFrame: true,
   suppressColumnMoveAnimation: true,
+  cellSelection: {
+    handle: {
+      mode: 'fill',
+    },
+  },
 });
 // 이 파일을 import하는 것만으로 모듈 등록 및 전역 설정이 보장됨
 

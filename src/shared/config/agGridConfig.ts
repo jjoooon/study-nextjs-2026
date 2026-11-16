@@ -4,6 +4,7 @@
 'use client';
 
 import { AgGridReact } from 'ag-grid-react';
+import type { CellSelectionOptions } from 'ag-grid-enterprise';
 
 /**
  * AG-Grid 전역 기본 설정
@@ -12,6 +13,7 @@ import { AgGridReact } from 'ag-grid-react';
 interface AgGridReactPropsWithDefault {
   suppressDragLeaveHidesColumns?: boolean;
   suppressGroupRowsSticky?: boolean;
+  cellSelection?: boolean | CellSelectionOptions;
   [key: string]: unknown;
 }
 
@@ -26,3 +28,10 @@ Component.defaultProps.suppressDragLeaveHidesColumns = true;
 
 // 그룹/트리 행 스크롤 시 부모 행 상단 고정(Sticky) 방지 (일반 행처럼 스크롤)
 Component.defaultProps.suppressGroupRowsSticky = true;
+
+// 드래그 시 엑셀처럼 셀 영역 선택 및 fill 핸들(연속 채우기) 활성화
+Component.defaultProps.cellSelection = {
+  handle: {
+    mode: 'fill',
+  },
+};
