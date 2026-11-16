@@ -10,6 +10,7 @@ import * as React from 'react';
 
 import {
   AgGridEmptyComponent,
+  calculateRichSelectWidth,
   createTooltipValueGetter,
   DatePickerCellEditor,
   editableSelectCellRenderer,
@@ -168,11 +169,11 @@ const Ltpz01602 = () => {
       flex: 1,
       minWidth: attributeColumnWidth(120),
       cellClass: 'text-center editable-cell',
-      cellEditor: 'agRichSelectCellEditor',
       editable: true,
+      cellEditor: 'agRichSelectCellEditor',
       cellEditorParams: {
         values: ['선택', '선택1', '선택2'],
-        valueListMaxWidth: 90,
+        valueListMaxWidth: calculateRichSelectWidth(['선택', '선택1', '선택2'].map((item) => item)),
       },
       cellRenderer: expiryCellRenderer('center'),
     },
@@ -220,7 +221,7 @@ const Ltpz01602 = () => {
       cellEditor: 'agRichSelectCellEditor',
       cellEditorParams: {
         values: ['선택', '선택1', '선택2'],
-        valueListMaxWidth: 90,
+        valueListMaxWidth: calculateRichSelectWidth(['선택', '선택1', '선택2'].map((item) => item)),
       },
       cellRenderer: expiryCellRenderer('center'),
     },
@@ -267,13 +268,13 @@ const Ltpz01602 = () => {
       flex: 1,
       minWidth: attributeColumnWidth(100),
       cellClass: 'text-center editable-cell',
-      editable: true,
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
+      editable: true,
       cellEditor: 'agRichSelectCellEditor',
       cellEditorParams: {
         values: ['선택', '선택1', '선택2'],
-        valueListMaxWidth: 90,
+        valueListMaxWidth: calculateRichSelectWidth(['선택', '선택1', '선택2'].map((item) => item)),
       },
       cellRenderer: expiryCellRenderer('center'),
     },
@@ -283,13 +284,13 @@ const Ltpz01602 = () => {
       flex: 1,
       minWidth: attributeColumnWidth(100),
       cellClass: 'text-center editable-cell',
-      editable: true,
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
+      editable: true,
       cellEditor: 'agRichSelectCellEditor',
       cellEditorParams: {
         values: ['선택', '선택1', '선택2'],
-        valueListMaxWidth: 90,
+        valueListMaxWidth: calculateRichSelectWidth(['선택', '선택1', '선택2'].map((item) => item)),
       },
       cellRenderer: expiryCellRenderer('center'),
     },
@@ -309,17 +310,10 @@ const Ltpz01602 = () => {
       minWidth: attributeColumnWidth(100),
       cellClass: 'text-center editable-cell',
       editable: true,
-      // headerComponent: () => (
-      //   <div className="w-full text-center whitespace-normal px-1">
-      //     트램플린
-      //     <br />
-      //     (에어바운스)
-      //   </div>
-      // ),
       cellEditor: 'agRichSelectCellEditor',
       cellEditorParams: {
         values: ['선택', '선택1', '선택2'],
-        valueListMaxWidth: 90,
+        valueListMaxWidth: calculateRichSelectWidth(['선택', '선택1', '선택2'].map((item) => item)),
       },
       cellRenderer: expiryCellRenderer('center'),
     },
