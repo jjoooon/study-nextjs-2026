@@ -716,8 +716,10 @@ const Ltpz034 = ({
               </Grow>
             )}
             <TableFold variant="default" className="grid grid-rows-[auto_1fr]">
-              <TableFoldHead title="간편고지">
-                <Grow gap={2} className="items-center">
+              <TableFoldHead title="간편고지"></TableFoldHead>
+              <TableFoldBody>
+                <NotificationTable healthRows={healthRows} isClick={true} onCheckedChange={handleCheckedChange} />
+                <Grow gap={2} className="items-center w-full mt-1 min-h-[2.5rem]" placement="ec">
                   <Typo variant={'body-sm'} weight={'bold'} className="text-[#414141]">
                     추가고지
                   </Typo>
@@ -729,9 +731,6 @@ const Ltpz034 = ({
                     </span>
                   ))}
                 </Grow>
-              </TableFoldHead>
-              <TableFoldBody>
-                <NotificationTable healthRows={healthRows} isClick={true} onCheckedChange={handleCheckedChange} />
               </TableFoldBody>
             </TableFold>
           </Grid>
