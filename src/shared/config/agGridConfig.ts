@@ -4,7 +4,8 @@
 'use client';
 
 import { AgGridReact } from 'ag-grid-react';
-import type { CellSelectionOptions } from 'ag-grid-enterprise';
+import type { CellSelectionOptions, ProcessCellForClipboard } from 'ag-grid-enterprise';
+import { defaultProcessCellForClipboard } from '@/shared/lib/agGridPub';
 
 /**
  * AG-Grid 전역 기본 설정
@@ -14,6 +15,7 @@ interface AgGridReactPropsWithDefault {
   suppressDragLeaveHidesColumns?: boolean;
   suppressGroupRowsSticky?: boolean;
   cellSelection?: boolean | CellSelectionOptions;
+  processCellForClipboard?: ProcessCellForClipboard;
   [key: string]: unknown;
 }
 
@@ -35,3 +37,6 @@ Component.defaultProps.cellSelection = {
     mode: 'fill',
   },
 };
+
+// 클립보드 복사(Ctrl+C) 시 병합된 빈칸에 부모 값을 꽉 채워서 엑셀에 전달
+Component.defaultProps.processCellForClipboard = defaultProcessCellForClipboard;

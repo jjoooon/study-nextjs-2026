@@ -2168,3 +2168,4 @@ html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked
 .ag-popup-child {
   z-index: 99999 !important;
 }
+.ag-theme-alpine *{user-select: none;}
