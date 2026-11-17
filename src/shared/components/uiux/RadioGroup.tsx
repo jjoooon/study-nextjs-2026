@@ -294,6 +294,11 @@ interface RadioGroupExtraProps {
    */
   errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
   /**
+   * 에러 메시지 포탈 렌더링 여부 (부모의 overflow: hidden을 벗어나 렌더링)
+   * @default false
+   */
+  errorPortal?: boolean;
+  /**
    * 라디오 그룹의 기본 변형 스타일
    */
   variant?: 'default' | 'button' | 'noCheckButton' | 'chipBox' | 'tab' | 'folderTab' | 'tabBadge' | 'none';
@@ -344,6 +349,7 @@ const RadioGroup = React.forwardRef<
       color,
       width = 'auto',
       errorPs = 'bl',
+      errorPortal,
       value,
       defaultValue,
       onValueChange,
@@ -407,7 +413,7 @@ const RadioGroup = React.forwardRef<
             ref={ref}
           />
           {groupError && (
-            <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
+            <ErrorMsg aria-live="polite" show={true} position={errorPs} portal={errorPortal} id={errorId}>
               {errorMsg}
             </ErrorMsg>
           )}

@@ -412,7 +412,13 @@ export const Ltpa35001 = ({
                       {currentTab?.type === '일반' && (
                         <FormRow>
                           <FormCell title={'납입주기'} colSpan={showRenewalCycle ? undefined : 3}>
-                            <RadioGroup defaultValue="월납">
+                            <RadioGroup
+                              defaultValue="월납"
+                              error={true}
+                              errorMsg={
+                                '에러메시지 에러메시지에러메시 지에러메시지 에러메시지에러메시지에러 메시지에러 메시지'
+                              }
+                            >
                               {[
                                 { value: '월납', label: '월납' },
                                 { value: '3개월', label: '3개월' },
@@ -427,7 +433,13 @@ export const Ltpa35001 = ({
                           </FormCell>
                           {showRenewalCycle && (
                             <FormCell title={'갱신주기'}>
-                              <RadioGroup defaultValue="3년">
+                              <RadioGroup
+                                defaultValue="3년"
+                                error={true}
+                                errorMsg={
+                                  '에러메시지 에러메시지에러메시 지에러메시지 에러메시지에러메시지에러 메시지에러 메시지'
+                                }
+                              >
                                 {[
                                   { value: '20년', label: '20년' },
                                   { value: '10년', label: '10년' },

@@ -77,6 +77,10 @@ type ErrorMsgProps = React.HTMLAttributes<HTMLSpanElement> & {
   show?: boolean;
   /** 말풍선 위치 */
   position?: ErrorMsgPosition;
+  /**
+   * 화면 및 부모 컨테이너 좌/우 여백 중 넓은 쪽을 기준으로 방향(좌/우)을 자동 조정할지 여부 (기본값: true)
+   */
+  autoPosition?: boolean;
   /** 닫힘 이벤트 핸들러 */
   onClose?: () => void;
   /** 외부 클릭/터치 시 자동 닫기 여부 */
@@ -95,6 +99,45 @@ type ErrorMsgProps = React.HTMLAttributes<HTMLSpanElement> & {
   portalContainer?: HTMLElement | null;
 };
 
+/**
+ * 트리거 요소를 감싸고 있는 상위 부모 중 overflow: auto | hidden | scroll 컨테이너들의
+ * 교집합 가시 영역과 브라우저 창 경계를 기준으로 좌/우 여백을 계산하여 최적의 위치 토큰을 결정합니다.
+ */
+function getTargetPlacement(targetElement: HTMLElement, currentPosition: ErrorMsgPosition) {
+  const rect = targetElement.getBoundingClientRect();
+  let minLeft = 0;
+  let maxRight = typeof window !== 'undefined' ? window.innerWidth : 0;
+
+  let parent = targetElement.parentElement;
+  while (parent && parent !== document.body && parent !== document.documentElement) {
+    const style = window.getComputedStyle(parent);
+    const hasOverflow = /(auto|hidden|scroll)/.test(style.overflow + style.overflowX + style.overflowY);
+    if (hasOverflow) {
+      const parentRect = parent.getBoundingClientRect();
+      minLeft = Math.max(minLeft, parentRect.left);
+      maxRight = Math.min(maxRight, parentRect.right);
+    }
+    parent = parent.parentElement;
+  }
+
+  const leftSpace = Math.max(0, rect.left - minLeft);
+  const rightSpace = Math.max(0, maxRight - rect.right);
+  const hasMoreSpaceOnLeft = leftSpace > rightSpace;
+
+  let resolvedPosition = currentPosition;
+  if (hasMoreSpaceOnLeft) {
+    // 화면/부모 우측에 위치: 오른쪽 공간이 부족하고 왼쪽 공간이 넓음 -> 우측 정렬(왼쪽으로 펼쳐짐)
+    if (currentPosition === 'bl' || currentPosition === 'bc') resolvedPosition = 'br';
+    else if (currentPosition === 'tl' || currentPosition === 'tc') resolvedPosition = 'tr';
+  } else {
+    // 화면/부모 좌측에 위치: 왼쪽 공간이 부족하고 오른쪽 공간이 넓음 -> 좌측 정렬(오른쪽으로 펼쳐짐)
+    if (currentPosition === 'br' || currentPosition === 'bc') resolvedPosition = 'bl';
+    else if (currentPosition === 'tr' || currentPosition === 'tc') resolvedPosition = 'tl';
+  }
+
+  return { resolvedPosition, hasMoreSpaceOnLeft };
+}
+
 const logger = log.getLogger('Pub');
 
 export function ErrorMsg({
@@ -102,6 +145,7 @@ export function ErrorMsg({
   children,
   show = true,
   position = 'tl',
+  autoPosition = true,
   onClose,
   closeOnOutsideClick = true,
   usePortal = false,
@@ -121,10 +165,41 @@ export function ErrorMsg({
   const [mounted, setMounted] = useState(false);
   const [coords, setCoords] = useState<{ top: number; left: number } | null>(null);
   const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
+  const [resolvedPosition, setResolvedPosition] = useState<ErrorMsgPosition>(position);
+
+  const calculateAutoPosition = useCallback(() => {
+    if (!autoPosition || !anchorRef.current || typeof window === 'undefined') {
+      return position;
+    }
+    const targetElement = anchorRef.current.parentElement || anchorRef.current;
+    const { resolvedPosition: nextPos } = getTargetPlacement(targetElement, position);
+    return nextPos;
+  }, [autoPosition, position]);
 
   useMounted(() => {
     setMounted(true);
   });
+
+  // autoPosition 적용: 인라인 및 포탈 모드 모두 실시간 반영
+  useLayoutEffect(() => {
+    if (!show) return;
+
+    const handleUpdatePos = () => {
+      const nextPos = calculateAutoPosition();
+      setResolvedPosition(nextPos);
+    };
+
+    handleUpdatePos();
+
+    if (autoPosition) {
+      window.addEventListener('resize', handleUpdatePos);
+      window.addEventListener('scroll', handleUpdatePos, true);
+      return () => {
+        window.removeEventListener('resize', handleUpdatePos);
+        window.removeEventListener('scroll', handleUpdatePos, true);
+      };
+    }
+  }, [show, autoPosition, calculateAutoPosition]);
 
   // 포탈 타겟 컨테이너 결정:
   // 1) 전달받은 portalContainerProp이 있는 경우 최우선 사용
@@ -170,6 +245,11 @@ export function ErrorMsg({
     const rect = targetElement.getBoundingClientRect();
     if (rect.width === 0 && rect.height === 0) return;
 
+    const currentPos = autoPosition ? calculateAutoPosition() : position;
+    if (currentPos !== resolvedPosition) {
+      setResolvedPosition(currentPos);
+    }
+
     const gap = 6; // 0.6rem = 6px
 
     if (portalTarget === document.body) {
@@ -180,7 +260,7 @@ export function ErrorMsg({
       let top = 0;
       let left = 0;
 
-      switch (position) {
+      switch (currentPos) {
         case 'tl':
           top = rect.top + scrollTop - gap;
           left = rect.left + scrollLeft;
@@ -218,7 +298,7 @@ export function ErrorMsg({
       let top = 0;
       let left = 0;
 
-      switch (position) {
+      switch (currentPos) {
         case 'tl':
           top = baseTop - gap;
           left = baseLeft;
@@ -247,7 +327,7 @@ export function ErrorMsg({
 
       setCoords({ top, left });
     }
-  }, [portalTarget, position]);
+  }, [portalTarget, position, autoPosition, calculateAutoPosition, resolvedPosition]);
 
   useLayoutEffect(() => {
     if (!show || !portalTarget) return;
@@ -377,9 +457,9 @@ export function ErrorMsg({
               }}
               className={cn(
                 // 말풍선 본체 스타일 (Portal rendering via absolute positioning)
-                'absolute z-[9999] shadow-md border border-[var(--color-input-border-error)] rounded-DEFAULT pointer-events-auto break-keep',
+                'max-w-[40rem] absolute z-[9999] shadow-md border border-[var(--color-input-border-error)] rounded-DEFAULT pointer-events-auto break-keep max-w-[calc(100vw-2rem)]',
                 // 위치 및 transform 매핑
-                transformStyles[position],
+                transformStyles[resolvedPosition],
                 className
               )}
               {...props}
@@ -387,14 +467,14 @@ export function ErrorMsg({
               <Typo
                 variant={'body-sm'}
                 tag={'span'}
-                className="block relative text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] px-2 py-[0.2rem] rounded-DEFAULT z-1 whitespace-nowrap"
+                className="block relative text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] px-2 py-[0.2rem] rounded-DEFAULT z-1 break-keep"
               >
                 {formattedChildren}
               </Typo>
               <span
                 className={cn(
                   'w-2 h-2 absolute border border-[var(--color-input-border-error)] bg-[var(--color-input-surface-error)] z-0 rounded-1',
-                  arrowStyles[position]
+                  arrowStyles[resolvedPosition]
                 )}
               />
             </span>,
@@ -425,9 +505,9 @@ export function ErrorMsg({
       style={style}
       className={cn(
         // 말풍선 본체 스타일 (부모 relative 컨테이너 기준 absolute 배치)
-        'block absolute z-20 shadow-md border border-[var(--color-input-border-error)] rounded-DEFAULT pointer-events-auto break-keep',
+        'max-w-[40rem] block absolute z-20 shadow-md border border-[var(--color-input-border-error)] rounded-DEFAULT pointer-events-auto break-keep max-w-[calc(100vw-2rem)]',
         // 위치 토큰 적용
-        positionStyles[position],
+        positionStyles[resolvedPosition],
         className
       )}
       {...props}
@@ -436,14 +516,14 @@ export function ErrorMsg({
       <Typo
         variant={'body-sm'}
         tag={'span'}
-        className="block relative text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] px-2 py-[0.2rem] rounded-DEFAULT z-1 whitespace-nowrap"
+        className="block relative text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] px-2 py-[0.2rem] rounded-DEFAULT z-1 break-keep"
       >
         {formattedChildren}
       </Typo>
       <span
         className={cn(
           'w-2 h-2 absolute border border-[var(--color-input-border-error)] bg-[var(--color-input-surface-error)] z-0 rounded-1',
-          arrowStyles[position]
+          arrowStyles[resolvedPosition]
         )}
       />
     </span>
