@@ -982,21 +982,29 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 }
 
 /* subtotal 행 배경색 */
-.ag-row.ag-row-subtotal {
-  background-color: var(--color-primary-10) !important;
-  color: var(--color-primary-50) !important;
+.ag-row.ag-row-subtotal,
+.ag-row.ag-row-subtotal .ag-cell {
+  background-color: var(--color-warning-10) !important;
+  color: var(--color-warning-50) !important;
   font-weight: 700;
-  border-top: 1px solid var(--color-primary-50) !important;
 }
 
+.ag-row.ag-row-subtotal {
+  border-top: 1px solid var(--color-warning-50) !important;
+}
+.ag-floating-bottom:has(.ag-row-subtotal){
+  border-top: 1px solid var(--color-warning-50) !important;
+}
 .ag-row.ag-row-subtotal:hover,
-.ag-row.ag-row-subtotal.ag-row-hover {
-  background-color: var(--color-primary-10) !important;
-  color: var(--color-primary-50) !important;
+.ag-row.ag-row-subtotal.ag-row-hover,
+.ag-row.ag-row-subtotal:hover .ag-cell,
+.ag-row.ag-row-subtotal.ag-row-hover .ag-cell {
+  background-color: var(--color-warning-10) !important;
+  color: var(--color-warning-50) !important;
 }
 
 /* Ltpa560 중간합계 행 전용 스타일 (총합계와 구분) */
-.ltpa560-grid .ag-row.ag-row-subtotal,
+/* .ltpa560-grid .ag-row.ag-row-subtotal,
 .ltpa560-grid .ag-row.ag-row-subtotal .ag-cell,
 .ltpa560-grid .ag-row.ag-row-subtotal:hover,
 .ltpa560-grid .ag-row.ag-row-subtotal:hover .ag-cell,
@@ -1011,7 +1019,9 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 
 .ltpa560-grid .ag-row.ag-row-subtotal {
   border-top: 1px solid var(--color-primary-20) !important;
-}
+} */
+
+
 .modify-cell {
   background-color: #cbe3ff !important;
 }
@@ -1094,8 +1104,6 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   max-height: 18rem !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
-  width: 100% !important;
-  min-width: 100% !important;
   letter-spacing: 0 !important;
   white-space: nowrap !important;
   box-sizing: border-box !important;
@@ -2140,4 +2148,23 @@ html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked
 
 .ag-pinned-left-cols-container{
   border:0 !important
+}
+
+.ag-row .ag-cell-range-selected.ag-cell.ag-column-last,
+.ag-cell-range-selected.ag-cell {
+  border-width: 1px !important;
+}
+.ag-cell-range-selected-1.ag-cell-range-chart, .ag-cell-range-selected-1.ag-formula-range, .ag-cell-range-selected-1:not(.ag-cell-focus), .ag-root:not(.ag-context-menu-open) .ag-grid-viewport:not(.ag-has-focus) .ag-cell-range-selected-1:not(.ag-cell-inline-editing) {
+    background-color: var(--ag-range-selection-background-color);
+}
+.ag-cell.ag-cell-range-selected:not(.ag-cell-range-single-cell) {
+    &.ag-cell-range-left {
+        border-left-color: var(--ag-range-selection-border-color);
+        border-left-style: var(--ag-range-selection-border-style);
+    }
+}
+/* 모달 다이얼로그 및 작은 그리드 overflow 밖으로 탈출한 AG Grid 팝업을 최상단에 노출 */
+.ag-popup,
+.ag-popup-child {
+  z-index: 99999 !important;
 }

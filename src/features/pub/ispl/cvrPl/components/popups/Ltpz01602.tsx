@@ -15,6 +15,7 @@ import {
   DatePickerCellEditor,
   editableSelectCellRenderer,
   numberValueFormatter,
+  useAgSelectAutoEdit,
   useDynamicColumnWidths,
 } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
@@ -154,6 +155,8 @@ const Ltpz01602 = () => {
     );
   }, []);
 
+  const selectAutoEditProps = useAgSelectAutoEdit();
+
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
   const golfColumnDefs: ColDef<GolfItemDataType>[] = [
@@ -173,7 +176,7 @@ const Ltpz01602 = () => {
       cellEditor: 'agRichSelectCellEditor',
       cellEditorParams: {
         values: ['선택', '선택1', '선택2'],
-        valueListMaxWidth: calculateRichSelectWidth(['선택', '선택1', '선택2'].map((item) => item)),
+        valueListMaxWidth: calculateRichSelectWidth(['선택', '선택1', '선택2']),
       },
       cellRenderer: expiryCellRenderer('center'),
     },
@@ -221,7 +224,7 @@ const Ltpz01602 = () => {
       cellEditor: 'agRichSelectCellEditor',
       cellEditorParams: {
         values: ['선택', '선택1', '선택2'],
-        valueListMaxWidth: calculateRichSelectWidth(['선택', '선택1', '선택2'].map((item) => item)),
+        valueListMaxWidth: calculateRichSelectWidth(['선택', '선택1', '선택2']),
       },
       cellRenderer: expiryCellRenderer('center'),
     },
@@ -268,13 +271,11 @@ const Ltpz01602 = () => {
       flex: 1,
       minWidth: attributeColumnWidth(100),
       cellClass: 'text-center editable-cell',
-      valueParser: (params) => Number(params.newValue) || 0,
-      valueFormatter: numberValueFormatter,
       editable: true,
       cellEditor: 'agRichSelectCellEditor',
       cellEditorParams: {
         values: ['선택', '선택1', '선택2'],
-        valueListMaxWidth: calculateRichSelectWidth(['선택', '선택1', '선택2'].map((item) => item)),
+        valueListMaxWidth: calculateRichSelectWidth(['선택', '선택1', '선택2']),
       },
       cellRenderer: expiryCellRenderer('center'),
     },
@@ -284,13 +285,11 @@ const Ltpz01602 = () => {
       flex: 1,
       minWidth: attributeColumnWidth(100),
       cellClass: 'text-center editable-cell',
-      valueParser: (params) => Number(params.newValue) || 0,
-      valueFormatter: numberValueFormatter,
       editable: true,
       cellEditor: 'agRichSelectCellEditor',
       cellEditorParams: {
         values: ['선택', '선택1', '선택2'],
-        valueListMaxWidth: calculateRichSelectWidth(['선택', '선택1', '선택2'].map((item) => item)),
+        valueListMaxWidth: calculateRichSelectWidth(['선택', '선택1', '선택2']),
       },
       cellRenderer: expiryCellRenderer('center'),
     },
@@ -313,7 +312,7 @@ const Ltpz01602 = () => {
       cellEditor: 'agRichSelectCellEditor',
       cellEditorParams: {
         values: ['선택', '선택1', '선택2'],
-        valueListMaxWidth: calculateRichSelectWidth(['선택', '선택1', '선택2'].map((item) => item)),
+        valueListMaxWidth: calculateRichSelectWidth(['선택', '선택1', '선택2']),
       },
       cellRenderer: expiryCellRenderer('center'),
     },
@@ -350,6 +349,7 @@ const Ltpz01602 = () => {
               onCellValueChanged={handleGolfCellValueChanged}
               enableCellSpan={true}
               singleClickEdit={true}
+              popupParent={typeof window !== 'undefined' ? document.body : undefined}
               noRowsOverlayComponent={AgGridEmptyComponent}
               rowSelection={{
                 mode: 'multiRow',
@@ -387,6 +387,7 @@ const Ltpz01602 = () => {
               tooltipShowMode="whenTruncated"
               tooltipShowDelay={0}
               singleClickEdit={true}
+              popupParent={typeof window !== 'undefined' ? document.body : undefined}
               rowSelection={{
                 mode: 'multiRow',
                 headerCheckbox: false,

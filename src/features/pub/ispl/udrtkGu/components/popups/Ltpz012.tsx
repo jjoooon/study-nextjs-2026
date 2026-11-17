@@ -456,6 +456,9 @@ const Ltpz012 = () => {
                     rowData={section3Data}
                     columnDefs={columnDefs}
                     pinnedBottomRowData={section3SumData}
+                    getRowClass={(params) =>
+                      params.data?.field1?.replace(/\s/g, '') === '감점소계' ? 'ag-row-subtotal' : undefined
+                    }
                     defaultColDef={{ sortable: true, resizable: true }}
                     domLayout={'normal'}
                     // alwaysShowVerticalScroll={true}

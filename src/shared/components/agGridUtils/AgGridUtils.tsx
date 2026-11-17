@@ -4,6 +4,9 @@
 import type {
   ICellEditorParams,
   CellClickedEvent,
+  CellMouseDownEvent,
+  CellMouseOutEvent,
+  CellMouseOverEvent,
   SpanRowsParams,
   ValueFormatterParams,
   ICellRendererParams,
@@ -3950,85 +3953,15 @@ export function defaultPostProcessPopup(params: PostProcessPopupParams): void {
 }
 
 /**
- * AG Grid Rich Select 팝업 위치 정렬 글로벌 자동 보정기 (실시간 실측 기반)
- * - postProcessPopup 콜백 호출 여부와 무관하게 화면에 팝업이 뜨는 즉시 100% 위치를 보정합니다.
+ * AG Grid Rich Select 팝업 위치 정렬 글로벌 자동 보정기
+ * - AG Grid 자체 계산 좌표(left/top)를 훼손하지 않도록 임의의 transform 주입을 제거했습니다.
  */
 function adjustRichSelectPopupPosition(): void {
-  const popupChild = document.querySelector('.ag-popup-child') as HTMLElement | null;
-  const editingCell = (document.querySelector('.ag-cell.ag-cell-inline-editing') ??
-    document.querySelector('.ag-cell.ag-cell-focus') ??
-    lastDomCellInfo?.cellEl) as HTMLElement | null;
-
-  if (!popupChild || !editingCell) return;
-
-  const colId = editingCell.getAttribute('col-id');
-  let align: RichSelectPopupAlign = 'auto';
-
-  // 컬럼 정의 또는 셀 렌더러 정렬 확인
-  const colDef = activeCellTooltipContext?.api?.getColumn?.(colId ?? '')?.getColDef();
-  let editorParams = colDef?.cellEditorParams;
-  if (typeof editorParams === 'function') {
-    try {
-      editorParams = editorParams({} as any);
-    } catch {
-      // ignore
-    }
-  }
-  if (editorParams?.align) {
-    align = editorParams.align as RichSelectPopupAlign;
-  } else if (colDef?.cellRendererParams?.align) {
-    align = colDef.cellRendererParams.align as RichSelectPopupAlign;
-  }
-
-  // auto인 경우 셀 텍스트 정렬 클래스 확인
-  if (align === 'auto') {
-    const className = editingCell.className || '';
-    if (className.includes('text-right') || className.includes('right')) {
-      align = 'right';
-    } else if (className.includes('text-center') || className.includes('center')) {
-      align = 'center';
-    } else {
-      const cellRect = editingCell.getBoundingClientRect();
-      const popupWidth = popupChild.offsetWidth || 120;
-      if (cellRect.left + popupWidth > (typeof window !== 'undefined' ? window.innerWidth - 20 : 1000)) {
-        align = 'right';
-      } else {
-        align = 'left';
-      }
-    }
-  }
-
-  if (align === 'left') return;
-
-  const cellRect = editingCell.getBoundingClientRect();
-  const popupRect = popupChild.getBoundingClientRect();
-
-  if (align === 'right') {
-    const diff = popupRect.right - cellRect.right;
-    if (Math.abs(diff) > 2) {
-      const currentTransform = popupChild.style.transform || '';
-      const match = currentTransform.match(/translateX\(([-0-9.]+)px\)/);
-      const currentX = match ? parseFloat(match[1]) : 0;
-      const newX = currentX - diff;
-      popupChild.style.setProperty('transform', `translateX(${newX}px)`, 'important');
-    }
-  } else if (align === 'center') {
-    const cellCenter = cellRect.left + cellRect.width / 2;
-    const popupCenter = popupRect.left + popupRect.width / 2;
-    const diff = popupCenter - cellCenter;
-    if (Math.abs(diff) > 2) {
-      const currentTransform = popupChild.style.transform || '';
-      const match = currentTransform.match(/translateX\(([-0-9.]+)px\)/);
-      const currentX = match ? parseFloat(match[1]) : 0;
-      const newX = currentX - diff;
-      popupChild.style.setProperty('transform', `translateX(${newX}px)`, 'important');
-    }
-  }
+  // AG Grid Enterprise의 기본 좌표 배치를 유지합니다.
 }
 
 /**
- * AG Grid Rich Select 팝업 위치 정렬 글로벌 자동 감시기 (MutationObserver 기반)
- * - postProcessPopup 콜백이 호출되지 않는 인라인 셀렉트 드롭다운도 100% 감지하여 위치를 실시간 보정합니다.
+ * AG Grid Rich Select 팝업 위치 정렬 글로벌 자동 감시기
  */
 let isRichSelectObserverInitialized = false;
 
@@ -4036,28 +3969,7 @@ export function initRichSelectPopupAlignObserver(): void {
   if (typeof window === 'undefined' || typeof document === 'undefined') return;
   if (isRichSelectObserverInitialized) return;
   isRichSelectObserverInitialized = true;
-
-  const triggerAdjust = () => {
-    requestAnimationFrame(() => {
-      adjustRichSelectPopupPosition();
-      requestAnimationFrame(adjustRichSelectPopupPosition);
-    });
-  };
-
-  const observer = new MutationObserver(() => {
-    triggerAdjust();
-  });
-
-  observer.observe(document.body, {
-    childList: true,
-    subtree: true,
-    attributes: true,
-    attributeFilter: ['style', 'class'],
-  });
-
-  document.addEventListener('pointerdown', triggerAdjust, true);
-  document.addEventListener('click', triggerAdjust, true);
-  document.addEventListener('keydown', triggerAdjust, true);
+  // 임의 셀 타깃팅으로 인한 팝업 위치 왜곡(엉뚱한 컬럼으로 이동하는 현상) 방지를 위해 옵저버 비활성화
 }
 
 /**
@@ -4124,6 +4036,94 @@ export function initAgGridOverlayStateObserver(): void {
     attributeFilter: ['class', 'style'],
   });
 }
+
+/**
+ * agSelectCellEditor 호버 자동 활성화 공통 훅 옵션
+ */
+export interface UseAgSelectHoverEditOptions {
+  onCellMouseOver?: (params: CellMouseOverEvent) => void;
+  onCellMouseDown?: (params: CellMouseDownEvent) => void;
+  onCellMouseOut?: (params: CellMouseOutEvent) => void;
+  onCellEditingStopped?: () => void;
+}
+
+/** 호환 옵션 타입 */
+export type UseAgSelectAutoEditOptions = UseAgSelectHoverEditOptions;
+
+/**
+ * agSelectCellEditor 전용 호버 즉시 활성화 커스텀 훅 (공용)
+ *
+ * 역할:
+ * 1. 마우스 호버 시 편집 모드로 즉시 진입시켜, 클릭 단 1번에 네이티브 드롭다운 목록이 펼쳐지도록 합니다.
+ * 2. 마우스가 셀을 벗어나면 원래의 일반 셀 디자인으로 자동 복귀시킵니다.
+ * 3. 클릭 후 드롭다운 목록을 고르는 중에는 마우스가 셀 밖으로 나가도 닫히지 않도록 상태를 안전하게 보호합니다.
+ *
+ * @example
+ * const selectHoverProps = useAgSelectHoverEdit();
+ * <AgGridReact {...selectHoverProps} ... />
+ */
+export function useAgSelectHoverEdit(options?: UseAgSelectHoverEditOptions) {
+  const isInteractingWithSelectRef = useRef(false);
+
+  const onCellMouseOver = useCallback(
+    (params: CellMouseOverEvent) => {
+      options?.onCellMouseOver?.(params);
+
+      if (params.colDef.cellEditor === 'agSelectCellEditor' && params.rowIndex !== null) {
+        const colId = params.column.getColId();
+        const editingCells = params.api.getEditingCells();
+        const isAlreadyEditing = editingCells.some((cell) => cell.rowIndex === params.rowIndex && cell.colId === colId);
+        if (!isAlreadyEditing) {
+          isInteractingWithSelectRef.current = false;
+          params.api.startEditingCell({
+            rowIndex: params.rowIndex,
+            colKey: colId,
+          });
+        }
+      }
+    },
+    [options]
+  );
+
+  const onCellMouseDown = useCallback(
+    (params: CellMouseDownEvent) => {
+      options?.onCellMouseDown?.(params);
+
+      if (params.colDef.cellEditor === 'agSelectCellEditor') {
+        isInteractingWithSelectRef.current = true;
+      }
+    },
+    [options]
+  );
+
+  const onCellMouseOut = useCallback(
+    (params: CellMouseOutEvent) => {
+      options?.onCellMouseOut?.(params);
+
+      if (params.colDef.cellEditor === 'agSelectCellEditor') {
+        if (!isInteractingWithSelectRef.current) {
+          params.api.stopEditing(true);
+        }
+      }
+    },
+    [options]
+  );
+
+  const onCellEditingStopped = useCallback(() => {
+    options?.onCellEditingStopped?.();
+    isInteractingWithSelectRef.current = false;
+  }, [options]);
+
+  return {
+    onCellMouseOver,
+    onCellMouseDown,
+    onCellMouseOut,
+    onCellEditingStopped,
+  };
+}
+
+/** 호환 별칭 */
+export const useAgSelectAutoEdit = useAgSelectHoverEdit;
 
 // 클라이언트 환경에서 모듈 로드 시 자동 초기화
 if (typeof window !== 'undefined') {

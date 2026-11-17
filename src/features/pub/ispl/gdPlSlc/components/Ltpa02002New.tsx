@@ -1381,7 +1381,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
               >
                 <Grow
                   className="relative p-4 gap-2 rounded-t-[1rem]"
-                  placement="sc"
+                  placement="bwc"
                   style={{
                     background: `linear-gradient(358deg,#FF5C2E 9.4%,#FF8D02 97.24%)`,
                   }}
