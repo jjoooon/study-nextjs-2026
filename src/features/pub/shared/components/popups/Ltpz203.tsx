@@ -363,6 +363,7 @@ const Ltpz203 = () => {
                       >
                         {InfoData.옵션.map((option, index) => {
                           const optionKey = `옵션${index + 1}` as keyof typeof option;
+                          const optionValue = (option as Record<string, string | string[]>)[optionKey];
                           return (
                             <Grow
                               key={index}
@@ -401,7 +402,16 @@ const Ltpz203 = () => {
                                   size={16}
                                 />
                               )}
-                              {option[optionKey as keyof typeof option]}
+                              {Array.isArray(optionValue)
+                                ? optionValue.map((item, itemIdx) => (
+                                    <React.Fragment key={itemIdx}>
+                                      {itemIdx > 0 && (
+                                        <span className="text-[var(--color-gray-30)] mx-[0.4rem] select-none">•</span>
+                                      )}
+                                      {item}
+                                    </React.Fragment>
+                                  ))
+                                : optionValue}
                             </Grow>
                           );
                         })}

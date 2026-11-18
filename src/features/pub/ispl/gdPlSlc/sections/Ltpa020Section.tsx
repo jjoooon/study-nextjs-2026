@@ -199,7 +199,19 @@ export default function Ltpa020Section() {
                                   col={2}
                                   error={!comboValues.user}
                                   errorMsg="추천설계를 위하여 고객정보를 입력해 주세요!"
-                                  options={[{ value: '김한화 41세(여)', label: <td>김한화</td> }]}
+                                  options={[
+                                    { value: '김한화 41세(여)', label: <td>김한화</td> },
+                                    { value: '김둘화 42세(여)', label: <td>김둘화</td> },
+                                    { value: '김삼화 43세(여)', label: <td>김삼화</td> },
+                                    { value: '김사화 44세(여)', label: <td>김사화</td> },
+                                    { value: '김오화 45세(여)', label: <td>김오화</td> },
+                                    { value: '김육화 46세(여)', label: <td>김육화</td> },
+                                    { value: '김칠화 47세(여)', label: <td>김칠화</td> },
+                                    { value: '김팔화 48세(여)', label: <td>김팔화</td> },
+                                    { value: '김구화 49세(여)', label: <td>김구화</td> },
+                                    { value: '김십화 50세(여)', label: <td>김십화</td> },
+                                    { value: '김일화 51세(여)', label: <td>김일화</td> },
+                                  ]}
                                   value={comboValues.user}
                                   onChange={handleComboValueChange('user')}
                                   placeholder="고객 검색"

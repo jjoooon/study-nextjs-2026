@@ -294,12 +294,12 @@ export function InputCombo<TValue = string>({
               <div
                 ref={popoverRef}
                 tabIndex={-1}
-                className="bg-white px-2.5 py-2 border border-[var(--color-gray-20)] shadow-md max-h-48 overflow-auto animate-fadein rounded-[0.6rem]"
+                className="bg-white shadow-md max-h-[calc(2.3rem*5)] border border-[var(--color-gray-10)] overflow-auto animate-fadein rounded-[0.1rem]"
                 style={popoverStyle}
               >
                 <table
                   className={cn(
-                    `[&_td]:px-2 [&_td]:py-1 [&_td]:whitespace-nowrap [&_td]:border [&_td]:border-[var(--color-gray-10)] [&_td]:rounded-sm`,
+                    `[&_td]:px-2 [&_td]:whitespace-nowrap [&_td]:border [&_td]:border-[var(--color-gray-10)] [&_td]:rounded-sm [&_td]:h-[2.3rem]`,
                     className
                   )}
                 >

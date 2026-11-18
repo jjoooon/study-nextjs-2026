@@ -457,7 +457,7 @@ export function ErrorMsg({
               }}
               className={cn(
                 // 말풍선 본체 스타일 (Portal rendering via absolute positioning)
-                'max-w-[40rem] absolute z-[9999] shadow-md border border-[var(--color-input-border-error)] rounded-DEFAULT pointer-events-auto break-keep max-w-[calc(100vw-2rem)]',
+                'w-max max-w-[min(40rem,calc(100vw-2rem))] absolute z-[9999] shadow-md border border-[var(--color-input-border-error)] rounded-DEFAULT pointer-events-auto break-keep break-words',
                 // 위치 및 transform 매핑
                 transformStyles[resolvedPosition],
                 className
@@ -505,7 +505,7 @@ export function ErrorMsg({
       style={style}
       className={cn(
         // 말풍선 본체 스타일 (부모 relative 컨테이너 기준 absolute 배치)
-        'max-w-[40rem] block absolute z-20 shadow-md border border-[var(--color-input-border-error)] rounded-DEFAULT pointer-events-auto break-keep max-w-[calc(100vw-2rem)]',
+        'w-max max-w-[min(40rem,calc(100vw-2rem))] block absolute z-20 shadow-md border border-[var(--color-input-border-error)] rounded-DEFAULT pointer-events-auto break-keep break-words',
         // 위치 토큰 적용
         positionStyles[resolvedPosition],
         className

@@ -407,6 +407,8 @@ const Ltpz019 = () => {
   // useTabs 훅을 활용한 회사/기관/나만의 플랜 탭바 상태 관리
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
+  const [contentType, setContentType] = useState(true);
+
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
@@ -425,7 +427,7 @@ const Ltpz019 = () => {
         {/* 팝업 본문 콘텐츠 영역 */}
         <DialogSection className="grid-rows-[auto_minmax(0,1fr)]">
           {/* 상단: 현재 가입 진행 중인 기본 정보 테이블 */}
-          <Gcol placement="ss">
+          <Gcol placement="ss" gap={4}>
             <Grow className="w-full" variant="box-round" placement={'ss'}>
               <FormTable variant="head">
                 <FormRow>
@@ -434,42 +436,53 @@ const Ltpz019 = () => {
                   </FormCell>
                   <FormCell title={'현재 고객'}>
                     <Input value="홍길순 외 0명" readOnly variant="info" />
+                    <Button
+                      className="ml-4"
+                      color="gray"
+                      size={'sm'}
+                      onClick={() => {
+                        setContentType(!contentType);
+                      }}
+                    >
+                      {contentType ? '테스트용-간편설계' : '테스트용-상세설계'}
+                    </Button>
                   </FormCell>
                 </FormRow>
               </FormTable>
             </Grow>
             <Gcol placement={'ss'} className="w-full" gap={2}>
-              <Typo variant={'body-lg'} weight={'bold'} className="flex items-center">
-                간편설계를 생성할 상품을 선택해주세요.
-              </Typo>
-
-              {/* 설계 모드 조건 질문 (Radio) */}
-              <Gcol gap={3} placement={'ss'}>
-                <Gcol placement={'ss'} className="w-full">
+              {contentType ? (
+                <Typo variant={'body-lg'} weight={'bold'} className="flex items-center">
+                  간편설계를 생성할 상품을 선택해주세요.
+                </Typo>
+              ) : (
+                <Gcol gap={3} placement={'ss'}>
+                  <Gcol placement={'ss'} className="w-full" gap={2}>
+                    <Typo variant={'body-lg'} weight={'bold'} className="flex items-center gap-[0.6rem]">
+                      <Badge color="secondary" size="md" variant="contained" className="w-[1.8rem] h-[1.8rem]">
+                        1
+                      </Badge>
+                      현재 고객을 대상으로 다른 상품을 설계하시겠어요?
+                    </Typo>
+                    <RadioGroup className="gap-2 ml-[2.4rem]" onValueChange={() => {}} width="full" variant="button">
+                      {[
+                        { value: 'v1', label: '네, 현재 고객으로 상세설계할게요.' },
+                        { value: 'v2', label: '아니오, 신규 고객으로 간편설계할게요.' },
+                      ].map((option) => (
+                        <RadioGroupItem key={option.value} value={option.value}>
+                          {option.label}
+                        </RadioGroupItem>
+                      ))}
+                    </RadioGroup>
+                  </Gcol>
                   <Typo variant={'body-lg'} weight={'bold'} className="flex items-center gap-[0.6rem]">
                     <Badge color="secondary" size="md" variant="contained" className="w-[1.8rem] h-[1.8rem]">
-                      1
+                      2{/* 상품을 선택해주세요. */}
                     </Badge>
-                    현재 고객을 대상으로 다른 상품을 설계하시겠어요?
+                    상품을 선택해주세요.
                   </Typo>
-                  <RadioGroup className="gap-2 ml-[2.4rem]" onValueChange={() => {}} width="full">
-                    {[
-                      { value: 'v1', label: '네, 현재 고객으로 상세설계할게요.' },
-                      { value: 'v2', label: '아니오, 신규 고객으로 간편설계할게요.' },
-                    ].map((option) => (
-                      <RadioGroupItem key={option.value} value={option.value}>
-                        {option.label}
-                      </RadioGroupItem>
-                    ))}
-                  </RadioGroup>
                 </Gcol>
-                <Typo variant={'body-lg'} weight={'bold'} className="flex items-center gap-[0.6rem]">
-                  <Badge color="secondary" size="md" variant="contained" className="w-[1.8rem] h-[1.8rem]">
-                    2{/* 상품을 선택해주세요. */}
-                  </Badge>
-                  상품을 선택해주세요.
-                </Typo>
-              </Gcol>
+              )}
             </Gcol>
           </Gcol>
 

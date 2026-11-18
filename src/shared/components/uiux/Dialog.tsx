@@ -497,18 +497,18 @@ export const checkIsHwsfa = (): boolean => {
 
   // 1. 1차 iframe 부모의 도메인/주소 검사 (Cross-Origin 차단 없음)
   const referrer = document.referrer;
-  if (referrer && /6006/i.test(referrer)) {
+  if (referrer && /hwsfa/i.test(referrer)) {
     return true;
   }
 
   // 2. 현재 창 URL 및 파라미터 검사
-  if (/6006/i.test(window.location.href)) {
+  if (/hwsfa/i.test(window.location.href)) {
     return true;
   }
 
   // 3. Same-Origin일 때 보조 검사
   try {
-    if (window.parent && window.parent !== window && /6006/i.test(window.parent.location.href)) {
+    if (window.parent && window.parent !== window && /hwsfa/i.test(window.parent.location.href)) {
       return true;
     }
   } catch {
@@ -1582,6 +1582,7 @@ function DialogContent({
   const prevMinimizedRef = React.useRef(isMinimized);
   const prevPositionBeforeMinimizeRef = React.useRef<{ x: number; y: number } | null>(null);
   const prevIsInitializedBeforeMinimizeRef = React.useRef<boolean>(false);
+  const dragStartScrollRef = React.useRef({ x: 0, y: 0 });
 
   // 최소화/확대 상태 변화에 따른 위치 제어 (useIsomorphicLayoutEffect 사용하여 껌벅임 방지)
   useIsomorphicLayoutEffect(() => {
@@ -1841,17 +1842,23 @@ function DialogContent({
         return;
       }
 
+      // 브라우저의 기본 텍스트 선택 및 드래그 중 창 오토스크롤 방지
+      e.preventDefault();
+
+      const scrollX = window.scrollX || document.documentElement.scrollLeft || document.body.scrollLeft || 0;
+      const scrollY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      dragStartScrollRef.current = { x: scrollX, y: scrollY };
+
       // 실제 드래그/리사이즈 동작이 개시될 때만 위치를 px 단위로 고정시킵니다.
       let currentPos = position;
       if (!isInitialized && contentRef.current) {
         const rect = contentRef.current.getBoundingClientRect();
-        currentPos = { x: rect.left, y: rect.top };
+        currentPos = { x: rect.left + scrollX, y: rect.top + scrollY };
         setPosition(currentPos);
         setIsInitialized(true);
       }
 
       if (resizeHandle) {
-        e.preventDefault();
         const rect = contentRef.current!.getBoundingClientRect();
         setIsResizing(resizeHandle.getAttribute('data-direction'));
         // 리사이즈 시작 시점의 모든 상태를 스냅샷으로 저장
@@ -1866,17 +1873,49 @@ function DialogContent({
         return;
       }
 
+      document.body.style.userSelect = 'none';
       setIsDragging(true);
-      setDragStart({ x: e.clientX - currentPos.x, y: e.clientY - currentPos.y });
+      setDragStart({
+        x: e.clientX + scrollX - currentPos.x,
+        y: e.clientY + scrollY - currentPos.y,
+      });
     },
     [position, isInitialized, isFullSize, isFullscreen, isSplit, isIframeState]
   );
 
   React.useEffect(() => {
+    // 드래그 또는 리사이즈 중 가로 스크롤이 자동으로 이동하지 않도록 시작 위치로 고정
+    const handleScroll = () => {
+      if (isDragging || !!isResizing) {
+        const currentScrollX = window.scrollX || document.documentElement.scrollLeft || document.body.scrollLeft || 0;
+        if (Math.abs(currentScrollX - dragStartScrollRef.current.x) > 0) {
+          window.scrollTo({
+            left: dragStartScrollRef.current.x,
+            top: window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0,
+          });
+        }
+      }
+    };
+
     const handleMouseMove = (e: MouseEvent) => {
+      const activeScrollX = dragStartScrollRef.current.x;
+      const currentScrollX = window.scrollX || document.documentElement.scrollLeft || document.body.scrollLeft || 0;
+      const currentScrollY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+
+      // 마우스 이동 시에도 드래그에 의한 가로 스크롤 자동 이동 차단
+      if (Math.abs(currentScrollX - activeScrollX) > 0) {
+        window.scrollTo({
+          left: activeScrollX,
+          top: currentScrollY,
+        });
+      }
+
       if (isDragging && !isResizing) {
-        let newX = e.clientX - dragStart.x;
-        let newY = e.clientY - dragStart.y;
+        const mousePageX = e.clientX + activeScrollX;
+        const mousePageY = e.clientY + currentScrollY;
+
+        let newX = mousePageX - dragStart.x;
+        let newY = mousePageY - dragStart.y;
 
         if (contentRef.current) {
           const rect = contentRef.current.getBoundingClientRect();
@@ -1884,19 +1923,21 @@ function DialogContent({
           if (resolvedAllowOverflowDrag) {
             // 화면 밖으로 드래그 허용: 완전히 사라지지 않고 최소 60px은 화면에 걸치도록 경계 설정
             const minVisible = 60;
-            const minX = -(rect.width - minVisible);
-            const maxX = window.innerWidth - minVisible;
+            const minX = Math.max(-(rect.width - minVisible), activeScrollX - (rect.width - minVisible));
+            const maxX = activeScrollX + window.innerWidth - minVisible;
             const minY = 0; // 화면 위쪽(상단)으로 완전히 넘어가서 헤더를 잃어버리는 것은 방지
-            const maxY = window.innerHeight - minVisible;
+            const maxY = currentScrollY + window.innerHeight - minVisible;
 
             newX = Math.min(Math.max(minX, newX), maxX);
             newY = Math.min(Math.max(minY, newY), maxY);
           } else {
-            const maxX = Math.max(0, window.innerWidth - rect.width);
-            const maxY = Math.max(0, window.innerHeight - rect.height);
+            const minX = activeScrollX;
+            const maxX = activeScrollX + Math.max(0, window.innerWidth - rect.width);
+            const minY = 0;
+            const maxY = currentScrollY + Math.max(0, window.innerHeight - rect.height);
 
-            newX = Math.min(Math.max(0, newX), maxX);
-            newY = Math.min(Math.max(0, newY), maxY);
+            newX = Math.min(Math.max(minX, newX), maxX);
+            newY = Math.min(Math.max(minY, newY), maxY);
           }
         }
 
@@ -1952,10 +1993,12 @@ function DialogContent({
     if (isDragging || isResizing) {
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
+      window.addEventListener('scroll', handleScroll, { passive: false });
 
       return () => {
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
+        window.removeEventListener('scroll', handleScroll);
       };
     }
   }, [isDragging, isResizing, dragStart, resizedSize, initialCapture, resolvedAllowOverflowDrag]);
