@@ -377,7 +377,10 @@ const Ltpz021 = () => {
                 className="grid-rows-[auto_1fr] w-full overflow-hidden border border-[#CBE3FF] rounded-[0.6rem] gap-5 h-full min-h-0"
                 key={i}
               >
-                <Grow placement="bws" className="w-full bg-[#EFF8FF] p-[1rem] rounded-t-[0.6rem] min-h-[10rem]">
+                <label
+                  htmlFor={`plan-check-${i}`}
+                  className="flex flex-row justify-between items-start w-full bg-[#EFF8FF] p-[1rem] rounded-t-[0.6rem] min-h-[10rem] cursor-pointer select-none"
+                >
                   <Gcol placement="bws">
                     <Gcol placement="ss">
                       <Typo tag={'strong'} variant={'body-lg'} weight={'bold'} tooltip="1">
@@ -392,6 +395,7 @@ const Ltpz021 = () => {
                     </Badge>
                   </Gcol>
                   <Checkbox
+                    id={`plan-check-${i}`}
                     color="info"
                     checked={checkedStates[i]}
                     onCheckedChange={(checked) => {
@@ -403,8 +407,8 @@ const Ltpz021 = () => {
                     }}
                     size="lg"
                     variant="default"
-                  ></Checkbox>
-                </Grow>
+                  />
+                </label>
                 <Gcol className="w-full overflow-hidden px-[1rem] pb-[3.3rem]" placement="ss" gap={0}>
                   <div className="ag-theme-alpine w-full inner-scroll" data-row={rowData1.length}>
                     <AgGridReact<DummyDataType>

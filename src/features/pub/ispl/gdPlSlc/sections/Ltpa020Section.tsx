@@ -113,24 +113,24 @@ export default function Ltpa020Section() {
       </LayoutHead>
       <LayoutTemplatePx0
         mainBody={
-          <Grid className="w-full h-full grid-rows-[auto_auto_minmax(0,1fr)]" gap={2}>
+          <Grid className="w-full h-full grid-rows-[auto_auto_minmax(0,1fr)]" gap={1}>
             <Grow placement={'bwc'} gap={3} className="w-full pt-1 px-3 pt-1 ltpa020-tab-group">
               <RadioGroup
                 value={tabSelectValue}
                 onValueChange={(value) => setTabSelectValue(value)}
-                className="ltpa020-tab-item flex-nowrap bg-[#fff] gap-[0.2rem] w-[36rem] rounded-2 relative after:content-[''] after:absolute after:block after:w-full after:h-full after:border after:border-[var(--color-secondary-15)] after:rounded-[0.8rem] after:z-0"
+                className="ltpa020-tab-item flex-nowrap bg-[#fff] gap-[0.2rem] w-[36rem] rounded-2 relative after:content-[''] after:absolute after:block after:w-full after:h-full after:border after:border-[var(--color-secondary-15)] after:rounded-[0.6rem] after:z-0"
               >
                 <RadioGroupItem
                   variant={'button'}
                   value="Ltpa02001"
-                  className="relative z-1 [&>div]:hidden w-full flex-1 h-[3.6rem] bg-[transparent] border-0! flex items-center gap-1 justify-center rounded-2 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
+                  className="relative z-1 [&>div]:hidden w-full flex-1 h-[3.6rem] bg-[transparent] border-0! px-2! flex items-center gap-1 justify-center rounded-[0.6rem] text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
                 >
                   상품선택
                 </RadioGroupItem>
                 <RadioGroupItem
                   variant={'button'}
                   value="Ltpa02002"
-                  className="relative z-1 [&>div]:hidden w-full flex-1 h-[3.6rem] bg-[transparent] border-0! flex items-center gap-1 justify-center rounded-2 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
+                  className="relative z-1 [&>div]:hidden w-full flex-1 h-[3.6rem] bg-[transparent] border-0! px-2! flex items-center gap-1 justify-center rounded-[0.6rem] text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
                 >
                   <AiIcon
                     size={16}
@@ -174,8 +174,8 @@ export default function Ltpa020Section() {
             {/* 검색/고객정보 영역
                 - 등록/미등록 모드에 따라 입력 UI가 완전히 분기됨
                 - 고지유형찾기 팝업 호출 버튼 포함 */}
-            <div className="w-full px-[1rem] ltpa020-info relative z-1">
-              <Gcol placement="sc" className="bg-[var(--color-blue-gray-70)] rounded-[0.8rem] p-[1rem]">
+            <div className="w-full px-[1rem] ltpa020-info relative z-1 mb-1">
+              <Gcol placement="sc" className="bg-[var(--color-blue-gray-70)] rounded-[0.8rem] px-[1rem] py-[0.8rem]">
                 <FormTable caption="" cols={['w-[6rem]', 'w-auto']} variant={'none'}>
                   <FormRow className="items-start!">
                     <FormCell title={'고객정보'} className="text-[#FFF]">

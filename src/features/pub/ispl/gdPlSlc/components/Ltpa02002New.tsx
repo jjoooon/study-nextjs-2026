@@ -9,6 +9,7 @@ import { AgGridReact } from 'ag-grid-react';
 import Image from 'next/image';
 import * as React from 'react';
 import { useState } from 'react';
+import { cn } from '@/shared/lib/shadcn/utils';
 import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
@@ -224,7 +225,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
   const [comparedPlanKeys, setComparedPlanKeys] = useState<string[]>([]);
 
   // 2-2. 필터 / 아코디언 / 화면 제어 관련 상태
-  const [isFilterOptionOpen, setIsFilterOptionOpen] = useState<boolean>(false);
+  const [isFilterOptionOpen, setIsFilterOptionOpen] = useState<boolean>(true);
   const [isProductOptionOpen, setIsProductOptionOpen] = useState<string>('상품옵션');
   const [isAiReasonExpanded, setIsAiReasonExpanded] = useState<boolean>(false);
   const [isGuideOpen, setIsGuideOpen] = useState<boolean>(false);
@@ -244,7 +245,9 @@ export function Ltpa02002({ userType }: { userType: string }) {
   const [productSearchName, setProductSearchName] = useState<string>('');
   const [isHypertensionChecked, setIsHypertensionChecked] = useState<boolean>(false);
   const [isDiabetesChecked, setIsDiabetesChecked] = useState<boolean>(false);
-  const [isExpectedNoticeType, setIsExpectedNoticeType] = useState<boolean>(true);
+
+  //예상고지형 선택여부 체크하여 뱃지생성
+  const [isExpectedNoticeType, setIsExpectedNoticeType] = useState<boolean>(false);
 
   const [medicalHistoryList, setMedicalHistoryList] = useState<Array<{ disease: string; period: string }>>([
     { disease: '', period: '' },
@@ -307,7 +310,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
       },
       field: 'field2',
       flex: 1,
-      minWidth: attributeColumnWidth(84),
+      minWidth: attributeColumnWidth(120),
       cellClass: 'text-right',
       headerClass: '!text-[1.1rem] leading-[2.6rem]',
       valueFormatter: numberValueFormatter<DummyDataListDetailType>,
@@ -321,7 +324,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
       },
       field: 'field3',
       flex: 1,
-      minWidth: attributeColumnWidth(60),
+      minWidth: attributeColumnWidth(120),
       cellClass: 'text-right',
       headerClass: '!text-[1.1rem] leading-[2.6rem]',
       valueFormatter: numberValueFormatter<DummyDataListDetailType>,
@@ -497,7 +500,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
     const timer = setTimeout(() => {
       setDataList(dummyDataList);
       setLoadingAI(false);
-    }, 0);
+    }, 2000);
 
     return () => {
       clearTimeout(timer);
@@ -522,23 +525,23 @@ export function Ltpa02002({ userType }: { userType: string }) {
 
   return (
     <Grid className="w-full grid-rows-[auto_minmax(0,1fr)] px-[1rem]" gap={3}>
-      <Grow variant={'box-round'} className="w-full gap-[0.8rem] relative px-4 py-[1rem]" placement="ss">
-        <Typo
-          tag="h3"
-          variant={'heading-sm'}
-          className="shrink-0 text-[var(--color-text-blue-gray)] h-[2.8rem] flex items-center"
-        >
+      <Grow variant={'box-round'} className="w-full gap-[0.8rem] relative px-4 py-[0.8rem]" placement="sc">
+        <Typo tag="h3" variant={'heading-sm'} className="shrink-0 text-[var(--color-text-blue-gray)] flex items-center">
           선택항목
         </Typo>
         <Grow placement="bwc" gap={6}>
           <Grow className="w-full" gap={6}>
             <button
               type="button"
-              className="w-full p-1 min-h-[2.8rem] h-auto flex justify-between items-center gap-[0.6rem]"
+              className={cn(
+                'w-full min-h-[2.4rem] h-auto flex justify-between items-center gap-[0.6rem]',
+                dataNone && 'cursor-default'
+              )}
+              disabled={dataNone}
               onClick={() => setIsFilterOptionOpen((prev) => !prev)}
               aria-expanded={isFilterOptionOpen}
             >
-              <span className="flex items-center font-normal flex-wrap gap-1.5 py-0.5 ">
+              <span className="flex items-center font-normal flex-wrap gap-1.5">
                 {selectedTags.length > 0 || isExpectedNoticeType ? (
                   <Grow placement="sc" gap={0.5} className="flex-wrap items-center">
                     {selectedTags.map((tag, idx) => (
@@ -553,23 +556,32 @@ export function Ltpa02002({ userType }: { userType: string }) {
                       <Divider className="mx-1.5 h-[1.2rem] border-[var(--color-gray-30)]!" />
                     )}
                     {isExpectedNoticeType && (
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[var(--color-blue-gray-50)] text-white font-bold min-h-[2.2rem] text-[1.2rem] leading-none shrink-0">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[var(--color-blue-gray-50)] text-white font-bold min-h-[2.4rem] text-[1.2rem] leading-none shrink-0">
                         예상고지유형
                       </span>
                     )}
                   </Grow>
                 ) : (
-                  <Typo tag="div" variant={'body-md'} className="min-h-[2.2rem] flex items-start gap-1">
+                  <Typo
+                    tag="div"
+                    variant={'body-md'}
+                    className="flex items-start gap-1 text-[var(--color-blue-gray-60)]"
+                  >
                     항목을 선택하시면, 더 정확한 추천을 받아볼 수 있습니다.
                   </Typo>
                 )}
               </span>
-              <Grow>
-                <span className="text-[1.3rem] font-bold text-[var(--color-blue-gray-60)]">
-                  {isFilterOptionOpen ? '접기' : '펼치기'}
-                </span>
-                <SelectDropIcon color="var(--color-gray-50)" className={isFilterOptionOpen ? 'rotate-[180deg]' : ''} />
-              </Grow>
+              {!dataNone && (
+                <Grow>
+                  <span className="text-[1.3rem] font-bold text-[var(--color-blue-gray-60)]">
+                    {isFilterOptionOpen ? '접기' : '펼치기'}
+                  </span>
+                  <SelectDropIcon
+                    color="var(--color-gray-50)"
+                    className={isFilterOptionOpen ? 'rotate-[180deg]' : ''}
+                  />
+                </Grow>
+              )}
             </button>
             <Button color="coolgray-light" onClick={() => setIsGuideOpen(true)} variant="contained" size="lg">
               추천설계 이용가이드
@@ -1015,8 +1027,9 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         <Typo tag="h4" variant={'heading-md'}>
                           병력사항
                         </Typo>
-                        <Typo variant={'body-sm'} color="blueGray" className="tracking-[-0.1rem]">
-                          질병정보를 이용해 예상고지유형을 확인합니다.
+                        <Typo variant={'body-sm'} color="blueGray" className="tracking-[-0.1rem] break-keep">
+                          질병정보를 이용해 <b className="text-[var(--color-information-50)] underline">예상고지유형</b>
+                          을 확인합니다.
                         </Typo>
                       </Gcol>
                       <ul className="w-full">
@@ -1148,10 +1161,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
         </Grid>
       ) : (
         <>
-          <Grid
-            className="w-[calc(100vw + 2rem)] h-full grid-rows-[minmax(0,1fr)] grid-cols-[1fr_1fr] gap-4 items-stretch overflow-hidden bg-[var(--color-gray-5)] p-[2rem]"
-            gap={3}
-          >
+          <Grid className="w-full h-full grid-rows-[minmax(0,1fr)] grid-cols-[1fr_1fr] gap-1 items-stretch overflow-hidden">
             {/* 리스트 */}
             {loadingAI ? (
               <div className="relative w-full h-full after:content-[''] after:block after:absolute after:pointer-events-none after:bottom-0 after:left-0 after:w-[100%] after:h-[3.4rem] after:bg-gradient-to-b after:from-transparent after:to-[#F4F4F4] after:z-10">
@@ -1173,22 +1183,18 @@ export function Ltpa02002({ userType }: { userType: string }) {
                 </div>
               </div>
             ) : (
-              <div className="relative w-full h-full after:content-[''] after:block after:absolute after:pointer-events-none after:bottom-0 after:left-0 after:w-[100%] after:h-[3.4rem] after:bg-gradient-to-b after:from-transparent after:to-[#F4F4F4] after:z-10">
-                <div className="relative overflow-y-auto w-full h-full gray-scroll">
-                  <Gcol
-                    className="absolute top-0 left-0 w-full h-full after:content-[''] after:block after:w-full after:min-h-[1.6rem]"
-                    gap={3}
-                    placement="ss"
-                  >
+              <div className="relative w-full h-full">
+                <div className="relative overflow-y-auto w-full h-full overflow-y-scroll">
+                  <Gcol className="absolute top-0 left-0 w-full h-full" gap={3} placement="ss">
                     {dataList.map((item, idx) => {
                       return (
                         <Gcol
                           key={item.id}
-                          className="w-full px-[2.4rem] py-[1.6rem] gap-4 bg-white rounded-[1rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)]"
+                          className="w-full px-[2.4rem] py-[1.6rem] gap-4 bg-white rounded-[1rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)] border border-[var(--color-gray-15)]"
                         >
-                          <Gcol gap={0} placement="bws" className="pt-1">
+                          <Gcol gap={0} placement="bws">
                             <Gcol className="gap-y-2" placement="ss">
-                              <Typo tag="h3" variant="heading-lg" className="break-all" tooltip="1">
+                              <Typo tag="h3" variant="body-xl" className="break-all font-bold" tooltip="1">
                                 {item.field1}
                               </Typo>
                               <Typo
@@ -1199,7 +1205,9 @@ export function Ltpa02002({ userType }: { userType: string }) {
                                 {item.field2.map((v, idx) => (
                                   <React.Fragment key={`field2-${idx}`}>
                                     {idx > 0 && (
-                                      <span className="text-[var(--color-gray-30)] mx-[0.4rem] select-none">•</span>
+                                      <span className="text-[var(--color-secondary-50)] mx-[0.4rem] select-none">
+                                        •
+                                      </span>
                                     )}
                                     {v}
                                   </React.Fragment>
@@ -1207,13 +1215,15 @@ export function Ltpa02002({ userType }: { userType: string }) {
                                 {item.field3 && item.field3.length > 0 && (
                                   <>
                                     {item.field2 && item.field2.length > 0 && (
-                                      <span className="text-[var(--color-gray-30)] mx-[0.4rem] select-none">•</span>
+                                      <span className="text-[var(--color-blue-gray-60)] mx-[0.4rem] select-none">
+                                        •
+                                      </span>
                                     )}
-                                    <span className="inline-flex items-center text-[var(--color-information-50)]">
+                                    <span className="inline-flex items-center text-[var(--color-blue-gray-60)]">
                                       {item.field3.map((v, idx) => (
                                         <React.Fragment key={`field3-${idx}`}>
                                           {idx > 0 && (
-                                            <span className="text-[var(--color-gray-30)] mx-[0.4rem] select-none">
+                                            <span className="text-[var(--color-blue-gray-60)] mx-[0.4rem] select-none">
                                               •
                                             </span>
                                           )}
@@ -1227,7 +1237,11 @@ export function Ltpa02002({ userType }: { userType: string }) {
                             </Gcol>
                             {item.field5 && (
                               <Grow placement="ss">
-                                <Typo tag="p" variant="body-sm" className="text-[var(--color-secondary-50)] font-bold">
+                                <Typo
+                                  tag="p"
+                                  variant="body-sm"
+                                  className="text-[var(--color-information-50)] font-bold"
+                                >
                                   {item.field5}
                                 </Typo>
                               </Grow>
@@ -1271,8 +1285,8 @@ export function Ltpa02002({ userType }: { userType: string }) {
                                     placement="bwc"
                                     className={`relative flex-1 w-full h-[6.8rem] rounded-[1rem] overflow-hidden gap-0 border-[0.1rem] border-[var(--color-gray-10)] ${
                                       isSelected
-                                        ? 'border-[var(--color-danger-50)] bg-[var(--color-blue-gray-5)]'
-                                        : 'border-[var(--color-blue-gray-5)] bg-[var(--color-blue-gray-5)]'
+                                        ? 'border-[var(--color-danger-50)] bg-[var(--color-blue-gray-10)]'
+                                        : 'border-[var(--color-blue-gray-10)] bg-[var(--color-blue-gray-10)]'
                                     }`}
                                   >
                                     {/* 상세보기 버튼 */}
@@ -1306,7 +1320,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                                         className={`w-[8.2rem] h-[2.5rem] gap-1 text-[1.2rem] border px-2 rounded-[0.3rem] pointer-events-none transition-colors ${
                                           isSelected
                                             ? 'bg-[var(--color-blue-gray-70)] border-[var(--color-blue-gray-70)] text-[#fff]'
-                                            : 'bg-[#fff] border-[var(--color-gray-30)]'
+                                            : 'bg-[#fff] border-[var(--color-gray-20)]'
                                         }`}
                                         aria-pressed={isSelected}
                                       >
@@ -1325,7 +1339,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                                         ) : (
                                           <SearchIcon size={12} color={'var(--color-gray-30)'} />
                                         )}
-                                        상세보기
+                                        담보상세
                                       </Grow>
                                       {/* 설계담기 */}
                                       <Checkbox
@@ -1405,7 +1419,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                     AI 추천이유
                     <SelectDropIcon
                       size={12}
-                      className={`text-[var(--color-priamry-50)] transition-transform ${isAiReasonExpanded ? 'rotate-180' : 'rotate-0'}`}
+                      className={`text-[var(--color-priamry-50)] transition-transform shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)] ${isAiReasonExpanded ? 'rotate-180' : 'rotate-0'}`}
                     />
                   </Button>
                 </Grow>
@@ -1574,12 +1588,16 @@ export function Ltpa02002({ userType }: { userType: string }) {
                 </Button>
               </PopoverTrigger>
               <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
-                <Grid className="w-full grid-cols-[1fr] gap-1">
-                  {comparedPlanKeys.map((planKey, idx) => (
-                    <Button key={planKey} variant={'outlined'} color={'gray'} size={'lg'}>
-                      <b className="text-[var(--color-primary-50)]">{idx + 1}번</b> 설계생성
-                    </Button>
-                  ))}
+                <Grid className="w-full grid-cols-[1fr] gap-2">
+                  {comparedPlanKeys && (
+                    <Gcol gap={1}>
+                      {comparedPlanKeys.map((planKey, idx) => (
+                        <Button key={planKey} variant={'outlined'} color={'gray'} size={'lg'}>
+                          <b className="text-[var(--color-primary-50)]">{idx + 1}번</b> 설계생성
+                        </Button>
+                      ))}
+                    </Gcol>
+                  )}
                   <Button variant={'contained'} color={'primary'} size={'lg'}>
                     모두 설계생성
                   </Button>

@@ -37,16 +37,17 @@ type DummyDataType = {
   field02: string | number; // 담보명
   insuredAmount: string | number; // 현재 가입금액
   premium: string | number; // 현재 보험료
-  insuredAmountA: string | number; // A안 가입금액
-  premiumA: string | number; // A안 보험료
-  insuredAmountB: string | number; // B안 가입금액
-  premiumB: string | number; // B안 보험료
-  insuredAmountC: string | number; // C안 가입금액
-  premiumC: string | number; // C안 보험료
+  insuredAmountA?: string | number | null; // A안 가입금액
+  premiumA?: string | number | null; // A안 보험료
+  insuredAmountB?: string | number | null; // B안 가입금액
+  premiumB?: string | number | null; // B안 보험료
+  insuredAmountC?: string | number | null; // C안 가입금액
+  premiumC?: string | number | null; // C안 보험료
 };
 
 /**
  * 인수지침 위배 담보 목록 및 각 제안(A안, B안, C안)별 조정 금액 더미 데이터
+ * (C안은 받아온 값이 없는 null 상태로 구성)
  */
 const DummyData: DummyDataType[] = [
   {
@@ -59,8 +60,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 700,
     insuredAmountB: 5000,
     premiumB: 700,
-    insuredAmountC: 5000,
-    premiumC: 700,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 2,
@@ -72,8 +73,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 154,
     insuredAmountB: 10,
     premiumB: 154,
-    insuredAmountC: 10,
-    premiumC: 154,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 3,
@@ -85,8 +86,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 2769,
     insuredAmountB: 5,
     premiumB: 2769,
-    insuredAmountC: 5,
-    premiumC: 2769,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 4,
@@ -98,8 +99,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 3132,
     insuredAmountB: 2400,
     premiumB: 3132,
-    insuredAmountC: 2400,
-    premiumC: 3132,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 5,
@@ -111,8 +112,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 240,
     insuredAmountB: 600,
     premiumB: 240,
-    insuredAmountC: 600,
-    premiumC: 240,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 6,
@@ -124,8 +125,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 1248,
     insuredAmountB: 600,
     premiumB: 1248,
-    insuredAmountC: 600,
-    premiumC: 1248,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 7,
@@ -137,8 +138,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 228,
     insuredAmountB: 600,
     premiumB: 228,
-    insuredAmountC: 600,
-    premiumC: 228,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 8,
@@ -150,8 +151,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 1416,
     insuredAmountB: 600,
     premiumB: 1416,
-    insuredAmountC: 600,
-    premiumC: 1416,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 9,
@@ -163,8 +164,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 20700,
     insuredAmountB: 39000,
     premiumB: 31440,
-    insuredAmountC: 39000,
-    premiumC: 31440,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 10,
@@ -176,8 +177,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 2740,
     insuredAmountB: 3000,
     premiumB: 4200,
-    insuredAmountC: 3000,
-    premiumC: 4200,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 11,
@@ -189,8 +190,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 4600,
     insuredAmountB: 3000,
     premiumB: 7050,
-    insuredAmountC: 3000,
-    premiumC: 7050,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 12,
@@ -202,8 +203,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 5800,
     insuredAmountB: 3000,
     premiumB: 8700,
-    insuredAmountC: 3000,
-    premiumC: 8700,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 13,
@@ -215,8 +216,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 1600,
     insuredAmountB: 3000,
     premiumB: 2400,
-    insuredAmountC: 3000,
-    premiumC: 2400,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 14,
@@ -228,8 +229,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 600,
     insuredAmountB: 3000,
     premiumB: 900,
-    insuredAmountC: 3000,
-    premiumC: 900,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 15,
@@ -241,8 +242,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 80,
     insuredAmountB: 3000,
     premiumB: 120,
-    insuredAmountC: 3000,
-    premiumC: 120,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 16,
@@ -254,8 +255,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 680,
     insuredAmountB: 3000,
     premiumB: 1050,
-    insuredAmountC: 3000,
-    premiumC: 1050,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 17,
@@ -267,8 +268,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 1980,
     insuredAmountB: 3000,
     premiumB: 3060,
-    insuredAmountC: 3000,
-    premiumC: 3060,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 18,
@@ -280,8 +281,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 180,
     insuredAmountB: 3000,
     premiumB: 270,
-    insuredAmountC: 3000,
-    premiumC: 270,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 19,
@@ -293,8 +294,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 220,
     insuredAmountB: 3000,
     premiumB: 330,
-    insuredAmountC: 3000,
-    premiumC: 330,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 20,
@@ -306,8 +307,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 260,
     insuredAmountB: 3000,
     premiumB: 390,
-    insuredAmountC: 3000,
-    premiumC: 390,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 21,
@@ -319,8 +320,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 340,
     insuredAmountB: 3000,
     premiumB: 510,
-    insuredAmountC: 3000,
-    premiumC: 510,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 22,
@@ -332,8 +333,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 1620,
     insuredAmountB: 3000,
     premiumB: 2460,
-    insuredAmountC: 3000,
-    premiumC: 2460,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 23,
@@ -345,8 +346,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 36000,
     insuredAmountB: 8500,
     premiumB: 35375,
-    insuredAmountC: 9000,
-    premiumC: 36000,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 24,
@@ -358,8 +359,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 12040,
     insuredAmountB: 2000,
     premiumB: 11940,
-    insuredAmountC: 2000,
-    premiumC: 12040,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 25,
@@ -371,8 +372,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 8140,
     insuredAmountB: 2000,
     premiumB: 8080,
-    insuredAmountC: 2000,
-    premiumC: 8140,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 26,
@@ -384,8 +385,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 14980,
     insuredAmountB: 2000,
     premiumB: 14860,
-    insuredAmountC: 2000,
-    premiumC: 14980,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 27,
@@ -397,8 +398,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 680,
     insuredAmountB: 500,
     premiumB: 335,
-    insuredAmountC: 1000,
-    premiumC: 680,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 28,
@@ -410,8 +411,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 160,
     insuredAmountB: 2000,
     premiumB: 160,
-    insuredAmountC: 2000,
-    premiumC: 160,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 29,
@@ -423,8 +424,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 1547,
     insuredAmountB: 1500,
     premiumB: 1547,
-    insuredAmountC: 1500,
-    premiumC: 1547,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 30,
@@ -436,8 +437,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 1188,
     insuredAmountB: 400,
     premiumB: 1188,
-    insuredAmountC: 400,
-    premiumC: 1188,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 31,
@@ -449,8 +450,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 260,
     insuredAmountB: 400,
     premiumB: 260,
-    insuredAmountC: 400,
-    premiumC: 260,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 32,
@@ -462,8 +463,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 96,
     insuredAmountB: 400,
     premiumB: 96,
-    insuredAmountC: 400,
-    premiumC: 96,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 33,
@@ -475,8 +476,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 3,
     insuredAmountB: 300,
     premiumB: 3,
-    insuredAmountC: 300,
-    premiumC: 3,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 34,
@@ -488,8 +489,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 2880,
     insuredAmountB: 2000,
     premiumB: 2880,
-    insuredAmountC: 0,
-    premiumC: 0,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 35,
@@ -501,8 +502,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 0,
     insuredAmountB: 0,
     premiumB: 0,
-    insuredAmountC: 0,
-    premiumC: 0,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 36,
@@ -514,8 +515,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 0,
     insuredAmountB: 0,
     premiumB: 0,
-    insuredAmountC: 0,
-    premiumC: 0,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 37,
@@ -527,8 +528,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 0,
     insuredAmountB: 0,
     premiumB: 0,
-    insuredAmountC: 0,
-    premiumC: 0,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 38,
@@ -540,8 +541,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 0,
     insuredAmountB: 0,
     premiumB: 0,
-    insuredAmountC: 0,
-    premiumC: 0,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 39,
@@ -553,8 +554,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 0,
     insuredAmountB: 0,
     premiumB: 0,
-    insuredAmountC: 0,
-    premiumC: 0,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 40,
@@ -566,8 +567,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 7860,
     insuredAmountB: 1000,
     premiumB: 7860,
-    insuredAmountC: 1000,
-    premiumC: 7860,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 41,
@@ -579,8 +580,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 3740,
     insuredAmountB: 1000,
     premiumB: 3740,
-    insuredAmountC: 1000,
-    premiumC: 3740,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 42,
@@ -592,8 +593,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 1590,
     insuredAmountB: 1500,
     premiumB: 1590,
-    insuredAmountC: 1500,
-    premiumC: 1590,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 43,
@@ -605,8 +606,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 1960,
     insuredAmountB: 1000,
     premiumB: 1960,
-    insuredAmountC: 1000,
-    premiumC: 1960,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 44,
@@ -618,8 +619,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 2460,
     insuredAmountB: 1000,
     premiumB: 2460,
-    insuredAmountC: 1000,
-    premiumC: 2460,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 45,
@@ -631,8 +632,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 600,
     insuredAmountB: 1000,
     premiumB: 600,
-    insuredAmountC: 1000,
-    premiumC: 600,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 46,
@@ -644,8 +645,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 1210,
     insuredAmountB: 1000,
     premiumB: 1210,
-    insuredAmountC: 1000,
-    premiumC: 1210,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 47,
@@ -657,8 +658,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 69,
     insuredAmountB: 100,
     premiumB: 69,
-    insuredAmountC: 100,
-    premiumC: 69,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 48,
@@ -670,8 +671,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 4750,
     insuredAmountB: 500,
     premiumB: 4750,
-    insuredAmountC: 500,
-    premiumC: 4750,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 49,
@@ -683,8 +684,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 530,
     insuredAmountB: 100,
     premiumB: 530,
-    insuredAmountC: 100,
-    premiumC: 530,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 50,
@@ -696,8 +697,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 2700,
     insuredAmountB: 1000,
     premiumB: 2700,
-    insuredAmountC: 1000,
-    premiumC: 2700,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 51,
@@ -709,8 +710,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 1700,
     insuredAmountB: 1000,
     premiumB: 1700,
-    insuredAmountC: 1000,
-    premiumC: 1700,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 52,
@@ -722,8 +723,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 2800,
     insuredAmountB: 1000,
     premiumB: 2800,
-    insuredAmountC: 1000,
-    premiumC: 2800,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 53,
@@ -735,8 +736,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 600,
     insuredAmountB: 1000,
     premiumB: 600,
-    insuredAmountC: 1000,
-    premiumC: 600,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 54,
@@ -748,8 +749,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 800,
     insuredAmountB: 20,
     premiumB: 800,
-    insuredAmountC: 20,
-    premiumC: 800,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 55,
@@ -761,8 +762,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 540,
     insuredAmountB: 20,
     premiumB: 540,
-    insuredAmountC: 20,
-    premiumC: 540,
+    insuredAmountC: null,
+    premiumC: null,
   },
   {
     id: 56,
@@ -774,8 +775,8 @@ const DummyData: DummyDataType[] = [
     premiumA: 8890,
     insuredAmountB: 0,
     premiumB: 0,
-    insuredAmountC: 1000,
-    premiumC: 8890,
+    insuredAmountC: null,
+    premiumC: null,
   },
 ];
 
@@ -786,12 +787,13 @@ type PlanKey = 'A' | 'B' | 'C';
 
 /**
  * 각 플랜의 가입금액 및 보험료가 매핑되는 속성 명칭 정의
+ * - leftField, rightField, resolution 값은 null일 수 있습니다.
  */
 const PLAN_COLS: Array<{
   key: PlanKey;
-  leftField: keyof DummyDataType;
-  rightField: keyof DummyDataType;
-  resolution: string[];
+  leftField: keyof DummyDataType | null;
+  rightField: keyof DummyDataType | null;
+  resolution: string[] | null;
 }> = [
   {
     key: 'A',
@@ -809,7 +811,7 @@ const PLAN_COLS: Array<{
     key: 'C',
     leftField: 'insuredAmountC',
     rightField: 'premiumC',
-    resolution: ['인수금지', '업계누적'],
+    resolution: null,
   },
 ];
 
@@ -831,9 +833,40 @@ const Ltpz068 = () => {
   const [selectedPlan, setSelectedPlan] = React.useState<PlanKey>('A');
 
   /**
+   * 각 플랜별 유효 데이터(null 또는 undefined가 아닌 값) 존재 여부 판별
+   * - leftField, rightField가 null인 경우 유효 데이터 없음으로 간주
+   */
+  const hasPlanData = React.useMemo(() => {
+    const result: Record<PlanKey, boolean> = { A: false, B: false, C: false };
+    for (const { key, leftField, rightField } of PLAN_COLS) {
+      if (!leftField && !rightField) {
+        result[key] = false;
+        continue;
+      }
+      const hasLeft = leftField ? rowData.some((row) => row[leftField] !== null && row[leftField] !== undefined) : false;
+      const hasRight = rightField ? rowData.some((row) => row[rightField] !== null && row[rightField] !== undefined) : false;
+      result[key] = hasLeft || hasRight;
+    }
+    return result;
+  }, [rowData]);
+
+  // 선택된 플랜의 데이터가 없는 경우(null), 유효한 다른 플랜으로 자동 선택 보정
+  React.useEffect(() => {
+    if (!hasPlanData[selectedPlan]) {
+      const firstAvailable = (['A', 'B', 'C'] as PlanKey[]).find((key) => hasPlanData[key]);
+      if (firstAvailable) {
+        setSelectedPlan(firstAvailable);
+      }
+    }
+  }, [hasPlanData, selectedPlan]);
+
+  /**
    * 문자열 및 숫자 형태의 금액 데이터를 안전하게 실수형 숫자로 변환하는 헬퍼 함수
    */
-  const toNumber = React.useCallback((value: string | number): number => {
+  const toNumber = React.useCallback((value?: string | number | null): number => {
+    if (value === null || value === undefined) {
+      return 0;
+    }
     if (typeof value === 'number') {
       return Number.isFinite(value) ? value : 0;
     }
@@ -854,12 +887,14 @@ const Ltpz068 = () => {
     return rowData.reduce(
       (acc, row) => {
         acc.current += toNumber(row.premium);
-        acc.A += toNumber(row.premiumA);
-        acc.B += toNumber(row.premiumB);
-        acc.C += toNumber(row.premiumC);
+        for (const { key, rightField } of PLAN_COLS) {
+          if (rightField && row[rightField] !== null && row[rightField] !== undefined) {
+            acc[key] += toNumber(row[rightField]);
+          }
+        }
         return acc;
       },
-      { current: 0, A: 0, B: 0, C: 0 }
+      { current: 0, A: 0, B: 0, C: 0 } as { current: number } & Record<PlanKey, number>
     );
   }, [rowData, toNumber]);
 
@@ -915,14 +950,22 @@ const Ltpz068 = () => {
             label: '가입금액',
             unit: '(만원)',
           },
-          field: leftField,
+          field: leftField ?? undefined,
           width: attributeColumnWidth(92),
           cellClass: 'text-right pr-2!',
           valueFormatter: numberValueFormatter<DummyDataType>,
+          // leftField가 없거나 값이 null 또는 undefined(미전달)인 경우 var(--color-gray-10) 배경색 적용
+          cellStyle: (params) => {
+            if (!leftField || params.value === null || params.value === undefined) {
+              return { backgroundColor: 'var(--color-gray-10)' };
+            }
+            return undefined;
+          },
           cellClassRules: {
             // 현재설계 가입금액 기준보다 제안액이 큰 경우 빨간색/주황색 하이라이트 클래스 부여
             'cell-greater': (params) => {
               if (params.node.isRowPinned()) return false;
+              if (!leftField || params.value === null || params.value === undefined) return false;
               const base = toNumber(params.data?.insuredAmount ?? 0);
               const current = toNumber(params.value ?? 0);
               return current > base;
@@ -930,6 +973,7 @@ const Ltpz068 = () => {
             // 현재설계 가입금액 기준보다 제안액이 작은 경우 파란색 하이라이트 클래스 부여
             'cell-less': (params) => {
               if (params.node.isRowPinned()) return false;
+              if (!leftField || params.value === null || params.value === undefined) return false;
               const base = toNumber(params.data?.insuredAmount ?? 0);
               const current = toNumber(params.value ?? 0);
               return current < base;
@@ -943,14 +987,22 @@ const Ltpz068 = () => {
             label: '보험료',
             unit: '(원)',
           },
-          field: rightField,
+          field: rightField ?? undefined,
           width: attributeColumnWidth(92),
           cellClass: 'text-right pr-2!',
           valueFormatter: numberValueFormatter<DummyDataType>,
+          // rightField가 없거나 값이 null 또는 undefined(미전달)인 경우 var(--color-gray-10) 배경색 적용
+          cellStyle: (params) => {
+            if (!rightField || params.value === null || params.value === undefined) {
+              return { backgroundColor: 'var(--color-gray-10)' };
+            }
+            return undefined;
+          },
           cellClassRules: {
             // 현재설계 보험료 기준보다 제안액이 큰 경우
             'cell-greater': (params) => {
               if (params.node.isRowPinned()) return false;
+              if (!rightField || params.value === null || params.value === undefined) return false;
               const base = toNumber(params.data?.premium ?? 0);
               const current = toNumber(params.value ?? 0);
               return current > base;
@@ -958,6 +1010,7 @@ const Ltpz068 = () => {
             // 현재설계 보험료 기준보다 제안액이 작은 경우
             'cell-less': (params) => {
               if (params.node.isRowPinned()) return false;
+              if (!rightField || params.value === null || params.value === undefined) return false;
               const base = toNumber(params.data?.premium ?? 0);
               const current = toNumber(params.value ?? 0);
               return current < base;
@@ -1002,12 +1055,14 @@ const Ltpz068 = () => {
           </Gcol>
 
           <div className="relative">
-            <Grid className="w-[calc(18.4rem*4)] grid-cols-[1fr_1fr_1fr_1fr] h-[calc(100%+16.8rem)] absolute top-[-16.8rem] right-[1.5rem] items-start gap-0 z-100 pointer-events-none ">
+            <Grid className="w-[calc(18.4rem*4)] grid-cols-[1fr_1fr_1fr_1fr] h-[calc(100%+15.8rem)] absolute top-[-15.8rem] right-[1.5rem] items-start gap-0 z-100 pointer-events-none ">
               {/* 현재 설계 고정 영역 */}
               <div className="h-full w-full rounded-[1rem_0]">
-                <Grid className="grid-rows-[auto_1frm] w-full rounded-[1rem_1rem_0_0] h-[16.8rem] border border-[var(--color-gray-15)] bg-[var(--color-gray-5)]">
+                <Grid className="grid-rows-[auto_1frm] w-full rounded-[1rem_1rem_0_0] h-[15.8rem] border border-[var(--color-gray-15)] bg-[var(--color-gray-5)]">
                   <Grow placement="bwc" className="w-full h-[4rem] px-4 py-2">
-                    <Typo variant={'heading-lg'}>현재</Typo>
+                    <Typo variant={'heading-md'} color={'gray'}>
+                      현재
+                    </Typo>
                   </Grow>
                   <Gcol className="px-4" placement="es">
                     <Grow
@@ -1027,20 +1082,28 @@ const Ltpz068 = () => {
               {/* AI 제안 플랜 A안, B안, C안 선택 탭 */}
               {PLAN_COLS.map(({ key: plan, resolution: res }) => {
                 const isActive = selectedPlan === plan;
+                const hasData = hasPlanData[plan];
 
                 return (
                   <Grid
                     key={plan}
                     className={cn(
                       'grid-rows-[auto_1frm] w-full rounded-[1rem_1rem_0_0] h-full',
-                      isActive && 'border border-[var(--color-primary-50)] border-[0.2rem] overflow-hidden '
+                      isActive &&
+                        'border border-[var(--color-primary-50)] border-[0.1rem] overflow-hidden ring-1 ring-inset ring-[var(--color-primary-50)]',
+                      !hasData && 'bg-[var(--color-gray-10)] opacity-60'
                     )}
                   >
                     <Grid
                       role="button"
-                      tabIndex={0}
-                      onClick={() => setSelectedPlan(plan)}
+                      tabIndex={hasData ? 0 : -1}
+                      onClick={() => {
+                        if (hasData) {
+                          setSelectedPlan(plan);
+                        }
+                      }}
                       onKeyDown={(e) => {
+                        if (!hasData) return;
                         if (e.key === 'Enter' || e.key === ' ') {
                           e.preventDefault();
                           setSelectedPlan(plan);
@@ -1048,48 +1111,50 @@ const Ltpz068 = () => {
                       }}
                       aria-pressed={isActive}
                       className={cn(
-                        'grid-rows-[auto_1frm] w-full overflow-hidden pointer-events-auto cursor-pointer',
+                        'grid-rows-[auto_1frm] w-full overflow-hidden pointer-events-auto',
+                        hasData ? 'cursor-pointer' : 'cursor-not-allowed pointer-events-none',
                         isActive
-                          ? 'h-[16.5rem]'
-                          : 'rounded-[1rem_1rem_0_0] border border-[var(--color-gray-15)] h-[16.7rem]'
+                          ? 'h-[15.6rem]'
+                          : 'rounded-[1rem_1rem_0_0] border border-[var(--color-gray-15)] h-[15.8rem]'
                       )}
                     >
-                      <Grow
-                        placement="bwc"
-                        className={cn('w-full h-[4rem] px-4 py-2', isActive ? 'bg-[var(--color-primary-50)]' : '')}
-                        gap={0}
-                      >
-                        <b className={cn(isActive && 'text-[#fff]')}>{plan}안</b>
+                      <Grow placement="bwc" className={cn('w-full h-[4rem] px-4 py-2')} gap={0}>
+                        <Typo variant={'heading-md'} color={'gray'}>
+                          해소범위
+                        </Typo>
                         <RadioGroup
                           value={isActive ? plan : ''}
-                          onValueChange={() => setSelectedPlan(plan)}
+                          onValueChange={() => {
+                            if (hasData) setSelectedPlan(plan);
+                          }}
                           onClick={(e: React.MouseEvent) => e.stopPropagation()}
                           variant="default"
+                          disabled={!hasData}
                         >
-                          <RadioGroupItem id={`plan-${plan}`} size="lg" value={plan} />
+                          <RadioGroupItem id={`plan-${plan}`} size="lg" value={plan} disabled={!hasData} />
                         </RadioGroup>
                       </Grow>
-                      <Gcol className={cn(isActive ? 'px-[1rem]' : 'px-3')} placement="es" gap={2.5}>
+                      <Gcol className={cn('px-3')} placement="es" gap={6}>
                         <Gcol placement="ss" gap={2}>
-                          <Typo variant={'body-sm'} weight={'bold'}>
-                            해소범위
-                          </Typo>
-                          <Grid className="grid-cols-[1fr_1fr] grid-rows-[1fr_1fr] w-full gap-1">
-                            {res.map((v) => {
-                              const badgeColor = v === '당사누적' ? 'green' : v === '업계누적' ? 'blue' : 'orange';
-                              return (
-                                <Badge
-                                  variant={'rounded'}
-                                  key={v}
-                                  color={badgeColor}
-                                  className="h-[2.2rem] w-full font-normal font-bold"
-                                >
-                                  <CheckIcon />
-                                  {v}
-                                </Badge>
-                              );
-                            })}
-                          </Grid>
+                          {Array.isArray(res) && res.length > 0 ? (
+                            <Grid className="grid-cols-[1fr_1fr] grid-rows-[1fr_1fr] w-full gap-1">
+                              {res.map((v) => {
+                                const badgeColor = v === '당사누적' ? 'green' : v === '업계누적' ? 'blue' : 'orange';
+                                return (
+                                  <Badge key={v} color={badgeColor} className="h-[2.4rem] w-full text-[1.3rem] font-bold">
+                                    <CheckIcon />
+                                    {v}
+                                  </Badge>
+                                );
+                              })}
+                            </Grid>
+                          ) : (
+                            <div className="h-[4.9rem] w-full flex items-center justify-center">
+                              <Typo variant={'body-sm'} color={'gray'}>
+                                -
+                              </Typo>
+                            </div>
+                          )}
                         </Gcol>
                         <Grow
                           className="w-full pt-[0.5rem] pb-[0.8rem] border-t-[1px] border-t-[var(--color-gray-20)]"
@@ -1099,7 +1164,7 @@ const Ltpz068 = () => {
                             보장보험료(합)
                           </Typo>
                           <Typo tag="b" variant={'body-lg'} color={'gray'}>
-                            {premiumTotals[plan].toLocaleString()}원
+                            {hasData ? `${premiumTotals[plan].toLocaleString()}원` : '-'}
                           </Typo>
                         </Grow>
                       </Gcol>
@@ -1110,7 +1175,7 @@ const Ltpz068 = () => {
               })}
             </Grid>
             {/* 가입 설계 금액 대조용 Ag-Grid 본체 */}
-            <div className="ag-theme-alpine relative">
+            <div className="ag-theme-alpine relative border-b-[1px] border-b-[var(--color-gray-10)]">
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 rowData={rowData}
