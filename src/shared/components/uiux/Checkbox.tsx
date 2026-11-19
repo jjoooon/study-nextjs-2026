@@ -22,7 +22,6 @@ interface UICheckboxProps extends React.ComponentPropsWithoutRef<typeof Checkbox
   error?: boolean;
   errorMsg?: React.ReactNode;
   errorPs?: ErrorMsgPosition;
-  errorPortal?: boolean;
   showErrorMsg?: boolean;
 }
 
@@ -35,10 +34,6 @@ type CheckboxGroupContextValue = {
   required: boolean;
   disabled: boolean;
   error: boolean;
-  errorMsg?: React.ReactNode;
-  errorPs?: ErrorMsgPosition;
-  errorPortal?: boolean;
-  errorTargetValue?: string | null;
   variant: UICheckboxProps['variant'];
   size: UICheckboxProps['size'];
   color: UICheckboxProps['color'];
@@ -79,7 +74,6 @@ function Checkbox({
     error = false,
     errorMsg = '선택은 필수입니다.',
     errorPs = 'bl',
-    errorPortal,
     showErrorMsg = true,
     ...restProps
   } = props;
@@ -222,7 +216,7 @@ function Checkbox({
           {children}
         </label>
         {hasErrorState && showErrorMsg && (
-          <ErrorMsg aria-live="polite" show={true} position={errorPs} portal={errorPortal} id={errorId}>
+          <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
             {errorMsg}
           </ErrorMsg>
         )}
@@ -346,7 +340,7 @@ function Checkbox({
         </label>
       )}
       {hasErrorState && showErrorMsg && (
-        <ErrorMsg aria-live="polite" show={true} position={errorPs} portal={errorPortal} id={errorId}>
+        <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
           {errorMsg}
         </ErrorMsg>
       )}
@@ -371,7 +365,6 @@ interface CheckboxGroupProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 
   error?: boolean;
   errorMsg?: React.ReactNode;
   errorPs?: ErrorMsgPosition;
-  errorPortal?: boolean;
   width?: 'full' | 'auto';
   variant?: 'default' | 'favorite' | 'noneText' | 'button' | 'noCheckButton' | 'text' | 'chipBox';
   size?: 'lg' | 'md';
@@ -414,7 +407,6 @@ function CheckboxGroup({
   error = false,
   errorMsg,
   errorPs = 'bl',
-  errorPortal,
   width = 'full',
   variant = 'default',
   size = 'lg',
@@ -427,8 +419,6 @@ function CheckboxGroup({
   const [hasValidationStarted, setHasValidationStarted] = React.useState(false);
   // 그룹에 등록된 아이템 메타 정보(disabled/selectAll)
   const [registeredItems, setRegisteredItems] = React.useState<Record<string, CheckboxGroupItemRegistration>>({});
-  // 사용자가 최근 선택/조작한 아이템
-  const [lastInteractedValue, setLastInteractedValue] = React.useState<string | null>(null);
   const isControlled = valueProp !== undefined;
   const values = isControlled ? valueProp : internalValues;
   const errorId = React.useId();
@@ -515,7 +505,6 @@ function CheckboxGroup({
   // - 일반 항목 클릭 시 개별 선택 후 selectAll 상태 재계산
   const toggleValue = React.useCallback(
     (value: string, checked: boolean | 'indeterminate', selectAll?: boolean) => {
-      setLastInteractedValue(value);
       if (selectAll && selectAllValue) {
         const nextValues =
           checked === true
@@ -585,39 +574,12 @@ function CheckboxGroup({
     }
   }, [selectAllValue, isAllSelectableChecked, values, setValues]);
 
-  // 선택된 아이템이 존재할 때 에러 툴팁을 해당 아이템 위치에서 띄우기 위한 타겟 계산
-  const errorTargetValue = React.useMemo(() => {
-    if (!isError) return null;
-
-    // 1) 사용자가 최근 조작한 아이템이 등록되어 있으면 해당 아이템 우선
-    if (lastInteractedValue && registeredItems[lastInteractedValue]) {
-      return lastInteractedValue;
-    }
-
-    // 2) 최근 조작한 아이템이 없는 경우 선택된 목록 중 등록된 유효 아이템
-    if (values.length > 0) {
-      const validSelected = values.filter((v) => registeredItems[v]);
-      if (validSelected.length > 0) {
-        return validSelected[validSelected.length - 1];
-      }
-    }
-
-    // 3) 선택된 항목이 없으면 null (그룹 레벨에서 노출)
-    return null;
-  }, [isError, lastInteractedValue, registeredItems, values]);
-
-  const shouldShowGroupError = isError && !errorTargetValue;
-
   const contextValue = React.useMemo(
     () => ({
       values,
       required,
       disabled,
       error: isError,
-      errorMsg: resolvedErrorMsg,
-      errorPs,
-      errorPortal,
-      errorTargetValue,
       variant,
       size,
       color,
@@ -626,23 +588,7 @@ function CheckboxGroup({
       toggleValue,
       registerItem,
     }),
-    [
-      color,
-      disabled,
-      errorPortal,
-      errorPs,
-      errorTargetValue,
-      icon,
-      isError,
-      isItemChecked,
-      registerItem,
-      required,
-      resolvedErrorMsg,
-      size,
-      toggleValue,
-      values,
-      variant,
-    ]
+    [color, disabled, icon, isError, isItemChecked, registerItem, required, size, toggleValue, values, variant]
   );
 
   return (
@@ -661,8 +607,8 @@ function CheckboxGroup({
         >
           {children}
         </div>
-        {shouldShowGroupError && (
-          <ErrorMsg aria-live="polite" show={true} position={errorPs} portal={errorPortal} id={errorId}>
+        {isError && (
+          <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
             {resolvedErrorMsg}
           </ErrorMsg>
         )}
@@ -697,16 +643,6 @@ function CheckboxGroupItem({ value, selectAll = false, ...props }: CheckboxGroup
 
   const isChecked = context.isItemChecked(value, selectAll);
 
-  const isErrorTarget = Boolean(context.error && context.errorTargetValue === value);
-  const isSelfError = Boolean(props.error);
-  const shouldShowErrorMsg = props.showErrorMsg ?? (isSelfError || isErrorTarget);
-
-  const resolvedErrorMsg =
-    (isSelfError && props.errorMsg ? props.errorMsg : undefined) ?? context.errorMsg ?? props.errorMsg;
-  const resolvedErrorPs =
-    (isSelfError && props.errorPs ? props.errorPs : undefined) ?? context.errorPs ?? props.errorPs;
-  const resolvedErrorPortal = props.errorPortal ?? context.errorPortal;
-
   return (
     <Checkbox
       {...props}
@@ -717,10 +653,7 @@ function CheckboxGroupItem({ value, selectAll = false, ...props }: CheckboxGroup
       required={context.required || props.required}
       disabled={context.disabled || props.disabled}
       error={context.error || props.error}
-      showErrorMsg={shouldShowErrorMsg}
-      errorMsg={resolvedErrorMsg}
-      errorPs={resolvedErrorPs}
-      errorPortal={resolvedErrorPortal}
+      showErrorMsg={false}
       checked={isChecked}
       onCheckedChange={(checked) => {
         context.toggleValue(value, checked, selectAll);
