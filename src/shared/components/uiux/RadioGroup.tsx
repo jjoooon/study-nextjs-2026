@@ -15,6 +15,12 @@ import { ErrorMsg } from '@common/ErrorMsg';
 const RadioGroupContext = React.createContext<{
   /** 에러 상태 여부 */
   error?: boolean;
+  /** 에러 안내 메시지 */
+  errorMsg?: React.ReactNode;
+  /** 에러 안내 위치 */
+  errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
+  /** 에러 메시지 포탈 여부 */
+  errorPortal?: boolean;
   /** 필수 선택 여부 */
   required?: boolean;
   /** 비활성화 여부 */
@@ -31,8 +37,13 @@ const RadioGroupContext = React.createContext<{
   size?: 'xl' | 'lg' | 'md' | 'sm';
   /** 아이템 색상 */
   color?: 'primary' | 'info';
+  /** 아이템 등록/해제 핸들러 */
+  registerItem?: (value: string) => () => void;
 }>({
   error: false,
+  errorMsg: undefined,
+  errorPs: undefined,
+  errorPortal: undefined,
   required: false,
   disabled: false,
   selectedValue: undefined,
@@ -41,6 +52,7 @@ const RadioGroupContext = React.createContext<{
   variant: undefined,
   size: undefined,
   color: undefined,
+  registerItem: undefined,
 });
 
 const radioGroupItemVariants = cva(
@@ -368,9 +380,17 @@ const RadioGroup = React.forwardRef<
     const isTabGroup = variant === 'tab' || variant === 'folderTab';
 
     const [internalValue, setInternalValue] = React.useState<string | undefined>(defaultValue);
+    const [registeredItems, setRegisteredItems] = React.useState<string[]>([]);
     const isControlled = value !== undefined;
     const selectedValue = isControlled ? value : internalValue;
     const groupError = Boolean(error);
+
+    const registerItem = React.useCallback((itemVal: string) => {
+      setRegisteredItems((prev) => (prev.includes(itemVal) ? prev : [...prev, itemVal]));
+      return () => {
+        setRegisteredItems((prev) => prev.filter((v) => v !== itemVal));
+      };
+    }, []);
 
     const handleValueChange = React.useCallback(
       (nextValue: string) => {
@@ -382,10 +402,19 @@ const RadioGroup = React.forwardRef<
       [isControlled, onValueChange]
     );
 
+    // 선택된 아이템이 존재하고 등록되어 있는 경우 해당 아이템에서 에러 툴팁을 렌더링하므로 루트에서는 미노출
+    const hasItemErrorTarget = Boolean(
+      groupError && selectedValue && registeredItems.includes(selectedValue)
+    );
+    const shouldShowGroupError = groupError && !hasItemErrorTarget;
+
     return (
       <RadioGroupContext.Provider
         value={{
           error: groupError,
+          errorMsg,
+          errorPs,
+          errorPortal,
           required: groupRequired,
           disabled: groupDisabled,
           selectedValue: selectedValue ?? undefined,
@@ -394,6 +423,7 @@ const RadioGroup = React.forwardRef<
           variant,
           size,
           color,
+          registerItem,
         }}
       >
         <div className={cn('relative', width === 'full' ? 'w-full' : 'w-auto')}>
@@ -412,7 +442,7 @@ const RadioGroup = React.forwardRef<
             {...props}
             ref={ref}
           />
-          {groupError && (
+          {shouldShowGroupError && (
             <ErrorMsg aria-live="polite" show={true} position={errorPs} portal={errorPortal} id={errorId}>
               {errorMsg}
             </ErrorMsg>
@@ -446,6 +476,15 @@ interface RadioGroupItemExtraProps extends VariantProps<typeof radioGroupItemVar
    * @default 'bl'
    */
   errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
+  /**
+   * 에러 메시지 포탈 렌더링 여부
+   * @default false
+   */
+  errorPortal?: boolean;
+  /**
+   * 에러 메시지 렌더링 강제 여부
+   */
+  showErrorMsg?: boolean;
 }
 
 /**
@@ -465,14 +504,19 @@ const RadioGroupItem = React.forwardRef<
       width,
       children,
       error = false,
-      errorMsg: _errorMsg = '선택은 필수입니다.',
-      errorPs: _errorPs = 'bl',
+      errorMsg,
+      errorPs,
+      errorPortal,
+      showErrorMsg,
       ...props
     },
     ref
   ) => {
     const {
       error: groupError,
+      errorMsg: groupErrorMsg,
+      errorPs: groupErrorPs,
+      errorPortal: groupErrorPortal,
       required: groupRequired,
       disabled: groupDisabled,
       selectedValue,
@@ -481,7 +525,14 @@ const RadioGroupItem = React.forwardRef<
       variant: groupVariant,
       size: groupSize,
       color: groupColor,
+      registerItem,
     } = React.useContext(RadioGroupContext);
+
+    React.useEffect(() => {
+      if (props.value && registerItem) {
+        return registerItem(props.value);
+      }
+    }, [props.value, registerItem]);
 
     const resolvedVariant = variant ?? groupVariant ?? 'default';
     const resolvedSize = size ?? groupSize ?? 'lg';
@@ -494,7 +545,19 @@ const RadioGroupItem = React.forwardRef<
     const isTabBadge = resolvedVariant === 'tabBadge';
     const generatedId = React.useId();
     const radioId = props.id || generatedId;
-    const isError = error || groupError;
+    const errorId = React.useId();
+
+    const isSelfError = Boolean(error);
+    const isErrorTarget = Boolean(groupError && selectedValue && selectedValue === props.value);
+    const isError = isSelfError || Boolean(groupError);
+    const shouldShowError = showErrorMsg ?? (isSelfError || isErrorTarget);
+
+    const resolvedErrorMsg =
+      (isSelfError && errorMsg ? errorMsg : undefined) ?? groupErrorMsg ?? errorMsg ?? '선택은 필수입니다.';
+    const resolvedErrorPs =
+      (isSelfError && errorPs ? errorPs : undefined) ?? groupErrorPs ?? errorPs ?? 'bl';
+    const resolvedErrorPortal = errorPortal ?? groupErrorPortal;
+
     const isRequired = Boolean(props.required || groupRequired);
     const isDisabled = Boolean(props.disabled || groupDisabled);
     const indicatorSize = resolvedSize === 'sm' ? 'md' : resolvedSize === 'xl' ? 'lg' : resolvedSize;
@@ -521,6 +584,7 @@ const RadioGroupItem = React.forwardRef<
           ref={ref}
           id={radioId}
           onClick={handleClick}
+          aria-describedby={shouldShowError ? errorId : undefined}
           className={cn(
             radioGroupItemVariants({ variant: resolvedVariant, size: resolvedSize, color: resolvedColor, width }),
             resolvedVariant === 'button' && resolvedSize === 'xl'
@@ -588,6 +652,18 @@ const RadioGroupItem = React.forwardRef<
           >
             {children}
           </label>
+        )}
+
+        {shouldShowError && (
+          <ErrorMsg
+            aria-live="polite"
+            show={true}
+            position={resolvedErrorPs}
+            portal={resolvedErrorPortal}
+            id={errorId}
+          >
+            {resolvedErrorMsg}
+          </ErrorMsg>
         )}
       </div>
     );
