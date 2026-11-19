@@ -1585,12 +1585,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
             {comparedPlanKeys.length >= 2 ? (
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button
-                    type="button"
-                    variant={'contained'}
-                    color={'primary'}
-                    size={'xl'}
-                  >
+                  <Button type="button" variant={'contained'} color={'primary'} size={'xl'}>
                     설계생성
                     <ArrowNext size={16} />
                   </Button>
@@ -1612,12 +1607,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         ))}
                       </Gcol>
                     )}
-                    <Button
-                      variant={'contained'}
-                      color={'primary'}
-                      size={'lg'}
-                      onClick={() => handleGeneratePlan()}
-                    >
+                    <Button variant={'contained'} color={'primary'} size={'lg'} onClick={() => handleGeneratePlan()}>
                       모두 설계생성
                     </Button>
                   </Grid>
