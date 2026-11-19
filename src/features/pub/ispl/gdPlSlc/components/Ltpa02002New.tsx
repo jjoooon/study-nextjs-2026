@@ -437,6 +437,14 @@ export function Ltpa02002({ userType }: { userType: string }) {
   const selectedTags = getSelectedTags();
 
   // 5. Helper Functions
+  const handleGeneratePlan = (planKey?: string) => {
+    if (planKey) {
+      console.log('설계생성 실행 (플랜 키):', planKey);
+    } else {
+      console.log('모두 설계생성 실행 (플랜 목록):', comparedPlanKeys);
+    }
+  };
+
   const getSelectedPlanInfo = () => {
     if (!selectedPlanKey) return null;
     const [productId, planIndex] = selectedPlanKey.split('-').map(Number);
@@ -1574,36 +1582,64 @@ export function Ltpa02002({ userType }: { userType: string }) {
               {comparedPlanKeys.length}건 추천설계비교
             </Button>
 
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  type="button"
-                  variant={'contained'}
-                  color={'primary'}
-                  size={'xl'}
-                  disabled={comparedPlanKeys.length === 0}
-                >
-                  설계생성
-                  <ArrowNext size={16} />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
-                <Grid className="w-full grid-cols-[1fr] gap-2">
-                  {comparedPlanKeys && (
-                    <Gcol gap={1}>
-                      {comparedPlanKeys.map((planKey, idx) => (
-                        <Button key={planKey} variant={'outlined'} color={'gray'} size={'lg'}>
-                          <b className="text-[var(--color-primary-50)]">{idx + 1}번</b> 설계생성
-                        </Button>
-                      ))}
-                    </Gcol>
-                  )}
-                  <Button variant={'contained'} color={'primary'} size={'lg'}>
-                    모두 설계생성
+            {comparedPlanKeys.length >= 2 ? (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    type="button"
+                    variant={'contained'}
+                    color={'primary'}
+                    size={'xl'}
+                  >
+                    설계생성
+                    <ArrowNext size={16} />
                   </Button>
-                </Grid>
-              </PopoverContent>
-            </Popover>
+                </PopoverTrigger>
+                <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
+                  <Grid className="w-full grid-cols-[1fr] gap-2">
+                    {comparedPlanKeys && (
+                      <Gcol gap={1}>
+                        {comparedPlanKeys.map((planKey, idx) => (
+                          <Button
+                            key={planKey}
+                            variant={'outlined'}
+                            color={'gray'}
+                            size={'lg'}
+                            onClick={() => handleGeneratePlan(planKey)}
+                          >
+                            <b className="text-[var(--color-primary-50)]">{idx + 1}번</b> 설계생성
+                          </Button>
+                        ))}
+                      </Gcol>
+                    )}
+                    <Button
+                      variant={'contained'}
+                      color={'primary'}
+                      size={'lg'}
+                      onClick={() => handleGeneratePlan()}
+                    >
+                      모두 설계생성
+                    </Button>
+                  </Grid>
+                </PopoverContent>
+              </Popover>
+            ) : (
+              <Button
+                type="button"
+                variant={'contained'}
+                color={'primary'}
+                size={'xl'}
+                disabled={comparedPlanKeys.length === 0}
+                onClick={() => {
+                  if (comparedPlanKeys.length === 1) {
+                    handleGeneratePlan(comparedPlanKeys[0]);
+                  }
+                }}
+              >
+                설계생성
+                <ArrowNext size={16} />
+              </Button>
+            )}
           </Grow>
           {isFilterOptionOpen && <div className="absolute w-full h-full top-0 left-0 z-10 backdrop-blur-xs"></div>}
         </>
