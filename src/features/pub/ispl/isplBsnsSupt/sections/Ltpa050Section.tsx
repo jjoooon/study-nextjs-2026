@@ -84,7 +84,7 @@ const DummyDataA02: DummyDataTypeA02[] = [
     field5: 1200,
   },
   {
-    id: 1,
+    id: 2,
     field1: '김현화',
     field2: 30,
     field3: '회사사무직종사자',
@@ -92,7 +92,7 @@ const DummyDataA02: DummyDataTypeA02[] = [
     field5: 1200,
   },
   {
-    id: 1,
+    id: 3,
     field1: '김현화',
     field2: 30,
     field3: '회사사무직종사자',
@@ -100,7 +100,7 @@ const DummyDataA02: DummyDataTypeA02[] = [
     field5: 1200,
   },
   {
-    id: 1,
+    id: 4,
     field1: '김현화',
     field2: 30,
     field3: '회사사무직종사자',
@@ -108,7 +108,23 @@ const DummyDataA02: DummyDataTypeA02[] = [
     field5: 1200,
   },
   {
-    id: 1,
+    id: 5,
+    field1: '김현화',
+    field2: 30,
+    field3: '회사사무직종사자',
+    field4: '1급',
+    field5: 1200,
+  },
+  {
+    id: 6,
+    field1: '김현화',
+    field2: 30,
+    field3: '회사사무직종사자',
+    field4: '1급',
+    field5: 1200,
+  },
+  {
+    id: 7,
     field1: '김현화',
     field2: 30,
     field3: '회사사무직종사자',
@@ -1267,7 +1283,6 @@ export default function Ltpa050Section() {
                       columnDefs={columnDefsA01}
                       defaultColDef={{ sortable: true, resizable: true }}
                       domLayout="autoHeight"
-                      headerHeight={40}
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
                     />
@@ -1463,7 +1478,6 @@ export default function Ltpa050Section() {
                       domLayout="autoHeight"
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
-                      headerHeight={40}
                     />
                   </div>
 

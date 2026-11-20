@@ -13,6 +13,7 @@ import {
 import { RichSelectModule } from 'ag-grid-enterprise';
 import { TreeDataModule } from 'ag-grid-enterprise';
 import { RowGroupingModule } from 'ag-grid-enterprise';
+import { hanwhaStyleTheme } from '@/shared/styles/gridTheme';
 
 ModuleRegistry.registerModules([
   AllCommunityModule,

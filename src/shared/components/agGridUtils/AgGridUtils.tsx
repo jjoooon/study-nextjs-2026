@@ -4125,6 +4125,92 @@ export function useAgSelectHoverEdit(options?: UseAgSelectHoverEditOptions) {
 /** 호환 별칭 */
 export const useAgSelectAutoEdit = useAgSelectHoverEdit;
 
+/**
+ * 툴팁 셀 고정 배치 옵션
+ */
+export interface FixTooltipToCellOptions {
+  /** 툴팁이 표시될 기준 위치 ('bottom' | 'top', 기본값: 'bottom') */
+  placement?: 'top' | 'bottom';
+  /** 셀과의 간격 (px 단위, 기본값: 4) */
+  offset?: number;
+}
+
+/**
+ * [공통 유틸] AG Grid 툴팁의 위치를 마우스 커서가 아닌 대상 셀(.ag-cell) 위치에 고정시키는 postProcessPopup 핸들러
+ *
+ * - 마우스 좌표 대신 대상 셀의 위치(BoundingClientRect)를 기준으로 툴팁을 고정합니다.
+ * - 하단 공간이 부족하면 자동으로 상단으로 플립(flip)되어 툴팁이 잘리지 않습니다.
+ *
+ * @example
+ * <AgGridReact
+ *   postProcessPopup={fixTooltipToCellPosition}
+ *   // ...
+ * />
+ */
+export function fixTooltipToCellPosition(params: PostProcessPopupParams): void {
+  fixTooltipToCellWithOptions(params, { placement: 'bottom', offset: 4 });
+}
+
+/**
+ * placement('top' | 'bottom') 및 offset을 커스텀 지정할 수 있는 postProcessPopup 생성 팩토리 함수
+ *
+ * @example
+ * <AgGridReact
+ *   postProcessPopup={createCellTooltipPositionHandler({ placement: 'top', offset: 6 })}
+ *   // ...
+ * />
+ */
+export function createCellTooltipPositionHandler(options: FixTooltipToCellOptions = {}) {
+  return (params: PostProcessPopupParams) => {
+    fixTooltipToCellWithOptions(params, options);
+  };
+}
+
+function fixTooltipToCellWithOptions(
+  params: PostProcessPopupParams,
+  options: FixTooltipToCellOptions = {}
+): void {
+  if (params.type !== 'tooltip') return;
+
+  const cellEl =
+    params.eventSource instanceof HTMLElement
+      ? (params.eventSource.closest('.ag-cell') as HTMLElement | null)
+      : null;
+
+  if (!cellEl || !params.ePopup) return;
+
+  const { placement = 'bottom', offset = 4 } = options;
+
+  const cellRect = cellEl.getBoundingClientRect();
+  const parentEl = (params.ePopup.offsetParent as HTMLElement | null) ?? document.body;
+  const parentRect = parentEl.getBoundingClientRect();
+
+  const relativeLeft = cellRect.left - parentRect.left;
+  const popupHeight = params.ePopup.offsetHeight || 30;
+
+  let relativeTop: number;
+
+  if (placement === 'top') {
+    relativeTop = cellRect.top - parentRect.top - popupHeight - offset;
+  } else {
+    // bottom 배치: 화면 하단 여유 공간이 부족하면 상단으로 자동 플립
+    const spaceBelow = window.innerHeight - cellRect.bottom;
+    if (spaceBelow < popupHeight + offset && cellRect.top > popupHeight + offset) {
+      relativeTop = cellRect.top - parentRect.top - popupHeight - offset;
+    } else {
+      relativeTop = cellRect.bottom - parentRect.top + offset;
+    }
+  }
+
+  // 화면 우측 넘침 방지
+  const popupWidth = params.ePopup.offsetWidth || 150;
+  const maxLeft = parentRect.width - popupWidth - 10;
+  const clampedLeft = Math.max(10, Math.min(relativeLeft, maxLeft));
+
+  params.ePopup.style.left = `${clampedLeft}px`;
+  params.ePopup.style.top = `${relativeTop}px`;
+}
+
 // 클라이언트 환경에서 모듈 로드 시 자동 초기화
 if (typeof window !== 'undefined') {
   initRichSelectPopupAlignObserver();

@@ -3,15 +3,17 @@
  */
 'use client';
 
-import { AgGridReact } from 'ag-grid-react';
 import type { CellSelectionOptions, ProcessCellForClipboard } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
 import { defaultProcessCellForClipboard } from '@/shared/lib/agGridPub';
+import { hanwhaStyleTheme } from '@/shared/styles/gridTheme';
 
 /**
  * AG-Grid 전역 기본 설정
  * 프로젝트 전체의 AgGridReact 컴포넌트에 공통 defaultProps를 적용합니다.
  */
 interface AgGridReactPropsWithDefault {
+  theme?: unknown;
   suppressDragLeaveHidesColumns?: boolean;
   suppressGroupRowsSticky?: boolean;
   cellSelection?: boolean | CellSelectionOptions;

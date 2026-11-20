@@ -337,6 +337,7 @@ const Ltpz00502 = ({ onClose, noticePlan = defaultNoticePlan }: Ltpz00502Props) 
   const [accumOptionValue, setAccumOptionValue] = React.useState<string>('option1');
   const [rowData, setRowData] = React.useState<DummyDataType2[]>(DummyData2);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isEmpty, setIsEmpty] = React.useState<boolean>(false);
   const gridApiRef = React.useRef<GridApi<DummyDataType2> | null>(null);
 
   React.useEffect(() => {
@@ -666,6 +667,14 @@ const Ltpz00502 = ({ onClose, noticePlan = defaultNoticePlan }: Ltpz00502Props) 
                       >
                         로딩 토글 ({isLoading ? 'ON' : 'OFF'})
                       </Button>
+                      <Button
+                        size="xs"
+                        variant="outlined"
+                        color={isEmpty ? 'primary' : 'gray'}
+                        onClick={() => setIsEmpty((prev) => !prev)}
+                      >
+                        빈데이터 토글 ({isEmpty ? 'ON' : 'OFF'})
+                      </Button>
                       <Typo variant={'body-md'}>단위: 원</Typo>
                     </Grow>
                   </Grow>
@@ -678,7 +687,7 @@ const Ltpz00502 = ({ onClose, noticePlan = defaultNoticePlan }: Ltpz00502Props) 
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       noRowsOverlayComponentParams={{ message: '조회정보가 없습니다.' }}
-                      rowData={rowData}
+                      rowData={isEmpty ? [] : rowData}
                       columnDefs={columnDefs2}
                       onCellValueChanged={handleCellValueChanged}
                       onGridReady={(params) => {

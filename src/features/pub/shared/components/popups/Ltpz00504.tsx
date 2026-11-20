@@ -84,13 +84,43 @@ const expectedUwLimitedCoverageData: ExpectedUwAmountRow[] = [
     coverageName: '보험료압입명제대상보장(8대사유)',
     amount: '-',
   },
+  {
+    id: 3,
+    coverageName: '보험료압입명제대상보장(8대사유)보험료압입명제대상보장(8대사유)',
+    amount: '10,000',
+  },
+  {
+    id: 4,
+    coverageName: '보험료압입명제대상보장(8대사유)',
+    amount: '-',
+  },
+  {
+    id: 5,
+    coverageName: '보험료압입명제대상보장(8대사유)보험료압입명제대상보장(8대사유)',
+    amount: '10,000',
+  },
+  {
+    id: 6,
+    coverageName: '보험료압입명제대상보장(8대사유)',
+    amount: '-',
+  },
 ];
 
 // 보험료 할증
-const expectedUwPremiumSurchargeData: ExpectedUwSingleRow[] = [];
+const expectedUwPremiumSurchargeData: ExpectedUwSingleRow[] = [
+  {
+    id: 1,
+    coverageName: '보험료압입명제대상보장(8대사유)보험료압입명제대상보장(8대사유)',
+  },
+  {
+    id: 2,
+    coverageName: '보험료압입명제대상보장(8대사유)',
+  },
+];
 
 //부 담보(부위/질병)
 const expectedUwExclusionCoverageData: ExpectedUw03Row[] = [];
+
 const title1 = "<b>현재 설계상품</b>내에서 <b>'인수'</b>예상 고지유형";
 const title2 = "<b>간편고지유형</b>내에서 <b>'인수'</b>예상 고지유형";
 const title3 = "<b>일반고지유형</b>내에서 <b>'인수/할증/부담보/감액'</b>예상 고지유형";

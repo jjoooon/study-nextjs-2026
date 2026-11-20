@@ -104,7 +104,7 @@ export function productNameCellRenderer<
         {badgeConfig
           .filter((conf) => badges.includes(conf.key))
           .map((conf) => (
-            <Badge key={conf.key} variant="dark" color={conf.color} className="w-[3rem]">
+            <Badge key={conf.key} variant="dark" color={conf.color} className="w-[3rem] min-w-[3rem]">
               {conf.key}
             </Badge>
           ))}
@@ -115,11 +115,11 @@ export function productNameCellRenderer<
   return (
     <Grow className={`h-full ${data.badge ? 'pr-1.5' : 'pr-0'}`} placement="bwc">
       {displayOrder ? (
-        <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">
+        <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] min-w-[3rem] justify-center">
           <span>{displayOrder}</span>
         </Grow>
       ) : (
-        <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center"></Grow>
+        <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] min-w-[3rem] justify-center"></Grow>
       )}
 
       {!data.isDuplicate ? (

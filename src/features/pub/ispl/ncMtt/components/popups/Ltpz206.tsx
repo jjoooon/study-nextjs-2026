@@ -532,7 +532,7 @@ const Ltpz206 = () => {
               </Button>
             </Grow>
 
-            <TableFold className="h-full grid-rows-[auto_minmax(0,1fr)] overflow-y-hidden">
+            <TableFold className="h-full">
               <TableFoldHead title="선택설계">
                 <Grow>
                   <Button color="gray" variant="outlined" onClick={handleDeleteRow}>

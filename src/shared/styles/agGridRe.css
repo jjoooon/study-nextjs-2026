@@ -1,6 +1,13 @@
+/* ==========================================================================
+ * AG-Grid 전역 공용 테마 스타일 (ag-theme-alpine 기반)
+ * gridTheme.ts(hanwhaStyleTheme)의 디자인 시스템을 CSS 변수 및 클래스로 완전 통합
+ * ========================================================================== */
+
 .ag-theme-alpine {
   width: 100%;
   height: 100%;
+
+  /* 1. 폰트 및 기본 컬러 */
   --ag-font-family: var(
     --ag-cell-font-family,
     'NotoSansKRNumber',
@@ -12,9 +19,82 @@
   );
   --ag-cell-font-family: 'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', Arial, sans-serif;
   --ag-header-font-family: 'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', Arial, sans-serif;
+  --ag-font-size: 1.3rem;
+  --ag-foreground-color: var(--color-gray-100);
+  --ag-data-color: var(--color-warning-30); 
+  --ag-background-color: var(--color-gray-5);
+
+  /* 2. 외곽 테두리 제거 */
+  --ag-wrapper-border: none;
+  --ag-wrapper-border-radius: 0;
+
+  /* 3. 헤더 스타일 */
+  --ag-header-background-color:  var(--color-gray-5);
+  --ag-header-foreground-color: var(--color-gray-100);
+  --ag-header-height: 3rem;
+  --ag-header-column-separator-display: block;
+  --ag-header-column-separator-color: var(--color-gray-10);
+  --ag-header-column-resize-handle-color: transparent;
+  --ag-header-font-weight: bold;
+
+  /* 4. 행(Row) 및 높이/배경 */
+  --ag-row-height: 3rem;
+  --ag-auto-height-min-body-height: 0;
+  --ag-odd-row-background-color: var(--color-gray-5);
+  --ag-row-hover-color: var(--color-secondary-10);
+  --ag-selected-row-background-color: transparent;
+
+  /* 5. 셀 간격 및 테두리 */
+  --ag-cell-horizontal-padding: 0.4rem;
+  --ag-border-color: var(--color-gray-10);
+
+  /* 가로선 (행 구분선) */
+  --ag-borders-rows: solid 1px var(--color-gray-10);
+  --ag-row-border-color: var(--color-gray-10);
+  --ag-row-border-style: solid;
+  --ag-row-border: none;
+  --ag-row-border-width: 0;
+  /* 세로선 (셀/컬럼 간 구분선) */
+  --ag-borders-columns: solid 1px var(--color-gray-10);
+  --ag-column-border-color: var(--color-gray-10);
+  --ag-column-border-style: solid;
+  --ag-column-border-width: 1px;
+
+
+  /* 6. 체크박스 & 포인트 컬러 (오렌지 톤) */
+  --ag-accent-color: #ff5c00;
+  --ag-checkbox-checked-color: #ff5c00;
+  --ag-checkbox-background-color: #ffffff;
+  --ag-range-selection-border-color: #ff5c00;
+
+  /* 7. 에디팅 포커스 */
+  --ag-focus-shadow: none;
+  --ag-input-focus-border-color: #111111;
+  --ag-data-background-color:  var(--color-gray-0);
+  --ag-focus-shadow: none;   
+
+    /* 드래그 선택 영역 배경색 (반투명 오렌지 톤) */
+  --ag-range-selection-background-color: var(--color-warning-5);
+  /* 드래그 선택 영역 테두리선 */
+  --ag-range-selection-border-color: var(--color-warning-30);
+  --ag-range-selection-border-style: solid;
+  /* 연속 채우기(Fill Handle) 끌어당길 때 하이라이트 */
+  --ag-range-selection-highlight-color: rgba(255, 92, 46, 0.3);
+
+  /* 로딩 */
+  --ag-modal-overlay-background-color:#fff;
+  --ag-icon-size: 1.6rem;
+
+  /* 8. 고정 행 (Pinned Rows / 합계 영역) 스타일 변수 */
+  --ag-row-pinned-background-color: var(--color-primary-10);
+  --ag-row-pinned-border-color: var(--color-primary-50);
+  --ag-borders-pinned-rows: 1px solid var(--color-primary-50);
+  --ag-pinned-bottom-bg: var(--color-primary-10);
+  --ag-pinned-bottom-border-color: var(--color-primary-50);
+  --ag-pinned-bottom-color: var(--color-primary-50);
 }
 
-/* ===== AG Grid 전역 애니메이션 & CSS 트랜지션 완전 제거 (셀/행 높이 모션 차단) ===== */
+/* ===== 전역 애니메이션 완전 제거 (셀/행 높이 모션 차단) ===== */
 .ag-theme-alpine,
 .ag-theme-alpine *,
 .ag-theme-alpine *::before,
@@ -28,676 +108,138 @@
   transition: none !important;
   animation: none !important;
 }
-
-/* AG Grid 및 셀 전용 숫자 폰트(Noto Sans KR) 클래스 */
-.num-font,
-.font-notosans,
-.ag-theme-alpine .num-font,
-.ag-theme-alpine .font-notosans,
-.ag-cell.num-font,
-.ag-cell.font-notosans {
-  font-family: 'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', sans-serif !important;
-}
-.ag-theme-alpine .ag-root {
-  background-color: var(--color-gray-5);
-}
-.ag-theme-alpine.th-s {
-  --ag-header-height: 3rem;
-}
-
-.ag-body-viewport {
-  background-color: var(--color-gray-5);
-}
-.ag-react-container > div {
-  background-color: transparent !important;
-}
-.ag-overlay {
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #fff;
-  /* background-color: rgb(255, 255, 255); */
-}
-
-.ag-root-wrapper {
-  border-radius: 0 !important;
-  border-left: 0;
-  border-right: 0;
+/* ===== 1. 외곽 래퍼 및 전체 프레임 ===== */
+.ag-theme-alpine {
   border-top: 0.2rem solid #000;
-  overflow: visible !important;
-}
-.ag-root-wrapper .ag-overlay-loading-wrapper > div {
-  background-color: transparent !important;
-}
-.ag-center-cols-container > .ag-row-odd {
-  background-color: transparent;
 }
 
-.ag-overlay-loading-center {
-  box-shadow: none;
-  border: 0;
+.ag-theme-alpine .ag-root-wrapper {
+  border-radius: 0 !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-top: none !important;
+  border-bottom: 1px solid var(--color-gray-15) !important;
 }
-.ag-overlay-loading-center .ag-loading-icon {
-  display: none;
+
+/* 데이터 없는 하단 빈 영역 배경색 */
+.ag-theme-alpine .ag-root,
+.ag-theme-alpine .ag-body-viewport {
+  background-color: var(--color-gray-5);
 }
-.ag-overlay-loading-center .ag-loading-text {
-  display: none;
+
+/* ===== 2. 헤더 세로/가로 경계선 및 스타일 ===== */
+.ag-theme-alpine .ag-header {
+  border-bottom: 1px solid var(--color-gray-10) !important;
+  background-color: var(--color-gray-5) !important;
 }
-/* .ag-row-odd {
-  background-color: transparent;
+
+/* 일반 헤더 셀 및 병합된 그룹 헤더 셀의 세로 구분선 */
+.ag-theme-alpine .ag-header-cell,
+.ag-theme-alpine .ag-header-group-cell {
+  border-right: 1px solid var(--color-gray-10) !important;
+  padding-left: 0; 
+  padding-right: 0;
+}
+
+/* 병합된 그룹 헤더 셀의 하단 가로 구분선 */
+/* .ag-theme-alpine .ag-header-group-cell {
+  border-bottom: 1px solid var(--color-gray-10) !important;
 } */
 
-/* ===== Row Span Cell ===== */
-/* 병합 셀(Row Span) 수직 중앙 정렬 및 배경색 지정 */
-.ag-row .ag-cell.row-span-cell,
-.ag-cell.row-span-cell,
-.ag-theme-alpine .ag-cell.row-span-cell,
-.ag-theme-alpine .ag-spanned-cell-wrapper,
-.ag-theme-alpine .ag-spanned-cell {
-  background-color: #fff !important;
-}
-
-.ag-theme-alpine .ag-spanned-cell.editable-cell {
-  background-color: var(--color-information-5) !important;
-}
-
-.ag-row .ag-cell.row-span-cell,
-.ag-cell.row-span-cell,
-.ag-theme-alpine .ag-cell.row-span-cell,
-.ag-theme-alpine .ag-spanned-cell {
-  /* display: flex !important;
-  align-items: center !important;
-  justify-content: center !important; */
-  z-index: 2 !important;
-}
-.ag-row.ag-row-even .ag-cell.row-span-cell,
-.ag-row.ag-row-odd .ag-cell.row-span-cell {
-  background-color: #fff !important;
-}
-
-/* header */
-.ag-header {
-  height: 3rem;
-}
-
-.ag-header-cell-resize {
-  background: none;
-}
-
-.ag-header-cell-resize:after {
-  opacity: 0 !important;
+/* 헤더 마지막 셀의 우측 불필요한 보더 제거 */
+.ag-theme-alpine .ag-header-cell.ag-column-last,
+.ag-theme-alpine .ag-header-group-cell.ag-column-last {
+  border-right: none !important;
 }
 
 .ag-header-cell-label,
 .ag-header-group-cell-label {
-  justify-content: center;
-  margin: 0 auto !important;
-}
-.ag-header-group-cell.ag-column-first.ag-header-group-cell-with-group {
-  border-right: 1px solid var(--color-gray-10) !important;
-}
-.ag-header-cell.ag-column-last {
-  border-right: 0 !important;
-}
-.ag-header-group-cell.ag-column-last {
-  border-right: 0 !important;
-}
-.ag-header-group-cell {
-  border-right: 1px solid var(--color-gray-10) !important;
-}
-
-.ag-header-cell {
-  font-weight: bold;
-  text-align: right;
-  color: #000;
-  font-size: 1.3rem;
-  font-weight: 700;
-  padding: 0 !important;
-  border-right: 1px solid var(--color-gray-10) !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.ag-header-row {
-  background: var(--color-gray-5) !important;
-}
-
-.ag-theme-alpine .ag-header-group-cell.ag-header-left-divider,
-.ag-theme-alpine .ag-header-cell.ag-header-left-divider {
-  border-left: 0.1rem solid var(--color-gray-10) !important;
-}
-
-.ag-theme-alpine .ag-header-group-cell.ag-header-right-divider,
-.ag-theme-alpine .ag-header-cell.ag-header-right-divider {
-  border-right: 0.1rem solid var(--color-gray-10) !important;
-}
-
-.ag-cell {
-  border: 0;
-  border-right: 1px solid var(--color-gray-10);
-  padding: 0 0.6rem !important;
-  font-size: 1.3rem !important;
-  min-height: 2.9rem;
-  /* display: inline-flex; */
-  align-items: center;
-  width: 100%;
-}
-
-.ag-cell-wrapper {
-  width: 100%;
-}
-
-.ag-cell-focus:not(.ag-cell-range-selected):focus-within,
-.ag-cell-range-single-cell,
-.ag-cell-range-single-cell.ag-cell-range-handle,
-.ag-context-menu-open .ag-cell-focus:not(.ag-cell-range-selected),
-.ag-context-menu-open .ag-full-width-row.ag-row-focus .ag-cell-wrapper.ag-row-group,
-.ag-full-width-row.ag-row-focus:focus .ag-cell-wrapper.ag-row-group {
-  border: 0;
-}
-
-.ag-row.ag-row-focus .ag-cell,
-.ag-row.ag-row-focus .editable-cell,
-.ag-row.ag-row-focus {
-  background-color: var(--color-warning-10);
-}
-
-.ag-row.ag-row-focus .ag-cell.ag-cell-focus {
-  background-color: var(--color-warning-15);
-}
-
-.ag-row-hover.editable-cell,
-.ag-row-hover.editable-cell .ag-cell,
-.ag-row-hover .ag-cell {
-  background-color: var(--color-gray-10) !important;
-}
-
-.ag-row-hover.ag-row-focus.editable-cell,
-.ag-row-hover.ag-row-focus.editable-cell .ag-cell,
-.ag-row-hover.ag-row-focus .ag-cell {
-  background-color: #e4dfc8 !important;
-}
-
-.editable-cell {
-  background: var(--color-information-5);
-}
-
-/* .editor-select .pr-4 {
-  padding-right: 0;
-} */
-/* .editor-select svg {
-  display: none;
-} */
-/* .ag-row-selected .editor-select .pr-4 {
-  padding-right: var(--spacing-4);
-} */
-.ag-row-selected .editor-select svg {
-  display: block;
-}
-
-/* 
-.editable-cell .editor-select svg {
-  display: block;
-} */
-
-/* .ag-row.ag-row-selected .editable-cell,
-.ag-row-selected {
-  background-color: var(--color-warning-10);
-} */
-.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell {
-  color: var(--color-gray-50);
-}
-.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell button {
-  color: initial;
-}
-.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell button[data-variant='outlined'] span {
-  color: var(--color-primary-50);
-}
-.ag-theme-alpine .ag-row.ag-row-state-true {
-  --color-text-base: var(--color-gray-50);
-}
-
-/* 분할 정렬 */
-.ltpa010-grid .ag-cell[col-id='ag-Grid-SelectionColumn'] {
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-}
-
-.ltpa010-grid .ag-cell[col-id='ag-Grid-SelectionColumn'] .ag-cell-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-
-.ltpa010-grid .ag-cell[col-id='ag-Grid-SelectionColumn'] .ag-selection-checkbox {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.ltpa010-grid .ag-header {
-  height: 6.1rem !important;
-  min-height: 6.1rem !important;
-}
-.ltpa010-grid .ag-header-row,
-.ltpa010-grid .ag-header-cell {
-  height: 6rem !important;
-}
-
-/* 합계 */
-.ag-floating-bottom + .ag-body-horizontal-scroll {
-  border-top: 0.1rem solid var(--color-gray-10);
-  /* background-color: var(--color-primary-10); */
-}
-.ag-floating-bottom,
-.ag-floating-bottom .ag-row {
-  background: var(--color-primary-10) !important;
-  overflow-y: hidden;
-}
-
-.ag-floating-bottom {
-  background: var(--color-primary-10);
-  overflow: hidden !important;
-  border-top: 0.1rem solid var(--color-primary-50);
-}
-
-.ag-floating-bottom + .ag-body-horizontal-scroll.ag-invisible,
-.ag-floating-bottom.ag-invisible + .ag-body-horizontal-scroll,
-.ag-floating-bottom.ag-invisible {
-  border: 0;
-}
-
-.ag-floating-bottom .ag-row-focus {
-  background: var(--color-primary-10);
-}
-
-.ag-theme-alpine ::-webkit-scrollbar {
-  width: 1.5rem !important;
-  height: 1.5rem !important;
-}
-.ag-theme-alpine ::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 0rem;
-}
-.ag-theme-alpine ::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 2rem;
-  border: 0.6rem solid #f1f1f1;
-}
-.ag-theme-alpine ::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
-  border: 0.4rem solid #f1f1f1;
-}
-
-.ag-header-viewport {
-  border-bottom: 0rem solid var(--color-gray-10);
-}
-.ag-header .ag-header-viewport,
-.ag-header-container {
-  background-color: var(--color-gray-10);
-}
-
-/* .ag-theme-alpine{
-  min-height:18rem;
-} */
-.ag-theme-alpine .ag-floating-bottom-container {
-  width: 100%;
-}
-
-.ag-theme-alpine .ag-floating-bottom .ag-row-even .ag-cell:first-child {
-  padding-left: 0.6rem;
-}
-
-.ag-theme-alpine .ag-floating-bottom .ag-row-even .ag-cell {
-  background-color: transparent;
-  font-size: 1.3rem;
-  font-weight: 700;
   padding: 0;
-  color: var(--color-primary-50);
-  border: 0;
+  justify-content: center;
+  margin: 0 auto;
+}
+:where(.ag-header-row):after {
+  background-color: var(--color-gray-5);
+  border-left: 1px solid var(--color-gray-10);
 }
 
-.ag-row-selected:before {
-  background-color: transparent;
+/* ===== 3. 셀(Cell) 및 행(Row) 사이의 경계선 (핵심) ===== */
+/* 셀과 셀 사이의 세로 경계선 (선택 영역 우측 테두리와 충돌 방지) */
+.ag-theme-alpine .ag-cell {
+  border-right: 1px solid var(--color-gray-10) !important;
 }
 
-.ag-theme-alpine .ag-floating-bottom-container .ag-row + .ag-row:last-child {
-  border-top: 0.1rem solid var(--color-primary-50);
+/* 행과 행 사이의 가로 경계선 */
+.ag-theme-alpine .ag-row {
+  border-bottom: 1px solid var(--color-gray-10) !important;
 }
 
-/* .ag-row-selected:before {
-  background-color: var(--color-warning-10);
-} */
-:where(.ag-body-vertical-content-no-gap > div > div > div, .ag-body-vertical-content-no-gap > div > div > div > div)
-  > .ag-row-last {
-  border-bottom-color: var(--color-gray-10);
+/* 내부 셀 컨테이너의 AG Grid 기본 하단 보더(--ag-row-border) 제거하여 겹침/두꺼워짐 방지 */
+.ag-theme-alpine .ag-row > .ag-grid-pinned-left-cells,
+.ag-theme-alpine .ag-row > .ag-grid-pinned-right-cells,
+.ag-theme-alpine .ag-row > .ag-grid-scrolling-cells {
+  border-bottom: none !important;
 }
 
-:where(.ag-ltr) .ag-group-contracted,
-:where(.ag-ltr) .ag-group-expanded,
-:where(.ag-ltr) .ag-row-drag,
-:where(.ag-ltr) .ag-selection-checkbox {
+/* 마지막 셀의 우측 불필요한 보더 제거 (선택 사항) */
+.ag-theme-alpine .ag-cell:last-child {
+  border-right: none;
+}
+
+.ag-theme-alpine .ag-column-last {
+  border-right: none !important;
+}
+
+/* ===== 3-1. 드래그 범위 선택(Range Selection) 테두리 보정 ===== */
+/* 기본 셀의 border-right !important 로 인해 우측 선택선이 가려지는 현상 방지 */
+.ag-theme-alpine .ag-cell.ag-cell-range-right {
+  border-right: 1px solid var(--ag-range-selection-border-color) !important;
+}
+.ag-theme-alpine .ag-cell.ag-cell-range-left {
+  border-left: 1px solid var(--ag-range-selection-border-color) !important;
+}
+.ag-theme-alpine .ag-cell.ag-cell-range-top {
+  border-top: 1px solid var(--ag-range-selection-border-color) !important;
+}
+.ag-theme-alpine .ag-cell.ag-cell-range-bottom {
+  border-bottom: 1px solid var(--ag-range-selection-border-color) !important;
+}
+.ag-theme-alpine .ag-cell.ag-cell-range-single-cell {
+  border: 1px solid var(--ag-range-selection-border-color) !important;
+}
+.ag-theme-alpine .ag-cell-range-selected {
+  border-bottom-color: var(--ag-range-selection-border-color) !important;
+  border-right-color: var(--ag-range-selection-border-color) !important;
+}
+
+/* ===== 3-2. 셀렉션 체크박스 완벽 중앙 정렬 및 우측 여백(보라색 영역) 제거 ===== */
+:where(.ag-ltr) .ag-selection-checkbox,
+.ag-theme-alpine .ag-selection-checkbox {
+  margin: 0 auto !important;
   margin-right: 0 !important;
-}
-
-.ag-selection-checkbox {
-  width: 100%;
-  flex: 1;
-}
-
-.ag-selection-checkbox + .ag-cell-value {
-  display: none;
-}
-
-.ag-input-field {
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-}
-
-.ag-cell-wrapper,
-.ag-cell-value {
-  min-height: 100%;
-  letter-spacing: -0.05rem;
-}
-
-/* 대상 컬럼: 2줄 셀 행 높이 고정 */
-.ag-cell.field02-cell .ag-cell-value {
+  width: 100% !important;
+  flex: 1 !important;
   display: flex !important;
-  flex-direction: column;
-  height: 2.9rem !important;
-}
-
-/* .ag-cell-wrapper .ag-cell-value {
-  line-height: 1.3;
-  padding: 0.2rem 0;
-} */
-:where(.ag-cell-editor) .ag-input-field-input {
-  max-height: 2.6rem !important;
-  min-height: 2.6rem !important;
-}
-
-/* 선택 시 체크박스 배경색(구형 브라우저 대응) */
-.ag-checkbox + .ag-header-cell-comp-wrapper {
-  display: none;
-}
-
-.ag-theme-alpine .ag-checkbox-input-wrapper.ag-checked {
-  background-color: var(--color-primary-50);
-  border-color: var(--color-primary-50);
-}
-
-.ag-selection-checkbox.ag-invisible {
-  visibility: visible !important;
-}
-
-.ag-row-selected .ag-selection-checkbox.ag-invisible .ag-disabled .ag-wrapper {
-  background-color: var(--color-gray-10) !important;
-  opacity: 1 !important;
-}
-
-.ag-row-selected .ag-selection-checkbox.ag-invisible .ag-disabled .ag-wrapper::after {
-  color: #000 !important;
-  filter: none !important;
-  background-color: #000 !important;
-  -webkit-mask-image: none !important;
-  mask-image: none !important;
-}
-
-.pointer-events-none {
-  pointer-events: none;
-}
-
-.pointer-events-none .ag-selection-checkbox .ag-wrapper {
-  background-color: var(--color-gray-10) !important;
-  border: 1px solid var(--color-gray-20) !important;
-}
-
-.pointer-events-none .ag-selection-checkbox .ag-wrapper::after {
-  /* mask-image: none !important; */
-  background-color: var(--color-gray-50) !important;
-  mask-image: var(--ag-checkbox-checked-shape-image);
-}
-
-/* Chrome 109 전용 pointer-events-none 호환 보정 (크롬 150 영향 0.000% 완전 차단) */
-.v109 .pointer-events-none .ag-selection-checkbox .ag-wrapper,
-.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper,
-html.v109 .pointer-events-none .ag-selection-checkbox .ag-wrapper {
-  background-color: var(--color-gray-10, #f1f5f9) !important;
-  background: var(--color-gray-10, #f1f5f9) !important;
-  border: 1px solid var(--color-gray-20, #cbd5e1) !important;
-  border-color: var(--color-gray-20, #cbd5e1) !important;
-}
-
-.v109 .pointer-events-none .ag-selection-checkbox .ag-wrapper::after,
-.v109 .pointer-events-none .ag-checked::after,
-html.v109 .pointer-events-none .ag-checked::after,
-.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper::after,
-html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper::after {
-  background-color: var(--color-gray-50, #737373) !important;
-  background: var(--color-gray-50, #737373) !important;
-  color: var(--color-gray-50, #737373) !important;
-  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23737373' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='19 5 7 17 2 12'></polyline></svg>") !important;
-  mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23737373' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='19 5 7 17 2 12'></polyline></svg>") !important;
-  -webkit-mask-size: 65% 65% !important;
-  mask-size: 65% 65% !important;
-  -webkit-mask-repeat: no-repeat !important;
-  mask-repeat: no-repeat !important;
-  -webkit-mask-position: center !important;
-  mask-position: center !important;
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  filter: none !important;
-}
-
-.ag-pinned-left-floating-bottom .ag-cell-last-left-pinned {
-  border-right: 0 !important;
-}
-
-.ag-pinned-left-cols-container {
-  border-right: 0.1rem solid var(--color-gray-100) !important;
-}
-
-/* 필수입력 에러메시지 */
-.ag-group-child-count {
-  display: none;
-}
-
-.ag-picker-field-wrapper:focus,
-.ag-input-field-input:focus {
-  border: 0;
-  outline: 0.2rem solid #000;
-  outline-offset: -0.2rem;
-}
-
-.ag-picker-field-wrapper,
-.ag-input-field-input {
-  box-sizing: border-box;
-  border-radius: 0.4rem;
-  padding: 0.2rem 0.8rem;
-  height: 2.5rem;
-}
-
-.ag-picker-field-wrapper {
-  gap: 0.4rem;
-}
-.ag-picker-field-display {
-  text-align: left;
-}
-/* .ag-picker-field-wrapper .ag-picker-field-display {
-  text-align: right;
-} */
-
-.ag-input-field-input.ag-number-field-input {
-  text-align: right;
-}
-
-:where(.ag-icon):before,
-.ag-icon {
-  width: 1.6rem !important;
-  height: 1.6rem !important;
-}
-
-.ag-picker-field-wrapper,
-.ag-input-field-input {
-  padding: 0 0.4rem !important;
-  height: 2.5rem !important;
-  min-height: 2.5rem !important;
-}
-
-.ag-icon-small-down::before {
-  -webkit-mask-position: 50% 73%;
-  mask-position: 50% 73%;
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M12.134 5.33325C12.5929 5.33325 12.8361 5.90224 12.5313 6.26236L8.39784 11.1458C8.18629 11.3957 7.81413 11.3957 7.60257 11.1458L3.46846 6.26236C3.16396 5.90222 3.40765 5.33325 3.86642 5.33325H12.134Z' fill='%23545454'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M12.134 5.33325C12.5929 5.33325 12.8361 5.90224 12.5313 6.26236L8.39784 11.1458C8.18629 11.3957 7.81413 11.3957 7.60257 11.1458L3.46846 6.26236C3.16396 5.90222 3.40765 5.33325 3.86642 5.33325H12.134Z' fill='%23545454'/%3E%3C/svg%3E");
-}
-
-.ag-cell.required.ag-cell-error-border {
-  background-color: var(--color-input-surface-error) !important;
-}
-
-.ag-cell.required {
-  overflow: visible !important;
-}
-
-.ag-cell.required.ag-cell-error-border .ag-input-field-input.ag-text-field-input {
-  outline: 0.2rem solid var(--color-text-danger) !important;
-  outline-offset: -0.1rem;
-  border: 0;
-  box-shadow:
-    var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
-    var(--tw-shadow);
-}
-/* 
-.ag-cell.required.ag-cell-error-border.ag-cell-inline-editing:after,
-.ag-cell.required.ag-cell-error-border.ag-cell-focus:after,
-.ag-cell.required.ag-cell-error-border:focus-within:after {
-  content: var(--error-msg, '필수 입력 필드입니다.');
-  display: flex;
-  align-items: center;
-  position: absolute;
-  z-index: 10;
-  bottom: calc(100% + 0.6rem);
-  height: 2.4rem;
-  line-height: 1.1;
-  left: 0.4rem;
-  padding: 0 0.8rem;
-  font-size: 1.2rem;
-  color: var(--color-text-danger);
-  background-color: var(--color-input-surface-error);
-  border: 0.1rem solid var(--color-input-border-error);
-  border-radius: 0.4rem;
-  box-shadow:
-    0 0.4rem 0.6rem -0.1rem rgb(0 0 0 / 0.1),
-    0 0.2rem 0.4rem -0.2rem rgb(0 0 0 / 0.1);
-}
-
-.isStandard:not([data-msg]):after,
-.isStandard[data-msg='']:after {
-  content: var(--tooltip-msg, '기준담보의 가입금액을 변경하세요.') !important;
-  white-space: nowrap;
-}
-
-.ag-cell.required.ag-cell-error-border.tooltip-right.ag-cell-inline-editing:after,
-.ag-cell.required.ag-cell-error-border.tooltip-right.ag-cell-focus:after,
-.ag-cell.required.ag-cell-error-border.tooltip-right:focus-within:after {
-  left: auto !important;
-  right: 0.4rem !important;
-}
-
-.ag-cell.required.ag-cell-error-border.tooltip-right.ag-cell-inline-editing:before,
-.ag-cell.required.ag-cell-error-border.tooltip-right.ag-cell-focus:before,
-.ag-cell.required.ag-cell-error-border.tooltip-right:focus-within:before {
-  left: auto !important;
-  right: 1rem !important;
-}
- */
-
-
-/* cellClassRules로 지정하는 메시지 클래스별 content 오버라이딩 */
-.ag-cell.err-msg-empty.ag-cell-inline-editing:after,
-.ag-cell.err-msg-empty.ag-cell-focus:after {
-  content: '코드를 입력해 주세요.';
-}
-.ag-cell.err-msg-min-length.ag-cell-inline-editing:after,
-.ag-cell.err-msg-min-length.ag-cell-focus:after {
-  content: '코드는 3자 이상 입력해야 합니다.';
-}
-
-.ag-cell.required.ag-cell-error-border.ag-cell-inline-editing:before,
-.ag-cell.required.ag-cell-error-border.ag-cell-focus:before,
-.ag-cell.required.ag-cell-error-border:focus-within:before {
-  content: '';
-  display: block;
-  position: absolute;
-  bottom: calc(100% - 0rem);
-  left: 1rem;
-  width: 1.2rem;
-  z-index: 11;
-  height: 0.8rem;
-  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 7.5C6.14826 7.5 6.2888 7.43413 6.38379 7.32031L11.3838 1.32031C11.5079 1.17134 11.5353 0.963723 11.4531 0.788086C11.3708 0.612394 11.194 0.5 11 0.5H1C0.805991 0.5 0.629165 0.612394 0.546875 0.788086C0.464734 0.963723 0.492071 1.17134 0.616211 1.32031L5.61621 7.32031L5.69531 7.39648C5.78189 7.46301 5.8888 7.5 6 7.5Z' fill='%23FFFFFF' stroke='%23E43939' stroke-linejoin='round'/%3E%3Crect width='12' height='1' fill='%23FFF4F4'/%3E%3C/svg%3E%0A");
-  background-repeat: no-repeat;
-}
-
-.ag-row .ag-column-last {
-  border-right: 0 !important;
-}
-
-.ag-row[row-index='0'] .ag-cell.required.ag-cell-error-border.ag-cell-inline-editing:after {
-  bottom: auto;
-  top: calc(100% + 0.6rem);
-}
-
-.ag-row[row-index='0'] .ag-cell.required.ag-cell-error-border.ag-cell-inline-editing:before {
-  bottom: auto;
-  top: calc(100% - 0rem);
-  transform: rotate(180deg);
-}
-
-.ag-cell-inline-editing {
-  border: 0 !important;
-  border-radius: 0 !important;
-  border-right: 0.1rem solid var(--color-gray-10) !important;
-  box-shadow: none !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Tree data  ag-row-group */
-:where(.ag-ltr) .ag-cell-wrapper {
-  padding-left: 0 !important;
+  justify-content: center !important;
+  align-items: center !important;
 }
 
 .ag-row-group-leaf-indent {
-  margin-left: 2rem !important;
+  padding-left: 2rem !important;
+  margin-left: 0;
 }
-
-.ag-row-group-leaf-indent.ag-row-group-indent-0 {
-  margin-left: 0rem !important;
+.ag-row-group-indent-0.ag-row-group-leaf-indent  {
+  padding-left: 0rem !important;
 }
-
-.ag-cell-expandable {
-  display: flex !important;
-  flex-direction: row;
-  justify-content: start;
-  gap: 0.2rem;
-}
-
-.ag-row-group-leaf-indent.ag-row-group-indent-0 .ag-group-value,
-.ag-cell-expandable .ag-group-value {
-  font-weight: 700;
+.ag-group-contracted,
+.ag-group-expanded {
+  margin-right: 0.4rem !important;
 }
 
 .ag-theme-alpine .ag-icon-tree-closed::before,
 .cp-aggrid .ag-icon-tree-closed::before {
   content: '' !important;
-  display: inline-block !important;
+  display: block !important;
   width: 1.6rem !important;
   height: 1.6rem !important;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M7.99992 5.66667C8.36811 5.66667 8.66658 5.96514 8.66658 6.33333V8H10.3333C10.7014 8 10.9999 8.29848 10.9999 8.66667C10.9999 9.03486 10.7014 9.33333 10.3333 9.33333H8.66658V11C8.66658 11.3682 8.36811 11.6667 7.99992 11.6667C7.63173 11.6667 7.33325 11.3682 7.33325 11V9.33333H5.66659C5.2984 9.33333 4.99992 9.03486 4.99992 8.66667C4.99992 8.29848 5.2984 8 5.66659 8H7.33325V6.33333C7.33325 5.96514 7.63173 5.66667 7.99992 5.66667Z' fill='%23006FF2'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M6.1145 1.93359C6.66244 1.93365 7.18793 2.15102 7.57544 2.53841L8.12817 3.09115C8.24063 3.20348 8.39305 3.26687 8.552 3.26693H12.6666C13.808 3.26693 14.733 4.19195 14.733 5.33333V12C14.733 13.1414 13.808 14.0664 12.6666 14.0664H3.33325C2.19186 14.0664 1.26685 13.1414 1.26685 12V4C1.26685 2.85861 2.19186 1.93359 3.33325 1.93359H6.1145ZM3.33325 3.39974C3.00188 3.39974 2.73299 3.66863 2.73299 4V12C2.73299 12.3314 3.00188 12.6003 3.33325 12.6003H12.6666C12.998 12.6003 13.2668 12.3314 13.2668 12V5.33333C13.2668 5.00196 12.998 4.73307 12.6666 4.73307H8.552C8.00407 4.73302 7.47857 4.51564 7.09106 4.12826L6.53833 3.57552C6.42588 3.46319 6.27345 3.39979 6.1145 3.39974H3.33325Z' fill='%23006FF2'/%3E%3C/svg%3E") !important;
@@ -707,12 +249,13 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   background-color: transparent !important;
   -webkit-mask-image: none !important;
   mask-image: none !important;
+  line-height: 1 !important;
 }
 
 .ag-theme-alpine .ag-icon-tree-open::before,
 .cp-aggrid .ag-icon-tree-open::before {
   content: '' !important;
-  display: inline-block !important;
+  display: block !important;
   width: 1.6rem !important;
   height: 1.6rem !important;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M10.3333 8C10.7014 8 10.9999 8.29848 10.9999 8.66667C10.9999 9.03486 10.7014 9.33333 10.3333 9.33333H5.66659C5.2984 9.33333 4.99992 9.03486 4.99992 8.66667C4.99992 8.29848 5.2984 8 5.66659 8H10.3333Z' fill='%23006FF2'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M6.1145 1.93359C6.66244 1.93365 7.18793 2.15102 7.57544 2.53841L8.12817 3.09115C8.24063 3.20348 8.39305 3.26687 8.552 3.26693H12.6666C13.808 3.26693 14.733 4.19195 14.733 5.33333V12C14.733 13.1414 13.808 14.0664 12.6666 14.0664H3.33325C2.19186 14.0664 1.26685 13.1414 1.26685 12V4C1.26685 2.85861 2.19186 1.93359 3.33325 1.93359H6.1145ZM3.33325 3.39974C3.00188 3.39974 2.73299 3.66863 2.73299 4V12C2.73299 12.3314 3.00188 12.6003 3.33325 12.6003H12.6666C12.998 12.6003 13.2668 12.3314 13.2668 12V5.33333C13.2668 5.00196 12.998 4.73307 12.6666 4.73307H8.552C8.00407 4.73302 7.47857 4.51564 7.09106 4.12826L6.53833 3.57552C6.42588 3.46319 6.27345 3.39979 6.1145 3.39974H3.33325Z' fill='%23006FF2'/%3E%3C/svg%3E") !important;
@@ -724,85 +267,217 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   mask-image: none !important;
 }
 
-/* 아코디언 안에 감싸져들어갈때 문제 */
-.ag-theme-alpine {
-  position: relative;
-}
-
-/* .ag-theme-alpine > div{
- position: absolute;
- width: 100%; 
-} */
-.ag-center-cols-viewport {
-  min-height: 0rem !important;
-}
-
-.ag-overlay {
-  position: relative;
-}
-
-.ag-overlay-wrapper {
-  padding-bottom: 3rem;
-  padding-top: 3rem !important;
-}
-
-/* AG Grid 행 복제(+) 버튼 CSS 아이콘 최적화 */
-.uiux-duplicate-btn::before {
-  content: '';
-  display: block;
-  width: 1.4rem;
-  height: 1.4rem;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none'%3E%3Cpath d='M6.59995 1.04517C6.93408 1.04517 7.20474 1.31582 7.20474 1.64995V5.99517H11.55C11.8841 5.99517 12.1547 6.26582 12.1547 6.59995C12.1547 6.93408 11.8841 7.20474 11.55 7.20474H7.20474V11.55C7.20474 11.8841 6.93408 12.1547 6.59995 12.1547C6.26582 12.1547 5.99517 11.8841 5.99517 11.55V7.20474H1.64995C1.31582 7.20474 1.04517 6.93408 1.04517 6.59995C1.04517 6.26582 1.31582 5.99517 1.64995 5.99517H5.99517V1.64995C5.99517 1.31582 6.26582 1.04517 6.59995 1.04517Z' fill='%23ff5c2e'/%3E%3C/svg%3E");
-  pointer-events: none;
-}
-
-.is-duplicate .uiux-duplicate-btn {
-  display: none;
-}
-
-/* noheader */
-.no-header .ag-header,
-.no-header .ag-pinned-left-header,
-.no-header .ag-pinned-right-header {
+/* 체크박스 옆에 숨어 자리를 차지하는 빈 텍스트 요소 숨김 */
+.ag-theme-alpine .ag-selection-checkbox + .ag-cell-value {
   display: none !important;
-  height: 0 !important;
+}
+
+/* 체크박스 내부 input wrapper 중앙 정렬 */
+.ag-theme-alpine .ag-selection-checkbox .ag-checkbox-input-wrapper {
+  margin: 0 auto !important;
+}
+
+/* 체크박스를 포함하는 셀, selectionColumnDef 셀 및 셀 래퍼의 여백 초기화 및 중앙 정렬 */
+.ag-theme-alpine .ag-cell-wrapper {
+  justify-content: start;
+}
+
+:where(.ag-ltr) .ag-cell:has(.ag-selection-checkbox) .ag-cell-wrapper,
+.ag-theme-alpine .ag-cell:has(.ag-selection-checkbox) .ag-cell-wrapper,
+.ag-theme-alpine [col-id="ag-Grid-SelectionColumn"] .ag-cell-wrapper,
+.ag-theme-alpine [col-id*="Selection"] .ag-cell-wrapper {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.ag-theme-alpine .ag-cell:has(.ag-selection-checkbox),
+.ag-theme-alpine [col-id="ag-Grid-SelectionColumn"],
+.ag-theme-alpine [col-id*="Selection"] {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+}
+
+/* 헤더의 전체 선택 체크박스(Select All)도 완벽 중앙 정렬 */
+.ag-theme-alpine .ag-header-cell[col-id="ag-Grid-SelectionColumn"],
+.ag-theme-alpine .ag-header-cell[col-id*="Selection"],
+.ag-theme-alpine .ag-header-cell:has(.ag-header-select-all) {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  text-align: center !important;
+}
+
+.ag-theme-alpine .ag-header-cell[col-id="ag-Grid-SelectionColumn"] .ag-header-cell-comp-wrapper,
+.ag-theme-alpine .ag-header-cell[col-id*="Selection"] .ag-header-cell-comp-wrapper,
+.ag-theme-alpine .ag-header-cell:has(.ag-header-select-all) .ag-header-cell-comp-wrapper {
+  justify-content: center !important;
+  width: 100% !important;
+}
+
+.ag-theme-alpine .ag-header-select-all {
+  margin: 0 auto !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+/* ===== 4. 셀 클릭(포커스) 시 행 및 셀 배경색 ===== */
+/* 클릭된 셀이 속한 행 전체 배경색 (다른 곳을 클릭하기 전까지 유지) */
+.ag-theme-alpine .ag-row.ag-row-focus .ag-cell,
+.ag-theme-alpine .ag-row.ag-row-focus {
+  background-color: var(--color-warning-10) !important;
+}
+
+/* 사용자가 직접 클릭한 바로 그 셀의 배경색 */
+.ag-theme-alpine .ag-row.ag-row-focus .ag-cell.ag-cell-focus {
+  background-color: var(--color-warning-15) !important;
+}
+
+/* .ag-cell-range-selected {
+  border: 1px solid var(--color-warning-30) !important;
+} */
+
+.animate-spin {display: none !important;}
+
+/* ===== inner-scroll & data-row 행 수별 높이 제어 (헤더 고정 및 내부 스크롤) ===== */
+/* 1. 최상위 그리드 컨테이너의 총 높이를 [헤더(3rem) + 데이터행(N × 3rem)]으로 엄격히 고정 */
+
+.ag-theme-alpine.inner-scroll[data-row="1"] .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 2);
+  height: calc(3rem * 2);
+}
+.ag-theme-alpine.inner-scroll[data-row="2"] .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 3);
+  height: calc(3rem * 3);
+}
+.ag-theme-alpine.inner-scroll[data-row="3"] .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 4);
+  height: calc(3rem * 4);
+}
+.ag-theme-alpine.inner-scroll[data-row="4"] .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 5);
+  height: calc(3rem * 5);
+}
+.ag-theme-alpine.inner-scroll[data-row="5"] .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 6);
+  height: calc(3rem * 6);
+}
+
+.inner-scroll .ag-root-wrapper.ag-layout-normal ,
+.inner-scroll[data-row] .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 6);
+}
+
+.ag-theme-alpine.header-2.inner-scroll[data-row="1"] .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 3);
+  height: calc(3rem * 3);
+}
+.ag-theme-alpine.header-2.inner-scroll[data-row="2"] .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 4);
+  height: calc(3rem * 4);
+}
+.ag-theme-alpine.header-2.inner-scroll[data-row="3"] .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 5);
+  height: calc(3rem * 5);
+}
+.ag-theme-alpine.header-2.inner-scroll[data-row="4"] .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 6);
+  height: calc(3rem * 6);
+}
+.ag-theme-alpine.header-2.inner-scroll[data-row="5"] .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 7);
+  height: calc(3rem * 7);
+}
+
+.inner-scroll.header-2 .ag-root-wrapper.ag-layout-normal ,
+.inner-scroll.header-2[data-row] .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 7);
+}
+
+/* 1-1. 하단 고정 행(합계 영역: .ag-floating-bottom)이 존재할 경우: +1행(3rem) 높이 자동 추가 */
+/* .ag-theme-alpine.inner-scroll[data-row="1"]:has(.ag-floating-bottom .ag-row),
+.ag-theme-alpine.inner-scroll[data-row="1"]:has(.ag-grid-pinned-bottom-rows .ag-row) {
+  min-height: calc(3rem * 3 + 6px);
+  height: calc(3rem * 3 + 6px);
+}
+.ag-theme-alpine.inner-scroll[data-row="2"]:has(.ag-floating-bottom .ag-row),
+.ag-theme-alpine.inner-scroll[data-row="2"]:has(.ag-grid-pinned-bottom-rows .ag-row) {
+  min-height: calc(3rem * 4 + 6px);
+  height: calc(3rem * 4 + 6px);
+}
+.ag-theme-alpine.inner-scroll[data-row="3"]:has(.ag-floating-bottom .ag-row),
+.ag-theme-alpine.inner-scroll[data-row="3"]:has(.ag-grid-pinned-bottom-rows .ag-row) {
+  min-height: calc(3rem * 5 + 6px);
+  height: calc(3rem * 5 + 6px);
+}
+.ag-theme-alpine.inner-scroll[data-row="4"]:has(.ag-floating-bottom .ag-row),
+.ag-theme-alpine.inner-scroll[data-row="4"]:has(.ag-grid-pinned-bottom-rows .ag-row) {
+  min-height: calc(3rem * 6 + 6px);
+  height: calc(3rem * 6 + 6px);
+}
+.ag-theme-alpine.inner-scroll[data-row="5"]:has(.ag-floating-bottom .ag-row),
+.ag-theme-alpine.inner-scroll[data-row="5"]:has(.ag-grid-pinned-bottom-rows .ag-row) {
+  min-height: calc(3rem * 7 + 6px);
+  height: calc(3rem * 7 + 6px);
+} */
+
+
+.ag-theme-alpine.inner-min-scroll.inner-scroll[data-row="2"] .ag-grid-scrolling-rows.ag-layout-normal {
+  min-height: 3rem !important;
+  height: 100% !important;
+}
+
+/* 2. 래퍼가 데이터 개수에 의해 무제한 늘어나 부모 스크롤을 유발하지 않도록 100% 고정 */
+/* .ag-theme-alpine.inner-scroll[data-row] .ag-root-wrapper,
+.ag-theme-alpine.inner-scroll[data-row] .ag-root-wrapper-body,
+.ag-theme-alpine.inner-scroll[data-row] .ag-root {
+  height: 100% !important;
+} */
+
+/* 3. 헤더 상단 완벽 고정 */
+.ag-theme-alpine.inner-scroll[data-row] .ag-header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 2 !important;
+}
+
+/* 4. 바디 뷰포트 영역에서만 세로 스크롤 생성 */
+.ag-theme-alpine.inner-scroll[data-row] .ag-body-viewport {
+  overflow-y: auto !important;
+}
+
+
+.ag-grid-pinned-bottom-rows-container, 
+.ag-grid-scrolling-rows {
+  background-color: var(--color-gray-5);
+}
+.is-empty .ag-grid-pinned-bottom-rows-container,
+.is-empty .ag-grid-scrolling-rows {
+  background-color: var(--color-gray-0);
+}
+
+/* autoHeight 모드 시 불필요하게 크게 잡히는 AG Grid 기본 min-height(50px/150px) 제거 */
+.ag-theme-alpine.ag-layout-auto-height .ag-grid-scrolling-rows,
+.ag-theme-alpine .ag-layout-auto-height .ag-grid-scrolling-rows,
+.ag-layout-auto-height .ag-grid-scrolling-rows {
   min-height: 0 !important;
-  border: 0 !important;
 }
 
-.no-header .ag-root-wrapper-body {
-  border-top: 0 !important;
+/* 데이터가 전혀 없을 때(is-empty 또는 No Rows 오버레이 표시 중): 안내 문구 표시를 위한 최소 높이 보장 (사이드이펙트 방지) */
+.ag-theme-alpine.is-empty.ag-layout-auto-height .ag-grid-scrolling-rows,
+.ag-theme-alpine.is-empty .ag-layout-auto-height .ag-grid-scrolling-rows,
+.ag-theme-alpine.ag-layout-auto-height:has(.ag-overlay:not(.ag-hidden)) .ag-grid-scrolling-rows,
+.ag-theme-alpine.ag-layout-auto-height:has(.ag-overlay-no-rows-center) .ag-grid-scrolling-rows {
+  min-height: 8rem !important;
 }
 
-.no-header .ag-root-wrapper,
-.no-header .ag-root {
-  border: 0 !important;
-  box-shadow: none !important;
-}
-
-/* notopborder */
-.ag-border-t .ag-root-wrapper {
-  border-top: 0 !important;
-}
-
-.ag-header-cell-text {
-  width: 100%;
-  display: block;
-  text-align: center;
-  line-height: 1;
-  font-size: 1.3rem;
-  font-weight: bold;
-  white-space: normal;
-  word-break: keep-all;
-}
-
-.ag-header-cell-label .ag-header-cell-text {
-  overflow: visible !important;
-}
-
+/* 툴팁 */
 .ag-tooltip,
 .ag-theme-alpine .ag-tooltip,
 .cp-aggrid .ag-tooltip {
@@ -826,1180 +501,6 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   opacity: 1 !important;
 }
 
-/* 라디오 버튼 스타일 */
-.ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper {
-  position: relative;
-  width: 1.4rem !important;
-  height: 1.4rem !important;
-  border-radius: 9999px !important;
-  border: 1px solid var(--color-border-gray-light) !important;
-  background-color: var(--color-element-inverse) !important;
-}
-.ag-theme-alpine.radio-mode .ag-checked,
-.ag-theme-alpine.radio-selection .ag-checked {
-  pointer-events: none !important;
-}
-.ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper::after {
-  content: '' !important;
-  position: absolute !important;
-  top: 50%;
-  left: 50%;
-  width: 0.8rem !important;
-  height: 0.8rem !important;
-  border-radius: 9999px !important;
-  background-color: transparent !important;
-  transform: translate(-50%, -50%);
-  -webkit-mask-image: none !important;
-  mask-image: none !important;
-}
-
-.ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked::after {
-  background-color: var(--color-element-primary) !important;
-}
-
-.ag-cell-value:not(.ag-allow-overflow),
-.ag-group-value {
-  overflow: hidden;
-  text-overflow: clip;
-}
-
-[role='checkbox'].truncate > div {
-  width: 100%;
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.truncate-no .truncate-no {
-  padding-right: 0.2rem;
-}
-.truncate-no {
-  overflow: hidden;
-  text-overflow: clip;
-  white-space: nowrap;
-}
-
-.ag-header-group-text {
-  font-size: 1.3rem;
-  font-weight: 700;
-}
-
-/* .ag-blue-text .ag-cell {
-  color: var(--color-information-50);
-} */
-
-.ag-row-new .editable-cell svg {
-  display: block;
-}
-
-.isTotal {
-  background-color: var(--color-primary-10) !important;
-}
-
-.isStandard {
-  background-color: var(--color-purple-10) !important;
-}
-
-.no-edited svg {
-  display: none !important;
-}
-
-/* Cell editor select / picker 화살표 아이콘 색상 유지 */
-
-.no-edited {
-  background-color: transparent !important;
-}
-
-.isStandardGroup,
-.ag-row-group-expanded .isStandardGroup,
-.ag-row-group-contracted .isStandardGroup {
-  background-color: #fff !important;
-}
-
-.tooltip-hidden-toggle .ag-tooltip {
-  display: none !important;
-}
-
-/* show-product-tooltip 클래스가 있을 때만 보임 */
-.tooltip-hidden-toggle.show-product-tooltip .ag-tooltip {
-  display: block !important;
-}
-
-.isError .ag-cell-value {
-  font-weight: 700;
-  color: var(--color-text-danger) !important;
-  background-color: var(--color-warning-10) !important;
-}
-
-.style-select button {
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  gap: 0.4rem;
-}
-
-.style-select button::after {
-  content: '';
-  display: none;
-  width: 1.6rem;
-  height: 1.6rem;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M12.134 5.33325C12.5929 5.33325 12.8361 5.90224 12.5313 6.26236L8.39784 11.1458C8.18629 11.3957 7.81413 11.3957 7.60257 11.1458L3.46846 6.26236C3.16396 5.90222 3.40765 5.33325 3.86642 5.33325H12.134Z' fill='%23545454'/%3E%3C/svg%3E");
-}
-
-.ag-row-selected .style-select button::after {
-  display: block;
-}
-
-:where(.ag-ltr) .ag-sort-indicator-icon {
-  padding-left: 0 !important;
-}
-
-.ag-header-cell-comp-wrapper :where(.ag-icon):before,
-.ag-header-cell-comp-wrapper .ag-icon {
-  width: 1.2rem !important;
-  height: 1.2rem !important;
-  transform: translateY(0.05rem);
-}
-.ag-icon-none::before {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M11.3981 2.6878C11.7169 2.32385 12.2836 2.32374 12.6022 2.6878L17.8395 8.67315C18.2919 9.19043 17.9242 10.0003 17.237 10.0003H13.0993V14.0003H17.237C17.9241 14.0003 18.2915 14.8092 17.8395 15.3265L12.6022 21.3118C12.2835 21.6761 11.7168 21.6761 11.3981 21.3118L6.16081 15.3265C5.70859 14.8092 6.07615 14.0003 6.76335 14.0003H10.9001V10.0003H6.76335C6.07603 10.0003 5.70821 9.19042 6.16081 8.67315L11.3981 2.6878Z' fill='%23414141'/%3E%3C/svg%3E") !important;
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M11.3981 2.6878C11.7169 2.32385 12.2836 2.32374 12.6022 2.6878L17.8395 8.67315C18.2919 9.19043 17.9242 10.0003 17.237 10.0003H13.0993V14.0003H17.237C17.9241 14.0003 18.2915 14.8092 17.8395 15.3265L12.6022 21.3118C12.2835 21.6761 11.7168 21.6761 11.3981 21.3118L6.16081 15.3265C5.70859 14.8092 6.07615 14.0003 6.76335 14.0003H10.9001V10.0003H6.76335C6.07603 10.0003 5.70821 9.19042 6.16081 8.67315L11.3981 2.6878Z' fill='%23414141'/%3E%3C/svg%3E") !important;
-  background-color: var(--color-gray-60) !important;
-}
-.ag-icon-desc::before {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M11.9995 2.34216C12.7276 2.34232 13.3176 2.93215 13.3176 3.6603V13.2501H18.2776C19.1015 13.2501 19.5423 14.221 18.9999 14.841L12.7217 22.0147C12.3397 22.4513 11.6604 22.4513 11.2784 22.0147L5.00024 14.841C4.45769 14.221 4.89861 13.2501 5.72253 13.2501H10.6813V3.6603C10.6813 2.93218 11.2714 2.34237 11.9995 2.34216Z' fill='%23414141'/%3E%3C/svg%3E") !important;
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M11.9995 2.34216C12.7276 2.34232 13.3176 2.93215 13.3176 3.6603V13.2501H18.2776C19.1015 13.2501 19.5423 14.221 18.9999 14.841L12.7217 22.0147C12.3397 22.4513 11.6604 22.4513 11.2784 22.0147L5.00024 14.841C4.45769 14.221 4.89861 13.2501 5.72253 13.2501H10.6813V3.6603C10.6813 2.93218 11.2714 2.34237 11.9995 2.34216Z' fill='%23414141'/%3E%3C/svg%3E") !important;
-  background-color: var(--color-gray-60) !important;
-}
-.ag-icon-asc::before {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M11.9995 2.34216C12.7276 2.34232 13.3176 2.93215 13.3176 3.6603V13.2501H18.2776C19.1015 13.2501 19.5423 14.221 18.9999 14.841L12.7217 22.0147C12.3397 22.4513 11.6604 22.4513 11.2784 22.0147L5.00024 14.841C4.45769 14.221 4.89861 13.2501 5.72253 13.2501H10.6813V3.6603C10.6813 2.93218 11.2714 2.34237 11.9995 2.34216Z' fill='%23414141'/%3E%3C/svg%3E") !important;
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M11.9995 2.34216C12.7276 2.34232 13.3176 2.93215 13.3176 3.6603V13.2501H18.2776C19.1015 13.2501 19.5423 14.221 18.9999 14.841L12.7217 22.0147C12.3397 22.4513 11.6604 22.4513 11.2784 22.0147L5.00024 14.841C4.45769 14.221 4.89861 13.2501 5.72253 13.2501H10.6813V3.6603C10.6813 2.93218 11.2714 2.34237 11.9995 2.34216Z' fill='%23414141'/%3E%3C/svg%3E") !important;
-  transform: rotate(180deg);
-  background-color: var(--color-gray-60) !important;
-}
-
-.ag-header-cell-menu-button {
-  display: none !important;
-}
-
-/* subtotal 행 배경색 */
-.ag-row.ag-row-subtotal,
-.ag-row.ag-row-subtotal .ag-cell {
-  background-color: var(--color-warning-10) !important;
-  color: var(--color-warning-50) !important;
-  font-weight: 700;
-}
-
-.ag-row.ag-row-subtotal {
-  border-top: 1px solid var(--color-warning-50) !important;
-}
-.ag-floating-bottom:has(.ag-row-subtotal){
-  border-top: 1px solid var(--color-warning-50) !important;
-}
-.ag-row.ag-row-subtotal:hover,
-.ag-row.ag-row-subtotal.ag-row-hover,
-.ag-row.ag-row-subtotal:hover .ag-cell,
-.ag-row.ag-row-subtotal.ag-row-hover .ag-cell {
-  background-color: var(--color-warning-10) !important;
-  color: var(--color-warning-50) !important;
-}
-
-/* Ltpa560 중간합계 행 전용 스타일 (총합계와 구분) */
-/* .ltpa560-grid .ag-row.ag-row-subtotal,
-.ltpa560-grid .ag-row.ag-row-subtotal .ag-cell,
-.ltpa560-grid .ag-row.ag-row-subtotal:hover,
-.ltpa560-grid .ag-row.ag-row-subtotal:hover .ag-cell,
-.ltpa560-grid .ag-row.ag-row-subtotal.ag-row-hover,
-.ltpa560-grid .ag-row.ag-row-subtotal.ag-row-hover .ag-cell,
-.ltpa560-grid .ag-row.ag-row-subtotal.ag-row-focus,
-.ltpa560-grid .ag-row.ag-row-subtotal.ag-row-focus .ag-cell {
-  background-color: var(--color-primary-5) !important;
-  color: #000 !important;
-  font-weight: 700;
-}
-
-.ltpa560-grid .ag-row.ag-row-subtotal {
-  border-top: 1px solid var(--color-primary-20) !important;
-} */
-
-
-.modify-cell {
-  background-color: #cbe3ff !important;
-}
-
-/* agGrid header bg, border 색상 변경 */
-.ag-theme-alpine .ag-header-group-cell.ag-header-color,
-.ag-theme-alpine .ag-header-cell.ag-header-color {
-  background-color: var(--color-primary-15) !important;
-}
-.ag-header-cell.ag-header-color {
-  border-right: 0.1rem solid var(--color-white) !important;
-}
-
-.ag-theme-alpine.ag-header-color-grid {
-  --ag-header-row-border: solid 0.1rem var(--color-white);
-}
-.ag-theme-alpine
-  :where(.ag-header-cell.ag-header-color:not(.ag-header-span-height.ag-header-span-total, .ag-header-parent-hidden)) {
-  border-top: 0.1rem solid var(--color-white) !important;
-}
-.ag-header-row-column .ag-header-cell:last-child {
-  /* border-right: 0 !important; */
-}
-
-/* header 두 줄 시 sortable 적용해야 할 때 */
-.ag-theme-alpine.ag-header-preline-grid .ag-header-cell.ag-header-preline .ag-header-cell-text {
-  white-space: pre-line !important;
-  line-height: 1.2;
-  text-align: center;
-}
-.ag-header-cell,
-.ag-header-group-cell {
-  padding: 0;
-}
-.ag-header-group-cell .ag-header-cell-comp-wrapper .ag-header-group-text {
-  overflow: visible;
-}
-
-.cell-span-style {
-  background-color: #ffffff;
-  border-bottom: 1px solid #dde2eb !important;
-  display: flex;
-  align-items: center; /* 텍스트 중앙 정렬 */
-  z-index: 1;
-}
-
-.row-cloning .ag-cell {
-  background-color: var(--color-yellow-10) !important;
-}
-
-.ltpz020-table-1 .ag-header {
-  display: none !important;
-}
-.ltpz020-table-1 .ag-cell:first-child {
-  background-color: var(--color-gray-5);
-  font-weight: 700;
-}
-.ltpz020-table-1 .ag-cell:first-child.editable-cell {
-  background-color: var(--color-information-5);
-}
-
-/* .ag-cell-value:not(.ag-allow-overflow), .ag-group-value {
-  overflow: visible;
-} */
-
-/* ==========================================================================
- * agSelectCellEditor 기준: agRichSelectCellEditor 디자인 1:1 통일 스타일
- * ========================================================================== */
-
-/* 1. 드롭다운 팝업 컨테이너 (배경, 테두리, 그림자, 라운딩, 스크롤바, 콘텐츠 크기 맞춤) */
-.ag-select-list,
-.ag-rich-select-popup,
-.v109 .ag-select-list,
-.v109 .ag-rich-select-popup {
-  background-color: #ffffff !important;
-  border: 0.1rem solid #cbd5e1 !important;
-  border-radius: 0.4rem !important;
-  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.16) !important;
-  z-index: 99999 !important;
-  max-height: 18rem !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  letter-spacing: 0 !important;
-  white-space: nowrap !important;
-  box-sizing: border-box !important;
-  padding: 0.2rem 0 !important;
-}
-
-/* 2. agRichSelect 내부 가상 뷰포트/컨테이너를 static flow로 통일하여 max-content 계산 일치 */
-.ag-rich-select-popup .ag-rich-select-list,
-.ag-rich-select-popup .ag-virtual-list-viewport {
-  width: 100% !important;
-  min-width: 100% !important;
-  height: auto !important;
-  overflow: visible !important;
-  border: none !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-.ag-rich-select-popup .ag-virtual-list-container {
-  height: auto !important;
-  min-height: auto !important;
-  width: 100% !important;
-  min-width: 100% !important;
-  position: relative !important;
-}
-
-/* AG-Grid 선택 드롭다운 팝업 목록 전용 개별 스크롤바 스타일 */
-.ag-select-list::-webkit-scrollbar,
-.ag-rich-select-popup::-webkit-scrollbar,
-.v109 .ag-select-list::-webkit-scrollbar,
-.v109 .ag-rich-select-popup::-webkit-scrollbar {
-  width: 1.2rem !important;
-  height: 1.2rem !important;
-}
-
-.ag-select-list::-webkit-scrollbar-track,
-.ag-rich-select-popup::-webkit-scrollbar-track,
-.v109 .ag-select-list::-webkit-scrollbar-track,
-.v109 .ag-rich-select-popup::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius: 0rem;
-}
-
-.ag-select-list::-webkit-scrollbar-thumb,
-.ag-rich-select-popup::-webkit-scrollbar-thumb,
-.v109 .ag-select-list::-webkit-scrollbar-thumb,
-.v109 .ag-rich-select-popup::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 2rem;
-  border: 0.4rem solid #ffffff;
-}
-
-.ag-select-list::-webkit-scrollbar-thumb:hover,
-.ag-rich-select-popup::-webkit-scrollbar-thumb:hover,
-.v109 .ag-select-list::-webkit-scrollbar-thumb:hover,
-.v109 .ag-rich-select-popup::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
-  border: 0.3rem solid #ffffff;
-}
-
-/* 3. 옵션 아이템 행 (agSelectCellEditor의 .ag-select-list-item 기준으로 1:1 일치) */
-.ag-select-list-item,
-.ag-rich-select-row,
-.ag-list-item {
-  position: relative !important;
-  top: auto !important;
-  left: auto !important;
-  width: 100% !important;
-  min-width: max-content !important;
-  height: 2.6rem !important;
-  min-height: 2.6rem !important;
-  line-height: 2.6rem !important;
-  display: flex !important;
-  align-items: center !important;
-  font-size: 1.2rem !important;
-  color: #1e293b !important;
-  letter-spacing: 0 !important;
-  white-space: nowrap !important;
-  cursor: pointer !important;
-  box-sizing: border-box !important;
-  text-overflow: clip !important;
-  padding-left: 0.8rem !important;
-  padding-right: 1.8rem !important; /* 1.2rem 스크롤바 뒤로 텍스트가 숨지 않도록 충분한 우측 안전 마진 확보 */
-}
-
-/* ag-rich-select-row 내부 자식 요소의 불필요한 패딩/마진 초기화 */
-.ag-rich-select-row * {
-  font-size: 1.2rem !important;
-  letter-spacing: 0 !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  box-sizing: border-box !important;
-}
-
-/* 4. 옵션 호버 및 선택 상태 (agSelectCellEditor 기준 일치) */
-.ag-select-list-item:hover,
-.ag-select-list-item.ag-selected,
-.ag-rich-select-row:hover,
-.ag-rich-select-row.ag-rich-select-row-selected,
-.ag-rich-select-row.ag-selected,
-.ag-list-item:hover,
-.ag-list-item.ag-list-item-selected,
-.v109 .ag-select-list-item:hover,
-.v109 .ag-select-list-item.ag-selected,
-.v109 .ag-rich-select-row:hover,
-.v109 .ag-rich-select-row.ag-rich-select-row-selected {
-  background-color: #f0f7ff !important;
-  background: #f0f7ff !important;
-  color: #006ff2 !important;
-  font-weight: 500 !important;
-}
-
-/* 5. 셀 편집 중인 인라인 에디터 박스 스타일 일치 */
-.ag-cell.ag-cell-inline-editing .ag-rich-select,
-.ag-cell.ag-cell-inline-editing .ag-cell-editor.ag-select-cell-editor,
-.ag-cell.ag-cell-inline-editing select {
-  height: 100% !important;
-  min-height: 100% !important;
-  border: transparent !important;
-  border-radius: 0.4rem !important;
-  /* background-color: #ffffff !important; */
-  font-size: 1.2rem !important;
-  letter-spacing: 0 !important;
-  box-sizing: border-box !important;
-  display: flex !important;
-  align-items: center !important;
-}
-
-.ag-cell.ag-cell-inline-editing .ag-rich-select-value {
-  padding-left: 0.3rem !important;
-  padding-right: 0rem !important;
-  font-size: 1.2rem !important;
-  letter-spacing: -0.04rem !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: clip !important;
-}
-.ltpz012-final-grid .ag-cell b {
-  font-weight: 700;
-}
-.ltpz012-final-grid .ag-cell {
-  font-weight: 700;
-  color: var(--color-primary-50) !important;
-}
-
-/* .ag-invisible.ag-body-horizontal-scroll {
-  height: 0 !important;
-  min-height: 0 !important;
-  max-height: 0 !important;
-}
-.ag-body-horizontal-scroll{
-  height: 0.8rem !important;
-  min-height: 0.8rem !important;
-  max-height: 0.8rem !important;
-}
-.ag-body-horizontal-scroll-viewport {
-  height: 0.8rem !important; 
-  min-height: 0.8rem !important;
-  max-height: 0.8rem !important;
-} */
-
-.ag-cell-value[role='presentation'] {
-  letter-spacing: -0.05rem !important;
-  padding-right: 0.05rem !important;
-}
-
-.ag-theme-alpine.inner-scroll .ag-root-wrapper-body {
-  height: auto !important;
-}
-
-/* Ltpz019 상품정보 특화 그리드 높이 (13행 = 39rem) */
-.ltpz019-product-grid.inner-scroll .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.ltpz019-product-grid.inner-scroll .ag-body-viewport {
-  height: 39rem !important;
-  min-height: 39rem !important;
-  max-height: 39rem !important;
-}
-/* .ag-theme-alpine.inner-scroll:not([data-row='0']) .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 15rem !important;
-} */
-.ag-theme-alpine[data-row='1'] .ag-root-wrapper-body .ag-overlay,
-.ag-theme-alpine[data-row='2'] .ag-root-wrapper-body .ag-overlay,
-.ag-theme-alpine[data-row='3'] .ag-root-wrapper-body .ag-overlay,
-.ag-theme-alpine[data-row='4'] .ag-root-wrapper-body .ag-overlay,
-.ag-theme-alpine[data-row='5'] .ag-root-wrapper-body .ag-overlay {
-  position: absolute;
-  bottom: 0;
-  top: auto;
-}
-.ag-theme-alpine[data-row] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 15rem !important;
-  max-height: 100% !important;
-  min-height: 15rem !important;
-  overflow-y: auto !important;
-}
-.ag-theme-alpine[data-row='0'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 0 !important;
-  max-height: 100% !important;
-  min-height: 0 !important;
-  overflow-y: auto !important;
-}
-.ag-theme-alpine[data-row='1'] .ag-root-wrapper-body .ag-overlay,
-.ag-theme-alpine[data-row='1'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 3rem !important;
-  min-height: 3rem !important;
-  max-height: 3rem !important;
-}
-.ag-theme-alpine[data-row='2'] .ag-root-wrapper-body .ag-overlay,
-.ag-theme-alpine[data-row='2'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 6rem !important;
-  min-height: 6rem !important;
-  max-height: 6rem !important;
-}
-.ag-theme-alpine[data-row='3'] .ag-root-wrapper-body .ag-overlay,
-.ag-theme-alpine[data-row='3'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 9rem !important;
-  min-height: 9rem !important;
-  max-height: 9rem !important;
-}
-.ag-theme-alpine[data-row='4'] .ag-root-wrapper-body .ag-overlay,
-.ag-theme-alpine[data-row='4'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 12rem !important;
-  min-height: 12rem !important;
-  max-height: 12rem !important;
-}
-.ag-theme-alpine[data-row='5'] .ag-root-wrapper-body .ag-overlay,
-.ag-theme-alpine[data-row='5'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 15rem !important;
-  min-height: 15rem !important;
-  max-height: 15rem !important;
-}
-
-.ag-theme-alpine.inner-scroll[data-row='0'] .ag-header-row {
-  width: 100% !important;
-}
-
-.ag-theme-alpine.inner-min-scroll .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 3rem !important;
-  min-height: 3rem !important;
-  max-height: 100% !important;
-  overflow-y: auto !important;
-}
-
-/* inner-min-scroll: data-row={2} 일 때 5개 행(15rem)이 아닌 2개 행(6rem) 기준으로 높이에 따라 가변 동작 */
-.ag-theme-alpine.inner-scroll.inner-min-scroll[data-row='2'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 6rem !important;
-  min-height: 6rem !important;
-  max-height: 100% !important;
-  overflow-y: auto !important;
-}
-.ag-theme-alpine.inner-scroll.inner-min-scroll[data-row='5'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 15rem !important;
-  min-height: 15rem !important;
-  max-height: 100% !important;
-  overflow-y: auto !important;
-}
-
-.ag-theme-alpine.is-loading .ag-body.ag-layout-normal,
-.ag-theme-alpine.is-empty .ag-body.ag-layout-normal {
-  height: 0 !important;
-  min-height: 1px !important;
-  max-height: 1px !important;
-  overflow-y: auto !important;
-}
-.ag-theme-alpine.is-loading .ag-body.ag-layout-normal .ag-body-viewport,
-.ag-theme-alpine.is-empty .ag-body.ag-layout-normal .ag-body-viewport {
-  background-color: #fff !important;
-}
-.ag-theme-alpine.inner-min-scroll.is-empty .ag-react-container {
-  transform: translateY(-1.5rem);
-}
-/* 트리 그룹 확장 시 부모 행 체크박스 스타일 */
-.children-checked .ag-theme-alpine .ag-row.ag-row-group-expanded .ag-checkbox-input-wrapper.ag-checked {
-  background-color: var(--color-primary-50);
-  border-color: var(--color-primary-50);
-}
-
-/* 트리 그룹의 하위(자식) 행 체크박스 스타일 (배경색/보더 수정 가능) */
-.children-checked .ag-theme-alpine .ag-row.ag-row-level-1 .ag-checkbox-input-wrapper.ag-checked,
-.children-checked .ag-theme-alpine .ag-row:not(.ag-row-level-0) .ag-checkbox-input-wrapper.ag-checked {
-  background-color: var(--color-gray-0);
-  border-color: var(--color-primary-50);
-}
-
-/* 트리 그룹의 하위(자식) 행 체크박스 체크 아이콘 색상 (:after) */
-.children-checked .ag-theme-alpine .ag-row.ag-row-level-1 .ag-checkbox-input-wrapper.ag-checked:after,
-.children-checked .ag-theme-alpine .ag-row:not(.ag-row-level-0) .ag-checkbox-input-wrapper.ag-checked:after,
-.children-checked .ag-theme-alpine .ag-row.ag-row-level-1 .ag-checkbox-input-wrapper.ag-checked::after,
-.children-checked .ag-theme-alpine .ag-row:not(.ag-row-level-0) .ag-checkbox-input-wrapper.ag-checked::after {
-  background-color: var(--color-primary-50);
-}
-
-.ag-theme-alpine.inner-scroll[data-page='1'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 3rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='2'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 6rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='3'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 9rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='4'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 12rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='5'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 15rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='6'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 18rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='7'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 21rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='8'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 24rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='9'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 27rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='10'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 30rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='11'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 33rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='12'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 36rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='13'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 39rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='14'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 42rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='15'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 45rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='16'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 48rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='17'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 51rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='18'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 54rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='19'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 57rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='20'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 60rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='21'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 63rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='22'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 66rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='23'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 69rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='24'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 72rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='25'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 75rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='26'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 78rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='27'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 81rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='28'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 84rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='29'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 87rem !important;
-}
-.ag-theme-alpine.inner-scroll[data-page='30'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 90rem !important;
-}
-
-.ag-theme-alpine.inner-scroll.x2[data-page='1'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 6rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='2'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 12rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='3'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 18rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='4'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 24rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='5'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 30rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='6'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 36rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='7'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 42rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='8'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 48rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='9'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 54rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='10'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 60rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='11'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 66rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='12'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 72rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='13'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 78rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='14'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 84rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='15'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 90rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='16'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 96rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='17'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 102rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='18'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 108rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='19'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 114rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='20'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 120rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='21'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 126rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='22'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 132rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='23'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 138rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='24'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 144rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='25'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 150rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='26'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 156rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='27'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 162rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='28'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 168rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='29'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 174rem !important;
-}
-.ag-theme-alpine.inner-scroll.x2[data-page='30'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 100%;
-  max-height: 180rem !important;
-}
-
-.Ltpz070 .ag-header .ag-header-viewport,
-.Ltpz070 .ag-header-container {
-  background-color: #ffccbe;
-}
-
-.cell-greater {
-  background-color: var(--color-danger-15) !important;
-}
-.cell-less {
-  background-color: var(--color-information-15) !important;
-}
-
-.ag-cell-value .ag-cell-expandable .ag-group-value {
-  padding-right: 0.1rem;
-}
-
-.ag-cell-value .ag-row-group-leaf-indent .ag-group-value {
-  padding-right: 0.1rem;
-}
-
-.ag-theme-alpine {
-  --ag-row-group-indent-size: 1rem !important;
-}
-.ag-row-group-indent-0 {
-  padding-left: 0 !important;
-}
-.ag-row-group-indent-1 {
-  padding-left: 1rem !important;
-}
-.ag-row-group-indent-2 {
-  padding-left: 2rem !important;
-}
-.ag-row-group-indent-3 {
-  padding-left: 3rem !important;
-}
-.ag-row-group-indent-4 {
-  padding-left: 4rem !important;
-}
-.ag-row-group-indent-5 {
-  padding-left: 5rem !important;
-}
-.ag-row-group-indent-6 {
-  padding-left: 6rem !important;
-}
-.ag-row-group-indent-7 {
-  padding-left: 7rem !important;
-}
-.ag-row-group-indent-8 {
-  padding-left: 8rem !important;
-}
-.ag-row-group-indent-9 {
-  padding-left: 9rem !important;
-}
-.ag-row-group-indent-10 {
-  padding-left: 10rem !important;
-}
-.ag-row-group-indent-11 {
-  padding-left: 11rem !important;
-}
-.ag-row-group-indent-12 {
-  padding-left: 12rem !important;
-}
-.ag-row-group-indent-13 {
-  padding-left: 13rem !important;
-}
-.ag-row-group-indent-14 {
-  padding-left: 14rem !important;
-}
-.ag-row-group-indent-15 {
-  padding-left: 15rem !important;
-}
-.ag-row-group-indent-16 {
-  padding-left: 16rem !important;
-}
-.ag-row-group-indent-17 {
-  padding-left: 17rem !important;
-}
-.ag-row-group-indent-18 {
-  padding-left: 18rem !important;
-}
-.ag-row-group-indent-19 {
-  padding-left: 19rem !important;
-}
-.ag-row-group-indent-20 {
-  padding-left: 20rem !important;
-}
-
-.class-expected-premium-bar {
-  min-height: 3rem;
-}
-
-/* Chrome 109 버전 전용 ag-Grid */
-.v109 .ag-theme-alpine .ag-root-wrapper {
-  background-color: var(--color-gray-5);
-}
-.v109 .ag-theme-alpine .ag-root {
-  width: 100%;
-  height: 100%;
-}
-
-.v109 .ag-row {
-  border-bottom: 1px solid var(--color-gray-10);
-}
-
-/* Chrome 109에서 TableFold 및 inner-scroll 그리드가 높이 축소되는 현상 방지 */
-/* .v109 .ag-root-wrapper {
-  height: 100%;
-}
-
-.v109 .ag-theme-alpine .ag-root-wrapper-body {
-  height: 100%;
-}
-
-.v109 .ag-theme-alpine.inner-scroll .ag-root-wrapper-body {
-  height: 100% !important;
-} */
-
-/* AG-Grid 셀 내부 SelectDrop 가로 1행 정렬 및 너비 100% 전역 보정 */
-.v109 .ag-cell .cp-selectdrop,
-.v109 .cp-aggrid .ag-cell .cp-selectdrop,
-.v109 .ag-theme-alpine .ag-cell .cp-selectdrop {
-  width: 100% !important;
-  min-width: 100% !important;
-  display: block !important;
-  box-sizing: border-box !important;
-}
-
-.v109 .ag-cell .cp-selectdrop > button,
-.v109 .cp-aggrid .ag-cell .cp-selectdrop > button,
-.v109 .ag-theme-alpine .ag-cell .cp-selectdrop > button {
-  width: 100% !important;
-  min-width: 100% !important;
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
-  justify-content: space-between !important;
-  align-items: center !important;
-  white-space: nowrap !important;
-  box-sizing: border-box !important;
-}
-
-.v109 .ag-cell .cp-selectdrop span,
-.v109 .cp-aggrid .ag-cell .cp-selectdrop span {
-  display: inline-block !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-}
-
-/* AG-Grid 내장 agSelectCellEditor / agRichSelectCellEditor 전역 1:1 보정 */
-.ag-cell.ag-select-cell:not(.ag-cell-inline-editing),
-.ag-cell.select-cell:not(.ag-cell-inline-editing),
-.ag-cell.cell-select:not(.ag-cell-inline-editing),
-.ag-cell.style-select:not(.ag-cell-inline-editing),
-.ag-cell .editor-select {
-  position: relative !important;
-}
-.ag-cell-focus.ag-cell-inline-editing {
-  padding: 0 0.2rem !important;
-}
-.ag-cell.ag-select-cell:not(.ag-cell-inline-editing)::after,
-.ag-cell.select-cell:not(.ag-cell-inline-editing)::after,
-.ag-cell.cell-select:not(.ag-cell-inline-editing)::after {
-  content: '';
-  position: absolute;
-  right: 0.6rem;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 1.2rem;
-  height: 1.2rem;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M12.134 5.33325C12.5929 5.33325 12.8361 5.90224 12.5313 6.26236L8.39784 11.1458C8.18629 11.3957 7.81413 11.3957 7.60257 11.1458L3.46846 6.26236C3.16396 5.90222 3.40765 5.33325 3.86642 5.33325H12.134Z' fill='%23545454'/%3E%3C/svg%3E");
-  pointer-events: none;
-}
-
-/* editableSelectCellRenderer / getExpiryRenderer 화살표 CSS 최적화 */
-.ag-cell .editor-select::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 1rem;
-  height: 0.6rem;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6' fill='none'%3E%3Cpath d='M8.80062 0C9.2595 0 9.50277 0.568984 9.19794 0.929112L5.06447 5.81257C4.85291 6.06248 4.48075 6.06248 4.2692 5.81257L0.135084 0.929112C-0.169417 0.56897 0.0742789 0 0.533044 0H8.80062Z' fill='%23545454'/%3E%3C/svg%3E");
-  pointer-events: none;
-}
-.ag-cell.no-edited .editor-select::after {
-  content: none;
-}
-
-.v109 .ag-picker-field-wrapper {
-  border: 0.1rem solid var(--color-blue-gray-30, #cbd5e1);
-  border-radius: 0.4rem;
-  background-color: #ffffff;
-  outline: none;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
-
-/* .v109 .ag-picker-field-wrapper:focus-within,
-.v109 .ag-picker-field-wrapper.ag-picker-field-wrapper-open {
-  border-color: #006ff2 !important;
-  outline: 0.2rem solid #006ff2 !important;
-  outline-offset: -0.2rem !important;
-} */
-
-.ag-rich-select-popup,
-.ag-select-list,
-.v109 .ag-rich-select-popup,
-.v109 .ag-select-list {
-  background-color: #ffffff !important;
-  border-radius: 0.4rem !important;
-  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.16) !important;
-  border: 0.1rem solid #cbd5e1 !important;
-  z-index: 99999 !important;
-  max-height: 18rem !important; /* 드롭다운 팝업 최대 높이 제한 */
-  overflow-y: auto !important; /* 항목이 넘칠 경우 내부 스크롤 생성 */
-}
-
-.v109 .ag-rich-select-row:hover,
-.v109 .ag-rich-select-row.ag-rich-select-row-selected,
-.v109 .ag-select-list-item:hover,
-.v109 .ag-select-list-item.ag-selected,
-.v109 .ag-list-item:hover,
-.v109 .ag-list-item.ag-list-item-selected {
-  background-color: #f0f7ff !important;
-  background: #f0f7ff !important;
-  color: #006ff2 !important;
-  font-weight: 500 !important;
-}
-
-/* Chrome 109 전용 ag-Grid 내 divide-y / divide-x 및 divide 색상 보정 */
-.v109 .divide-y > :not([hidden]) ~ :not([hidden]),
-.v109 .divide-y > * + * {
-  border-top-width: 1px !important;
-  border-top-style: solid !important;
-}
-
-.v109 .divide-x > :not([hidden]) ~ :not([hidden]),
-.v109 .divide-x > * + * {
-  border-left-width: 1px !important;
-  border-left-style: solid !important;
-}
-
-.v109 .divide-gray-300 > :not([hidden]) ~ :not([hidden]),
-.v109 .divide-gray-300 > * + * {
-  border-color: #d1d5db !important;
-}
-
-.v109 .divide-gray-200 > :not([hidden]) ~ :not([hidden]),
-.v109 .divide-gray-200 > * + * {
-  border-color: #e5e7eb !important;
-}
-
-/* Chrome 109 radio-selection 라디오버튼 1:1 완벽 클릭 및 선택 표시 보정 */
-.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper,
-html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper {
-  border-radius: 50% !important;
-  border: 1px solid #cccccc !important;
-  background-color: #ffffff !important;
-  width: 1.6rem !important;
-  height: 1.6rem !important;
-  box-sizing: border-box !important;
-  position: relative !important;
-  cursor: pointer !important;
-}
-
-.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked,
-html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked {
-  border-color: #ff5c2e !important;
-  background-color: #ffffff !important;
-}
-
-.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper::after,
-html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper::after {
-  content: '' !important;
-  position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  width: 0.8rem !important;
-  height: 0.8rem !important;
-  border-radius: 50% !important;
-  background-color: transparent !important;
-  -webkit-transform: translate(-50%, -50%) !important;
-  transform: translate(-50%, -50%) !important;
-  -webkit-mask-image: none !important;
-  mask-image: none !important;
-  display: block !important;
-}
-
-.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked::after,
-html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked::after {
-  background-color: #ff5c2e !important;
-  background-image: none !important;
-  -webkit-mask-image: none !important;
-  mask-image: none !important;
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-/* 2분할(해약환급금/예정이율) 셀 전용 상하 패딩 제거 및 세로선 연결 클래스 */
-.ag-theme-alpine .ag-cell.split-dual-cell,
-.cp-aggrid .ag-cell.split-dual-cell {
-  padding: 0 !important;
-  margin: 0 !important;
-  height: 100% !important;
-  display: flex !important;
-  align-items: stretch !important;
-  overflow: visible !important;
-}
-
-.ag-theme-alpine .ag-cell.split-dual-cell .ag-cell-wrapper,
-.ag-theme-alpine .ag-cell.split-dual-cell .ag-cell-value,
-.cp-aggrid .ag-cell.split-dual-cell .ag-cell-wrapper,
-.cp-aggrid .ag-cell.split-dual-cell .ag-cell-value {
-  height: 100% !important;
-  width: 100% !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  overflow: visible !important;
-  display: flex !important;
-  align-items: stretch !important;
-}
-.group-style .ag-center-cols-container > [role='row']:nth-child(2n) {
-  background-color: #fff;
-}
-.is-sub-row .ag-cell {
-  background-color: var(--color-gray-5);
-}
-/* AG Grid 툴팁 마우스 오버/이탈 시 CSS 트랜지션 및 모션 애니메이션 즉시 제거 */
-.ag-tooltip,
-.ag-tooltip-showing,
-.ag-tooltip-hiding {
-  transition: none !important;
-  animation: none !important;
-}
-
-/* 툴팁 숨김(hiding) 시 잔상 없이 즉시 제거 및 이전 툴팁 DOM 중복 방지 */
-.ag-tooltip-hiding {
-  display: none !important;
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-}
-
-.ag-tooltip:not(:last-of-type) {
-  display: none !important;
-}
-
-.link-cell .ag-cell-value {
-  position: static !important;
-}
 
 /*ag-color*/
 .isHover {
@@ -2062,58 +563,59 @@ html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked
   background-color: var(--color-gray-30) !important;
   color: #000 !important;
 }
+.editable-cell {
+  background: var(--color-information-5);
+}
+/* 텍스트 인풋 포커스 라인 */
+.ag-theme-alpine .ag-input-field-input:focus {
+  border-color: #000000 !important; /* 원하는 색상 */
+  outline: none !important;
 
-.cell-greater {
-  background-color: var(--color-danger-15) !important;
 }
-.cell-less {
-  background-color: var(--color-information-15) !important;
+/* 셀렉트(드롭다운) 포커스 라인 */
+.ag-theme-alpine .ag-cell-inline-editing select:focus,
+.ag-theme-alpine .ag-picker-field-wrapper:focus-within,
+.ag-theme-alpine .ag-rich-select:focus-within {
+  border-color: #000000 !important; /* 원하는 색상 */
+  outline: none !important;
 }
-
-/* Ltpz204 보장패키지 선택 팝업 구분선 스타일 (상단 border 덮어쓰기 및 음수 마진으로 이전 행의 border-bottom 자연 상쇄) */
-.ltpz204-style .ag-theme-alpine .ag-row.package-group-divider,
-.ag-theme-alpine .ag-row.package-group-divider {
-  border-top: 1px solid #6b7280 !important;
-  margin-top: -1px;
-  z-index: 1;
-}
-.ltpz204-style .ag-theme-alpine .ag-row.package-group-divider .ag-cell,
-.ag-theme-alpine .ag-row.package-group-divider .ag-cell {
-  border-top: none !important;
-}
-
-.v109 .ag-cell-value .masking [data-slot='input'] {
-  background: none;
-  border: none;
-}
-
-.th-cell-break {
-  word-break: keep-all;
-  width: 100%;
-  display: block;
-  text-align: center;
-  line-height: 1.1;
+/* 인풋 및 셀렉트 포커스 시 2px 두께 라인 (공간 밀림 없음) */
+.ag-theme-alpine .ag-cell-inline-editing .ag-input-field-input:focus,
+.ag-theme-alpine .ag-cell-inline-editing select:focus,
+.ag-theme-alpine .ag-cell-inline-editing .ag-picker-field-wrapper:focus-within {
+  border-color: transparent !important;
+  outline: none !important;
 }
 
-.ag-theme-alpine .ag-unselectable,
-.ag-unselectable {
-  -webkit-user-select: text !important;
-  -moz-user-select: text !important;
-  user-select: text !important;
+/* 라디오 버튼 스타일 */
+.ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper {
+  position: relative;
+  width: 1.4rem !important;
+  height: 1.4rem !important;
+  border-radius: 9999px !important;
+  border: 1px solid var(--color-border-gray-light) !important;
+  background-color: var(--color-element-inverse) !important;
+}
+.ag-theme-alpine.radio-mode .ag-checked,
+.ag-theme-alpine.radio-selection .ag-checked {
+  pointer-events: none !important;
+}
+.ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 50%;
+  left: 50%;
+  width: 0.8rem !important;
+  height: 0.8rem !important;
+  border-radius: 9999px !important;
+  background-color: transparent !important;
+  transform: translate(-50%, -50%);
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
 }
 
-.ag-theme-alpine .ag-unselectable,
-.ag-unselectable {
-  -webkit-user-select: text !important;
-  -moz-user-select: text !important;
-  user-select: text !important;
-}
-
-.cell-align-top .ag-cell-wrapper {
-  align-items: flex-start;
-}
-.ag-body-viewport {
-  overflow-y: scroll !important;
+.ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked::after {
+  background-color: var(--color-element-primary) !important;
 }
 
 /* 소형(24px) 그리드 (.small) 높이 설정 */
@@ -2146,26 +648,154 @@ html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked
   min-height: 2rem !important;
 }
 
-.ag-pinned-left-cols-container{
-  border:0 !important
+
+.pointer-events-none .ag-selection-checkbox .ag-wrapper {
+  background-color: var(--color-gray-10) !important;
+  border: 1px solid var(--color-gray-20) !important;
 }
 
-.ag-row .ag-cell-range-selected.ag-cell.ag-column-last,
-.ag-cell-range-selected.ag-cell {
-  border-width: 1px !important;
+.pointer-events-none .ag-selection-checkbox .ag-wrapper::after {
+  /* mask-image: none !important; */
+  background-color: var(--color-gray-50) !important;
+  mask-image: var(--ag-checkbox-checked-shape-image);
 }
-.ag-cell-range-selected-1.ag-cell-range-chart, .ag-cell-range-selected-1.ag-formula-range, .ag-cell-range-selected-1:not(.ag-cell-focus), .ag-root:not(.ag-context-menu-open) .ag-grid-viewport:not(.ag-has-focus) .ag-cell-range-selected-1:not(.ag-cell-inline-editing) {
-    background-color: var(--ag-range-selection-background-color);
+
+/* ===== 12. 합계 영역 (Pinned Bottom Rows) 스타일 ===== */
+/* 컨테이너 및 행/셀 배경색 */
+.ag-theme-alpine .ag-floating-bottom,
+.ag-theme-alpine .ag-floating-bottom .ag-row,
+.ag-theme-alpine .ag-floating-bottom .ag-cell,
+.ag-theme-alpine .ag-grid-pinned-bottom-rows,
+.ag-theme-alpine .ag-grid-pinned-bottom-rows .ag-row,
+.ag-theme-alpine .ag-grid-pinned-bottom-rows .ag-cell,
+.ag-theme-alpine .ag-row-pinned.ag-row-bottom-pinned,
+.ag-theme-alpine .ag-row-pinned.ag-row-bottom-pinned .ag-cell {
+  background-color: var(--ag-pinned-bottom-bg, var(--ag-row-pinned-background-color, var(--color-primary-10))) !important;
 }
-.ag-cell.ag-cell-range-selected:not(.ag-cell-range-single-cell) {
-    &.ag-cell-range-left {
-        border-left-color: var(--ag-range-selection-border-color);
-        border-left-style: var(--ag-range-selection-border-style);
-    }
+
+/* 상단 구분선 (테두리 라인) */
+.ag-theme-alpine .ag-floating-bottom,
+.ag-theme-alpine .ag-grid-pinned-bottom-rows {
+  border-top: 1px solid var(--ag-pinned-bottom-border-color, var(--ag-row-pinned-border-color, var(--color-primary-50))) !important;
 }
-/* 모달 다이얼로그 및 작은 그리드 overflow 밖으로 탈출한 AG Grid 팝업을 최상단에 노출 */
-.ag-popup,
-.ag-popup-child {
-  z-index: 99999 !important;
+.ag-theme-alpine .ag-floating-bottom:has(.ag-row-subtotal),
+.ag-theme-alpine .ag-grid-pinned-bottom-rows:has(.ag-row-subtotal) {
+  border-top: 1px solid var(--color-warning-50) !important;
 }
-.ag-theme-alpine *{user-select: none;}
+.ag-theme-alpine .ag-floating-bottom .ag-row,
+.ag-theme-alpine .ag-grid-pinned-bottom-rows .ag-row {
+  border-bottom: none !important;
+}
+
+/* 텍스트 색상 및 굵기 */
+.ag-theme-alpine .ag-floating-bottom .ag-cell,
+.ag-theme-alpine .ag-grid-pinned-bottom-rows .ag-cell,
+.ag-theme-alpine .ag-row-pinned.ag-row-bottom-pinned .ag-cell {
+  color: var(--ag-pinned-bottom-color, var(--color-primary-50)) !important;
+  font-weight: 700;
+}
+
+
+/* noheader */
+.no-header.ag-theme-alpine {
+  border-top:none;
+}
+
+/* notopborder */
+.ag-border-t .ag-root-wrapper {
+  border-top: 0 !important;
+}
+
+/* subtotal 행 배경색 */
+.ag-row.ag-row-subtotal,
+.ag-row.ag-row-subtotal .ag-cell {
+  background-color: var(--color-warning-10) !important;
+  color: var(--color-warning-50) !important;
+  font-weight: 700;
+}
+
+.ag-row.ag-row-subtotal:hover,
+.ag-row.ag-row-subtotal.ag-row-hover,
+.ag-row.ag-row-subtotal:hover .ag-cell,
+.ag-row.ag-row-subtotal.ag-row-hover .ag-cell {
+  background-color: var(--color-warning-10) !important;
+  color: var(--color-warning-50) !important;
+}
+
+/* AG Grid 행 복제(+) 버튼 CSS 아이콘 최적화 */
+.uiux-duplicate-btn::before {
+  content: '';
+  display: block;
+  width: 1.4rem;
+  height: 1.4rem;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none'%3E%3Cpath d='M6.59995 1.04517C6.93408 1.04517 7.20474 1.31582 7.20474 1.64995V5.99517H11.55C11.8841 5.99517 12.1547 6.26582 12.1547 6.59995C12.1547 6.93408 11.8841 7.20474 11.55 7.20474H7.20474V11.55C7.20474 11.8841 6.93408 12.1547 6.59995 12.1547C6.26582 12.1547 5.99517 11.8841 5.99517 11.55V7.20474H1.64995C1.31582 7.20474 1.04517 6.93408 1.04517 6.59995C1.04517 6.26582 1.31582 5.99517 1.64995 5.99517H5.99517V1.64995C5.99517 1.31582 6.26582 1.04517 6.59995 1.04517Z' fill='%23ff5c2e'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.is-duplicate .uiux-duplicate-btn {
+  display: none;
+}
+
+.ag-header-cell-comp-wrapper {
+  position: absolute !important;
+}
+
+
+/* AG-Grid 선택 드롭다운 팝업 목록 전용 개별 스크롤바 스타일 */
+.ag-select-list::-webkit-scrollbar,
+.ag-rich-select-popup::-webkit-scrollbar,
+.v109 .ag-select-list::-webkit-scrollbar,
+.v109 .ag-rich-select-popup::-webkit-scrollbar {
+  width: 1.2rem !important;
+  height: 1.2rem !important;
+}
+
+.ag-select-list::-webkit-scrollbar-track,
+.ag-rich-select-popup::-webkit-scrollbar-track,
+.v109 .ag-select-list::-webkit-scrollbar-track,
+.v109 .ag-rich-select-popup::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 0rem;
+}
+
+.ag-select-list::-webkit-scrollbar-thumb,
+.ag-rich-select-popup::-webkit-scrollbar-thumb,
+.v109 .ag-select-list::-webkit-scrollbar-thumb,
+.v109 .ag-rich-select-popup::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 2rem;
+  border: 0.4rem solid #ffffff;
+}
+
+.ag-select-list::-webkit-scrollbar-thumb:hover,
+.ag-rich-select-popup::-webkit-scrollbar-thumb:hover,
+.v109 .ag-select-list::-webkit-scrollbar-thumb:hover,
+.v109 .ag-rich-select-popup::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+  border: 0.3rem solid #ffffff;
+}
+
+.ag-theme-alpine ::-webkit-scrollbar {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+}
+.ag-theme-alpine ::-webkit-scrollbar-track {
+  background: var(--color-gray-5);
+  border-radius: 0rem;
+}
+.ag-theme-alpine ::-webkit-scrollbar-thumb {
+  background: var(--color-gray-20);
+  border-radius: 2rem;
+  border: 0.6rem solid var(--color-gray-5);
+}
+.ag-theme-alpine ::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray-30);
+  border: 0.4rem solid var(--color-gray-5);
+}
+
+.ag-theme-alpine.ag-border-t {
+  border-top: none !important
+}

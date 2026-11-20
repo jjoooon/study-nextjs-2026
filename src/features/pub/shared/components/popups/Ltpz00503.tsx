@@ -27,7 +27,68 @@ type JobDataType = {
 };
 
 // 직업
-const JobDummyData: JobDataType[] = [];
+const JobDummyData: JobDataType[] = [
+  {
+    id: 1,
+    targetStatus: '대상',
+    policyNumber: 'LA12345678901',
+    changedDesignNumber: 'CA260101001',
+    beforeInjuryGrade: '1급',
+    beforeJobName: '일반사무원',
+    afterInjuryGrade: '2급',
+    afterJobName: '제품 및 광고영업원',
+  },
+  {
+    id: 2,
+    targetStatus: '대상',
+    policyNumber: 'LA12345678902',
+    changedDesignNumber: 'CA260101002',
+    beforeInjuryGrade: '3급',
+    beforeJobName: '화물차운전원',
+    afterInjuryGrade: '2급',
+    afterJobName: '제품 및 광고영업원',
+  },
+  {
+    id: 3,
+    targetStatus: '대상',
+    policyNumber: 'LA12345678902',
+    changedDesignNumber: 'CA260101002',
+    beforeInjuryGrade: '3급',
+    beforeJobName: '화물차운전원',
+    afterInjuryGrade: '2급',
+    afterJobName: '제품 및 광고영업원',
+  },
+  {
+    id: 4,
+    targetStatus: '대상',
+    policyNumber: 'LA12345678902',
+    changedDesignNumber: 'CA260101002',
+    beforeInjuryGrade: '3급',
+    beforeJobName: '화물차운전원',
+    afterInjuryGrade: '2급',
+    afterJobName: '제품 및 광고영업원',
+  },
+  {
+    id: 5,
+    targetStatus: '대상',
+    policyNumber: 'LA12345678902',
+    changedDesignNumber: 'CA260101002',
+    beforeInjuryGrade: '3급',
+    beforeJobName: '화물차운전원',
+    afterInjuryGrade: '2급',
+    afterJobName: '제품 및 광고영업원',
+  },
+  {
+    id: 6,
+    targetStatus: '대상',
+    policyNumber: 'LA12345678902',
+    changedDesignNumber: 'CA260101002',
+    beforeInjuryGrade: '3급',
+    beforeJobName: '화물차운전원',
+    afterInjuryGrade: '2급',
+    afterJobName: '제품 및 광고영업원',
+  },
+];
 
 type GroupTabItem = {
   id: number;
@@ -184,7 +245,7 @@ const Ltpz00503 = ({ onClose }: Ltpz00503Props) => {
                       직업정보(상해급수): <b>상이 계약 2건</b>
                     </Typo>
                   </Gcol>
-                  <div className="ag-theme-alpine">
+                  <div className="ag-theme-alpine inner-scroll header-2" data-row={JobDummyData.length}>
                     <AgGridReact<JobDataType>
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
@@ -197,7 +258,7 @@ const Ltpz00503 = ({ onClose }: Ltpz00503Props) => {
                       }}
                       headerHeight={30}
                       rowHeight={30}
-                      domLayout="autoHeight"
+                      domLayout="normal"
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
                       animateRows={false}
@@ -219,6 +280,7 @@ const Ltpz00503 = ({ onClose }: Ltpz00503Props) => {
                     <AgGridReact<JobDataType>
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
+                      noRowsOverlayComponentParams={{ message: '조회정보가 없습니다.' }}
                       rowData={JobDummyData}
                       columnDefs={jobColumnDefs}
                       defaultColDef={{
