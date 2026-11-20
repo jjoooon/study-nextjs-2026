@@ -1708,3 +1708,12 @@ input {
 [data-state='checked'] .sub-label {
   color: #fbc02d !important;
 }
+
+.truncate-no .truncate-no {
+  padding-right: 0.2rem;
+}
+.truncate-no {
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
+}
