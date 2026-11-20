@@ -1213,3 +1213,1133 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
     var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
     var(--tw-shadow);
 }
+
+/* ==========================================================================
+ * [agGridRe copy.css 비교 추가 스타일]
+ * agGridRe copy.css에는 존재하나 agGridRe.css에 누락되었던 스타일 모음
+ * ========================================================================== */
+
+/* 1. 숫자/폰트 전용 클래스 */
+.num-font,
+.font-notosans,
+.ag-theme-alpine .num-font,
+.ag-theme-alpine .font-notosans,
+.ag-cell.num-font,
+.ag-cell.font-notosans {
+  font-family: 'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', sans-serif !important;
+}
+
+/* 2. 헤더 높이 3rem 변수 (.th-s) */
+.ag-theme-alpine.th-s {
+  --ag-header-height: 3rem;
+}
+
+/* 3. 리액트 컨테이너 및 오버레이 로딩 스타일 */
+.ag-react-container > div {
+  background-color: transparent !important;
+}
+
+.ag-root-wrapper .ag-overlay-loading-wrapper > div {
+  background-color: transparent !important;
+}
+.ag-center-cols-container > .ag-row-odd {
+  background-color: transparent;
+}
+
+.ag-overlay-loading-center {
+  box-shadow: none;
+  border: 0;
+}
+.ag-overlay-loading-center .ag-loading-icon {
+  display: none;
+}
+.ag-overlay-loading-center .ag-loading-text {
+  display: none;
+}
+
+.ag-center-cols-viewport {
+  min-height: 0rem !important;
+}
+
+.ag-overlay-wrapper {
+  padding-bottom: 3rem;
+  padding-top: 3rem !important;
+}
+
+/* 4. 병합 셀(Row Span) 스타일 */
+.ag-row .ag-cell.row-span-cell,
+.ag-cell.row-span-cell,
+.ag-theme-alpine .ag-cell.row-span-cell,
+.ag-theme-alpine .ag-spanned-cell-wrapper,
+.ag-theme-alpine .ag-spanned-cell {
+  background-color: #fff !important;
+  z-index: 2 !important;
+}
+
+.ag-theme-alpine .ag-spanned-cell.editable-cell {
+  background-color: var(--color-information-5) !important;
+}
+
+.ag-row.ag-row-even .ag-cell.row-span-cell,
+.ag-row.ag-row-odd .ag-cell.row-span-cell {
+  background-color: #fff !important;
+}
+
+/* 5. 헤더 구분선 및 라벨 스타일 */
+.ag-header-group-cell.ag-column-first.ag-header-group-cell-with-group {
+  border-right: 1px solid var(--color-gray-10) !important;
+}
+
+.ag-theme-alpine .ag-header-group-cell.ag-header-left-divider,
+.ag-theme-alpine .ag-header-cell.ag-header-left-divider {
+  border-left: 0.1rem solid var(--color-gray-10) !important;
+}
+
+.ag-theme-alpine .ag-header-group-cell.ag-header-right-divider,
+.ag-theme-alpine .ag-header-cell.ag-header-right-divider {
+  border-right: 0.1rem solid var(--color-gray-10) !important;
+}
+
+.ag-header-cell-text {
+  width: 100%;
+  display: block;
+  text-align: center;
+  line-height: 1;
+  font-size: 1.3rem;
+  font-weight: bold;
+  white-space: normal;
+  word-break: keep-all;
+}
+
+.ag-header-cell-label .ag-header-cell-text {
+  overflow: visible !important;
+}
+
+.ag-header-group-text {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+/* 6. 행 상태 (ag-row-state-true) */
+.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell {
+  color: var(--color-gray-50);
+}
+.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell button {
+  color: initial;
+}
+.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell button[data-variant='outlined'] span {
+  color: var(--color-primary-50);
+}
+.ag-theme-alpine .ag-row.ag-row-state-true {
+  --color-text-base: var(--color-gray-50);
+}
+
+/* 7. Ltpa010 특화 그리드 스타일 */
+.ltpa010-grid .ag-cell[col-id='ag-Grid-SelectionColumn'] {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.ltpa010-grid .ag-cell[col-id='ag-Grid-SelectionColumn'] .ag-cell-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.ltpa010-grid .ag-cell[col-id='ag-Grid-SelectionColumn'] .ag-selection-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ltpa010-grid .ag-header {
+  height: 6.1rem !important;
+  min-height: 6.1rem !important;
+}
+.ltpa010-grid .ag-header-row,
+.ltpa010-grid .ag-header-cell {
+  height: 6rem !important;
+}
+
+/* 8. no-header 완전 숨김 스타일 확장 */
+.no-header .ag-header,
+.no-header .ag-pinned-left-header,
+.no-header .ag-pinned-right-header {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  border: 0 !important;
+}
+
+.no-header .ag-root-wrapper-body {
+  border-top: 0 !important;
+}
+
+.no-header .ag-root-wrapper,
+.no-header .ag-root {
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* 9. 말줄임(truncate) 클래스 */
+[role='checkbox'].truncate > div {
+  width: 100%;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.truncate-no .truncate-no {
+  padding-right: 0.2rem;
+}
+.truncate-no {
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+/* 10. 신규 행 및 셀 에디터 관련 스타일 */
+.ag-row-new .editable-cell svg {
+  display: block;
+}
+
+.no-edited svg {
+  display: none !important;
+}
+
+.no-edited {
+  background-color: transparent !important;
+}
+
+.isStandardGroup,
+.ag-row-group-expanded .isStandardGroup,
+.ag-row-group-contracted .isStandardGroup {
+  background-color: #fff !important;
+}
+
+.isError .ag-cell-value {
+  font-weight: 700;
+  color: var(--color-text-danger) !important;
+  background-color: var(--color-warning-10) !important;
+}
+
+.style-select button {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 0.4rem;
+}
+
+.style-select button::after {
+  content: '';
+  display: none;
+  width: 1.6rem;
+  height: 1.6rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M12.134 5.33325C12.5929 5.33325 12.8361 5.90224 12.5313 6.26236L8.39784 11.1458C8.18629 11.3957 7.81413 11.3957 7.60257 11.1458L3.46846 6.26236C3.16396 5.90222 3.40765 5.33325 3.86642 5.33325H12.134Z' fill='%23545454'/%3E%3C/svg%3E");
+}
+
+.ag-row-selected .style-select button::after {
+  display: block;
+}
+
+/* 11. 정렬 아이콘 및 헤더 메뉴 버튼 제어 */
+:where(.ag-ltr) .ag-sort-indicator-icon {
+  padding-left: 0 !important;
+}
+
+.ag-header-cell-comp-wrapper :where(.ag-icon):before,
+.ag-header-cell-comp-wrapper .ag-icon {
+  width: 1.2rem !important;
+  height: 1.2rem !important;
+  transform: translateY(0.05rem);
+}
+.ag-icon-none::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M11.3981 2.6878C11.7169 2.32385 12.2836 2.32374 12.6022 2.6878L17.8395 8.67315C18.2919 9.19043 17.9242 10.0003 17.237 10.0003H13.0993V14.0003H17.237C17.9241 14.0003 18.2915 14.8092 17.8395 15.3265L12.6022 21.3118C12.2835 21.6761 11.7168 21.6761 11.3981 21.3118L6.16081 15.3265C5.70859 14.8092 6.07615 14.0003 6.76335 14.0003H10.9001V10.0003H6.76335C6.07603 10.0003 5.70821 9.19042 6.16081 8.67315L11.3981 2.6878Z' fill='%23414141'/%3E%3C/svg%3E") !important;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M11.3981 2.6878C11.7169 2.32385 12.2836 2.32374 12.6022 2.6878L17.8395 8.67315C18.2919 9.19043 17.9242 10.0003 17.237 10.0003H13.0993V14.0003H17.237C17.9241 14.0003 18.2915 14.8092 17.8395 15.3265L12.6022 21.3118C12.2835 21.6761 11.7168 21.6761 11.3981 21.3118L6.16081 15.3265C5.70859 14.8092 6.07615 14.0003 6.76335 14.0003H10.9001V10.0003H6.76335C6.07603 10.0003 5.70821 9.19042 6.16081 8.67315L11.3981 2.6878Z' fill='%23414141'/%3E%3C/svg%3E") !important;
+  background-color: var(--color-gray-60) !important;
+}
+.ag-icon-desc::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M11.9995 2.34216C12.7276 2.34232 13.3176 2.93215 13.3176 3.6603V13.2501H18.2776C19.1015 13.2501 19.5423 14.221 18.9999 14.841L12.7217 22.0147C12.3397 22.4513 11.6604 22.4513 11.2784 22.0147L5.00024 14.841C4.45769 14.221 4.89861 13.2501 5.72253 13.2501H10.6813V3.6603C10.6813 2.93218 11.2714 2.34237 11.9995 2.34216Z' fill='%23414141'/%3E%3C/svg%3E") !important;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M11.9995 2.34216C12.7276 2.34232 13.3176 2.93215 13.3176 3.6603V13.2501H18.2776C19.1015 13.2501 19.5423 14.221 18.9999 14.841L12.7217 22.0147C12.3397 22.4513 11.6604 22.4513 11.2784 22.0147L5.00024 14.841C4.45769 14.221 4.89861 13.2501 5.72253 13.2501H10.6813V3.6603C10.6813 2.93218 11.2714 2.34237 11.9995 2.34216Z' fill='%23414141'/%3E%3C/svg%3E") !important;
+  background-color: var(--color-gray-60) !important;
+}
+.ag-icon-asc::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M11.9995 2.34216C12.7276 2.34232 13.3176 2.93215 13.3176 3.6603V13.2501H18.2776C19.1015 13.2501 19.5423 14.221 18.9999 14.841L12.7217 22.0147C12.3397 22.4513 11.6604 22.4513 11.2784 22.0147L5.00024 14.841C4.45769 14.221 4.89861 13.2501 5.72253 13.2501H10.6813V3.6603C10.6813 2.93218 11.2714 2.34237 11.9995 2.34216Z' fill='%23414141'/%3E%3C/svg%3E") !important;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M11.9995 2.34216C12.7276 2.34232 13.3176 2.93215 13.3176 3.6603V13.2501H18.2776C19.1015 13.2501 19.5423 14.221 18.9999 14.841L12.7217 22.0147C12.3397 22.4513 11.6604 22.4513 11.2784 22.0147L5.00024 14.841C4.45769 14.221 4.89861 13.2501 5.72253 13.2501H10.6813V3.6603C10.6813 2.93218 11.2714 2.34237 11.9995 2.34216Z' fill='%23414141'/%3E%3C/svg%3E") !important;
+  transform: rotate(180deg);
+  background-color: var(--color-gray-60) !important;
+}
+
+.ag-header-cell-menu-button {
+  display: none !important;
+}
+
+/* 12. modify-cell 및 헤더 컬러/preline 스타일 */
+.modify-cell {
+  background-color: #cbe3ff !important;
+}
+
+.ag-theme-alpine .ag-header-group-cell.ag-header-color,
+.ag-theme-alpine .ag-header-cell.ag-header-color {
+  background-color: var(--color-primary-15) !important;
+}
+.ag-header-cell.ag-header-color {
+  border-right: 0.1rem solid var(--color-white) !important;
+}
+
+.ag-theme-alpine.ag-header-color-grid {
+  --ag-header-row-border: solid 0.1rem var(--color-white);
+}
+.ag-theme-alpine
+  :where(.ag-header-cell.ag-header-color:not(.ag-header-span-height.ag-header-span-total, .ag-header-parent-hidden)) {
+  border-top: 0.1rem solid var(--color-white) !important;
+}
+
+.ag-theme-alpine.ag-header-preline-grid .ag-header-cell.ag-header-preline .ag-header-cell-text {
+  white-space: pre-line !important;
+  line-height: 1.2;
+  text-align: center;
+}
+.ag-header-group-cell .ag-header-cell-comp-wrapper .ag-header-group-text {
+  overflow: visible;
+}
+
+.cell-span-style {
+  background-color: #ffffff;
+  border-bottom: 1px solid #dde2eb !important;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+.row-cloning .ag-cell {
+  background-color: var(--color-yellow-10) !important;
+}
+
+.ltpz020-table-1 .ag-header {
+  display: none !important;
+}
+.ltpz020-table-1 .ag-cell:first-child {
+  background-color: var(--color-gray-5);
+  font-weight: 700;
+}
+.ltpz020-table-1 .ag-cell:first-child.editable-cell {
+  background-color: var(--color-information-5);
+}
+
+/* 13. Rich Select 세부 아이템 스타일 */
+.ag-select-list-item,
+.ag-rich-select-row,
+.ag-list-item {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  width: 100% !important;
+  min-width: max-content !important;
+  height: 2.6rem !important;
+  min-height: 2.6rem !important;
+  line-height: 2.6rem !important;
+  display: flex !important;
+  align-items: center !important;
+  font-size: 1.2rem !important;
+  color: #1e293b !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  text-overflow: clip !important;
+  padding-left: 0.8rem !important;
+  padding-right: 1.8rem !important;
+}
+
+.ag-rich-select-row * {
+  font-size: 1.2rem !important;
+  letter-spacing: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.ag-cell.ag-cell-inline-editing .ag-rich-select,
+.ag-cell.ag-cell-inline-editing .ag-cell-editor.ag-select-cell-editor,
+.ag-cell.ag-cell-inline-editing select {
+  height: 100% !important;
+  min-height: 100% !important;
+  border: transparent !important;
+  border-radius: 0.4rem !important;
+  font-size: 1.2rem !important;
+  letter-spacing: 0 !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.ag-cell.ag-cell-inline-editing .ag-rich-select-value {
+  padding-left: 0.3rem !important;
+  padding-right: 0rem !important;
+  font-size: 1.2rem !important;
+  letter-spacing: -0.04rem !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+}
+
+/* 14. Ltpz012 전용 최종 그리드 스타일 */
+.ltpz012-final-grid .ag-cell b {
+  font-weight: 700;
+}
+.ltpz012-final-grid .ag-cell {
+  font-weight: 700;
+  color: var(--color-primary-50) !important;
+}
+
+.ag-cell-value[role='presentation'] {
+  letter-spacing: -0.05rem !important;
+  padding-right: 0.05rem !important;
+}
+
+/* 15. Ltpz019 및 data-row/data-page 기반 높이 제어 */
+.ltpz019-product-grid.inner-scroll .ag-root-wrapper-body .ag-body.ag-layout-normal,
+.ltpz019-product-grid.inner-scroll .ag-body-viewport {
+  height: 39rem !important;
+  min-height: 39rem !important;
+  max-height: 39rem !important;
+}
+
+.ag-theme-alpine[data-row='1'] .ag-root-wrapper-body .ag-overlay,
+.ag-theme-alpine[data-row='2'] .ag-root-wrapper-body .ag-overlay,
+.ag-theme-alpine[data-row='3'] .ag-root-wrapper-body .ag-overlay,
+.ag-theme-alpine[data-row='4'] .ag-root-wrapper-body .ag-overlay,
+.ag-theme-alpine[data-row='5'] .ag-root-wrapper-body .ag-overlay {
+  position: absolute;
+  bottom: 0;
+  top: auto;
+}
+.ag-theme-alpine[data-row] .ag-root-wrapper-body .ag-body.ag-layout-normal {
+  height: 15rem !important;
+  max-height: 100% !important;
+  min-height: 15rem !important;
+  overflow-y: auto !important;
+}
+.ag-theme-alpine[data-row='0'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
+  height: 0 !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+}
+.ag-theme-alpine[data-row='1'] .ag-root-wrapper-body .ag-overlay,
+.ag-theme-alpine[data-row='1'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
+  height: 3rem !important;
+  min-height: 3rem !important;
+  max-height: 3rem !important;
+}
+.ag-theme-alpine[data-row='2'] .ag-root-wrapper-body .ag-overlay,
+.ag-theme-alpine[data-row='2'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
+  height: 6rem !important;
+  min-height: 6rem !important;
+  max-height: 6rem !important;
+}
+.ag-theme-alpine[data-row='3'] .ag-root-wrapper-body .ag-overlay,
+.ag-theme-alpine[data-row='3'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
+  height: 9rem !important;
+  min-height: 9rem !important;
+  max-height: 9rem !important;
+}
+.ag-theme-alpine[data-row='4'] .ag-root-wrapper-body .ag-overlay,
+.ag-theme-alpine[data-row='4'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
+  height: 12rem !important;
+  min-height: 12rem !important;
+  max-height: 12rem !important;
+}
+.ag-theme-alpine[data-row='5'] .ag-root-wrapper-body .ag-overlay,
+.ag-theme-alpine[data-row='5'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
+  height: 15rem !important;
+  min-height: 15rem !important;
+  max-height: 15rem !important;
+}
+
+.ag-theme-alpine.inner-scroll[data-row='0'] .ag-header-row {
+  width: 100% !important;
+}
+
+.ag-theme-alpine.inner-min-scroll .ag-root-wrapper-body .ag-body.ag-layout-normal {
+  height: 3rem !important;
+  min-height: 3rem !important;
+  max-height: 100% !important;
+  overflow-y: auto !important;
+}
+
+.ag-theme-alpine.inner-scroll.inner-min-scroll[data-row='2'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
+  height: 6rem !important;
+  min-height: 6rem !important;
+  max-height: 100% !important;
+  overflow-y: auto !important;
+}
+.ag-theme-alpine.inner-scroll.inner-min-scroll[data-row='5'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
+  height: 15rem !important;
+  min-height: 15rem !important;
+  max-height: 100% !important;
+  overflow-y: auto !important;
+}
+
+.ag-theme-alpine.is-loading .ag-body.ag-layout-normal,
+.ag-theme-alpine.is-empty .ag-body.ag-layout-normal {
+  height: 0 !important;
+  min-height: 1px !important;
+  max-height: 1px !important;
+  overflow-y: auto !important;
+}
+.ag-theme-alpine.is-loading .ag-body.ag-layout-normal .ag-body-viewport,
+.ag-theme-alpine.is-empty .ag-body.ag-layout-normal .ag-body-viewport {
+  background-color: #fff !important;
+}
+
+/* 트리 그룹 자식 체크박스 스타일 */
+.children-checked .ag-theme-alpine .ag-row.ag-row-group-expanded .ag-checkbox-input-wrapper.ag-checked {
+  background-color: var(--color-primary-50);
+  border-color: var(--color-primary-50);
+}
+
+.children-checked .ag-theme-alpine .ag-row.ag-row-level-1 .ag-checkbox-input-wrapper.ag-checked,
+.children-checked .ag-theme-alpine .ag-row:not(.ag-row-level-0) .ag-checkbox-input-wrapper.ag-checked {
+  background-color: var(--color-gray-0);
+  border-color: var(--color-primary-50);
+}
+
+.children-checked .ag-theme-alpine .ag-row.ag-row-level-1 .ag-checkbox-input-wrapper.ag-checked:after,
+.children-checked .ag-theme-alpine .ag-row:not(.ag-row-level-0) .ag-checkbox-input-wrapper.ag-checked:after,
+.children-checked .ag-theme-alpine .ag-row.ag-row-level-1 .ag-checkbox-input-wrapper.ag-checked::after,
+.children-checked .ag-theme-alpine .ag-row:not(.ag-row-level-0) .ag-checkbox-input-wrapper.ag-checked::after {
+  background-color: var(--color-primary-50);
+}
+
+/* 18. Ltpz070 헤더 배경색 */
+.Ltpz070 .ag-header .ag-header-viewport,
+.Ltpz070 .ag-header-container {
+  background-color: #ffccbe;
+}
+
+/* 19. 트리 그룹 들여쓰기 (ag-row-group-indent 0 ~ 20) */
+.ag-cell-value .ag-cell-expandable .ag-group-value {
+  padding-right: 0.1rem;
+}
+
+.ag-cell-value .ag-row-group-leaf-indent .ag-group-value {
+  padding-right: 0.1rem;
+}
+
+.ag-theme-alpine {
+  --ag-row-group-indent-size: 1rem !important;
+}
+.ag-row-group-indent-0 { padding-left: 0 !important; }
+.ag-row-group-indent-1 { padding-left: 1rem !important; }
+.ag-row-group-indent-2 { padding-left: 2rem !important; }
+.ag-row-group-indent-3 { padding-left: 3rem !important; }
+.ag-row-group-indent-4 { padding-left: 4rem !important; }
+.ag-row-group-indent-5 { padding-left: 5rem !important; }
+.ag-row-group-indent-6 { padding-left: 6rem !important; }
+.ag-row-group-indent-7 { padding-left: 7rem !important; }
+.ag-row-group-indent-8 { padding-left: 8rem !important; }
+.ag-row-group-indent-9 { padding-left: 9rem !important; }
+.ag-row-group-indent-10 { padding-left: 10rem !important; }
+.ag-row-group-indent-11 { padding-left: 11rem !important; }
+.ag-row-group-indent-12 { padding-left: 12rem !important; }
+.ag-row-group-indent-13 { padding-left: 13rem !important; }
+.ag-row-group-indent-14 { padding-left: 14rem !important; }
+.ag-row-group-indent-15 { padding-left: 15rem !important; }
+.ag-row-group-indent-16 { padding-left: 16rem !important; }
+.ag-row-group-indent-17 { padding-left: 17rem !important; }
+.ag-row-group-indent-18 { padding-left: 18rem !important; }
+.ag-row-group-indent-19 { padding-left: 19rem !important; }
+.ag-row-group-indent-20 { padding-left: 20rem !important; }
+
+/* 20. 예상보험료 바 최소 높이 */
+.class-expected-premium-bar {
+  min-height: 3rem;
+}
+
+/* 21. Ltpz204 보장패키지 구분선 스타일 */
+.ltpz204-style .ag-theme-alpine .ag-row.package-group-divider,
+.ag-theme-alpine .ag-row.package-group-divider {
+  border-top: 1px solid #6b7280 !important;
+  margin-top: -1px;
+  z-index: 1;
+}
+.ltpz204-style .ag-theme-alpine .ag-row.package-group-divider .ag-cell,
+.ag-theme-alpine .ag-row.package-group-divider .ag-cell {
+  border-top: none !important;
+}
+
+/* 22. 마스킹 인풋 및 텍스트 줄바꿈/상단 정렬 */
+.v109 .ag-cell-value .masking [data-slot='input'] {
+  background: none;
+  border: none;
+}
+
+.th-cell-break {
+  word-break: keep-all;
+  width: 100%;
+  display: block;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.ag-theme-alpine .ag-unselectable,
+.ag-unselectable {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  user-select: text !important;
+}
+
+.cell-align-top .ag-cell-wrapper {
+  align-items: flex-start;
+}
+
+/* 23. 범위 선택(Range Selection) 추가 보정 */
+.ag-row .ag-cell-range-selected.ag-cell.ag-column-last,
+.ag-cell-range-selected.ag-cell {
+  border-width: 1px !important;
+}
+.ag-cell-range-selected-1.ag-cell-range-chart,
+.ag-cell-range-selected-1.ag-formula-range,
+.ag-cell-range-selected-1:not(.ag-cell-focus),
+.ag-root:not(.ag-context-menu-open) .ag-grid-viewport:not(.ag-has-focus) .ag-cell-range-selected-1:not(.ag-cell-inline-editing) {
+  background-color: var(--ag-range-selection-background-color);
+}
+.ag-cell.ag-cell-range-selected:not(.ag-cell-range-single-cell)&.ag-cell-range-left {
+  border-left-color: var(--ag-range-selection-border-color);
+  border-left-style: var(--ag-range-selection-border-style);
+}
+
+/* 24. 팝업 최상단 노출 및 텍스트 선택 방지 */
+.ag-popup,
+.ag-popup-child {
+  z-index: 99999 !important;
+}
+.ag-theme-alpine * {
+  user-select: none;
+}
+
+/* ==========================================================================
+ * [agGridRe copy.css 비교 추가 스타일]
+ * agGridRe copy.css에는 존재하나 agGridRe.css에 누락되었던 스타일 모음
+ * ========================================================================== */
+
+/* 1. 숫자/폰트 전용 클래스 */
+.num-font,
+.font-notosans,
+.ag-theme-alpine .num-font,
+.ag-theme-alpine .font-notosans,
+.ag-cell.num-font,
+.ag-cell.font-notosans {
+  font-family: 'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', sans-serif !important;
+}
+
+/* 2. 헤더 높이 3rem 변수 (.th-s) */
+.ag-theme-alpine.th-s {
+  --ag-header-height: 3rem;
+}
+
+/* 3. 리액트 컨테이너 및 오버레이 로딩 스타일 */
+.ag-react-container > div {
+  background-color: transparent !important;
+}
+
+.ag-root-wrapper .ag-overlay-loading-wrapper > div {
+  background-color: transparent !important;
+}
+.ag-center-cols-container > .ag-row-odd {
+  background-color: transparent;
+}
+
+.ag-overlay-loading-center {
+  box-shadow: none;
+  border: 0;
+}
+.ag-overlay-loading-center .ag-loading-icon {
+  display: none;
+}
+.ag-overlay-loading-center .ag-loading-text {
+  display: none;
+}
+
+.ag-center-cols-viewport {
+  min-height: 0rem !important;
+}
+
+.ag-overlay-wrapper {
+  padding-bottom: 3rem;
+  padding-top: 3rem !important;
+}
+
+/* 4. 병합 셀(Row Span) 스타일 */
+.ag-row .ag-cell.row-span-cell,
+.ag-cell.row-span-cell,
+.ag-theme-alpine .ag-cell.row-span-cell,
+.ag-theme-alpine .ag-spanned-cell-wrapper,
+.ag-theme-alpine .ag-spanned-cell {
+  background-color: #fff !important;
+  z-index: 2 !important;
+}
+
+.ag-theme-alpine .ag-spanned-cell.editable-cell {
+  background-color: var(--color-information-5) !important;
+}
+
+.ag-row.ag-row-even .ag-cell.row-span-cell,
+.ag-row.ag-row-odd .ag-cell.row-span-cell {
+  background-color: #fff !important;
+}
+
+/* 5. 헤더 구분선 및 라벨 스타일 */
+.ag-header-group-cell.ag-column-first.ag-header-group-cell-with-group {
+  border-right: 1px solid var(--color-gray-10) !important;
+}
+
+.ag-theme-alpine .ag-header-group-cell.ag-header-left-divider,
+.ag-theme-alpine .ag-header-cell.ag-header-left-divider {
+  border-left: 0.1rem solid var(--color-gray-10) !important;
+}
+
+.ag-theme-alpine .ag-header-group-cell.ag-header-right-divider,
+.ag-theme-alpine .ag-header-cell.ag-header-right-divider {
+  border-right: 0.1rem solid var(--color-gray-10) !important;
+}
+
+.ag-header-cell-text {
+  width: 100%;
+  display: block;
+  text-align: center;
+  line-height: 1;
+  font-size: 1.3rem;
+  font-weight: bold;
+  white-space: normal;
+  word-break: keep-all;
+}
+
+.ag-header-cell-label .ag-header-cell-text {
+  overflow: visible !important;
+}
+
+.ag-header-group-text {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+/* 6. 행 상태 (ag-row-state-true) */
+.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell {
+  color: var(--color-gray-50);
+}
+.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell button {
+  color: initial;
+}
+.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell button[data-variant='outlined'] span {
+  color: var(--color-primary-50);
+}
+.ag-theme-alpine .ag-row.ag-row-state-true {
+  --color-text-base: var(--color-gray-50);
+}
+
+/* 7. Ltpa010 특화 그리드 스타일 */
+.ltpa010-grid .ag-cell[col-id='ag-Grid-SelectionColumn'] {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.ltpa010-grid .ag-cell[col-id='ag-Grid-SelectionColumn'] .ag-cell-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.ltpa010-grid .ag-cell[col-id='ag-Grid-SelectionColumn'] .ag-selection-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ltpa010-grid .ag-header {
+  height: 6.1rem !important;
+  min-height: 6.1rem !important;
+}
+.ltpa010-grid .ag-header-row,
+.ltpa010-grid .ag-header-cell {
+  height: 6rem !important;
+}
+
+/* 8. no-header 완전 숨김 스타일 확장 */
+.no-header .ag-header,
+.no-header .ag-pinned-left-header,
+.no-header .ag-pinned-right-header {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  border: 0 !important;
+}
+
+.no-header .ag-root-wrapper-body {
+  border-top: 0 !important;
+}
+
+.no-header .ag-root-wrapper,
+.no-header .ag-root {
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* 9. 말줄임(truncate) 클래스 */
+[role='checkbox'].truncate > div {
+  width: 100%;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.truncate-no .truncate-no {
+  padding-right: 0.2rem;
+}
+.truncate-no {
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+/* 10. 신규 행 및 셀 에디터 관련 스타일 */
+.ag-row-new .editable-cell svg {
+  display: block;
+}
+
+.no-edited svg {
+  display: none !important;
+}
+
+.no-edited {
+  background-color: transparent !important;
+}
+
+.isStandardGroup,
+.ag-row-group-expanded .isStandardGroup,
+.ag-row-group-contracted .isStandardGroup {
+  background-color: #fff !important;
+}
+
+.isError .ag-cell-value {
+  font-weight: 700;
+  color: var(--color-text-danger) !important;
+  background-color: var(--color-warning-10) !important;
+}
+
+.style-select button {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 0.4rem;
+}
+
+.style-select button::after {
+  content: '';
+  display: none;
+  width: 1.6rem;
+  height: 1.6rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M12.134 5.33325C12.5929 5.33325 12.8361 5.90224 12.5313 6.26236L8.39784 11.1458C8.18629 11.3957 7.81413 11.3957 7.60257 11.1458L3.46846 6.26236C3.16396 5.90222 3.40765 5.33325 3.86642 5.33325H12.134Z' fill='%23545454'/%3E%3C/svg%3E");
+}
+
+.ag-row-selected .style-select button::after {
+  display: block;
+}
+
+/* 11. 정렬 아이콘 및 헤더 메뉴 버튼 제어 */
+:where(.ag-ltr) .ag-sort-indicator-icon {
+  padding-left: 0 !important;
+}
+
+.ag-header-cell-comp-wrapper :where(.ag-icon):before,
+.ag-header-cell-comp-wrapper .ag-icon {
+  width: 1.2rem !important;
+  height: 1.2rem !important;
+  transform: translateY(0.05rem);
+}
+.ag-icon-none::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M11.3981 2.6878C11.7169 2.32385 12.2836 2.32374 12.6022 2.6878L17.8395 8.67315C18.2919 9.19043 17.9242 10.0003 17.237 10.0003H13.0993V14.0003H17.237C17.9241 14.0003 18.2915 14.8092 17.8395 15.3265L12.6022 21.3118C12.2835 21.6761 11.7168 21.6761 11.3981 21.3118L6.16081 15.3265C5.70859 14.8092 6.07615 14.0003 6.76335 14.0003H10.9001V10.0003H6.76335C6.07603 10.0003 5.70821 9.19042 6.16081 8.67315L11.3981 2.6878Z' fill='%23414141'/%3E%3C/svg%3E") !important;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M11.3981 2.6878C11.7169 2.32385 12.2836 2.32374 12.6022 2.6878L17.8395 8.67315C18.2919 9.19043 17.9242 10.0003 17.237 10.0003H13.0993V14.0003H17.237C17.9241 14.0003 18.2915 14.8092 17.8395 15.3265L12.6022 21.3118C12.2835 21.6761 11.7168 21.6761 11.3981 21.3118L6.16081 15.3265C5.70859 14.8092 6.07615 14.0003 6.76335 14.0003H10.9001V10.0003H6.76335C6.07603 10.0003 5.70821 9.19042 6.16081 8.67315L11.3981 2.6878Z' fill='%23414141'/%3E%3C/svg%3E") !important;
+  background-color: var(--color-gray-60) !important;
+}
+.ag-icon-desc::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M11.9995 2.34216C12.7276 2.34232 13.3176 2.93215 13.3176 3.6603V13.2501H18.2776C19.1015 13.2501 19.5423 14.221 18.9999 14.841L12.7217 22.0147C12.3397 22.4513 11.6604 22.4513 11.2784 22.0147L5.00024 14.841C4.45769 14.221 4.89861 13.2501 5.72253 13.2501H10.6813V3.6603C10.6813 2.93218 11.2714 2.34237 11.9995 2.34216Z' fill='%23414141'/%3E%3C/svg%3E") !important;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M11.9995 2.34216C12.7276 2.34232 13.3176 2.93215 13.3176 3.6603V13.2501H18.2776C19.1015 13.2501 19.5423 14.221 18.9999 14.841L12.7217 22.0147C12.3397 22.4513 11.6604 22.4513 11.2784 22.0147L5.00024 14.841C4.45769 14.221 4.89861 13.2501 5.72253 13.2501H10.6813V3.6603C10.6813 2.93218 11.2714 2.34237 11.9995 2.34216Z' fill='%23414141'/%3E%3C/svg%3E") !important;
+  background-color: var(--color-gray-60) !important;
+}
+.ag-icon-asc::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M11.9995 2.34216C12.7276 2.34232 13.3176 2.93215 13.3176 3.6603V13.2501H18.2776C19.1015 13.2501 19.5423 14.221 18.9999 14.841L12.7217 22.0147C12.3397 22.4513 11.6604 22.4513 11.2784 22.0147L5.00024 14.841C4.45769 14.221 4.89861 13.2501 5.72253 13.2501H10.6813V3.6603C10.6813 2.93218 11.2714 2.34237 11.9995 2.34216Z' fill='%23414141'/%3E%3C/svg%3E") !important;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M11.9995 2.34216C12.7276 2.34232 13.3176 2.93215 13.3176 3.6603V13.2501H18.2776C19.1015 13.2501 19.5423 14.221 18.9999 14.841L12.7217 22.0147C12.3397 22.4513 11.6604 22.4513 11.2784 22.0147L5.00024 14.841C4.45769 14.221 4.89861 13.2501 5.72253 13.2501H10.6813V3.6603C10.6813 2.93218 11.2714 2.34237 11.9995 2.34216Z' fill='%23414141'/%3E%3C/svg%3E") !important;
+  transform: rotate(180deg);
+  background-color: var(--color-gray-60) !important;
+}
+
+.ag-header-cell-menu-button {
+  display: none !important;
+}
+
+/* 12. modify-cell 및 헤더 컬러/preline 스타일 */
+.modify-cell {
+  background-color: #cbe3ff !important;
+}
+
+.ag-theme-alpine .ag-header-group-cell.ag-header-color,
+.ag-theme-alpine .ag-header-cell.ag-header-color {
+  background-color: var(--color-primary-15) !important;
+}
+.ag-header-cell.ag-header-color {
+  border-right: 0.1rem solid var(--color-white) !important;
+}
+
+.ag-theme-alpine.ag-header-color-grid {
+  --ag-header-row-border: solid 0.1rem var(--color-white);
+}
+.ag-theme-alpine
+  :where(.ag-header-cell.ag-header-color:not(.ag-header-span-height.ag-header-span-total, .ag-header-parent-hidden)) {
+  border-top: 0.1rem solid var(--color-white) !important;
+}
+
+.ag-theme-alpine.ag-header-preline-grid .ag-header-cell.ag-header-preline .ag-header-cell-text {
+  white-space: pre-line !important;
+  line-height: 1.2;
+  text-align: center;
+}
+.ag-header-group-cell .ag-header-cell-comp-wrapper .ag-header-group-text {
+  overflow: visible;
+}
+
+.cell-span-style {
+  background-color: #ffffff;
+  border-bottom: 1px solid #dde2eb !important;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+.row-cloning .ag-cell {
+  background-color: var(--color-yellow-10) !important;
+}
+
+.ltpz020-table-1 .ag-header {
+  display: none !important;
+}
+.ltpz020-table-1 .ag-cell:first-child {
+  background-color: var(--color-gray-5);
+  font-weight: 700;
+}
+.ltpz020-table-1 .ag-cell:first-child.editable-cell {
+  background-color: var(--color-information-5);
+}
+
+/* 13. Rich Select 세부 아이템 스타일 */
+.ag-select-list-item,
+.ag-rich-select-row,
+.ag-list-item {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  width: 100% !important;
+  min-width: max-content !important;
+  height: 2.6rem !important;
+  min-height: 2.6rem !important;
+  line-height: 2.6rem !important;
+  display: flex !important;
+  align-items: center !important;
+  font-size: 1.2rem !important;
+  color: #1e293b !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  text-overflow: clip !important;
+  padding-left: 0.8rem !important;
+  padding-right: 1.8rem !important;
+}
+
+.ag-rich-select-row * {
+  font-size: 1.2rem !important;
+  letter-spacing: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.ag-cell.ag-cell-inline-editing .ag-rich-select,
+.ag-cell.ag-cell-inline-editing .ag-cell-editor.ag-select-cell-editor,
+.ag-cell.ag-cell-inline-editing select {
+  height: 100% !important;
+  min-height: 100% !important;
+  border: transparent !important;
+  border-radius: 0.4rem !important;
+  font-size: 1.2rem !important;
+  letter-spacing: 0 !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.ag-cell.ag-cell-inline-editing .ag-rich-select-value {
+  padding-left: 0.3rem !important;
+  padding-right: 0rem !important;
+  font-size: 1.2rem !important;
+  letter-spacing: -0.04rem !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+}
+
+/* 14. Ltpz012 전용 최종 그리드 스타일 */
+.ltpz012-final-grid .ag-cell b {
+  font-weight: 700;
+}
+.ltpz012-final-grid .ag-cell {
+  font-weight: 700;
+  color: var(--color-primary-50) !important;
+}
+
+.ag-cell-value[role='presentation'] {
+  letter-spacing: -0.05rem !important;
+  padding-right: 0.05rem !important;
+}
+/*  
+.ag-theme-alpine.is-loading .ag-body.ag-layout-normal,
+.ag-theme-alpine.is-empty .ag-body.ag-layout-normal {
+  height: 0 !important;
+  min-height: 1px !important;
+  max-height: 1px !important;
+  overflow-y: auto !important;
+}
+.ag-theme-alpine.is-loading .ag-body.ag-layout-normal .ag-body-viewport,
+.ag-theme-alpine.is-empty .ag-body.ag-layout-normal .ag-body-viewport {
+  background-color: #fff !important;
+} */
+
+/* 트리 그룹 자식 체크박스 스타일 */
+.children-checked .ag-theme-alpine .ag-row.ag-row-group-expanded .ag-checkbox-input-wrapper.ag-checked {
+  background-color: var(--color-primary-50);
+  border-color: var(--color-primary-50);
+}
+
+.children-checked .ag-theme-alpine .ag-row.ag-row-level-1 .ag-checkbox-input-wrapper.ag-checked,
+.children-checked .ag-theme-alpine .ag-row:not(.ag-row-level-0) .ag-checkbox-input-wrapper.ag-checked {
+  background-color: var(--color-gray-0);
+  border-color: var(--color-primary-50);
+}
+
+.children-checked .ag-theme-alpine .ag-row.ag-row-level-1 .ag-checkbox-input-wrapper.ag-checked:after,
+.children-checked .ag-theme-alpine .ag-row:not(.ag-row-level-0) .ag-checkbox-input-wrapper.ag-checked:after,
+.children-checked .ag-theme-alpine .ag-row.ag-row-level-1 .ag-checkbox-input-wrapper.ag-checked::after,
+.children-checked .ag-theme-alpine .ag-row:not(.ag-row-level-0) .ag-checkbox-input-wrapper.ag-checked::after {
+  background-color: var(--color-primary-50);
+}
+ 
+/* 18. Ltpz070 헤더 배경색 */
+.Ltpz070 .ag-header .ag-header-viewport,
+.Ltpz070 .ag-header-container {
+  background-color: #ffccbe;
+}
+
+/* 19. 트리 그룹 들여쓰기 (ag-row-group-indent 0 ~ 20) */
+.ag-cell-value .ag-cell-expandable .ag-group-value {
+  padding-right: 0.1rem;
+}
+
+.ag-cell-value .ag-row-group-leaf-indent .ag-group-value {
+  padding-right: 0.1rem;
+}
+
+.ag-theme-alpine {
+  --ag-row-group-indent-size: 1rem !important;
+}
+.ag-row-group-indent-0 { padding-left: 0 !important; }
+.ag-row-group-indent-1 { padding-left: 1rem !important; }
+.ag-row-group-indent-2 { padding-left: 2rem !important; }
+.ag-row-group-indent-3 { padding-left: 3rem !important; }
+.ag-row-group-indent-4 { padding-left: 4rem !important; }
+.ag-row-group-indent-5 { padding-left: 5rem !important; }
+.ag-row-group-indent-6 { padding-left: 6rem !important; }
+.ag-row-group-indent-7 { padding-left: 7rem !important; }
+.ag-row-group-indent-8 { padding-left: 8rem !important; }
+.ag-row-group-indent-9 { padding-left: 9rem !important; }
+.ag-row-group-indent-10 { padding-left: 10rem !important; }
+.ag-row-group-indent-11 { padding-left: 11rem !important; }
+.ag-row-group-indent-12 { padding-left: 12rem !important; }
+.ag-row-group-indent-13 { padding-left: 13rem !important; }
+.ag-row-group-indent-14 { padding-left: 14rem !important; }
+.ag-row-group-indent-15 { padding-left: 15rem !important; }
+.ag-row-group-indent-16 { padding-left: 16rem !important; }
+.ag-row-group-indent-17 { padding-left: 17rem !important; }
+.ag-row-group-indent-18 { padding-left: 18rem !important; }
+.ag-row-group-indent-19 { padding-left: 19rem !important; }
+.ag-row-group-indent-20 { padding-left: 20rem !important; }
+
+/* 20. 예상보험료 바 최소 높이 */
+.class-expected-premium-bar {
+  min-height: 3rem;
+}
+
+/* 21. Ltpz204 보장패키지 구분선 스타일 */
+.ltpz204-style .ag-theme-alpine .ag-row.package-group-divider,
+.ag-theme-alpine .ag-row.package-group-divider {
+  border-top: 1px solid #6b7280 !important;
+  margin-top: -1px;
+  z-index: 1;
+}
+.ltpz204-style .ag-theme-alpine .ag-row.package-group-divider .ag-cell,
+.ag-theme-alpine .ag-row.package-group-divider .ag-cell {
+  border-top: none !important;
+}
+
+/* 22. 마스킹 인풋 및 텍스트 줄바꿈/상단 정렬 */
+.v109 .ag-cell-value .masking [data-slot='input'] {
+  background: none;
+  border: none;
+}
+
+.th-cell-break {
+  word-break: keep-all;
+  width: 100%;
+  display: block;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.ag-theme-alpine .ag-unselectable,
+.ag-unselectable {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  user-select: text !important;
+}
+
+.cell-align-top .ag-cell-wrapper {
+  align-items: flex-start;
+}
+
+/* 23. 범위 선택(Range Selection) 추가 보정 */
+.ag-row .ag-cell-range-selected.ag-cell.ag-column-last,
+.ag-cell-range-selected.ag-cell {
+  border-width: 1px !important;
+}
+.ag-cell-range-selected-1.ag-cell-range-chart,
+.ag-cell-range-selected-1.ag-formula-range,
+.ag-cell-range-selected-1:not(.ag-cell-focus),
+.ag-root:not(.ag-context-menu-open) .ag-grid-viewport:not(.ag-has-focus) .ag-cell-range-selected-1:not(.ag-cell-inline-editing) {
+  background-color: var(--ag-range-selection-background-color);
+}
+.ag-cell.ag-cell-range-selected:not(.ag-cell-range-single-cell)&.ag-cell-range-left {
+  border-left-color: var(--ag-range-selection-border-color);
+  border-left-style: var(--ag-range-selection-border-style);
+}
+
+/* 24. 팝업 최상단 노출 및 텍스트 선택 방지 */
+.ag-popup,
+.ag-popup-child {
+  z-index: 99999 !important;
+}
+.ag-theme-alpine * {
+  user-select: none;
+}

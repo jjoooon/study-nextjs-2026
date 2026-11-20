@@ -718,7 +718,7 @@ const Ltpz640 = () => {
                 <ArrowIcon className="-rotate-90" color={'#FF5C2E'} size={13} />
               </Button>
             </Grow>
-            <div className="cp-ag-icon-grip ag-theme-alpine inner-scroll" data-page={16}>
+            <div className="cp-ag-icon-grip ag-theme-alpine inner-scroll">
               <AgGridReact<DummyData1Type>
                 onGridReady={(event) => {
                   gridApiRef.current = event.api;
