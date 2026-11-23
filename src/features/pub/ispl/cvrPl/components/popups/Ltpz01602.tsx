@@ -15,7 +15,6 @@ import {
   DatePickerCellEditor,
   editableSelectCellRenderer,
   numberValueFormatter,
-  useAgSelectAutoEdit,
   useDynamicColumnWidths,
 } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
@@ -93,7 +92,20 @@ const facilityLiabilityDummyData: FacilityLiabilityDataType[] = [
     field07: '',
     field08: '',
     field09: '',
-    field10: '',
+    field10: '선택',
+  },
+  {
+    id: 2,
+    field01: '',
+    field02: 'TEXT',
+    field03: '',
+    field04: '',
+    field05: '',
+    field06: '',
+    field07: '',
+    field08: '',
+    field09: '',
+    field10: '-',
   },
 ];
 
@@ -154,8 +166,6 @@ const Ltpz01602 = () => {
       prev.map((row) => (row.id === data.id ? { ...row, [colDef.field as string]: newValue } : row))
     );
   }, []);
-
-  const selectAutoEditProps = useAgSelectAutoEdit();
 
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
@@ -321,7 +331,30 @@ const Ltpz01602 = () => {
       field: 'field10',
       flex: 1,
       minWidth: attributeColumnWidth(90),
-      cellClass: 'text-center',
+      cellClass: (params) => {
+        // 조건: 예시로 '-' 또는 '해당없음'이 아닐 경우 셀렉트 활성화
+        const isSelect = params.data?.field10 !== '-' && params.data?.field10 !== '해당없음';
+        return isSelect ? 'text-center editable-cell' : 'text-center';
+      },
+      editable: (params) => {
+        const isSelect = params.data?.field10 !== '-' && params.data?.field10 !== '해당없음';
+        return Boolean(isSelect);
+      },
+      cellEditor: 'agRichSelectCellEditor',
+      cellEditorParams: {
+        values: ['선택', '여', '부'],
+        valueListMaxWidth: calculateRichSelectWidth(['선택', '여', '부']),
+      },
+      cellRenderer: (params: ICellRendererParams<FacilityLiabilityDataType>) => {
+        const isSelect = params.data?.field10 !== '-' && params.data?.field10 !== '해당없음';
+        if (isSelect) {
+          return editableSelectCellRenderer<FacilityLiabilityDataType>({
+            ...params,
+            align: 'center',
+          });
+        }
+        return params.value ?? '-';
+      },
     },
   ];
 

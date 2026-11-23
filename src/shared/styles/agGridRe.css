@@ -280,6 +280,7 @@
 /* 체크박스를 포함하는 셀, selectionColumnDef 셀 및 셀 래퍼의 여백 초기화 및 중앙 정렬 */
 .ag-theme-alpine .ag-cell-wrapper {
   justify-content: start;
+  min-height: 100%;
 }
 
 :where(.ag-ltr) .ag-cell:has(.ag-selection-checkbox) .ag-cell-wrapper,
@@ -346,92 +347,93 @@
 .animate-spin {display: none !important;}
 
 /* ===== inner-scroll & data-row 행 수별 높이 제어 (헤더 고정 및 내부 스크롤) ===== */
-/* 1. 최상위 그리드 컨테이너의 총 높이를 [헤더(3rem) + 데이터행(N × 3rem)]으로 엄격히 고정 */
+/* 가로 스크롤 생성 여부 CSS 변수 (기본 0, is-scroll-h 시 스크롤바 높이 1.5rem) */
+.ag-theme-alpine {
+  --ag-hscroll-size: 0rem;
+}
+.ag-theme-alpine.is-scroll-h {
+  --ag-hscroll-size: 1.5rem;
+}
+
+/* 1. 최상위 그리드 컨테이너의 총 높이를 [헤더(3rem) + 데이터행(N × 3rem) + 가로스크롤(var)]으로 엄격히 고정 */
 
 .ag-theme-alpine.inner-scroll[data-row="1"] .ag-root-wrapper.ag-layout-normal {
-  min-height: calc(3rem * 2);
-  height: calc(3rem * 2);
+  min-height: calc(3rem * 2 + 2px + var(--ag-hscroll-size));
+  height: calc(3rem * 2 + 2px + var(--ag-hscroll-size));
 }
 .ag-theme-alpine.inner-scroll[data-row="2"] .ag-root-wrapper.ag-layout-normal {
-  min-height: calc(3rem * 3);
-  height: calc(3rem * 3);
+  min-height: calc(3rem * 3 + 2px + var(--ag-hscroll-size));
+  height: calc(3rem * 3 + 2px + var(--ag-hscroll-size));
+
 }
 .ag-theme-alpine.inner-scroll[data-row="3"] .ag-root-wrapper.ag-layout-normal {
-  min-height: calc(3rem * 4);
-  height: calc(3rem * 4);
+  min-height: calc(3rem * 4 + 2px + var(--ag-hscroll-size));
+  height: calc(3rem * 4 + 2px + var(--ag-hscroll-size));
 }
 .ag-theme-alpine.inner-scroll[data-row="4"] .ag-root-wrapper.ag-layout-normal {
-  min-height: calc(3rem * 5);
-  height: calc(3rem * 5);
+  min-height: calc(3rem * 5 + 2px + var(--ag-hscroll-size));
+  height: calc(3rem * 5 + 2px + var(--ag-hscroll-size));
 }
 .ag-theme-alpine.inner-scroll[data-row="5"] .ag-root-wrapper.ag-layout-normal {
-  min-height: calc(3rem * 6);
-  height: calc(3rem * 6);
+  min-height: calc(3rem * 6 + 2px + var(--ag-hscroll-size));
+  height: calc(3rem * 6 + 2px + var(--ag-hscroll-size));
 }
 
 .inner-scroll .ag-root-wrapper.ag-layout-normal ,
 .inner-scroll[data-row] .ag-root-wrapper.ag-layout-normal {
-  min-height: calc(3rem * 6);
+  min-height: calc(3rem * 6 + 2px + var(--ag-hscroll-size));
 }
 
-.ag-theme-alpine.header-2.inner-scroll[data-row="1"] .ag-root-wrapper.ag-layout-normal {
-  min-height: calc(3rem * 3);
-  height: calc(3rem * 3);
+.ag-theme-alpine.inner-scroll[data-row="1"]:has(.ag-header-cell[aria-rowindex="2"]) .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 3 + 4px + var(--ag-hscroll-size));
 }
-.ag-theme-alpine.header-2.inner-scroll[data-row="2"] .ag-root-wrapper.ag-layout-normal {
-  min-height: calc(3rem * 4);
-  height: calc(3rem * 4);
+.ag-theme-alpine.inner-scroll[data-row="2"]:has(.ag-header-cell[aria-rowindex="2"]) .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 4 + 4px + var(--ag-hscroll-size));
 }
-.ag-theme-alpine.header-2.inner-scroll[data-row="3"] .ag-root-wrapper.ag-layout-normal {
-  min-height: calc(3rem * 5);
-  height: calc(3rem * 5);
+.ag-theme-alpine.inner-scroll[data-row="3"]:has(.ag-header-cell[aria-rowindex="2"]) .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 5 + 4px + var(--ag-hscroll-size));
 }
-.ag-theme-alpine.header-2.inner-scroll[data-row="4"] .ag-root-wrapper.ag-layout-normal {
-  min-height: calc(3rem * 6);
-  height: calc(3rem * 6);
+.ag-theme-alpine.inner-scroll[data-row="4"]:has(.ag-header-cell[aria-rowindex="2"]) .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 6 + 4px + var(--ag-hscroll-size));
 }
-.ag-theme-alpine.header-2.inner-scroll[data-row="5"] .ag-root-wrapper.ag-layout-normal {
-  min-height: calc(3rem * 7);
-  height: calc(3rem * 7);
+.ag-theme-alpine.inner-scroll[data-row="5"]:has(.ag-header-cell[aria-rowindex="2"]) .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 7 + 4px + var(--ag-hscroll-size));
 }
-
-.inner-scroll.header-2 .ag-root-wrapper.ag-layout-normal ,
-.inner-scroll.header-2[data-row] .ag-root-wrapper.ag-layout-normal {
-  min-height: calc(3rem * 7);
+.inner-scroll:has(.ag-header-cell[aria-rowindex="2"]) .ag-root-wrapper.ag-layout-normal ,
+.inner-scroll[data-row]:has(.ag-header-cell[aria-rowindex="2"]) .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 7 + 4px + var(--ag-hscroll-size));
 }
 
-/* 1-1. 하단 고정 행(합계 영역: .ag-floating-bottom)이 존재할 경우: +1행(3rem) 높이 자동 추가 */
-/* .ag-theme-alpine.inner-scroll[data-row="1"]:has(.ag-floating-bottom .ag-row),
-.ag-theme-alpine.inner-scroll[data-row="1"]:has(.ag-grid-pinned-bottom-rows .ag-row) {
-  min-height: calc(3rem * 3 + 6px);
-  height: calc(3rem * 3 + 6px);
+.ag-theme-alpine.inner-scroll[data-row="1"]:has(.ag-header-cell[aria-rowindex="3"]) .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 4 + 4px + var(--ag-hscroll-size));
 }
-.ag-theme-alpine.inner-scroll[data-row="2"]:has(.ag-floating-bottom .ag-row),
-.ag-theme-alpine.inner-scroll[data-row="2"]:has(.ag-grid-pinned-bottom-rows .ag-row) {
-  min-height: calc(3rem * 4 + 6px);
-  height: calc(3rem * 4 + 6px);
+.ag-theme-alpine.inner-scroll[data-row="2"]:has(.ag-header-cell[aria-rowindex="3"]) .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 5 + 4px + var(--ag-hscroll-size));
 }
-.ag-theme-alpine.inner-scroll[data-row="3"]:has(.ag-floating-bottom .ag-row),
-.ag-theme-alpine.inner-scroll[data-row="3"]:has(.ag-grid-pinned-bottom-rows .ag-row) {
-  min-height: calc(3rem * 5 + 6px);
-  height: calc(3rem * 5 + 6px);
+.ag-theme-alpine.inner-scroll[data-row="3"]:has(.ag-header-cell[aria-rowindex="3"]) .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 6 + 4px + var(--ag-hscroll-size));
 }
-.ag-theme-alpine.inner-scroll[data-row="4"]:has(.ag-floating-bottom .ag-row),
-.ag-theme-alpine.inner-scroll[data-row="4"]:has(.ag-grid-pinned-bottom-rows .ag-row) {
-  min-height: calc(3rem * 6 + 6px);
-  height: calc(3rem * 6 + 6px);
+.ag-theme-alpine.inner-scroll[data-row="4"]:has(.ag-header-cell[aria-rowindex="3"]) .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 7 + 4px + var(--ag-hscroll-size));
 }
-.ag-theme-alpine.inner-scroll[data-row="5"]:has(.ag-floating-bottom .ag-row),
-.ag-theme-alpine.inner-scroll[data-row="5"]:has(.ag-grid-pinned-bottom-rows .ag-row) {
-  min-height: calc(3rem * 7 + 6px);
-  height: calc(3rem * 7 + 6px);
-} */
+.ag-theme-alpine.inner-scroll[data-row="5"]:has(.ag-header-cell[aria-rowindex="3"]) .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 8 + 4px + var(--ag-hscroll-size));
+}
+.inner-scroll:has(.ag-header-cell[aria-rowindex="3"]) .ag-root-wrapper.ag-layout-normal ,
+.inner-scroll[data-row]:has(.ag-header-cell[aria-rowindex="3"]) .ag-root-wrapper.ag-layout-normal {
+  min-height: calc(3rem * 8 + 4px + var(--ag-hscroll-size));
+}
 
 
 .ag-theme-alpine.inner-min-scroll.inner-scroll[data-row="2"] .ag-grid-scrolling-rows.ag-layout-normal {
-  min-height: 3rem !important;
+  min-height: 9rem !important;
   height: 100% !important;
 }
+.ag-theme-alpine.inner-min-scroll.inner-scroll[data-row="5"] .ag-grid-scrolling-rows.ag-layout-normal {
+  min-height: 18rem !important;
+  height: 100% !important;
+}
+
 
 /* 2. 래퍼가 데이터 개수에 의해 무제한 늘어나 부모 스크롤을 유발하지 않도록 100% 고정 */
 /* .ag-theme-alpine.inner-scroll[data-row] .ag-root-wrapper,
@@ -450,6 +452,10 @@
 /* 4. 바디 뷰포트 영역에서만 세로 스크롤 생성 */
 .ag-theme-alpine.inner-scroll[data-row] .ag-body-viewport {
   overflow-y: auto !important;
+}
+
+.ag-grid-pinned-bottom-rows-container .ag-celll {
+  border-right:none !important;
 }
 
 

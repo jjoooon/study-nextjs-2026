@@ -6,7 +6,6 @@
 import type { CellSelectionOptions, ProcessCellForClipboard } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { defaultProcessCellForClipboard } from '@/shared/lib/agGridPub';
-import { hanwhaStyleTheme } from '@/shared/styles/gridTheme';
 
 /**
  * AG-Grid 전역 기본 설정
@@ -42,3 +41,85 @@ Component.defaultProps.cellSelection = {
 
 // 클립보드 복사(Ctrl+C) 시 병합된 빈칸에 부모 값을 꽉 채워서 엑셀에 전달
 Component.defaultProps.processCellForClipboard = defaultProcessCellForClipboard;
+
+/**
+ * 전역 가로 스크롤 감지 (Chrome v109 호환 및 고성능)
+ * 모든 .ag-theme-alpine 래퍼에 is-scroll-h 클래스를 정확히 자동 토글합니다.
+ */
+if (typeof window !== 'undefined') {
+  const resizeObserverMap = new WeakMap<Element, ResizeObserver>();
+
+  const updateHScrollClass = (scrollEl: Element) => {
+    const alpineWrapper = scrollEl.closest('.ag-theme-alpine');
+    if (!alpineWrapper) return;
+
+    const htmlScrollEl = scrollEl as HTMLElement;
+    const viewport =
+      (scrollEl.querySelector('.ag-body-horizontal-scroll-viewport') as HTMLElement | null) || htmlScrollEl;
+
+    // 1) 스크롤바 영역이 실제로 높이(> 0)를 가지고 보이고 있는지
+    // 2) 내부 스크롤 가능한 너비(scrollWidth)가 보이는 영역(clientWidth)보다 큰지
+    // 3) invisible 클래스가 없는지 모두 만족해야 실제 가로 스크롤이 활성화된 상태
+    const isShowing =
+      htmlScrollEl.offsetHeight > 0 &&
+      viewport.scrollWidth > viewport.clientWidth &&
+      !scrollEl.classList.contains('ag-scrollbar-invisible');
+
+    alpineWrapper.classList.toggle('is-scroll-h', isShowing);
+
+    // 스크롤바 및 뷰포트 크기 변화 실시간 감지 (컬럼 리사이즈, 창 리사이즈 등)
+    if (!resizeObserverMap.has(scrollEl)) {
+      const ro = new ResizeObserver(() => {
+        const currentShowing =
+          htmlScrollEl.offsetHeight > 0 &&
+          viewport.scrollWidth > viewport.clientWidth &&
+          !scrollEl.classList.contains('ag-scrollbar-invisible');
+        alpineWrapper.classList.toggle('is-scroll-h', currentShowing);
+      });
+      ro.observe(scrollEl);
+      if (viewport !== scrollEl) {
+        ro.observe(viewport);
+      }
+      resizeObserverMap.set(scrollEl, ro);
+    }
+  };
+
+  const observer = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      if (mutation.type === 'attributes') {
+        const target = mutation.target as HTMLElement;
+        if (target.classList.contains('ag-body-horizontal-scroll')) {
+          updateHScrollClass(target);
+        }
+      } else if (mutation.type === 'childList') {
+        mutation.addedNodes.forEach((node) => {
+          if (node instanceof HTMLElement) {
+            if (node.classList.contains('ag-body-horizontal-scroll')) {
+              updateHScrollClass(node);
+            } else {
+              const scrollEls = node.querySelectorAll('.ag-body-horizontal-scroll');
+              scrollEls.forEach(updateHScrollClass);
+            }
+          }
+        });
+      }
+    }
+  });
+
+  const startObserver = () => {
+    document.querySelectorAll('.ag-body-horizontal-scroll').forEach(updateHScrollClass);
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class', 'style'],
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startObserver);
+  } else {
+    startObserver();
+  }
+}
