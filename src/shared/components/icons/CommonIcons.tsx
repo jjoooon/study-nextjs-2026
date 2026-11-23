@@ -1025,36 +1025,41 @@ export const ProcessActiveIcon: React.FC<IconProps> = ({
   size = 14,
   color = '#FF5C2E',
   color2 = '#FFD463',
-}) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={toRem(size)}
-    height={toRem(size)}
-    viewBox="0 0 14 14"
-    fill="none"
-    className={className}
-  >
-    <path
-      d="M11.356 6.59244C11.2706 5.67951 10.9005 4.8165 10.298 4.12531C9.69551 3.43411 8.8911 2.94968 7.99838 2.74044C7.10566 2.5312 6.16976 2.60773 5.32289 2.95922C4.47602 3.31071 3.76099 3.91939 3.27881 4.69928C2.79662 5.47917 2.57165 6.39084 2.63568 7.30552C2.69971 8.22019 3.0495 9.09163 3.63564 9.79674C4.22178 10.5018 5.01464 11.005 5.90222 11.235C6.7898 11.4651 7.72723 11.4105 8.5821 11.0789"
-      stroke="url(#paint0_linear_1865_8670)"
-      strokeWidth="3"
-      strokeLinecap="round"
-    />
-    <defs>
-      <linearGradient
-        id="paint0_linear_1865_8670"
-        x1="7"
-        y1="11.7635"
-        x2="10.382"
-        y2="4.81724"
-        gradientUnits="userSpaceOnUse"
-      >
-        <stop stopColor={color} />
-        <stop offset="0.984865" stopColor={color2} />
-      </linearGradient>
-    </defs>
-  </svg>
-);
+}) => {
+  const reactId = React.useId();
+  const gradientId = `process_active_grad_${reactId.replace(/:/g, '')}`;
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={toRem(size)}
+      height={toRem(size)}
+      viewBox="0 0 14 14"
+      fill="none"
+      className={className}
+    >
+      <defs>
+        <linearGradient
+          id={gradientId}
+          x1="7"
+          y1="11.7635"
+          x2="10.382"
+          y2="4.81724"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor={color} />
+          <stop offset="0.984865" stopColor={color2} />
+        </linearGradient>
+      </defs>
+      <path
+        d="M11.356 6.59244C11.2706 5.67951 10.9005 4.8165 10.298 4.12531C9.69551 3.43411 8.8911 2.94968 7.99838 2.74044C7.10566 2.5312 6.16976 2.60773 5.32289 2.95922C4.47602 3.31071 3.76099 3.91939 3.27881 4.69928C2.79662 5.47917 2.57165 6.39084 2.63568 7.30552C2.69971 8.22019 3.0495 9.09163 3.63564 9.79674C4.22178 10.5018 5.01464 11.005 5.90222 11.235C6.7898 11.4651 7.72723 11.4105 8.5821 11.0789"
+        stroke={`url(#${gradientId}) ${color}`}
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+};
 
 export const FileUploadIcon: React.FC<IconProps> = ({ className = '', size = 14, color = 'currentColor' }) => (
   <svg

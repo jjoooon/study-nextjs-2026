@@ -167,8 +167,22 @@
 /* 셀과 셀 사이의 세로 경계선 (선택 영역 우측 테두리와 충돌 방지) */
 .ag-theme-alpine .ag-cell {
   border-right: 1px solid var(--color-gray-10) !important;
+  border-top: none;
+  display: grid;
+  align-content: center;
 }
-
+.ag-theme-alpine .ag-cell .ag-cell-wrapper {
+  width: 100%;
+}
+.ag-theme-alpine .ag-cell.text-center {
+  text-align: center;
+}
+.ag-theme-alpine .ag-cell.text-right {
+  text-align: right;
+}
+.ag-theme-alpine .ag-cell.text-left {
+  text-align: left;
+}
 /* 행과 행 사이의 가로 경계선 */
 .ag-theme-alpine .ag-row {
   border-bottom: 1px solid var(--color-gray-10) !important;
@@ -344,7 +358,7 @@
   border: 1px solid var(--color-warning-30) !important;
 } */
 
-.animate-spin {display: none !important;}
+/* .animate-spin {display: none !important;} */
 
 /* ===== inner-scroll & data-row 행 수별 높이 제어 (헤더 고정 및 내부 스크롤) ===== */
 /* 가로 스크롤 생성 여부 CSS 변수 (기본 0, is-scroll-h 시 스크롤바 높이 1.5rem) */
@@ -1739,26 +1753,15 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   --ag-row-group-indent-size: 1rem !important;
 }
 .ag-row-group-indent-0 { padding-left: 0 !important; }
-.ag-row-group-indent-1 { padding-left: 1rem !important; }
-.ag-row-group-indent-2 { padding-left: 2rem !important; }
-.ag-row-group-indent-3 { padding-left: 3rem !important; }
-.ag-row-group-indent-4 { padding-left: 4rem !important; }
-.ag-row-group-indent-5 { padding-left: 5rem !important; }
-.ag-row-group-indent-6 { padding-left: 6rem !important; }
-.ag-row-group-indent-7 { padding-left: 7rem !important; }
-.ag-row-group-indent-8 { padding-left: 8rem !important; }
-.ag-row-group-indent-9 { padding-left: 9rem !important; }
-.ag-row-group-indent-10 { padding-left: 10rem !important; }
-.ag-row-group-indent-11 { padding-left: 11rem !important; }
-.ag-row-group-indent-12 { padding-left: 12rem !important; }
-.ag-row-group-indent-13 { padding-left: 13rem !important; }
-.ag-row-group-indent-14 { padding-left: 14rem !important; }
-.ag-row-group-indent-15 { padding-left: 15rem !important; }
-.ag-row-group-indent-16 { padding-left: 16rem !important; }
-.ag-row-group-indent-17 { padding-left: 17rem !important; }
-.ag-row-group-indent-18 { padding-left: 18rem !important; }
-.ag-row-group-indent-19 { padding-left: 19rem !important; }
-.ag-row-group-indent-20 { padding-left: 20rem !important; }
+.ag-row-group-indent-1 { padding-left: 2rem !important; }
+.ag-row-group-indent-2 { padding-left: 4rem !important; }
+.ag-row-group-indent-3 { padding-left: 6rem !important; }
+.ag-row-group-indent-4 { padding-left: 0rem !important; }
+.ag-row-group-indent-5 { padding-left: 0rem !important; }
+.ag-row-group-indent-6 { padding-left: 0rem !important; }
+.ag-row-group-indent-7 { padding-left: 0rem !important; }
+.ag-row-group-indent-8 { padding-left: 0rem !important; }
+.ag-row-group-indent-9 { padding-left: 0rem !important; }
 
 /* 20. 예상보험료 바 최소 높이 */
 .class-expected-premium-bar {
@@ -2211,141 +2214,13 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   letter-spacing: -0.05rem !important;
   padding-right: 0.05rem !important;
 }
-/*  
-.ag-theme-alpine.is-loading .ag-body.ag-layout-normal,
-.ag-theme-alpine.is-empty .ag-body.ag-layout-normal {
-  height: 0 !important;
-  min-height: 1px !important;
-  max-height: 1px !important;
-  overflow-y: auto !important;
-}
-.ag-theme-alpine.is-loading .ag-body.ag-layout-normal .ag-body-viewport,
-.ag-theme-alpine.is-empty .ag-body.ag-layout-normal .ag-body-viewport {
-  background-color: #fff !important;
-} */
 
-/* 트리 그룹 자식 체크박스 스타일 */
-.children-checked .ag-theme-alpine .ag-row.ag-row-group-expanded .ag-checkbox-input-wrapper.ag-checked {
-  background-color: var(--color-primary-50);
-  border-color: var(--color-primary-50);
+.ag-theme-alpine.ag-border-r .ag-cell.ag-column-last {
+  border-right: 1px solid var(--color-gray-10) !important;
 }
-
-.children-checked .ag-theme-alpine .ag-row.ag-row-level-1 .ag-checkbox-input-wrapper.ag-checked,
-.children-checked .ag-theme-alpine .ag-row:not(.ag-row-level-0) .ag-checkbox-input-wrapper.ag-checked {
-  background-color: var(--color-gray-0);
-  border-color: var(--color-primary-50);
-}
-
-.children-checked .ag-theme-alpine .ag-row.ag-row-level-1 .ag-checkbox-input-wrapper.ag-checked:after,
-.children-checked .ag-theme-alpine .ag-row:not(.ag-row-level-0) .ag-checkbox-input-wrapper.ag-checked:after,
-.children-checked .ag-theme-alpine .ag-row.ag-row-level-1 .ag-checkbox-input-wrapper.ag-checked::after,
-.children-checked .ag-theme-alpine .ag-row:not(.ag-row-level-0) .ag-checkbox-input-wrapper.ag-checked::after {
-  background-color: var(--color-primary-50);
-}
- 
-/* 18. Ltpz070 헤더 배경색 */
-.Ltpz070 .ag-header .ag-header-viewport,
-.Ltpz070 .ag-header-container {
-  background-color: #ffccbe;
-}
-
-/* 19. 트리 그룹 들여쓰기 (ag-row-group-indent 0 ~ 20) */
-.ag-cell-value .ag-cell-expandable .ag-group-value {
-  padding-right: 0.1rem;
-}
-
-.ag-cell-value .ag-row-group-leaf-indent .ag-group-value {
-  padding-right: 0.1rem;
-}
-
-.ag-theme-alpine {
-  --ag-row-group-indent-size: 1rem !important;
-}
-.ag-row-group-indent-0 { padding-left: 0 !important; }
-.ag-row-group-indent-1 { padding-left: 1rem !important; }
-.ag-row-group-indent-2 { padding-left: 2rem !important; }
-.ag-row-group-indent-3 { padding-left: 3rem !important; }
-.ag-row-group-indent-4 { padding-left: 4rem !important; }
-.ag-row-group-indent-5 { padding-left: 5rem !important; }
-.ag-row-group-indent-6 { padding-left: 6rem !important; }
-.ag-row-group-indent-7 { padding-left: 7rem !important; }
-.ag-row-group-indent-8 { padding-left: 8rem !important; }
-.ag-row-group-indent-9 { padding-left: 9rem !important; }
-.ag-row-group-indent-10 { padding-left: 10rem !important; }
-.ag-row-group-indent-11 { padding-left: 11rem !important; }
-.ag-row-group-indent-12 { padding-left: 12rem !important; }
-.ag-row-group-indent-13 { padding-left: 13rem !important; }
-.ag-row-group-indent-14 { padding-left: 14rem !important; }
-.ag-row-group-indent-15 { padding-left: 15rem !important; }
-.ag-row-group-indent-16 { padding-left: 16rem !important; }
-.ag-row-group-indent-17 { padding-left: 17rem !important; }
-.ag-row-group-indent-18 { padding-left: 18rem !important; }
-.ag-row-group-indent-19 { padding-left: 19rem !important; }
-.ag-row-group-indent-20 { padding-left: 20rem !important; }
-
-/* 20. 예상보험료 바 최소 높이 */
-.class-expected-premium-bar {
-  min-height: 3rem;
-}
-
-/* 21. Ltpz204 보장패키지 구분선 스타일 */
-.ltpz204-style .ag-theme-alpine .ag-row.package-group-divider,
-.ag-theme-alpine .ag-row.package-group-divider {
-  border-top: 1px solid #6b7280 !important;
-  margin-top: -1px;
-  z-index: 1;
-}
-.ltpz204-style .ag-theme-alpine .ag-row.package-group-divider .ag-cell,
-.ag-theme-alpine .ag-row.package-group-divider .ag-cell {
-  border-top: none !important;
-}
-
-/* 22. 마스킹 인풋 및 텍스트 줄바꿈/상단 정렬 */
-.v109 .ag-cell-value .masking [data-slot='input'] {
-  background: none;
-  border: none;
-}
-
-.th-cell-break {
-  word-break: keep-all;
-  width: 100%;
-  display: block;
-  text-align: center;
-  line-height: 1.1;
-}
-
-.ag-theme-alpine .ag-unselectable,
-.ag-unselectable {
-  -webkit-user-select: text !important;
-  -moz-user-select: text !important;
-  user-select: text !important;
-}
-
-.cell-align-top .ag-cell-wrapper {
-  align-items: flex-start;
-}
-
-/* 23. 범위 선택(Range Selection) 추가 보정 */
-.ag-row .ag-cell-range-selected.ag-cell.ag-column-last,
-.ag-cell-range-selected.ag-cell {
-  border-width: 1px !important;
-}
-.ag-cell-range-selected-1.ag-cell-range-chart,
-.ag-cell-range-selected-1.ag-formula-range,
-.ag-cell-range-selected-1:not(.ag-cell-focus),
-.ag-root:not(.ag-context-menu-open) .ag-grid-viewport:not(.ag-has-focus) .ag-cell-range-selected-1:not(.ag-cell-inline-editing) {
-  background-color: var(--ag-range-selection-background-color);
-}
-.ag-cell.ag-cell-range-selected:not(.ag-cell-range-single-cell)&.ag-cell-range-left {
-  border-left-color: var(--ag-range-selection-border-color);
-  border-left-style: var(--ag-range-selection-border-style);
-}
-
-/* 24. 팝업 최상단 노출 및 텍스트 선택 방지 */
-.ag-popup,
-.ag-popup-child {
-  z-index: 99999 !important;
-}
-.ag-theme-alpine * {
-  user-select: none;
+.ag-theme-alpine .ag-grid-pinned-left-cells .ag-header-cell.ag-header-cell-last-left-pinned,
+.ag-theme-alpine .ag-cell.ag-cell-last-left-pinned,
+.ag-theme-alpine .ag-grid-pinned-left-cells .ag-header-cell.ag-header-cell-last-left-pinned.ag-column-last,
+.ag-theme-alpine .ag-cell.ag-cell-last-left-pinned.ag-column-last {
+  border-right: 1px solid var(--color-warning-30) !important;
 }

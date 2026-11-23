@@ -408,9 +408,9 @@ const Ltpz001 = () => {
                 <Typo variant={'body-sm'} icon={'warning'} weight={'bold'}>
                   기타 필수 스캔 대상 서류안내
                 </Typo>
-                <Typo variant={'body-sm'} icon={'dot'} color={'gray'}>
+                {/* <Typo variant={'body-sm'} icon={'dot'} color={'gray'}>
                   실명증표사본, 실명증표진위여부확인서(법인), 실명증표진위여부확인서(법인대리인), 실소유자확인서류
-                </Typo>
+                </Typo> */}
               </Gcol>
             </Grid>
 
