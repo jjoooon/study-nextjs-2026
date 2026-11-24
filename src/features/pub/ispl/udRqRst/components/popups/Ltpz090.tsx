@@ -189,9 +189,9 @@ const Ltpz090 = () => {
         }
 
         return (
-          <Grow placement="ss" className="w-full gap-2 px-1">
+          <Grow placement="ss" className="w-full gap-x-2 px-1 flex-wrap gap-y-0">
             {row.field06Items.map((item) => (
-              <Grow key={item.id}>
+              <Grow key={item.id} gap={0}>
                 <Checkbox checked disabled>
                   <span>{item.label}</span>
                 </Checkbox>

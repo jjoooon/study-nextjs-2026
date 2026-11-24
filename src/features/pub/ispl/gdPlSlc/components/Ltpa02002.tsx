@@ -9,7 +9,7 @@ import { AgGridReact } from 'ag-grid-react';
 import Image from 'next/image';
 import * as React from 'react';
 import { useState } from 'react';
-import { AiBotIcon } from '@/shared/components/features/AiBotIcon';
+import { cn } from '@/shared/lib/shadcn/utils';
 import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
@@ -23,10 +23,12 @@ import {
   ResetIcon,
   AdderIcon,
   ArrowNext,
-  KebabIcon,
   PaperIcon,
+  QuestionBubbleIcon,
   FolderSearch,
   AiIcon,
+  ArrowIcon,
+  CheckIcon,
 } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -41,8 +43,8 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-
 import '@/shared/lib/agGridPub';
 
 type DummyDataListDetailType = {
@@ -145,19 +147,13 @@ const dummyDataList: DummyDataListType[] = [
       {
         field1: 103695,
         field2:
-          '고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.',
+          '고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.',
         field3: coverageDummyList,
       },
       {
         field1: 121375,
         field2:
           '02 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.',
-        field3: coverageDummyList,
-      },
-      {
-        field1: 159000,
-        field2:
-          '03 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.',
         field3: coverageDummyList,
       },
     ],
@@ -181,12 +177,6 @@ const dummyDataList: DummyDataListType[] = [
           '02 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.',
         field3: coverageDummyList,
       },
-      {
-        field1: 182000,
-        field2:
-          '03 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.',
-        field3: coverageDummyList,
-      },
     ],
   },
   {
@@ -208,13 +198,14 @@ const dummyDataList: DummyDataListType[] = [
           '02 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.',
         field3: coverageDummyList,
       },
-      {
-        field1: 128000,
-        field2:
-          '03 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.',
-        field3: coverageDummyList,
-      },
     ],
+  },
+  {
+    id: 4,
+    field1: '한화 시그니처 여성 건강보험3.0 무배당',
+    field2: ['해약환급금미지급형', '일반고지형'],
+    field3: ['20년납', '100세만기'],
+    field4: [],
   },
 ];
 
@@ -255,6 +246,9 @@ export function Ltpa02002({ userType }: { userType: string }) {
   const [isHypertensionChecked, setIsHypertensionChecked] = useState<boolean>(false);
   const [isDiabetesChecked, setIsDiabetesChecked] = useState<boolean>(false);
 
+  //예상고지형 선택여부 체크하여 뱃지생성
+  const [isExpectedNoticeType, setIsExpectedNoticeType] = useState<boolean>(false);
+
   const [medicalHistoryList, setMedicalHistoryList] = useState<Array<{ disease: string; period: string }>>([
     { disease: '', period: '' },
     { disease: '', period: '' },
@@ -273,26 +267,28 @@ export function Ltpa02002({ userType }: { userType: string }) {
     {
       value: '1',
       label: (
-        <Grow className="flex-wrap gap-y-0 ga-x-1" placement="ss">
+        <Gcol className="flex-wrap gap-y-0 ga-x-1" placement="ss">
           <span>
-            <b className="text-[var(--color-primary-50)]">기계약 유지</b>하고,
-          </span>{' '}
-          <span className="pr-4">
-            <b>부족한 담보를 중심</b>으로 한 설계
+            <b className="text-[var(--color-primary-50)]">보유계약 반영</b>
+            <Typo variant={'body-md'} color={'default'}>
+              한 설계
+            </Typo>
           </span>
-        </Grow>
+          <Typo variant={'body-sm'} color={'blueGray'}>
+            최근 보장분석 조회이력이 없으면 신용정보원을 조회합니다.
+          </Typo>
+        </Gcol>
       ),
     },
     {
       value: '2',
       label: (
-        <Grow>
-          기계약과의 누적을
-          <br></br>
-          <b>
-            체크하지 <span className="text-[var(--color-primary-50)]">않은</span> 설계
-          </b>
-        </Grow>
+        <>
+          <b className="text-[var(--color-primary-50)]">보유계약 반영하지 않은</b>{' '}
+          <Typo variant={'body-md'} color={'default'}>
+            설계
+          </Typo>
+        </>
       ),
     },
   ] as const;
@@ -303,6 +299,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
       field: 'field1',
       flex: 10,
       headerClass: '!text-[1.1rem] leading-[2.6rem]',
+      cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataListDetailType>({ field: 'field1' }),
     },
     {
@@ -314,7 +311,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
       },
       field: 'field2',
       flex: 1,
-      minWidth: attributeColumnWidth(84),
+      minWidth: attributeColumnWidth(120),
       cellClass: 'text-right',
       headerClass: '!text-[1.1rem] leading-[2.6rem]',
       valueFormatter: numberValueFormatter<DummyDataListDetailType>,
@@ -328,7 +325,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
       },
       field: 'field3',
       flex: 1,
-      minWidth: attributeColumnWidth(60),
+      minWidth: attributeColumnWidth(120),
       cellClass: 'text-right',
       headerClass: '!text-[1.1rem] leading-[2.6rem]',
       valueFormatter: numberValueFormatter<DummyDataListDetailType>,
@@ -441,6 +438,14 @@ export function Ltpa02002({ userType }: { userType: string }) {
   const selectedTags = getSelectedTags();
 
   // 5. Helper Functions
+  const handleGeneratePlan = (planKey?: string) => {
+    if (planKey) {
+      console.log('설계생성 실행 (플랜 키):', planKey);
+    } else {
+      console.log('모두 설계생성 실행 (플랜 목록):', comparedPlanKeys);
+    }
+  };
+
   const getSelectedPlanInfo = () => {
     if (!selectedPlanKey) return null;
     const [productId, planIndex] = selectedPlanKey.split('-').map(Number);
@@ -528,229 +533,258 @@ export function Ltpa02002({ userType }: { userType: string }) {
   };
 
   return (
-    <Grid className="w-full grid-rows-[auto_minmax(0,1fr)] relative z-0" gap={3}>
-      <div className="w-full px-[1rem]">
-        <Grow variant={'box-round'} className="w-full gap-[0.8rem] relative z-20" placement="ss">
-          <Typo
-            tag="h3"
-            variant={'heading-sm'}
-            className="shrink-0 text-[var(--color-text-blue-gray)] h-[3rem] flex items-center"
+    <Grid className="w-full grid-rows-[auto_minmax(0,1fr)] px-[1rem]" gap={3}>
+      <Grow variant={'box-round'} className="w-full gap-[0.8rem] relative px-4 py-[0.8rem]" placement="sc">
+        <Typo tag="h3" variant={'heading-sm'} className="shrink-0 text-[var(--color-text-blue-gray)] flex items-center">
+          선택항목
+        </Typo>
+        <Grow placement="bwc" gap={6}>
+          <Grow className="w-full" gap={6}>
+            <button
+              type="button"
+              className={cn(
+                'w-full min-h-[2.4rem] h-auto flex justify-between items-center gap-[0.6rem]',
+                dataNone && 'cursor-default'
+              )}
+              disabled={dataNone}
+              onClick={() => setIsFilterOptionOpen((prev) => !prev)}
+              aria-expanded={isFilterOptionOpen}
+            >
+              <span className="flex items-center font-normal flex-wrap gap-1.5">
+                {selectedTags.length > 0 || isExpectedNoticeType ? (
+                  <Grow placement="sc" gap={0.5} className="flex-wrap items-center">
+                    {selectedTags.map((tag, idx) => (
+                      <span
+                        key={idx}
+                        className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#817772] text-white font-bold min-h-[2.2rem] text-[1.2rem] leading-none shrink-0"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                    {selectedTags.length > 0 && isExpectedNoticeType && (
+                      <Divider className="mx-1.5 h-[1.2rem] border-[var(--color-gray-30)]!" />
+                    )}
+                    {isExpectedNoticeType && (
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[var(--color-blue-gray-50)] text-white font-bold min-h-[2.4rem] text-[1.2rem] leading-none shrink-0">
+                        예상고지유형
+                      </span>
+                    )}
+                  </Grow>
+                ) : (
+                  <Typo
+                    tag="div"
+                    variant={'body-md'}
+                    className="flex items-start gap-1 text-[var(--color-blue-gray-60)]"
+                  >
+                    항목을 선택하시면, 더 정확한 추천을 받아볼 수 있습니다.
+                  </Typo>
+                )}
+              </span>
+              {!dataNone && (
+                <Grow>
+                  <span className="text-[1.3rem] font-bold text-[var(--color-blue-gray-60)]">
+                    {isFilterOptionOpen ? '접기' : '펼치기'}
+                  </span>
+                  <SelectDropIcon
+                    color="var(--color-gray-50)"
+                    className={isFilterOptionOpen ? 'rotate-[180deg]' : ''}
+                  />
+                </Grow>
+              )}
+            </button>
+            <Button color="coolgray-light" onClick={() => setIsGuideOpen(true)} variant="contained" size="lg">
+              추천설계 이용가이드
+              <QuestionBubbleIcon />
+            </Button>
+          </Grow>
+        </Grow>
+      </Grow>
+
+      {isFilterOptionOpen ? (
+        <Grid className="grid-cols-[32rem_1fr] grid-rows-[1fr_auto] w-full gap-3">
+          {/* 바로 추천 */}
+          <Gcol
+            placement="bws"
+            className="p-[3.2rem] border border-[var(--color-primary-50)] border-[0.3rem] rounded-[1rem]"
           >
-            선택항목
-          </Typo>
-          <Grow placement="bwc" gap={6}>
-            <Grow className="w-full">
-              <button
-                type="button"
-                className="w-full p-1 min-h-[3.3rem] h-auto flex justify-between items-center gap-[0.6rem]"
-                onClick={() => setIsFilterOptionOpen((prev) => !prev)}
-                aria-expanded={isFilterOptionOpen}
+            <Gcol placement="ss">
+              <img src="/images/Ltpa020/icon_ai.png" alt="" style={{ width: '3.2rem' }} />
+              <Typo
+                tag="h3"
+                className="text-[2.2rem] font-bold text-[var(--color-gray-70)] font-noto leading-[1.3] mb-[2rem]"
               >
-                <span className="w-[100%] flex items-center font-normal flex-wrap gap-1.5 py-0.5 ">
-                  {selectedTags.length > 0 ? (
-                    <Grow placement="sc" gap={0.5} className="flex-wrap items-center">
-                      {selectedTags.map((tag, idx) => (
-                        <span
-                          key={idx}
-                          className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#817772] text-white font-bold min-h-[2.2rem] text-[1.2rem] leading-none shrink-0"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </Grow>
-                  ) : (
-                    <Typo tag="div" variant={'body-md'} className="min-h-[2.2rem] flex items-start gap-1">
-                      <KebabIcon />
-                      아래 영역에서 항목을 선택하시면, 더 정확한 추천을 받아볼 수 있습니다.
-                    </Typo>
-                  )}
-                </span>
-                <SelectDropIcon color="var(--color-gray-50)" className={isFilterOptionOpen ? 'rotate-[180deg]' : ''} />
-              </button>
-            </Grow>
-            <Grow>
-              <Button
-                variant="outlined"
-                color="gray"
-                size={'lg'}
-                only="icon"
-                aria-label="초기화"
-                onClick={() => {
-                  setSimpleType('');
-                  setNoRefundValue('');
-                  setPremiumWaiverValue('');
-                  setMaturityValue('');
-                  setProductSearchName('');
-                  setIsHypertensionChecked(false);
-                  setIsDiabetesChecked(false);
-                  setMedicalHistoryList([
-                    { disease: '', period: '' },
-                    { disease: '', period: '' },
-                    { disease: '', period: '' },
-                    { disease: '', period: '' },
-                  ]);
-                  setSelectedAnalysisValue('');
-                  setIsCoveragePackage(false);
-                  setSelectedCoverageValues([]);
-                  setCoverageSubValues([]);
-                }}
-              >
-                <ResetIcon />
-              </Button>
+                추가 입력없이 빠르게 <br />
+                <b className="text-[var(--color-primary-50)]">
+                  고객 정보만으로 <br />
+                  바로 추천받으세요!
+                </b>
+              </Typo>
+              <Typo variant={'body-md'} color="gray" className="mb-[0.6rem]">
+                고객의 나이ㆍ성별ㆍ직업만으로 <br />
+                AI가 기본 설계안을 만들어서 추천합니다.
+              </Typo>
+              <Typo variant={'body-md'} color="primary" className="font-bold mb-[0.6rem] mb-[3.2rem]">
+                ※ 오른쪽 조건은 입력하지 않아도 됩니다.
+              </Typo>
               <Button
                 variant="contained"
-                size={'lg'}
+                className="min-h-[4.4rem] w-full rounded-[0.4rem] text-[1.5rem] font-bold gap-1"
                 onClick={() => {
                   setDataNone(false);
                   setIsFilterOptionOpen(false);
                   setLoadingAI(true);
                 }}
               >
-                <AiIcon size={18} color={'#FFF'} color2={'#FFF'} />
-                설계 추천
+                지금 바로 추천받기
+                <ArrowIcon color="#fff" size={16} className="rotate-180" />
               </Button>
+            </Gcol>
+            <Gcol placement="cc">
+              <img src="/images/Ltpa020/img.png" alt="" style={{ width: '24rem' }} />
+            </Gcol>
+          </Gcol>
+
+          {/* 선택 추천 */}
+          <Gcol placement="ss" variant="box-round" className="px-[3.2rem] pt-[3.2rem] pb-[2rem] gap-y-[2rem]">
+            <Grow className="w-full" placement="bwe">
+              <Typo tag="h3" variant={'heading-xl'}>
+                <b className="text-[var(--color-primary-50)]">더 정확하게 추천</b>받고 싶다면 아래 내용을 선택하세요.
+              </Typo>
             </Grow>
-          </Grow>
-          {isFilterOptionOpen && (
-            <Grid
-              variant="box-round-b"
-              className="absolute top-[calc(100%-.6rem)] left-0 w-full bg-[var(--color-blue-gray-10)] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] pt-2.5 pb-[2.5rem] grid-cols-[minmax(29rem,4fr)_minmax(30rem,4fr)_5fr] gap-[2.4rem] z-10 pl-[6.7rem]! pr-[15rem]! justify-stretch! "
-              placement="ss"
-            >
-              {/* 상품특징 */}
-              <Gcol gap={2} placement="ss">
-                <Gcol placement="ss" gap={1}>
-                  <Typo tag="h4" variant={'heading-sm'} color={'blueGray'}>
-                    상품유형
-                  </Typo>
-                  <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3" gap={2}>
-                    <RadioGroup
-                      variant="tab"
-                      width={'full'}
-                      value={isProductOptionOpen}
-                      defaultValue={isProductOptionOpen}
-                      onValueChange={(value) => setIsProductOptionOpen(value)}
-                      className="w-full bg-[#F4F4F4] rounded-full grid grid-cols-2 border-b-0! border-none! gap-0"
-                    >
-                      {[
-                        { value: '상품옵션', label: '상품옵션' },
-                        { value: '상품선택', label: '상품선택' },
-                      ].map((opt, idx) => (
-                        <RadioGroupItem
-                          key={'po' + idx}
-                          value={opt.value}
-                          size={'lg'}
-                          className="w-full h-[3rem] rounded-full! text-[1.2rem] font-bold transition-all flex items-center justify-center cursor-pointer border border-transparent text-[#6B7280] bg-transparent hover:bg-transparent hover:text-[var(--color-primary-50)] data-[state=checked]:bg-white! data-[state=checked]:text-[#414141]! data-[state=checked]:border-[var(--color-primary-50)]! data-[state=checked]:shadow-[0px_2px_4px_0px_#273D751A]! data-[state=checked]:border-t-[0.1rem]! data-[state=checked]:border-l-[0.1rem]! data-[state=checked]:border-r-[0.1rem]! data-[state=checked]:border-b-[0.1rem]! data-[state=checked]:-mb-0!"
+
+            <Grid className="w-full grid-cols-[minmax(0,10fr)_minmax(0,10fr)_11fr] gap-2">
+              {/* 상품유형 */}
+              <Gcol gap={4} placement="ss" className="bg-[#fff] rounded-[0.6rem] p-4">
+                <Typo tag="h4" variant={'heading-md'}>
+                  상품유형
+                </Typo>
+                <Gcol placement="ss" gap={2}>
+                  <RadioGroup
+                    variant="tab"
+                    width={'full'}
+                    value={isProductOptionOpen}
+                    defaultValue={isProductOptionOpen}
+                    onValueChange={(value) => setIsProductOptionOpen(value)}
+                    className="w-full bg-[var(--color-gray-5)] rounded-[0.6rem] grid grid-cols-2 border-b-0! border-none!"
+                  >
+                    {[
+                      { value: '상품옵션', label: '상품옵션' },
+                      { value: '상품선택', label: '상품선택' },
+                    ].map((opt, idx) => (
+                      <RadioGroupItem
+                        key={'po' + idx}
+                        value={opt.value}
+                        size={'lg'}
+                        className="w-full h-[3.4rem] rounded-[0.6rem]! text-[1.2rem] font-bold transition-all flex items-center justify-center cursor-pointer border border-transparent text-[#6B7280] bg-transparent transition-none!  hover:bg-transparent hover:text-[var(--color-primary-50)] hover:border-0 data-[state=checked]:bg-white! data-[state=checked]:text-[#414141]! data-[state=checked]:border-[var(--color-gray-30)]! data-[state=checked]:shadow-[0_0.2rem_0.4rem_0_#273D751A]! data-[state=checked]:border-t-[0.1rem]! data-[state=checked]:border-l-[0.1rem]! data-[state=checked]:border-r-[0.1rem]! data-[state=checked]:border-b-[0.1rem]! data-[state=checked]:-mb-0!"
+                      >
+                        {opt.label}
+                      </RadioGroupItem>
+                    ))}
+                  </RadioGroup>
+                  <Gcol className="px-1 w-full" placement="ss">
+                    {isProductOptionOpen === '상품옵션' ? (
+                      <Gcol className="px-2 gap-0">
+                        {/* 일반고지/간편고지 */}
+                        <RadioGroup
+                          width={'full'}
+                          value={simpleType}
+                          onValueChange={handleOnChangeNcMttTpcd}
+                          className="w-full flex flex-col items-start py-4 gap-2 border-b border-dashed border-[#D8D8D8]"
                         >
-                          {opt.label}
-                        </RadioGroupItem>
-                      ))}
-                    </RadioGroup>
-                    <Gcol className="px-1 w-full" placement="ss">
-                      {isProductOptionOpen === '상품옵션' ? (
-                        <>
-                          {/* 일반고지/간편고지 */}
-                          <RadioGroup
-                            width={'full'}
-                            value={simpleType}
-                            onValueChange={handleOnChangeNcMttTpcd}
-                            className="w-full grid grid-cols-2 py-[0.8rem] border-b border-dashed border-[#D8D8D8]"
+                          {[
+                            { value: '일반고지', label: '일반고지' },
+                            { value: '간편고지', label: '간편고지' },
+                          ].map((opt) => (
+                            <RadioGroupItem key={opt.value} value={opt.value} size={'lg'}>
+                              {opt.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
+                        {/* 무해지 */}
+                        <RadioGroup
+                          width={'full'}
+                          value={noRefundValue}
+                          onValueChange={handleOnChangeNcnYn}
+                          className="w-full flex flex-col items-start py-4 border-b border-dashed border-[#D8D8D8]"
+                        >
+                          {[
+                            { value: '무해지형', label: '무해지형' },
+                            { value: '기본형', label: '기본형' },
+                          ].map((opt) => (
+                            <RadioGroupItem key={opt.value} value={opt.value} size={'lg'}>
+                              {opt.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
+                        {/* 납면 */}
+                        <RadioGroup
+                          width={'full'}
+                          value={premiumWaiverValue}
+                          onValueChange={handleOnChangePymXmpYn}
+                          className="w-full flex flex-col items-start py-4 border-b border-dashed border-[#D8D8D8]"
+                        >
+                          {[
+                            { value: '납입면제형', label: '납입면제형' },
+                            { value: '납입면제미운영형', label: '납입면제미운영형' },
+                          ].map((opt) => (
+                            <RadioGroupItem key={opt.value} value={opt.value} size={'lg'}>
+                              {opt.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
+                        {/* 만기 */}
+                        <RadioGroup
+                          width={'full'}
+                          value={maturityValue}
+                          onValueChange={handleOnChangeNdFlgcd}
+                          className="w-full flex flex-col items-start pt-[1.6rem] pb-[0.2rem]"
+                        >
+                          {[
+                            { value: '세만기', label: '세만기' },
+                            { value: '연만기', label: '연만기' },
+                          ].map((opt) => (
+                            <RadioGroupItem key={opt.value} value={opt.value} size={'lg'}>
+                              {opt.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
+                      </Gcol>
+                    ) : (
+                      <Gcol className="w-full pt-[0.8rem]" placement="ss">
+                        <Grid className="grid-cols-[1fr_auto] gap-1 items-center w-full pb-[1.2rem] border-b border-dashed border-[#D8D8D8]">
+                          <Input
+                            size={'lg'}
+                            placeholder="상품명 검색"
+                            value={productSearchName}
+                            onChange={(e) => setProductSearchName(e.target.value)}
+                          />
+                          <Button
+                            variant={'outlined'}
+                            color={'gray-light'}
+                            size={'lg'}
+                            only={'icon'}
+                            aria-label="상품 검색"
+                            className="border-[#D8D8D8]"
                           >
-                            {[
-                              { value: '일반고지', label: '일반고지' },
-                              { value: '간편고지', label: '간편고지' },
-                            ].map((opt) => (
-                              <RadioGroupItem key={opt.value} value={opt.value} size={'md'}>
-                                {opt.label}
-                              </RadioGroupItem>
-                            ))}
-                          </RadioGroup>
-                          {/* 무해지 */}
-                          <RadioGroup
-                            width={'full'}
-                            value={noRefundValue}
-                            onValueChange={handleOnChangeNcnYn}
-                            className="w-full grid grid-cols-2 py-[0.8rem] border-b border-dashed border-[#D8D8D8]"
-                          >
-                            {[
-                              { value: '무해지형', label: '무해지형' },
-                              { value: '기본형', label: '기본형' },
-                            ].map((opt) => (
-                              <RadioGroupItem key={opt.value} value={opt.value} size={'md'}>
-                                {opt.label}
-                              </RadioGroupItem>
-                            ))}
-                          </RadioGroup>
-                          {/* 납면 */}
-                          <RadioGroup
-                            width={'full'}
-                            value={premiumWaiverValue}
-                            onValueChange={handleOnChangePymXmpYn}
-                            className="w-full grid grid-cols-2 py-[0.8rem] border-b border-dashed border-[#D8D8D8]"
-                          >
-                            {[
-                              { value: '납입면제형', label: '납입면제형' },
-                              { value: '납입면제미운영형', label: '납입면제미운영형' },
-                            ].map((opt) => (
-                              <RadioGroupItem key={opt.value} value={opt.value} size={'md'}>
-                                {opt.label}
-                              </RadioGroupItem>
-                            ))}
-                          </RadioGroup>
-                          {/* 만기 */}
-                          <RadioGroup
-                            width={'full'}
-                            value={maturityValue}
-                            onValueChange={handleOnChangeNdFlgcd}
-                            className="w-full grid grid-cols-2 pt-[0.8rem] pb-[0.2rem]"
-                          >
-                            {[
-                              { value: '세만기', label: '세만기' },
-                              { value: '연만기', label: '연만기' },
-                            ].map((opt) => (
-                              <RadioGroupItem key={opt.value} value={opt.value} size={'md'}>
-                                {opt.label}
-                              </RadioGroupItem>
-                            ))}
-                          </RadioGroup>
-                        </>
-                      ) : (
-                        <Gcol className="w-full pt-[0.8rem]" placement="ss">
-                          <Grid className="grid-cols-[1fr_auto] gap-1 items-center w-full pb-[1.2rem] border-b border-dashed border-[#D8D8D8]">
-                            <Input
-                              size={'lg'}
-                              placeholder="상품명 검색"
-                              value={productSearchName}
-                              onChange={(e) => setProductSearchName(e.target.value)}
-                            />
-                            <Button
-                              variant={'outlined'}
-                              color={'gray-light'}
-                              size={'lg'}
-                              only={'icon'}
-                              aria-label="상품 검색"
-                              className="border-[#D8D8D8]"
-                            >
-                              <SearchIcon color="var(--color-primary-50)" />
-                            </Button>
-                          </Grid>
-                          <Typo
-                            tag="p"
-                            variant={'body-xs'}
-                            className="text-[var(--color-gray-70)] text-[1.2rem] leading-[1.8rem] pt-[1rem] flex items-center flex-wrap gap-x-1"
-                          >
-                            <span>N종, 납입중50%해약환급금지급형</span>
-                            <span className="text-[var(--color-gray-50)] mx-[0.3rem] select-none">•</span>
-                            <span>납입면제 운영형</span>
-                            <span className="text-[var(--color-gray-50)] mx-[0.3rem] select-none">•</span>
-                            <span>3N52간편고지형Ⅲ</span>
-                          </Typo>
-                        </Gcol>
-                      )}
-                    </Gcol>
+                            <SearchIcon color="var(--color-primary-50)" />
+                          </Button>
+                        </Grid>
+                        <Typo
+                          tag="p"
+                          variant={'body-xs'}
+                          className="text-[var(--color-gray-70)] text-[1.2rem] leading-[1.8rem] pt-[1rem] break-all"
+                        >
+                          N종, 납입중50%해약환급금지급형
+                          <span className="text-[var(--color-gray-50)] select-none mx-[0.6rem]">•</span>
+                          납입면제 운영형
+                          <span className="text-[var(--color-gray-50)] select-none mx-[0.6rem]">•</span>
+                          3N52간편고지형Ⅲ
+                        </Typo>
+                      </Gcol>
+                    )}
                   </Gcol>
                 </Gcol>
-                <Gcol placement="ss" gap={1}>
+                {/* <Gcol placement="ss" gap={1}>
                   <Typo tag="h4" variant={'heading-sm'} color={'blueGray'}>
                     추가고지
                   </Typo>
@@ -777,310 +811,260 @@ export function Ltpa02002({ userType }: { userType: string }) {
                     </Grid>
                     <Typo icon="info">추가고지형 있는 상품인 경우에만 적용됩니다.</Typo>
                   </Gcol>
-                </Gcol>
+                </Gcol> */}
               </Gcol>
-              {/* 담보군 */}
-              <Gcol placement="ss" gap={1}>
-                <Typo tag="h4" variant={'heading-sm'} color={'blueGray'}>
-                  담보선택
-                </Typo>
-                <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3 w-full" gap={2}>
-                  <Grow placement="ss" className="w-full">
-                    <Typo
-                      variant="heading-sm"
-                      color="blueGray"
-                      className="flex w-[5rem] pt-[0.3rem] h-[2.8rem] items-center shrink-1"
-                    >
-                      담보군
-                    </Typo>
-                    <Gcol className="gap-1" placement="ss">
-                      <Checkbox
-                        value="사망/후유"
-                        variant="button"
-                        className="w-[8.2rem]"
-                        checked={selectedCoverageValues.includes('사망/후유')}
-                        onCheckedChange={(checked) => {
-                          setSelectedCoverageValues((prev) => {
-                            const nextChecked = checked === true;
-                            if (nextChecked) {
-                              return prev.includes('사망/후유') ? prev : [...prev, '사망/후유'];
-                            }
-                            return prev.filter((value) => value !== '사망/후유');
-                          });
-                        }}
-                      >
-                        사망/후유
-                      </Checkbox>
-                      <Grow className="w-full" placement="sc">
-                        <Checkbox
-                          value="진단비"
-                          variant="button"
-                          className="w-[8.2rem]"
-                          checked={selectedCoverageValues.includes('진단비')}
-                          onCheckedChange={handleDiagnosisToggle}
-                        >
-                          진단비
-                        </Checkbox>
-                        <Grow
-                          variant="box"
-                          className="h-[2.8rem] py-0 px-2 rounded-[0.4rem] gap-3 w-full"
-                          placement="sc"
-                        >
-                          <Checkbox
-                            size="sm"
-                            checked={coverageSubValues.includes('진단비-암')}
-                            onCheckedChange={(checked) => handleSubCoverageToggle('진단비-암', checked)}
-                          >
-                            암
-                          </Checkbox>
-                          <Checkbox
-                            size="sm"
-                            checked={coverageSubValues.includes('진단비-뇌')}
-                            onCheckedChange={(checked) => handleSubCoverageToggle('진단비-뇌', checked)}
-                          >
-                            뇌
-                          </Checkbox>
-                          <Checkbox
-                            size="sm"
-                            checked={coverageSubValues.includes('진단비-심')}
-                            onCheckedChange={(checked) => handleSubCoverageToggle('진단비-심', checked)}
-                          >
-                            심장
-                          </Checkbox>
-                        </Grow>
-                      </Grow>
-                      <Checkbox
-                        value="입원/통원"
-                        variant="button"
-                        className="w-[8.2rem]"
-                        checked={selectedCoverageValues.includes('입원/통원')}
-                        onCheckedChange={(checked) => {
-                          setSelectedCoverageValues((prev) => {
-                            const nextChecked = checked === true;
-                            if (nextChecked) {
-                              return prev.includes('입원/통원') ? prev : [...prev, '입원/통원'];
-                            }
-                            return prev.filter((value) => value !== '입원/통원');
-                          });
-                        }}
-                      >
-                        입원/통원
-                      </Checkbox>
-                      <Grow className="w-full" placement="sc">
-                        <Checkbox
-                          value="수술/치료"
-                          variant="button"
-                          className="w-[8.2rem]"
-                          checked={selectedCoverageValues.includes('수술/치료')}
-                          onCheckedChange={handleSurgeryToggle}
-                        >
-                          수술/치료
-                        </Checkbox>
-                        <Grow
-                          variant="box"
-                          className="h-[2.8rem] py-0 px-2 rounded-[0.4rem] gap-3 w-full"
-                          placement="sc"
-                        >
-                          <Checkbox
-                            size="sm"
-                            checked={coverageSubValues.includes('수술치료-암')}
-                            onCheckedChange={(checked) => handleSubCoverageToggle('수술치료-암', checked)}
-                          >
-                            암
-                          </Checkbox>
-                          <Checkbox
-                            size="sm"
-                            checked={coverageSubValues.includes('수술치료-뇌')}
-                            onCheckedChange={(checked) => handleSubCoverageToggle('수술치료-뇌', checked)}
-                          >
-                            뇌
-                          </Checkbox>
-                          <Checkbox
-                            size="sm"
-                            checked={coverageSubValues.includes('수술치료-심')}
-                            onCheckedChange={(checked) => handleSubCoverageToggle('수술치료-심', checked)}
-                          >
-                            심장
-                          </Checkbox>
-                        </Grow>
-                      </Grow>
-                      <Checkbox
-                        value="골절/화상"
-                        variant="button"
-                        className="w-[8.2rem]"
-                        checked={selectedCoverageValues.includes('골절/화상')}
-                        onCheckedChange={(checked) => {
-                          setSelectedCoverageValues((prev) => {
-                            const nextChecked = checked === true;
-                            if (nextChecked) {
-                              return prev.includes('골절/화상') ? prev : [...prev, '골절/화상'];
-                            }
-                            return prev.filter((value) => value !== '골절/화상');
-                          });
-                        }}
-                      >
-                        골절/화상
-                      </Checkbox>
-                      <Checkbox
-                        value="검사/지원"
-                        variant="button"
-                        className="w-[8.2rem]"
-                        checked={selectedCoverageValues.includes('검사/지원')}
-                        onCheckedChange={(checked) => {
-                          setSelectedCoverageValues((prev) => {
-                            const nextChecked = checked === true;
-                            if (nextChecked) {
-                              return prev.includes('검사/지원') ? prev : [...prev, '검사/지원'];
-                            }
-                            return prev.filter((value) => value !== '검사/지원');
-                          });
-                        }}
-                      >
-                        검사/지원
-                      </Checkbox>
-                    </Gcol>
-                  </Grow>
-                  <Divider dir="row" color="gray-light" className="w-full" />
 
-                  <Grow placement="ss" className="w-full">
-                    <Typo
-                      variant="heading-sm"
-                      color="blueGray"
-                      className="flex w-[5rem] pt-[0.3rem] h-[2.8rem] items-center shrink-1"
-                    >
-                      패키지
-                    </Typo>
-                    <Grow className="w-full" placement="ss">
-                      <Button
-                        variant={'contained'}
-                        color={isCoveragePackage ? 'primary' : 'coolgray-light'}
-                        size={'lg'}
-                        onClick={() => setIsCoveragePackage((prev) => !prev)}
-                      >
-                        <PaperIcon />
-                        보장패키지 선택
-                      </Button>
-                    </Grow>
-                  </Grow>
-                  <Typo icon="info">선택 시, 담보군이 포함된 설계안을 찾습니다.</Typo>
-                </Gcol>
-              </Gcol>
-              {/* 설계유형 or 고지유형 */}
-              {customerType === 'recent' ? (
-                // 등록고객
-                <Gcol placement="ss" gap={1}>
-                  <Grow gap={0}>
-                    <Typo tag="h4" variant={'heading-sm'} color={'blueGray'}>
-                      설계유형
-                    </Typo>
-                  </Grow>
-                  <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3" gap={2}>
-                    <RadioGroup
-                      width={'full'}
-                      className="gap-[0.4rem] [&>div]:w-full flex-col"
-                      value={selectedAnalysisValue}
-                      onValueChange={handleOnChangeLackAmtCcFlgcd}
-                    >
-                      {analysisOptionList.map((opt) => (
-                        <RadioGroupItem
-                          key={opt.value}
-                          value={opt.value}
-                          variant="button"
-                          size={'xl'}
-                          disabled={!lastInquiryDate}
-                          className="!w-full !text-left whitespace-normal h-auto items-center break-keep"
-                        >
-                          {opt.label}
-                        </RadioGroupItem>
-                      ))}
-                    </RadioGroup>
-
-                    <Grow gap={2}>
-                      {lastInquiryDate && (
-                        <Typo tag="b" variant={'heading-sm'}>
-                          {lastInquiryDate}
-                        </Typo>
-                      )}
-                      {lastInquiryDate ? (
-                        <>
-                          <Typo variant={'body-md'}>보장분석 진행했습니다.</Typo>
-                          <Button
-                            variant={'contained'}
-                            size={'sm'}
-                            color={'coolgray-light'}
-                            onClick={() => setLastInquiryDate('')}
-                          >
-                            재조회
-                          </Button>
-                        </>
-                      ) : (
-                        <>
-                          <Typo variant={'body-md'}>보장분석 진행 시, 정확한 추천이 가능합니다.</Typo>
-                          <Button
-                            variant={'contained'}
-                            size={'sm'}
-                            color={'coolgray-light'}
-                            onClick={() => setLastInquiryDate('2026-08-01')}
-                          >
-                            조회
-                          </Button>
-                        </>
-                      )}
-                    </Grow>
-                    <Typo icon="info">보장분석 진행하면 기계약을 확인할 수 있습니다.</Typo>
-                  </Gcol>
-                </Gcol>
-              ) : (
-                <Gcol placement="ss" gap={1}>
-                  <Typo tag="h4" variant={'heading-sm'} color={'blueGray'}>
-                    병력사항
+              {/* 희망담보 */}
+              <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3 w-full" gap={5}>
+                <Gcol placement="ss">
+                  <Typo tag="h4" variant={'heading-md'}>
+                    희망담보
                   </Typo>
-                  <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3" gap={2}>
-                    <Grid className="grid-cols-[1fr_6.4rem] w-full" gap={1}>
-                      <Typo className="text-center">질병명</Typo>
-                      <Typo className="text-center">기간</Typo>
-                      {medicalHistoryList.map((item, idx) => (
-                        <React.Fragment key={idx}>
-                          <Input
-                            size={'lg'}
-                            value={item.disease}
-                            readOnly={true}
-                            onChange={(e) => {
-                              const val = e.target.value;
-                              setMedicalHistoryList((prev) => {
-                                const next = [...prev];
-                                next[idx] = { ...next[idx], disease: val };
-                                return next;
-                              });
-                            }}
-                          />
-                          <Input
-                            size={'lg'}
-                            value={item.period}
-                            readOnly={true}
-                            onChange={(e) => {
-                              const val = e.target.value;
-                              setMedicalHistoryList((prev) => {
-                                const next = [...prev];
-                                next[idx] = { ...next[idx], period: val };
-                                return next;
-                              });
-                            }}
-                          />
-                        </React.Fragment>
-                      ))}
-                    </Grid>
-                    <Grow gap={1} placement="ec" className="w-full">
-                      <Grow gap={1} placement="ec">
+                  <Typo variant={'body-sm'} color="blueGray" className="tracking-[-0.05rem]">
+                    선택한 담보 위주로 설계안을 찾습니다.
+                  </Typo>
+                </Gcol>
+                <Gcol placement="ss" gap={0}>
+                  <div className="w-full flex flex-col items-start py-3 border-b border-dashed border-[#D8D8D8]">
+                    <Checkbox
+                      value="사망/후유"
+                      checked={selectedCoverageValues.includes('사망/후유')}
+                      onCheckedChange={(checked) => {
+                        setSelectedCoverageValues((prev) => {
+                          const nextChecked = checked === true;
+                          if (nextChecked) {
+                            return prev.includes('사망/후유') ? prev : [...prev, '사망/후유'];
+                          }
+                          return prev.filter((value) => value !== '사망/후유');
+                        });
+                      }}
+                    >
+                      사망/후유
+                    </Checkbox>
+                  </div>
+
+                  <Gcol
+                    className="w-full flex flex-col items-start py-3 border-b border-dashed border-[#D8D8D8]"
+                    placement="ss"
+                    gap={3}
+                  >
+                    <Checkbox
+                      value="진단비"
+                      checked={selectedCoverageValues.includes('진단비')}
+                      onCheckedChange={handleDiagnosisToggle}
+                    >
+                      진단비
+                    </Checkbox>
+                    <Grow placement="sc" className="pl-[1rem]" gap={3}>
+                      <div className="w-[0.8rem] h-[0.8rem] border-l-[0.1rem] border-b-[0.1rem] border-l-[var(--color-secondary-60)] border-b-[var(--color-secondary-60)] rounded-[0_0_0_0.2rem]"></div>
+                      <Checkbox
+                        checked={coverageSubValues.includes('진단비-암')}
+                        onCheckedChange={(checked) => handleSubCoverageToggle('진단비-암', checked)}
+                      >
+                        암
+                      </Checkbox>
+                      <Checkbox
+                        checked={coverageSubValues.includes('진단비-뇌')}
+                        onCheckedChange={(checked) => handleSubCoverageToggle('진단비-뇌', checked)}
+                      >
+                        뇌
+                      </Checkbox>
+                      <Checkbox
+                        checked={coverageSubValues.includes('진단비-심')}
+                        onCheckedChange={(checked) => handleSubCoverageToggle('진단비-심', checked)}
+                      >
+                        심장
+                      </Checkbox>
+                    </Grow>
+                  </Gcol>
+                  <div className="w-full flex flex-col items-start py-3 border-b border-dashed border-[#D8D8D8]">
+                    <Checkbox
+                      value="입원/통원"
+                      checked={selectedCoverageValues.includes('입원/통원')}
+                      onCheckedChange={(checked) => {
+                        setSelectedCoverageValues((prev) => {
+                          const nextChecked = checked === true;
+                          if (nextChecked) {
+                            return prev.includes('입원/통원') ? prev : [...prev, '입원/통원'];
+                          }
+                          return prev.filter((value) => value !== '입원/통원');
+                        });
+                      }}
+                    >
+                      입원/통원
+                    </Checkbox>
+                  </div>
+                  <Gcol
+                    className="w-full flex flex-col items-start py-3 border-b border-dashed border-[#D8D8D8]"
+                    placement="ss"
+                  >
+                    <Checkbox
+                      value="수술/치료"
+                      checked={selectedCoverageValues.includes('수술/치료')}
+                      onCheckedChange={handleSurgeryToggle}
+                    >
+                      수술/치료
+                    </Checkbox>
+                    <Grow placement="sc" className="pl-[1rem]" gap={3}>
+                      <div className="w-[0.8rem] h-[0.8rem] border-l-[0.1rem] border-b-[0.1rem] border-l-[var(--color-secondary-60)] border-b-[var(--color-secondary-60)] rounded-[0_0_0_0.2rem]"></div>
+                      <Checkbox
+                        checked={coverageSubValues.includes('수술치료-암')}
+                        onCheckedChange={(checked) => handleSubCoverageToggle('수술치료-암', checked)}
+                      >
+                        암
+                      </Checkbox>
+                      <Checkbox
+                        checked={coverageSubValues.includes('수술치료-뇌')}
+                        onCheckedChange={(checked) => handleSubCoverageToggle('수술치료-뇌', checked)}
+                      >
+                        뇌
+                      </Checkbox>
+                      <Checkbox
+                        checked={coverageSubValues.includes('수술치료-심')}
+                        onCheckedChange={(checked) => handleSubCoverageToggle('수술치료-심', checked)}
+                      >
+                        심장
+                      </Checkbox>
+                    </Grow>
+                  </Gcol>
+                  <div className="w-full flex flex-col items-start py-3 border-b border-dashed border-[#D8D8D8]">
+                    <Checkbox
+                      value="골절/화상"
+                      checked={selectedCoverageValues.includes('골절/화상')}
+                      onCheckedChange={(checked) => {
+                        setSelectedCoverageValues((prev) => {
+                          const nextChecked = checked === true;
+                          if (nextChecked) {
+                            return prev.includes('골절/화상') ? prev : [...prev, '골절/화상'];
+                          }
+                          return prev.filter((value) => value !== '골절/화상');
+                        });
+                      }}
+                    >
+                      골절/화상
+                    </Checkbox>
+                  </div>
+                  <div className="w-full flex flex-col items-start py-3">
+                    <Checkbox
+                      value="검사/지원"
+                      checked={selectedCoverageValues.includes('검사/지원')}
+                      onCheckedChange={(checked) => {
+                        setSelectedCoverageValues((prev) => {
+                          const nextChecked = checked === true;
+                          if (nextChecked) {
+                            return prev.includes('검사/지원') ? prev : [...prev, '검사/지원'];
+                          }
+                          return prev.filter((value) => value !== '검사/지원');
+                        });
+                      }}
+                    >
+                      검사/지원
+                    </Checkbox>
+                  </div>
+                </Gcol>
+              </Gcol>
+
+              {/* 설계유형 or 보장패키지 */}
+              <Grid className="w-full grid-rows-[auto_1fr] h-full" gap={2}>
+                <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3 w-full" gap={2}>
+                  {customerType === 'recent' ? (
+                    <Gcol placement="ss" gap={4}>
+                      <Gcol placement="ss">
+                        <Typo tag="h4" variant={'heading-md'}>
+                          설계유형
+                        </Typo>
+                      </Gcol>
+                      <Gcol placement="ss" gap={5}>
+                        <RadioGroup
+                          width={'full'}
+                          className="gap-[0.6rem] flex-col"
+                          value={selectedAnalysisValue}
+                          onValueChange={handleOnChangeLackAmtCcFlgcd}
+                        >
+                          {analysisOptionList.map((opt) => (
+                            <RadioGroupItem
+                              key={opt.value}
+                              value={opt.value}
+                              variant="button"
+                              size={'xl'}
+                              disabled={!lastInquiryDate}
+                              className="!w-full !text-left whitespace-normal h-auto items-center break-keep rounded-[0.6rem]"
+                            >
+                              {opt.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
+                        <Gcol placement="ss" gap={0}>
+                          <Typo>당타사 기계약 사항 확인을 위한</Typo>
+                          <Grow gap={2}>
+                            {lastInquiryDate && (
+                              <Typo tag="b" variant={'heading-sm'}>
+                                {lastInquiryDate}
+                              </Typo>
+                            )}
+                            {lastInquiryDate ? (
+                              <>
+                                <Button
+                                  variant={'contained'}
+                                  size={'sm'}
+                                  color={'coolgray-light'}
+                                  onClick={() => setLastInquiryDate('')}
+                                >
+                                  재조회
+                                </Button>
+                              </>
+                            ) : (
+                              <>
+                                <Button
+                                  variant={'text'}
+                                  color={'link'}
+                                  className="font-bold"
+                                  onClick={() => setLastInquiryDate('2026-08-01')}
+                                >
+                                  보장분석 조회하기
+                                  <ArrowIcon className="rotate-180" />
+                                </Button>
+                              </>
+                            )}
+                          </Grow>
+                        </Gcol>
+                      </Gcol>
+                    </Gcol>
+                  ) : (
+                    <Gcol placement="ss" gap={4}>
+                      <Gcol placement="ss">
+                        <Typo tag="h4" variant={'heading-md'}>
+                          병력사항
+                        </Typo>
+                        <Typo variant={'body-sm'} color="blueGray" className="tracking-[-0.1rem] break-keep">
+                          질병정보를 이용해 <b className="text-[var(--color-information-50)] underline">예상고지유형</b>
+                          을 확인합니다.
+                        </Typo>
+                      </Gcol>
+                      <ul className="w-full">
+                        {medicalHistoryList.map((item, idx) => (
+                          <li
+                            key={idx}
+                            className="grid grid-cols-[1fr_auto] items-center gap-2 w-full border-b border-dashed border-[#D8D8D8] last:border-b-0 h-[3.2rem]"
+                          >
+                            <Typo tag="b" variant="heading-sm" color="secondary" tooltip="1">
+                              {item.disease}
+                            </Typo>
+                            <span className="text-[1.2rem] shrink-0">{item.period}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <Grow gap={1} placement="ec" className="w-full">
                         <Button
-                          size={'lg'}
-                          className="w-full font-[700]!"
+                          size={'md'}
+                          color={'secondary'}
+                          className="font-[700]!"
                           onClick={() =>
                             setMedicalHistoryList([
-                              { disease: '척추관협착증', period: '무관' },
-                              { disease: '', period: '' },
-                              { disease: '', period: '' },
-                              { disease: '', period: '' },
+                              { disease: '척추관협착증척추관협착증척추관협착증척추관협착증', period: '기간 무관' },
+                              { disease: '척추관협착증', period: '10년내' },
+                              { disease: '척추관협착증', period: '10년내' },
+                              { disease: '척추관협착증', period: '10년내' },
                             ])
                           }
                         >
@@ -1089,8 +1073,8 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         <Button
                           variant={'outlined'}
                           color={'gray-light'}
-                          size={'lg'}
-                          className="w-full font-normal"
+                          size={'md'}
+                          className="font-normal"
                           onClick={() =>
                             setMedicalHistoryList([
                               { disease: '', period: '' },
@@ -1104,56 +1088,89 @@ export function Ltpa02002({ userType }: { userType: string }) {
                           초기화
                         </Button>
                       </Grow>
-                    </Grow>
-                    <Typo icon="info">입력한 질병정보를 이용해 예상고지유형을 확인합니다.</Typo>
-                  </Gcol>
+                    </Gcol>
+                  )}
                 </Gcol>
-              )}
-              <Button
-                color="secondary"
-                onClick={() => setIsGuideOpen(true)}
-                only="default"
-                variant="contained"
-                className="w-[9.2rem] h-[3.8rem] text-[1.3rem] absolute right-[1rem] font-normal leading-[1.5rem]"
-              >
-                추천설계<br></br> 이용가이드
-              </Button>
+                <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3 w-full" gap={5}>
+                  <Gcol placement="ss">
+                    <Typo tag="h4" variant={'heading-md'}>
+                      테마담보군
+                    </Typo>
+                    <Typo variant={'body-sm'} color="blueGray">
+                      보장패키지 선택 시, 담보군이 포함된 <br />
+                      설계안을 찾습니다.
+                    </Typo>
+                  </Gcol>
+                  <Button
+                    variant={'contained'}
+                    color="coolgray"
+                    size={'xl'}
+                    className="text-[1.3rem] h-[3.6rem] w-full px-[1rem] bg-[var(--color-blue-gray-60)]"
+                    onClick={() => setIsCoveragePackage((prev) => !prev)}
+                  >
+                    <PaperIcon />
+                    보장패키지 선택
+                  </Button>
+                </Gcol>
+              </Grid>
             </Grid>
-          )}
-        </Grow>
-      </div>
 
-      {dataNone ? (
-        <Grow className="h-full gap-2.5 pt-[39rem]" placement="cs">
-          <Grow className="gap-4 pb-[2rem]" placement="cs">
-            <div className="w-[3.2rem]">
-              <AiBotIcon open={false} />
-            </div>
-            <Gcol placement="ss" className="mt-[0.6rem] gap-2">
-              <Typo variant={'body-xl'} weight={'bold'}>
-                추천설계 참고사항!
-              </Typo>
-              <BulletList size="lg">
-                <BulletListItem>
-                  <b className="text-[var(--color-primary-50)]">편리한 설계의 출발점</b>으로 추천설계를 활용해 보세요.
-                </BulletListItem>
-                <BulletListItem>
-                  추천설계는 입력하신 사항과 AI 학습데이터를 종합 분석하여,{' '}
-                  <b className="text-[var(--color-primary-50)]">설계의 방향을 찾아드리는 참고안</b> 입니다.
-                </BulletListItem>
-                <BulletListItem>
-                  다양한 조건, 이용 시점 등 여러 요인에 따라 추천설계 결과는 달라질 수 있습니다.
-                </BulletListItem>
-              </BulletList>
-            </Gcol>
+            <Grow className="w-full" placement="cc" gap={2}>
+              <Button
+                variant="outlined"
+                color="gray"
+                aria-label="초기화"
+                className="w-auto min-h-[4.4rem] px-5 rounded-[0.4rem] text-[1.5rem] gap-1"
+                onClick={() => {
+                  setSimpleType('');
+                  setNoRefundValue('');
+                  setPremiumWaiverValue('');
+                  setMaturityValue('');
+                  setProductSearchName('');
+                  setIsHypertensionChecked(false);
+                  setIsDiabetesChecked(false);
+                  setIsExpectedNoticeType(false);
+                  setMedicalHistoryList([
+                    { disease: '', period: '' },
+                    { disease: '', period: '' },
+                    { disease: '', period: '' },
+                    { disease: '', period: '' },
+                  ]);
+                  setSelectedAnalysisValue('');
+                  setIsCoveragePackage(false);
+                  setSelectedCoverageValues([]);
+                  setCoverageSubValues([]);
+                }}
+              >
+                <ResetIcon />
+                선택 초기화
+              </Button>
+              <Button
+                variant="contained"
+                className="w-auto min-h-[4.4rem] px-5 rounded-[0.4rem] text-[1.5rem] font-bold gap-1"
+                onClick={() => {
+                  setDataNone(false);
+                  setIsFilterOptionOpen(false);
+                  setLoadingAI(true);
+                }}
+              >
+                선택조건 반영하여 추천받기
+                <ArrowIcon color="#fff" size={16} className="rotate-180" />
+              </Button>
+            </Grow>
+          </Gcol>
+
+          {/* 안내 */}
+          <Grow className="col-span-2 pb-[1.8rem] pt-[0.4rem]" placement="sc">
+            <Typo icon="ref" variant={'body-md'} color={'gray'}>
+              AI가 최근 데이터와 입력하신 정보를 분석하여 최적의 설계를 제안합니다. <b>편리한 설계의 출발점</b>으로
+              추천설계를 활용해 보세요.
+            </Typo>
           </Grow>
-        </Grow>
+        </Grid>
       ) : (
         <>
-          <Grid
-            className="w-[calc(100vw + 2rem)] h-full grid-rows-[minmax(0,1fr)] grid-cols-[minmax(67rem,3fr)_minmax(41.3rem,2fr)] gap-4 items-stretch overflow-hidden bg-[var(--color-gray-5)] p-[2rem]"
-            gap={3}
-          >
+          <Grid className="w-full h-full grid-rows-[minmax(0,1fr)] grid-cols-[1fr_1fr] gap-1 items-stretch overflow-hidden">
             {/* 리스트 */}
             {loadingAI ? (
               <div className="relative w-full h-full after:content-[''] after:block after:absolute after:pointer-events-none after:bottom-0 after:left-0 after:w-[100%] after:h-[3.4rem] after:bg-gradient-to-b after:from-transparent after:to-[#F4F4F4] after:z-10">
@@ -1175,22 +1192,18 @@ export function Ltpa02002({ userType }: { userType: string }) {
                 </div>
               </div>
             ) : (
-              <div className="relative w-full h-full after:content-[''] after:block after:absolute after:pointer-events-none after:bottom-0 after:left-0 after:w-[100%] after:h-[3.4rem] after:bg-gradient-to-b after:from-transparent after:to-[#F4F4F4] after:z-10">
-                <div className="relative overflow-y-auto w-full h-full gray-scroll">
-                  <Gcol
-                    className="absolute top-0 left-0 w-full h-full after:content-[''] after:block after:w-full after:min-h-[1.6rem]"
-                    gap={3}
-                    placement="ss"
-                  >
+              <div className="relative w-full h-full">
+                <div className="relative overflow-y-auto w-full h-full overflow-y-scroll">
+                  <Gcol className="absolute top-0 left-0 w-full h-full" gap={3} placement="ss">
                     {dataList.map((item, idx) => {
                       return (
-                        <Grid
+                        <Gcol
                           key={item.id}
-                          className="w-full px-[2.4rem] py-[1.6rem] grid-cols-[1fr_41.4rem] gap-4  bg-white rounded-[1rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)]"
+                          className="w-full px-[2.4rem] py-[1.6rem] gap-4 bg-white rounded-[1rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)] border border-[var(--color-gray-15)]"
                         >
-                          <Gcol gap={2} placement="bws" className="pt-1">
-                            <Gcol className="gap-y-3" placement="ss">
-                              <Typo tag="h3" variant="heading-lg" className="break-all" tooltip="2">
+                          <Gcol gap={0} placement="bws">
+                            <Gcol className="gap-y-2" placement="ss">
+                              <Typo tag="h3" variant="body-xl" className="break-all font-bold" tooltip="1">
                                 {item.field1}
                               </Typo>
                               <Typo
@@ -1201,7 +1214,9 @@ export function Ltpa02002({ userType }: { userType: string }) {
                                 {item.field2.map((v, idx) => (
                                   <React.Fragment key={`field2-${idx}`}>
                                     {idx > 0 && (
-                                      <span className="text-[var(--color-gray-30)] mx-[0.4rem] select-none">•</span>
+                                      <span className="text-[var(--color-secondary-50)] mx-[0.4rem] select-none">
+                                        •
+                                      </span>
                                     )}
                                     {v}
                                   </React.Fragment>
@@ -1209,13 +1224,15 @@ export function Ltpa02002({ userType }: { userType: string }) {
                                 {item.field3 && item.field3.length > 0 && (
                                   <>
                                     {item.field2 && item.field2.length > 0 && (
-                                      <span className="text-[var(--color-gray-30)] mx-[0.4rem] select-none">•</span>
+                                      <span className="text-[var(--color-blue-gray-60)] mx-[0.4rem] select-none">
+                                        •
+                                      </span>
                                     )}
-                                    <span className="inline-flex items-center text-[var(--color-information-50)]">
+                                    <span className="inline-flex items-center text-[var(--color-blue-gray-60)]">
                                       {item.field3.map((v, idx) => (
                                         <React.Fragment key={`field3-${idx}`}>
                                           {idx > 0 && (
-                                            <span className="text-[var(--color-gray-30)] mx-[0.4rem] select-none">
+                                            <span className="text-[var(--color-blue-gray-60)] mx-[0.4rem] select-none">
                                               •
                                             </span>
                                           )}
@@ -1232,7 +1249,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                                 <Typo
                                   tag="p"
                                   variant="body-sm"
-                                  className="py-[0.5rem] px-[1rem] rounded-[0.6rem] bg-[var(--color-information-5)] text-[var(--color-gray-100)]"
+                                  className="text-[var(--color-information-50)] font-bold"
                                 >
                                   {item.field5}
                                 </Typo>
@@ -1240,114 +1257,135 @@ export function Ltpa02002({ userType }: { userType: string }) {
                             )}
                           </Gcol>
                           {/* 생성중 */}
-                          {idx === 1 && (
-                            <Grow gap={3}>
-                              <Grid
-                                key={idx}
-                                className={`relative grid-rows-[minmax(0,1fr)_auto] w-full h-[14.8rem] rounded-[1rem] overflow-hidden gap-0 border-[0.1rem] border-[var(--color-primary-10)] bg-[var(--color-primary-5)]`}
-                              >
-                                <Grow className="h-full" placement="cc">
-                                  <Spinner />
-                                </Grow>
-                                <Grow className="w-full h-[4rem] bg-[#fff] px-4" placement="cc">
-                                  <Typo tag="span" variant={'body-md'}>
-                                    추천설계를 생성중입니다.
-                                  </Typo>
-                                </Grow>
-                              </Grid>
+                          {idx === 2 && (
+                            <Grow
+                              placement="cc"
+                              className="relative w-full min-h-[6.8rem] rounded-[1rem] overflow-hidden gap-0 border-[0.1rem] border-[var(--color-primary-10)] bg-[var(--color-primary-5)]"
+                            >
+                              <Spinner className="w-[6rem]" />
+                              <Typo tag="span" variant={'body-md'}>
+                                추천설계를 생성중입니다.
+                              </Typo>
                             </Grow>
                           )}
                           {/* 오류 */}
-                          {idx === 2 && (
-                            <Grow gap={3}>
-                              <Grid
-                                key={idx}
-                                className={`relative grid-rows-[minmax(0,1fr)_auto] w-full h-[14.8rem] rounded-[1rem] overflow-hidden gap-0 border-[0.1rem] border-[var(--color-gray-10)]`}
-                              >
-                                <Gcol className="w-full gap-2.5 bg-[#fff]" placement="cc">
-                                  <FolderSearch size={40} />
-                                  <Typo tag="span" variant={'body-md'} color={'gray'}>
-                                    아쉽게도 적정한 설계를 찾지 못했어요.
-                                  </Typo>
-                                </Gcol>
-                              </Grid>
+                          {idx === 3 && (
+                            <Grow
+                              placement="cc"
+                              className="relative w-full min-h-[6.8rem] rounded-[1rem] overflow-hidden gap-0 border-[0.1rem] border-[var(--color-gray-10)] gap-3"
+                            >
+                              <FolderSearch size={36} />
+                              <Typo tag="span" variant={'body-md'} color={'gray'}>
+                                아쉽게도 적정한 설계를 찾지 못했어요.
+                              </Typo>
                             </Grow>
                           )}
                           {/* 정상출력 */}
-                          {idx === 0 && (
-                            <Grow gap={3}>
-                              {item.field4.map((v, idx) => {
-                                const planKey = `${item.id}-${idx}`;
+                          {idx < 2 && (
+                            <Grow gap={2} className="w-full">
+                              {item.field4.map((v, planIdx) => {
+                                const planKey = `${item.id}-${planIdx}`;
                                 const isSelected = selectedPlanKey === planKey;
+                                const checkedIndex = comparedPlanKeys.indexOf(planKey);
+                                const isChecked = checkedIndex !== -1;
                                 return (
-                                  <Grid
-                                    key={idx}
-                                    className={`relative grid-rows-[minmax(0,1fr)_auto] flex-1 w-[100%] h-[14.8rem] rounded-[1rem] overflow-hidden gap-0 border-[0.1rem] border-[var(--color-gray-10)] ${
+                                  <Grow
+                                    key={planIdx}
+                                    placement="bwc"
+                                    className={`relative flex-1 w-full h-[6.8rem] rounded-[1rem] overflow-hidden gap-0 border-[0.1rem] border-[var(--color-gray-10)] ${
                                       isSelected
-                                        ? 'border-[#FF5C2E] bg-[var(--color-primary-10)] shadow-[0_0.4rem_0.8rem_0_rgba(255,92,46,0.20)]'
-                                        : 'bg-[var(--color-primary-5)]'
+                                        ? 'border-[var(--color-danger-50)] bg-[var(--color-blue-gray-10)]'
+                                        : 'border-[var(--color-blue-gray-10)] bg-[var(--color-blue-gray-10)]'
                                     }`}
-                                    style={
-                                      isSelected
-                                        ? {
-                                            backgroundImage: `url(${withPublicUrl('/images/Ltpa020/cand_on_bg.png')}), linear-gradient(358deg,#FF5C2E 9.4%,#FF8D02 97.24%)`,
-                                            backgroundRepeat: 'no-repeat',
-                                            backgroundPosition: 'calc(100% + 120%) -4%',
-                                            backgroundSize: '10rem, cover',
-                                          }
-                                        : undefined
-                                    }
                                   >
+                                    {/* 상세보기 버튼 */}
                                     <button
                                       type="button"
-                                      className="p-[1.2rem] h-full flex flex-col justify-between items-start"
+                                      className="py-2 px-4 w-full h-full flex flex-col justify-center items-start outline-0!"
                                       onClick={() => setSelectedPlanKey(isSelected ? null : planKey)}
                                       aria-pressed={isSelected}
                                     >
-                                      <span
-                                        className={`ltpa020-plan-icon ${isSelected ? 'is-selected' : ''}`}
-                                        aria-hidden="true"
-                                      />
-
-                                      <Gcol placement="ss" gap={0}>
-                                        <Typo
-                                          tag="p"
-                                          variant="body-sm"
-                                          className={isSelected ? 'text-white' : 'text-[var(--color-gray-70)]'}
-                                        >
-                                          예상보험료
-                                        </Typo>
-                                        <Typo
-                                          tag="p"
-                                          variant="heading-lg"
-                                          className={isSelected ? 'text-white' : 'text-[var(--color-primary-50)]'}
-                                        >
-                                          {v.field1.toLocaleString()}원
-                                        </Typo>
-                                      </Gcol>
+                                      <Typo
+                                        tag="b"
+                                        variant="body-md"
+                                        className="text-[var(--color-blue-gray-60)]"
+                                        weight={'bold'}
+                                      >
+                                        예상보험료
+                                      </Typo>
+                                      <Typo tag="p" variant="heading-xl" color="primary">
+                                        {v.field1.toLocaleString()}원
+                                      </Typo>
                                     </button>
-                                    <Grow className="w-full h-[4rem] bg-[#fff] px-4" placement="sc">
+
+                                    <Gcol
+                                      className="w-[8.2rem] gap-[0.2rem] absolute right-0 pr-4 t-0 h-full pointer-events-none"
+                                      placement="cc"
+                                    >
+                                      {/* 상세보기 */}
+                                      <Grow
+                                        placement="sc"
+                                        gap={2}
+                                        className={`w-[8.2rem] h-[2.5rem] gap-1 text-[1.2rem] border px-2 rounded-[0.3rem] pointer-events-none transition-colors ${
+                                          isSelected
+                                            ? 'bg-[var(--color-blue-gray-70)] border-[var(--color-blue-gray-70)] text-[#fff]'
+                                            : 'bg-[#fff] border-[var(--color-gray-20)]'
+                                        }`}
+                                        aria-pressed={isSelected}
+                                      >
+                                        {isSelected ? (
+                                          <span className="relative flex items-center justify-center w-[1.2rem] h-[1.2rem] shrink-0">
+                                            <span
+                                              className="absolute w-[1.2rem] h-[1.2rem] rounded-full bg-[#FFB800]/30"
+                                              style={{ animation: 'detail-pulse-outer 1.6s ease-in-out infinite' }}
+                                            />
+                                            <span
+                                              className="absolute w-[0.8rem] h-[0.8rem] rounded-full bg-[#FFB800]/60"
+                                              style={{ animation: 'detail-pulse-mid 1.6s ease-in-out infinite' }}
+                                            />
+                                            <span className="relative w-[0.4rem] h-[0.4rem] rounded-full bg-[#FFB800]" />
+                                          </span>
+                                        ) : (
+                                          <SearchIcon size={12} color={'var(--color-gray-30)'} />
+                                        )}
+                                        담보상세
+                                      </Grow>
+                                      {/* 설계담기 */}
                                       <Checkbox
-                                        checked={comparedPlanKeys.includes(planKey)}
+                                        variant="noCheckButton"
+                                        size="md"
+                                        className="w-[8.2rem] bg-[var(--color-blue-gray-50)]! border-[var(--color-blue-gray-50)]! text-[#fff]! data-[state=checked]:bg-[var(--color-primary-50)]! data-[state=checked]:border-[var(--color-primary-50)]! data-[state=checked]:text-[#fff]! gap-2! text-[1.2rem]! px-2 pointer-events-auto"
+                                        checked={isChecked}
                                         onCheckedChange={(checked) => {
-                                          const isChecked = checked === true;
+                                          const nextChecked = checked === true;
                                           setComparedPlanKeys((prev) => {
-                                            if (isChecked) {
-                                              return prev.includes(planKey) ? prev : [...prev, planKey];
+                                            if (nextChecked) {
+                                              if (prev.includes(planKey) || prev.length >= 3) {
+                                                return prev;
+                                              }
+                                              return [...prev, planKey];
                                             }
                                             return prev.filter((key) => key !== planKey);
                                           });
                                         }}
                                       >
-                                        <span>비교하기</span>
+                                        {isChecked ? (
+                                          <b className="w-[1.6rem] h-[1.6rem] rounded-full bg-[#000] text-[#fff] text-[1.2rem] flex items-center justify-center translate-x-[-0.2rem]">
+                                            {checkedIndex + 1}
+                                          </b>
+                                        ) : (
+                                          <CheckIcon />
+                                        )}
+
+                                        <span className="text-[1.2rem]">설계담기</span>
                                       </Checkbox>
-                                    </Grow>
-                                  </Grid>
+                                    </Gcol>
+                                  </Grow>
                                 );
                               })}
                             </Grow>
                           )}
-                        </Grid>
+                        </Gcol>
                       );
                     })}
                   </Gcol>
@@ -1365,70 +1403,41 @@ export function Ltpa02002({ userType }: { userType: string }) {
                 gap={0}
               >
                 <Grow
-                  className="relative px-[1.6rem] py-[1.7rem] gap-[0.2rem] rounded-t-[1rem] items-end"
-                  placement="ss"
+                  className="relative p-4 gap-2 rounded-t-[1rem]"
+                  placement="bwc"
                   style={{
-                    backgroundImage: `url(${withPublicUrl('/images/Ltpa020/cand_on_bg_big.png')}), linear-gradient(358deg,#FF5C2E 9.4%,#FF8D02 97.24%)`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundSize: '10rem, cover',
-                    backgroundPosition: '98% -6%',
+                    background: `linear-gradient(358deg,#FF5C2E 9.4%,#FF8D02 97.24%)`,
                   }}
                 >
-                  <Gcol placement="ss" className="min-w-0 flex-1">
-                    <Typo tag="p" variant="body-sm" className="text-white opacity-80">
-                      보장내용 확인
-                    </Typo>
-                    <Typo
-                      tag="strong"
-                      variant="heading-lg"
-                      weight="bold"
-                      className="text-white leading-[1.2]"
-                      tooltip={2}
-                    >
-                      {selectedPlanInfo?.product.field1}
-                    </Typo>
-                  </Gcol>
-                  <Button
-                    color="secondary"
-                    onClick={() => setIsGuideOpen(true)}
-                    only="default"
-                    variant="contained"
-                    className="w-[7.2rem] h-[3.8rem] text-[1.1rem] px-[1.1rem]"
+                  <Typo
+                    tag="strong"
+                    variant="heading-lg"
+                    weight="bold"
+                    className="text-white leading-[1.2]"
+                    tooltip={1}
                   >
-                    추천설계<br></br> 이용가이드
+                    {selectedPlanInfo?.product.field1}
+                  </Typo>
+                  <Button
+                    variant={'outlined'}
+                    size={'md'}
+                    onClick={() => setIsAiReasonExpanded((prev) => !prev)}
+                    className="group w-full rounded-[1rem] w-[10.8rem] rounded-[0.6rem] border border-[var(--color-primary-50)] bg-white font-bold"
+                  >
+                    <Ai2Icon size={12} color="var(--color-primary-50)" />
+                    AI 추천이유
+                    <SelectDropIcon
+                      size={12}
+                      className={`text-[var(--color-priamry-50)] transition-transform shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)] ${isAiReasonExpanded ? 'rotate-180' : 'rotate-0'}`}
+                    />
                   </Button>
                 </Grow>
 
-                <Grid className="px-[1rem] pb-0 pt-[0.8rem] gap-[0.8rem] grid-rows-[auto_minmax(0,1fr)]">
-                  <Grow
-                    className="grid grid-cols-[6.7rem_1fr] place-items-start gap-2 w-full bg-[var(--color-information-10)] p-2.5 rounded-[1rem] h-full"
-                    placement="ss"
-                  >
-                    <Button
-                      variant={'outlined'}
-                      color={'link'}
-                      onClick={() => setIsAiReasonExpanded((prev) => !prev)}
-                      className="group w-full rounded-[1rem] w-full rounded-[0.6rem] border border-[var(--color-information-50)] bg-white px-[0.6rem] py-[0.6rem] h-auto"
-                    >
-                      <Gcol
-                        placement="ss"
-                        gap={0}
-                        className="text-[var(--color-information-50)] font-bold leading-none text-[1.1rem]"
-                      >
-                        <Grow placement="sc" gap={0} className="leading-none">
-                          AI <Ai2Icon size={10} color="var(--color-information-50)" />
-                        </Grow>
-                        <div className="leading-none">추천이유</div>
-                      </Gcol>
-                      <SelectDropIcon
-                        className={`text-[var(--color-information-50)] transition-transform ${isAiReasonExpanded ? 'rotate-180' : 'rotate-0'}`}
-                      />
-                    </Button>
-                    <div
-                      className={`${isAiReasonExpanded ? 'max-h-[100%] overflow-y-auto' : 'max-h-[3.4rem] overflow-y-hidden'} h-full pr-[0.2rem] text-[1.1rem] leading-[1.5] transition-all`}
-                      dangerouslySetInnerHTML={{ __html: selectedPlanInfo?.plan.field2 ?? '' }}
-                    />
-                  </Grow>
+                <Grid className="px-4 pb-0 pt-[0.8rem] relative">
+                  <div
+                    className={`${isAiReasonExpanded ? 'overflow-y-auto' : 'hidden'} absolute bg-[#fff] p-4 text-[1.3rem] leading-[1.5] right-[1.6rem] transition-all max-w-[34rem] w-full rounded-[0.6rem] border border-[var(--color-gray-20)] top-[-1rem] h-[100%] z-2 overflow-y-auto`}
+                    dangerouslySetInnerHTML={{ __html: selectedPlanInfo?.plan.field2 ?? '' }}
+                  />
                   <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataListDetailType>
                       getRowId={(params) => String(params.data.id)}
@@ -1504,8 +1513,8 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         <div className="flex flex-col gap-1 w-full">
                           <strong className="font-bold text-[1.5rem]">보장내용 상세보기</strong>
                           <p className="text-[1.3rem] leading-[150%] break-keep text-[var(--color-blue-gray-60)]">
-                            <b className="text-[var(--color-information-50)]">추천결과 카드를 선택</b>하여,
-                            <br /> 자세한 보장내용과 보험료를 확인해 보세요.
+                            <b className="text-[var(--color-information-50)]">추천결과 카드를 선택</b>하여, 자세한
+                            보장내용과 보험료를 확인해 보세요.
                           </p>
                         </div>
                       </li>
@@ -1516,7 +1525,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         <div className="flex flex-col gap-1 w-full">
                           <strong className="font-bold text-[1.5rem]">추천설계 비교하기</strong>
                           <p className="text-[1.3rem] leading-[150%] break-keep text-[var(--color-blue-gray-60)]">
-                            카드별 ‘비교하기’ 체크하신 후, <br />
+                            카드별 ‘비교하기’ 체크하신 후,{' '}
                             <b className="text-[var(--color-information-50)]">[추천설계비교]를 클릭하여 비교</b>해
                             보세요. <br />
                             3개까지 가능해요.
@@ -1534,8 +1543,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                             눌러보세요.
                             <br />
                             최대 3개까지 자동으로 설계가 생성됩니다. <br />
-                            가입설계 화면에서 담보 조정 등으로 <br />
-                            최적의 설계를 진행하세요.
+                            가입설계 화면에서 담보 조정 등으로 최적의 설계를 진행하세요.
                           </p>
                         </div>
                       </li>
@@ -1572,16 +1580,62 @@ export function Ltpa02002({ userType }: { userType: string }) {
                 }}
               />
               <AiIcon size={18} color={'#006FF2'} color2={'#A683FF'} />
-              추천설계비교({comparedPlanKeys.length})
+              {comparedPlanKeys.length}건 추천설계비교
             </Button>
-            <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
-              설계생성({comparedPlanKeys.length})
-              <ArrowNext size={16} />
-            </Button>
+
+            {comparedPlanKeys.length >= 2 ? (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button type="button" variant={'contained'} color={'primary'} size={'xl'}>
+                    설계생성
+                    <ArrowNext size={16} />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
+                  <Grid className="w-full grid-cols-[1fr] gap-2">
+                    {comparedPlanKeys && (
+                      <Gcol gap={1}>
+                        {comparedPlanKeys.map((planKey, idx) => (
+                          <Button
+                            key={planKey}
+                            variant={'outlined'}
+                            color={'gray'}
+                            size={'lg'}
+                            onClick={() => handleGeneratePlan(planKey)}
+                          >
+                            <b className="text-[var(--color-primary-50)]">{idx + 1}번</b> 설계생성
+                          </Button>
+                        ))}
+                      </Gcol>
+                    )}
+                    <Button variant={'contained'} color={'primary'} size={'lg'} onClick={() => handleGeneratePlan()}>
+                      모두 설계생성
+                    </Button>
+                  </Grid>
+                </PopoverContent>
+              </Popover>
+            ) : (
+              <Button
+                type="button"
+                variant={'contained'}
+                color={'primary'}
+                size={'xl'}
+                disabled={comparedPlanKeys.length === 0}
+                onClick={() => {
+                  if (comparedPlanKeys.length === 1) {
+                    handleGeneratePlan(comparedPlanKeys[0]);
+                  }
+                }}
+              >
+                설계생성
+                <ArrowNext size={16} />
+              </Button>
+            )}
           </Grow>
           {isFilterOptionOpen && <div className="absolute w-full h-full top-0 left-0 z-10 backdrop-blur-xs"></div>}
         </>
       )}
+
       <style>{`
         @keyframes button-shake {
           0%, 100% { transform: translate(0, 0) scale(1); }
@@ -1589,6 +1643,14 @@ export function Ltpa02002({ userType }: { userType: string }) {
           40% { transform: translate(1px, -1px) scale(1.01); }
           60% { transform: translate(-1px, -1px) scale(0.99); }
           80% { transform: translate(1px, 1px) scale(1.01); }
+        }
+        @keyframes detail-pulse-outer {
+          0%, 100% { transform: scale(0.8); opacity: 0.25; }
+          50% { transform: scale(1.15); opacity: 0.45; }
+        }
+        @keyframes detail-pulse-mid {
+          0%, 100% { transform: scale(0.85); opacity: 0.5; }
+          50% { transform: scale(1.08); opacity: 0.75; }
         }
       `}</style>
       <Dialog open={isGuideOpen} onOpenChange={setIsGuideOpen}>

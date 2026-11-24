@@ -70,7 +70,6 @@ const Ltpz053 = () => {
       flex: 1,
       field: 'field01',
       cellClass: 'text-center !px-0',
-      autoHeight: true,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field01' }),
     },
     {
@@ -78,7 +77,6 @@ const Ltpz053 = () => {
       flex: 10,
       field: 'field02',
       cellClass: 'text-center ',
-      autoHeight: true,
       cellRenderer: designCellRenderer,
     },
     {
@@ -87,7 +85,6 @@ const Ltpz053 = () => {
       flex: 1,
       field: 'field04',
       cellClass: 'text-center',
-      autoHeight: true,
     },
   ];
   const [rowData] = React.useState<DummyDataType[]>(DummyData);

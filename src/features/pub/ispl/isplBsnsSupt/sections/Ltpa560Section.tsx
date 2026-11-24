@@ -44,7 +44,8 @@ type Ltpa560DummyDataRow = {
 const Ltpa560DummyData: Ltpa560DummyDataRow[] = [
   {
     id: 1,
-    field01: '한화시그니처 여성 건강보험 4.0',
+    field01:
+      '한화시그니처 여성 건강보험 4.0한화시그니처 여성 건강보험 4.0한화시그니처 여성 건강보험 4.0한화시그니처 여성 건강보험 4.0',
     field02: '전속',
     field03: '서울지역본부',
     field04: 2,
@@ -60,7 +61,8 @@ const Ltpa560DummyData: Ltpa560DummyDataRow[] = [
   },
   {
     id: 2,
-    field01: '한화시그니처 여성 건강보험 4.0',
+    field01:
+      '한화시그니처 여성 건강보험 4.0한화시그니처 여성 건강보험 4.0한화시그니처 여성 건강보험 4.0한화시그니처 여성 건강보험 4.0',
     field02: '전속',
     field03: '경인지역본부',
     field04: 2,

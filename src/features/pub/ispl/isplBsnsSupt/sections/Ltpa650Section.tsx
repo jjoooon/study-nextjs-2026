@@ -15,6 +15,7 @@ import {
 } from '@aggrid';
 import { Grow, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
+
 import { DatePickerInput } from '@common/DatePicker';
 import { FormTable, FormRow, FormCell } from '@common/FormTable';
 import { PageID } from '@features/PageID';
@@ -22,6 +23,7 @@ import { SearchIcon, ResetIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
+import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 
 import '@/shared/lib/agGridPub';
@@ -189,7 +191,7 @@ const treeNameCellRenderer = createTreeNameCellRenderer<DummyData2Type>();
 
 export default function Ltpa650Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
-
+  const [channels, setChannels] = React.useState<string[]>(['전체', '전속', 'GA', 'TM']);
   // 담보분류 -------------
   // 2026-06-04 flex, minWidth 수정
   const columnDefs1: (ColDef<DummyData1Type> | ColGroupDef<DummyData1Type>)[] = useMemo(
@@ -210,7 +212,7 @@ export default function Ltpa650Section() {
         sortable: false,
         editable: true,
         cellDataType: 'boolean',
-        cellClass: 'editable-cell',
+        cellClass: 'editable-cell text-center',
         cellRenderer: 'agCheckboxCellRenderer',
         cellEditor: 'agCheckboxCellEditor',
         autoHeight: true,
@@ -288,10 +290,14 @@ export default function Ltpa650Section() {
         mainBody={
           <Grid className="w-full grid-rows-[auto_minmax(0,1fr)] gap-3 h-full">
             <Grow placement="bwc" className="w-full" variant={'box-round'}>
-              <FormTable variant={'head'}>
+              <FormTable
+                variant={'none'}
+                className="formTable-fixed"
+                cols={['w-[9.2rem]', 'w-[53rem]', 'w-[6.8rem]', 'w-[auto]']}
+              >
                 <FormRow>
                   <FormCell title={'상품'} tdClassName="grid-cols-[auto_1fr_auto]">
-                    <Input width={120} value={'LA202852001'} />
+                    <Input width={'quoteNo'} value={'LA202852001'} />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
@@ -304,6 +310,24 @@ export default function Ltpa650Section() {
                   </FormCell>
                   <FormCell title={'기준일자'}>
                     <DatePickerInput mode="single" onChange={() => {}} value="" />
+                  </FormCell>
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'적용대상검색'} colSpan={3}>
+                    <CheckboxGroup value={channels} onValueChange={setChannels} className="gap-3">
+                      <CheckboxGroupItem value="전체" selectAll size="lg">
+                        전체
+                      </CheckboxGroupItem>
+                      <CheckboxGroupItem value="전속" size="lg">
+                        전속
+                      </CheckboxGroupItem>
+                      <CheckboxGroupItem value="GA" size="lg">
+                        GA
+                      </CheckboxGroupItem>
+                      <CheckboxGroupItem value="TM" size="lg">
+                        TM
+                      </CheckboxGroupItem>
+                    </CheckboxGroup>
                   </FormCell>
                 </FormRow>
               </FormTable>

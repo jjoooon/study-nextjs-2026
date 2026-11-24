@@ -314,6 +314,7 @@ const Ltpz021 = () => {
       headerName: '담보명',
       field: 'field1',
       flex: 10,
+      cellClass: 'text-left',
       // 글자 크기나 컬럼 너비를 초과하여 말줄임(...) 처리되었을 때, 마우스 오버 시 풀네임 툴팁 표시
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
     },

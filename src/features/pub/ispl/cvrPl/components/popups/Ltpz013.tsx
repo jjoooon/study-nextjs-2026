@@ -241,6 +241,7 @@ const Ltpz013 = () => {
         headerName: '담보명',
         field: 'field1',
         flex: 3,
+        classCell: 'text-left',
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
         colSpan: (params) => {
           // 합계 행(id === 0)일 경우 담보명과 가입금액 열을 가로 병합(colSpan)하여 넓게 출력

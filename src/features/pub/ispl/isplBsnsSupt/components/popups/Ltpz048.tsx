@@ -55,7 +55,6 @@ const Ltpz048 = () => {
       width: attributeColumnWidth(30),
       field: 'id',
       cellClass: 'text-center',
-      autoHeight: true,
     },
     {
       headerName: '구분',
@@ -63,7 +62,6 @@ const Ltpz048 = () => {
       flex: 10,
       field: 'field01',
       cellClass: 'text-center',
-      autoHeight: true,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field01' }),
     },
     {
@@ -72,7 +70,6 @@ const Ltpz048 = () => {
       flex: 1,
       field: 'field02',
       cellClass: 'text-center',
-      autoHeight: true,
     },
     {
       headerName: '처리자',
@@ -80,7 +77,6 @@ const Ltpz048 = () => {
       minWidth: attributeColumnWidth(80),
       field: 'field03',
       cellClass: 'text-center',
-      autoHeight: true,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field03' }),
     },
   ];

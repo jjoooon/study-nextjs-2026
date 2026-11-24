@@ -139,6 +139,7 @@ const Ltpz017 = () => {
         headerName: '회사플랜명',
         field: 'planName',
         flex: 5,
+        cellClass: 'text-left',
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'planName' }),
       },
       {

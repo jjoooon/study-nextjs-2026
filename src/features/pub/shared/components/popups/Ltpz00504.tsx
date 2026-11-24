@@ -215,6 +215,7 @@ const Ltpz00504 = ({ onClose, recommendData: propRecommendData, isNonTarget = fa
       headerName: '제한 담보명',
       field: 'coverageName',
       flex: 10,
+      cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<ExpectedUwAmountRow>({ field: 'coverageName' }),
     },
     {
@@ -242,6 +243,7 @@ const Ltpz00504 = ({ onClose, recommendData: propRecommendData, isNonTarget = fa
       headerName: '담보명',
       field: 'coverageName',
       flex: 1,
+      cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<ExpectedUwSingleRow>({ field: 'coverageName' }),
       cellStyle: { borderRight: 'none' },
     },
@@ -462,7 +464,7 @@ const Ltpz00504 = ({ onClose, recommendData: propRecommendData, isNonTarget = fa
                                 suppressMovable: true,
                                 cellClass: 'flex! items-center!',
                               }}
-                              headerHeight={28}
+                              headerHeight={30}
                               rowHeight={30}
                               domLayout={'normal'}
                               tooltipShowMode="whenTruncated"

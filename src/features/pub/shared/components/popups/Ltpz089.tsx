@@ -57,42 +57,6 @@ const dummyData: DummyDataType[] = [
     field05: '',
     field06: '',
   },
-  {
-    id: 2,
-    field01: '',
-    field02: '',
-    field03: '',
-    field04: '',
-    field05: '',
-    field06: '',
-  },
-  {
-    id: 2,
-    field01: '',
-    field02: '',
-    field03: '',
-    field04: '',
-    field05: '',
-    field06: '',
-  },
-  {
-    id: 2,
-    field01: '',
-    field02: '',
-    field03: '',
-    field04: '',
-    field05: '',
-    field06: '',
-  },
-  {
-    id: 2,
-    field01: '',
-    field02: '',
-    field03: '',
-    field04: '',
-    field05: '',
-    field06: '',
-  },
 ];
 
 const Ltpz089 = () => {

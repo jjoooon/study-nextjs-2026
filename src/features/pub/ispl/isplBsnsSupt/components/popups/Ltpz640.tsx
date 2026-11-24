@@ -620,7 +620,7 @@ const Ltpz640 = () => {
         sortable: false,
         editable: true,
         cellDataType: 'boolean',
-        cellClass: 'editable-cell',
+        cellClass: 'editable-cell text-center',
         cellRenderer: 'agCheckboxCellRenderer',
         cellEditor: 'agCheckboxCellEditor',
         resizable: false,

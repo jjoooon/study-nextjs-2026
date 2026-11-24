@@ -17,6 +17,8 @@ interface AgGridReactPropsWithDefault {
   suppressGroupRowsSticky?: boolean;
   cellSelection?: boolean | CellSelectionOptions;
   processCellForClipboard?: ProcessCellForClipboard;
+  tooltipShowMode?: 'whenTruncated' | 'always';
+  defaultColDef?: Record<string, unknown>;
   [key: string]: unknown;
 }
 

@@ -35,8 +35,8 @@ type DummyDataTypeA = {
 
 const DummyDataA: DummyDataTypeA[] = [
   { id: 1, field1: '주택' },
-  { id: 1, field1: '일반' },
-  { id: 2, field1: '공장' },
+  { id: 2, field1: '일반' },
+  { id: 3, field1: '공장' },
 ];
 
 // 중분류

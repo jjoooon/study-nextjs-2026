@@ -205,7 +205,6 @@ const Ltpz094 = () => {
                 sortable: true,
                 resizable: true,
               }}
-              enableCellSpan={true}
               domLayout="normal"
               animateRows={false}
             />

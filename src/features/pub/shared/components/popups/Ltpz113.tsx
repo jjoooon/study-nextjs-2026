@@ -221,7 +221,6 @@ const Ltpz113 = () => {
       minWidth: attributeColumnWidth(80),
       field: 'field06',
       cellClass: 'text-center',
-      autoHeight: true,
       cellRenderer: () => (
         <Button variant={'outlined'} size={'md'} color={'gray'}>
           출력가능
@@ -234,7 +233,6 @@ const Ltpz113 = () => {
       minWidth: attributeColumnWidth(146),
       field: 'field07',
       cellClass: 'text-center',
-      autoHeight: true,
       cellRenderer: () => (
         <Grow>
           <Button variant={'outlined'} size={'md'} color={'gray'}>
@@ -252,7 +250,6 @@ const Ltpz113 = () => {
       minWidth: attributeColumnWidth(56),
       field: 'field08',
       cellClass: 'text-center',
-      autoHeight: true,
       cellRenderer: () => (
         <Button variant={'outlined'} size={'md'} color={'gray'}>
           삭제
@@ -381,7 +378,7 @@ const Ltpz113 = () => {
             </Grow>
           </Grow>
 
-          <Gcol gap={1} className="overflow-hidden min-h-[24.2rem]" placement="ss">
+          <Gcol gap={1} placement="ss">
             <Grow placement="bwc" className="w-full">
               <RadioGroup defaultValue="단면" className="gap-3">
                 {[
@@ -397,7 +394,7 @@ const Ltpz113 = () => {
                 전체삭제
               </Button>
             </Grow>
-            <div className="ag-theme-alpine">
+            <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
               <AgGridReact<DummyDataType>
                 ref={gridRef}
                 getRowId={(params) => String(params.data.id)}

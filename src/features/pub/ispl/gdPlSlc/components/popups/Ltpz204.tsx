@@ -214,7 +214,7 @@ const Ltpz204 = () => {
         sortable: false,
         editable: true,
         cellDataType: 'boolean',
-        cellClass: 'editable-cell',
+        cellClass: 'editable-cell text-center',
         cellRenderer: 'agCheckboxCellRenderer',
         cellEditor: 'agCheckboxCellEditor',
         autoHeight: true,
@@ -300,12 +300,12 @@ const Ltpz204 = () => {
         sortable: false,
         cellClass: (params) => {
           if (params.data?.status === '가능') {
-            return 'text-center font-bold isSuccess';
+            return 'justify-center font-bold isSuccess';
           }
           if (params.data?.status === '불가') {
-            return 'text-center font-bold isCancel !border-r-transparent';
+            return 'justify-center font-bold isCancel !border-r-transparent';
           }
-          return 'text-center';
+          return 'justify-center';
         },
         cellRenderer: (params: { value?: string }) => {
           if (!params.value) return null;

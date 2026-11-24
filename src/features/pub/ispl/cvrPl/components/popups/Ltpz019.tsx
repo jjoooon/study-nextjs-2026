@@ -348,7 +348,6 @@ const Ltpz019 = () => {
         cellClass: 'text-left p-0!',
         sortable: false,
         filter: false,
-        autoHeight: true,
         suppressMovable: true, // 컬럼 드래그 이동 방지
         lockPinned: true, // 고정 컬럼 해제 방지
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -398,6 +397,7 @@ const Ltpz019 = () => {
         headerName: '플랜명',
         field: 'field1',
         flex: 1,
+        cellClass: 'text-left',
         tooltipValueGetter: createTooltipValueGetter<DummyDataType3>({ field: 'field1' }),
       },
     ],

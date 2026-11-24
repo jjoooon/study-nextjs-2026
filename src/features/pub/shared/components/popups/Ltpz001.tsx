@@ -360,6 +360,7 @@ const Ltpz001 = () => {
                               headerName: '출력물',
                               field: 'field1',
                               flex: 11,
+                              cellClass: 'text-left',
                               tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
                             }}
                             // selection 설정

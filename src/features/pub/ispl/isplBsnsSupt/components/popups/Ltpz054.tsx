@@ -87,7 +87,7 @@ const DummyData1: DummyData1Type[] = [
     field7: '',
   },
   {
-    id: 3,
+    id: 4,
     num: 3,
     field1:
       '청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용)',
@@ -99,7 +99,7 @@ const DummyData1: DummyData1Type[] = [
     field7: '',
   },
   {
-    id: 3,
+    id: 6,
     num: 3,
     field1:
       '청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용)',
@@ -111,7 +111,7 @@ const DummyData1: DummyData1Type[] = [
     field7: '',
   },
   {
-    id: 3,
+    id: 7,
     num: 3,
     field1:
       '청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용)',
@@ -159,7 +159,7 @@ const DummyData2: DummyData2Type[] = [
     field7: '',
   },
   {
-    id: 3,
+    id: 4,
     num: 3,
     field1: '청약서(계약자, 주피용)',
     field2: 1,
@@ -170,7 +170,7 @@ const DummyData2: DummyData2Type[] = [
     field7: '',
   },
   {
-    id: 3,
+    id: 5,
     num: 3,
     field1: '청약서(계약자, 주피용)',
     field2: 1,
@@ -181,7 +181,7 @@ const DummyData2: DummyData2Type[] = [
     field7: '',
   },
   {
-    id: 3,
+    id: 6,
     num: 3,
     field1: '청약서(계약자, 주피용)',
     field2: 1,
