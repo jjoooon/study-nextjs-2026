@@ -24,9 +24,9 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 /**
- * 보험계약 중요사항 설명의무 확인(모집자) 팝업 (LTPZ120)
+ * 보험계약 중요사항 설명의무 확인(모집자) 팝업 (LTPZ122)
  */
-const Ltpz120 = () => {
+const Ltpz122 = () => {
   // 대면 정보 입력 상태
   const [meetDate, setMeetDate] = React.useState<string>('');
   const [meetTime, setMeetTime] = React.useState<string>('');
@@ -181,4 +181,4 @@ const Ltpz120 = () => {
   );
 };
 
-export default Ltpz120;
+export default Ltpz122;

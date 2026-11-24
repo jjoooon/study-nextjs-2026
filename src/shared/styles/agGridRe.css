@@ -742,6 +742,28 @@
   color: var(--color-warning-50) !important;
 }
 
+/* 그룹별 교차 행 배경색 (hover, focus, range-selection 완벽 연동) */
+.ag-theme-alpine .ag-row.row-group-odd {
+  background-color: var(--color-gray-5);
+}
+.ag-theme-alpine .ag-row.row-group-even {
+  background-color: #ffffff;
+}
+
+.ag-theme-alpine .ag-row.row-group-odd:hover,
+.ag-theme-alpine .ag-row.row-group-even:hover,
+.ag-theme-alpine .ag-row.row-group-odd.ag-row-hover,
+.ag-theme-alpine .ag-row.row-group-even.ag-row-hover {
+  background-color: var(--ag-row-hover-color, var(--color-secondary-10)) !important;
+}
+
+.ag-theme-alpine .ag-row.row-group-odd.ag-row-focus,
+.ag-theme-alpine .ag-row.row-group-even.ag-row-focus,
+.ag-theme-alpine .ag-row.row-group-odd.ag-row-selected,
+.ag-theme-alpine .ag-row.row-group-even.ag-row-selected {
+  background-color: var(--color-warning-10) !important;
+}
+
 /* AG Grid 행 복제(+) 버튼 CSS 아이콘 최적화 */
 .uiux-duplicate-btn::before {
   content: '';

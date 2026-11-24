@@ -2262,7 +2262,23 @@
     "subId": "",
     "popup": true
   },
-
+  {
+    "pub": "",
+    "dep1": "차세대가입설계",
+    "dep2": "가입설계",
+    "dep3": "가입설계",
+    "id": "LTPZ123",
+    "path": "ispl/isplBsnsSupt/components/popups",
+    "dep4": "500인 상품비교 추천사유 입력",
+    "file": "전환_가입설계",
+    "plan": "최벼리",
+    "dev": "채홍식",
+    "sdate": "",
+    "date": "",
+    "modify": "",
+    "subId": "",
+    "popup": true
+  },
   {
     "pub": "조현민",
     "dep1": "차세대가입설계",
