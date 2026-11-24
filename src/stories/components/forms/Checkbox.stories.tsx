@@ -6,6 +6,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import * as React from 'react';
 import { StoryDocTemplate } from '@/shared/components/storybook/StoryDocTemplate';
 import { Gcol, Grow, Typo } from '@atoms';
+import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 
 const meta: Meta<typeof Checkbox> = {
@@ -212,6 +213,47 @@ const [values, setValues] = useState<string[]>([]);
                 </Checkbox>
               </Grow>
             </Gcol>
+
+            <h2 className="mt-8">Group Item Error (개별 아이템 오류메시지)</h2>
+            <p>
+              <code>CheckboxGroup</code> 내부에서 특정 <code>CheckboxGroupItem</code> 위치에만 에러 스타일과 메시지를
+              표시할 수 있습니다. (개별 Item props, 그룹 <code>errorValue</code>, 그룹 <code>itemErrors</code> 모두
+              지원)
+            </p>
+            <Gcol
+              gap={8}
+              className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
+            >
+              <Grow gap={8}>
+                <Typo tag="div" className="w-[16rem] tracking-normal">
+                  개별 Item props
+                </Typo>
+                <CheckboxGroup defaultValue={['a']} className="gap-6">
+                  <CheckboxGroupItem value="a">옵션 A</CheckboxGroupItem>
+                  <CheckboxGroupItem value="b" error errorMsg="필수 동의 항목입니다." errorPs="bl">
+                    옵션 B
+                  </CheckboxGroupItem>
+                  <CheckboxGroupItem value="c">옵션 C</CheckboxGroupItem>
+                </CheckboxGroup>
+              </Grow>
+              <Grow gap={8} className="mt-4">
+                <Typo tag="div" className="w-[16rem] tracking-normal">
+                  그룹 itemErrors
+                </Typo>
+                <CheckboxGroup
+                  defaultValue={['agree2']}
+                  itemErrors={{
+                    agree1: '필수 약관에 동의해 주세요.',
+                    agree3: { message: 'SMS 수신 동의 필요', position: 'tr' },
+                  }}
+                  className="gap-6"
+                >
+                  <CheckboxGroupItem value="agree1">필수 약관</CheckboxGroupItem>
+                  <CheckboxGroupItem value="agree2">선택 약관</CheckboxGroupItem>
+                  <CheckboxGroupItem value="agree3">마케팅 수신</CheckboxGroupItem>
+                </CheckboxGroup>
+              </Grow>
+            </Gcol>
           </StoryDocTemplate>
         );
       },
@@ -251,6 +293,10 @@ const [values, setValues] = useState<string[]>([]);
       options: ['tl', 'tc', 'tr', 'bl', 'bc', 'br'],
       table: { category: '에러 props' },
     },
+    errorPortal: {
+      control: { type: 'boolean' },
+      table: { category: '에러 props' },
+    },
     required: {
       control: { type: 'boolean' },
       table: { category: '설정 props' },
@@ -283,6 +329,7 @@ const [values, setValues] = useState<string[]>([]);
     error: false,
     errorMsg: '선택은 필수입니다.',
     errorPs: 'bl',
+    errorPortal: false,
     checked: false,
     disabled: false,
     showErrorMsg: true,
@@ -376,6 +423,92 @@ export const Default: Story = {
             </CheckboxGroupItem>
           </CheckboxGroup>
         </Grow>
+      </Gcol>
+    );
+  },
+};
+
+export const ItemErrors: Story = {
+  name: '개별 오류메시지 (Item Errors)',
+  render: () => {
+    const [vals1, setVals1] = React.useState<string[]>(['a']);
+    const [vals2, setVals2] = React.useState<string[]>([]);
+    const [targetValue, setTargetValue] = React.useState<string>('b');
+    const [vals3, setVals3] = React.useState<string[]>(['agree2']);
+
+    // 체크 시 해당 아이템 에러가 해제되는 실무 검증 예시
+    const dynamicItemErrors = React.useMemo(() => {
+      const errors: Record<string, string | { message: string; position?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br' }> =
+        {};
+      if (!vals3.includes('agree1')) {
+        errors.agree1 = '필수 약관에 동의해 주세요.';
+      }
+      if (!vals3.includes('agree3')) {
+        errors.agree3 = { message: '이메일/SMS 수신 확인 필요', position: 'tr' };
+      }
+      return errors;
+    }, [vals3]);
+
+    return (
+      <Gcol gap={10} className="p-10 border border-dashed border-[var(--color-gray-20)] rounded-[1rem] w-[62rem]">
+        <Gcol gap={3}>
+          <Typo tag="p" className="text-[1.4rem] font-bold text-[var(--color-gray-90)]">
+            1. 개별 CheckboxGroupItem Props 직접 지정
+          </Typo>
+          <CheckboxGroup value={vals1} onValueChange={setVals1} className="gap-8">
+            <CheckboxGroupItem value="a">옵션 A</CheckboxGroupItem>
+            <CheckboxGroupItem value="b" error errorMsg="옵션 B는 필수 선택입니다." errorPs="bl">
+              옵션 B (개별 에러)
+            </CheckboxGroupItem>
+            <CheckboxGroupItem value="c">옵션 C</CheckboxGroupItem>
+          </CheckboxGroup>
+        </Gcol>
+
+        <Gcol gap={3} className="pt-4">
+          <Typo tag="p" className="text-[1.4rem] font-bold text-[var(--color-gray-90)]">
+            2. 그룹 errorValue 타겟 지정 (클릭하여 타겟 이동 확인)
+          </Typo>
+          <Grow gap={2}>
+            <Button size="sm" variant={targetValue === 'a' ? 'contained' : 'outlined'} onClick={() => setTargetValue('a')}>
+              a 타겟
+            </Button>
+            <Button size="sm" variant={targetValue === 'b' ? 'contained' : 'outlined'} onClick={() => setTargetValue('b')}>
+              b 타겟
+            </Button>
+            <Button size="sm" variant={targetValue === 'c' ? 'contained' : 'outlined'} onClick={() => setTargetValue('c')}>
+              c 타겟
+            </Button>
+            <Button size="sm" variant={targetValue === '' ? 'contained' : 'outlined'} onClick={() => setTargetValue('')}>
+              그룹 전체
+            </Button>
+          </Grow>
+          <div className="pt-2">
+            <CheckboxGroup
+              value={vals2}
+              onValueChange={setVals2}
+              error
+              errorValue={targetValue}
+              errorMsg={targetValue ? `${targetValue.toUpperCase()} 항목을 확인해 주세요.` : '그룹 전체 필수 선택입니다.'}
+              errorPs="bl"
+              className="gap-8"
+            >
+              <CheckboxGroupItem value="a">항목 A</CheckboxGroupItem>
+              <CheckboxGroupItem value="b">항목 B</CheckboxGroupItem>
+              <CheckboxGroupItem value="c">항목 C</CheckboxGroupItem>
+            </CheckboxGroup>
+          </div>
+        </Gcol>
+
+        <Gcol gap={3} className="pt-4">
+          <Typo tag="p" className="text-[1.4rem] font-bold text-[var(--color-gray-90)]">
+            3. 그룹 itemErrors 다중 매핑 (체크하면 해당 항목 에러 자동 해제)
+          </Typo>
+          <CheckboxGroup value={vals3} onValueChange={setVals3} itemErrors={dynamicItemErrors} className="gap-8">
+            <CheckboxGroupItem value="agree1">필수 약관</CheckboxGroupItem>
+            <CheckboxGroupItem value="agree2">선택 약관</CheckboxGroupItem>
+            <CheckboxGroupItem value="agree3">마케팅 수신</CheckboxGroupItem>
+          </CheckboxGroup>
+        </Gcol>
       </Gcol>
     );
   },

@@ -742,6 +742,22 @@
   color: var(--color-warning-50) !important;
 }
 
+/* 상품별 합계 행 배경색 (요약/소계 및 하단 총합계와 시각 구분) */
+.ag-row.ag-row-product-total,
+.ag-row.ag-row-product-total .ag-cell {
+  background-color: var(--color-warning-15) !important;
+  color: var(--color-warning-70) !important;
+  font-weight: 700;
+}
+
+.ag-row.ag-row-product-total:hover,
+.ag-row.ag-row-product-total.ag-row-hover,
+.ag-row.ag-row-product-total:hover .ag-cell,
+.ag-row.ag-row-product-total.ag-row-hover .ag-cell {
+  background-color: var(--color-warning-15) !important;
+  color: var(--color-warning-70) !important;
+}
+
 /* 그룹별 교차 행 배경색 (hover, focus, range-selection 완벽 연동) */
 .ag-theme-alpine .ag-row.row-group-odd {
   background-color: var(--color-gray-5);

@@ -357,7 +357,7 @@ export const Ltpa3500301 = ({
         {!sampleMode && (
           <Gcol
             placement={'ss'}
-            className="py-4 gap-4 border-b-[0.1rem] border-b-[#1E2124] border-solid border-[#1E2124]"
+            className="sticky top-0 z-10 bg-[#fff] py-4 gap-4 border-b-[0.1rem] border-b-[#1E2124] border-solid border-[#1E2124]"
           >
             {warningMessage && (
               <Grow

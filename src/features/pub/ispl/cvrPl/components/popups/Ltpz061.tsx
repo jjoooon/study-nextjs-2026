@@ -263,14 +263,12 @@ const Ltpz061 = () => {
         wrapText: true,
         autoHeight: true,
         flex: 10,
-        cellRenderer: (params: ICellRendererParams<DummyDataType1>) => {
-          return (
-            <div
-              className="h-full w-full py-1.5 leading-[1.3] whitespace-normal"
-              dangerouslySetInnerHTML={{ __html: String(params.data?.field02 ?? '') }}
-            />
-          );
-        },
+        cellClass: 'flex! items-center! justify-start! whitespace-pre-line break-words',
+        cellRenderer: (params: ICellRendererParams<DummyDataType1>) => (
+          <div className="w-full py-1.5 leading-[1.3] whitespace-pre-line break-words">
+            {String(params.value ?? '')}
+          </div>
+        ),
       },
       // 2026-05-27 select 전체 수정
       {
@@ -485,7 +483,7 @@ const Ltpz061 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_auto_1fr]">
+        <DialogSection className="grid-rows-[auto_1fr_auto]">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
             <FormTable variant="none" cols={['w-1', 'w-auto']}>
               <FormRow>
@@ -511,7 +509,7 @@ const Ltpz061 = () => {
                   columnDefs={columnDefs}
                   rowData={rowData1}
                   headerHeight={0}
-                  groupHeaderHeight={32}
+                  groupHeaderHeight={30}
                   singleClickEdit={true}
                   defaultColDef={{
                     suppressMovable: true,
@@ -528,11 +526,12 @@ const Ltpz061 = () => {
                     width: 30,
                     cellClass: 'text-center editable-cell',
                   }}
-                  onSelectionChanged={handleSelectionChanged1} // 2026-05-27 선택된 행의 상태를 업데이트하는 이벤트 핸들러 추가
+                  onSelectionChanged={handleSelectionChanged1}
                   domLayout="normal"
                   tooltipShowMode="whenTruncated"
                   tooltipShowDelay={0}
                   animateRows={false}
+                  suppressHorizontalScroll={true}
                 />
               </div>
             </TableFoldBody>
@@ -540,14 +539,14 @@ const Ltpz061 = () => {
           <TableFold variant={'accordion'}>
             <TableFoldHead title="특정질병" />
             <TableFoldBody>
-              <div className="ag-theme-alpine inner-scroll" data-row={6}>
+              <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
                 <AgGridReact<DummyDataType2>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   columnDefs={columnDefs2}
                   rowData={rowData2}
                   headerHeight={0}
-                  groupHeaderHeight={32}
+                  groupHeaderHeight={30}
                   singleClickEdit={true}
                   defaultColDef={{
                     suppressMovable: true,
@@ -566,6 +565,7 @@ const Ltpz061 = () => {
                   }}
                   onSelectionChanged={handleSelectionChanged2}
                   domLayout="normal"
+                  suppressHorizontalScroll={true}
                 />
               </div>
             </TableFoldBody>

@@ -30,6 +30,7 @@ import type { RefObject } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import useMounted from '@/shared/hooks/useMounted';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { chatbotUtils } from '@/shared/utils/chatbotUtils';
 import { SCALE_CHANGE_EVENT } from '@/shared/utils/scale';
 import { Typo, Grow, Grid, Gcol } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -2573,8 +2574,10 @@ export const CoveragePopover = ({
   /** 트리거 버튼 ref (접근성/포커스 제어 확장 대비) */
   const triggerRef = useRef<HTMLButtonElement>(null);
 
-  /** AI 질문하기(Ltpa120) 레이어 팝업 열림 상태 */
+  /** AI 질문하기(Ltpa120) 레이어 팝업 열림 상태 (전역 컨트롤러 미존재 시 폴백) */
   const [isLtpa120Open, setIsLtpa120Open] = useState(false);
+  /** AI 질문하기(Ltpa120) 최소화 상태 (전역 컨트롤러 미존재 시 폴백) */
+  const [isLtpa120Minimized, setIsLtpa120Minimized] = useState(false);
 
   // 그리드 스크롤 및 마우스 휠 조작 시 팝오버 즉시 닫기
   useEffect(() => {
@@ -2632,7 +2635,12 @@ export const CoveragePopover = ({
                 className="-translate-y-[0.2rem]"
                 onClick={() => {
                   setOpen(false); // 팝오버 닫기
-                  setIsLtpa120Open(true); // AI 질문하기 팝업 열기
+                  // 전역 AI 설계비서(Ltpa120)가 있으면 열기 또는 최소화 해제(복원)
+                  const handledGlobally = chatbotUtils.open({ minimized: false });
+                  if (!handledGlobally) {
+                    setIsLtpa120Open(true); // 전역 인스턴스가 없는 환경에서는 로컬 팝업 열기/복원
+                    setIsLtpa120Minimized(false);
+                  }
                 }}
               >
                 AI 질문하기
@@ -2651,7 +2659,15 @@ export const CoveragePopover = ({
           </Gcol>
         </PopoverContent>
       </Popover>
-      <Ltpa120 open={isLtpa120Open} setOpen={setIsLtpa120Open} isButton={false} className="w-[32rem]" />
+      <Ltpa120
+        open={isLtpa120Open}
+        setOpen={setIsLtpa120Open}
+        minimized={isLtpa120Minimized}
+        onMinimizeChange={setIsLtpa120Minimized}
+        isButton={false}
+        registerGlobal={false}
+        className="w-[32rem]"
+      />
     </>
   );
 };
@@ -4166,16 +4182,11 @@ export function createCellTooltipPositionHandler(options: FixTooltipToCellOption
   };
 }
 
-function fixTooltipToCellWithOptions(
-  params: PostProcessPopupParams,
-  options: FixTooltipToCellOptions = {}
-): void {
+function fixTooltipToCellWithOptions(params: PostProcessPopupParams, options: FixTooltipToCellOptions = {}): void {
   if (params.type !== 'tooltip') return;
 
   const cellEl =
-    params.eventSource instanceof HTMLElement
-      ? (params.eventSource.closest('.ag-cell') as HTMLElement | null)
-      : null;
+    params.eventSource instanceof HTMLElement ? (params.eventSource.closest('.ag-cell') as HTMLElement | null) : null;
 
   if (!cellEl || !params.ePopup) return;
 

@@ -6,6 +6,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import * as React from 'react';
 import { StoryDocTemplate } from '@/shared/components/storybook/StoryDocTemplate';
 import { Gcol, Grow, Typo } from '@atoms';
+import { Button } from '@uiux/Button';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
@@ -367,6 +368,79 @@ const [value, setValue] = useState('option1');
                 </RadioGroup>
               </Grow>
             </Gcol>
+
+            <h2 className="mt-8">Item Error (개별 아이템 오류메시지)</h2>
+            <p>
+              그룹 전체가 아닌 특정 <code>RadioGroupItem</code> 위치에만 에러 스타일과 메시지를 표시할 수 있습니다.
+              (개별 Item props, 그룹 <code>errorValue</code>, 그룹 <code>itemErrors</code> 모두 지원)
+            </p>
+            <Gcol
+              gap={8}
+              className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
+            >
+              <Grow gap={8}>
+                <Typo tag="div" className="w-[16rem] tracking-normal">
+                  개별 Item props
+                </Typo>
+                <RadioGroup defaultValue="1" className="gap-6">
+                  <RadioGroupItem value="1" id="doc-item-err-1">
+                    옵션 1
+                  </RadioGroupItem>
+                  <RadioGroupItem value="2" id="doc-item-err-2" error errorMsg="옵션 2는 선택 불가입니다." errorPs="bl">
+                    옵션 2
+                  </RadioGroupItem>
+                  <RadioGroupItem value="3" id="doc-item-err-3">
+                    옵션 3
+                  </RadioGroupItem>
+                </RadioGroup>
+              </Grow>
+              <Grow gap={8} className="mt-4">
+                <Typo tag="div" className="w-[16rem] tracking-normal">
+                  그룹 errorValue
+                </Typo>
+                <RadioGroup
+                  defaultValue="2"
+                  error
+                  errorValue="2"
+                  errorMsg="가입 불가 조건입니다."
+                  errorPs="bl"
+                  className="gap-6"
+                >
+                  <RadioGroupItem value="1" id="doc-val-err-1">
+                    옵션 1
+                  </RadioGroupItem>
+                  <RadioGroupItem value="2" id="doc-val-err-2">
+                    옵션 2
+                  </RadioGroupItem>
+                  <RadioGroupItem value="3" id="doc-val-err-3">
+                    옵션 3
+                  </RadioGroupItem>
+                </RadioGroup>
+              </Grow>
+              <Grow gap={8} className="mt-4">
+                <Typo tag="div" className="w-[16rem] tracking-normal">
+                  그룹 itemErrors
+                </Typo>
+                <RadioGroup
+                  defaultValue="1"
+                  variant="button"
+                  itemErrors={{
+                    '3': { message: '추가 심사가 필요한 항목입니다.', position: 'bl' },
+                  }}
+                  className="gap-4"
+                >
+                  <RadioGroupItem value="1" id="doc-map-err-1">
+                    버튼 1
+                  </RadioGroupItem>
+                  <RadioGroupItem value="2" id="doc-map-err-2">
+                    버튼 2
+                  </RadioGroupItem>
+                  <RadioGroupItem value="3" id="doc-map-err-3">
+                    버튼 3
+                  </RadioGroupItem>
+                </RadioGroup>
+              </Grow>
+            </Gcol>
           </StoryDocTemplate>
         );
       },
@@ -422,6 +496,15 @@ const [value, setValue] = useState('option1');
       options: ['tl', 'tc', 'tr', 'bl', 'bc', 'br'],
       table: { category: '에러 props' },
     },
+    errorValue: {
+      control: { type: 'select' },
+      options: ['', 'option1', 'option2', 'option3'],
+      table: { category: '에러 props' },
+    },
+    errorPortal: {
+      control: { type: 'boolean' },
+      table: { category: '에러 props' },
+    },
     onValueChange: {
       action: 'valueChanged',
       table: { category: '이벤트 props' },
@@ -451,6 +534,8 @@ const [value, setValue] = useState('option1');
     error: false,
     errorMsg: '선택은 필수입니다.',
     errorPs: 'bl',
+    errorValue: '',
+    errorPortal: false,
   },
 };
 
@@ -559,6 +644,106 @@ export const WithTooltip: Story = {
             </TooltipContent>
           </Tooltip>
         </RadioGroup>
+      </Gcol>
+    );
+  },
+};
+
+export const ItemErrors: Story = {
+  name: '개별 오류메시지 (Item Errors)',
+  render: () => {
+    const [val1, setVal1] = React.useState('opt1');
+    const [val2, setVal2] = React.useState('opt2');
+    const [targetValue, setTargetValue] = React.useState<string>('opt2');
+    const [val3, setVal3] = React.useState('opt1');
+
+    return (
+      <Gcol gap={10} className="p-10 border border-dashed border-[var(--color-gray-20)] rounded-[1rem] w-[62rem]">
+        <Gcol gap={3}>
+          <Typo tag="p" className="text-[1.4rem] font-bold text-[var(--color-gray-90)]">
+            1. 개별 RadioGroupItem Props 직접 지정
+          </Typo>
+          <RadioGroup value={val1} onValueChange={setVal1} className="gap-8">
+            <RadioGroupItem value="opt1">옵션 A</RadioGroupItem>
+            <RadioGroupItem value="opt2" error errorMsg="옵션 B는 선택할 수 없습니다." errorPs="bl">
+              옵션 B (개별 에러)
+            </RadioGroupItem>
+            <RadioGroupItem value="opt3">옵션 C</RadioGroupItem>
+          </RadioGroup>
+        </Gcol>
+
+        <Gcol gap={3} className="pt-4">
+          <Grow gap={2} placement="sc">
+            <Typo tag="p" className="text-[1.4rem] font-bold text-[var(--color-gray-90)]">
+              2. 그룹 errorValue 타겟 지정 (클릭하여 타겟 이동 확인)
+            </Typo>
+          </Grow>
+          <Grow gap={2}>
+            <Button
+              size="sm"
+              variant={targetValue === 'opt1' ? 'contained' : 'outlined'}
+              onClick={() => setTargetValue('opt1')}
+            >
+              opt1 타겟
+            </Button>
+            <Button
+              size="sm"
+              variant={targetValue === 'opt2' ? 'contained' : 'outlined'}
+              onClick={() => setTargetValue('opt2')}
+            >
+              opt2 타겟
+            </Button>
+            <Button
+              size="sm"
+              variant={targetValue === 'opt3' ? 'contained' : 'outlined'}
+              onClick={() => setTargetValue('opt3')}
+            >
+              opt3 타겟
+            </Button>
+            <Button
+              size="sm"
+              variant={targetValue === '' ? 'contained' : 'outlined'}
+              onClick={() => setTargetValue('')}
+            >
+              그룹 전체
+            </Button>
+          </Grow>
+          <div className="pt-2">
+            <RadioGroup
+              value={val2}
+              onValueChange={setVal2}
+              error
+              errorValue={targetValue}
+              errorMsg={targetValue ? `${targetValue} 항목을 확인해 주세요.` : '그룹 전체 필수 선택입니다.'}
+              errorPs="bl"
+              className="gap-8"
+            >
+              <RadioGroupItem value="opt1">옵션 1</RadioGroupItem>
+              <RadioGroupItem value="opt2">옵션 2</RadioGroupItem>
+              <RadioGroupItem value="opt3">옵션 3</RadioGroupItem>
+            </RadioGroup>
+          </div>
+        </Gcol>
+
+        <Gcol gap={3} className="pt-4">
+          <Typo tag="p" className="text-[1.4rem] font-bold text-[var(--color-gray-90)]">
+            3. 그룹 itemErrors 객체 매핑 (버튼형)
+          </Typo>
+          <RadioGroup
+            value={val3}
+            onValueChange={setVal3}
+            variant="button"
+            itemErrors={{
+              opt2: '담보 조건이 맞지 않습니다.',
+              opt3: { message: '심사 승인 필요', position: 'tr' },
+            }}
+            className="gap-6"
+          >
+            <RadioGroupItem value="opt1">기본형</RadioGroupItem>
+            <RadioGroupItem value="opt2">고급형</RadioGroupItem>
+            <RadioGroupItem value="opt3">프리미엄</RadioGroupItem>
+          </RadioGroup>
+        </Gcol>
       </Gcol>
     );
   },

@@ -53,32 +53,65 @@ export interface Ltpa120Props {
   setOpen?: (open: boolean) => void;
   minimized?: boolean;
   onMinimizeChange?: (minimized: boolean) => void;
+  /**
+   * chatbotUtils 전역 컨트롤러로 등록할지 여부
+   * - 기본값: `isButton`과 동일 (메인 AI 설계비서 인스턴스만 전역 등록)
+   */
+  registerGlobal?: boolean;
 }
 
 export const Ltpa120 = ({
   isButton = true,
   open: openProp,
   setOpen: setOpenProp,
-  minimized,
+  minimized: minimizedProp,
   className,
   onMinimizeChange,
+  registerGlobal,
 }: Ltpa120Props) => {
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   const [internalOpen, setInternalOpen] = React.useState(false);
+  const [internalMinimized, setInternalMinimized] = React.useState(false);
   const [defaultPosition, setDefaultPosition] = React.useState({ x: 0, y: 0 });
   const open = openProp !== undefined ? openProp : internalOpen;
   const setOpen = setOpenProp !== undefined ? setOpenProp : setInternalOpen;
+  const isMinimizedControlled = minimizedProp !== undefined;
+  const resolvedMinimized = isMinimizedControlled ? minimizedProp : internalMinimized;
+  const shouldRegisterGlobal = registerGlobal ?? isButton;
 
-  const handleToggle = () => {
-    if (open) {
-      chatbotUtils.setRef(null);
-      setOpen(false);
-    } else {
-      if (buttonRef.current) {
+  const handleMinimizeChange = React.useCallback(
+    (nextMinimized: boolean) => {
+      if (!isMinimizedControlled) {
+        setInternalMinimized(nextMinimized);
+      }
+      onMinimizeChange?.(nextMinimized);
+    },
+    [isMinimizedControlled, onMinimizeChange]
+  );
+
+  const openDialog = React.useCallback(
+    (options?: { minimized?: boolean }) => {
+      if (!open && buttonRef.current) {
         const rect = buttonRef.current.getBoundingClientRect();
         setDefaultPosition(getInitialDialogPosition(rect));
       }
       setOpen(true);
+      handleMinimizeChange(options?.minimized ?? false);
+    },
+    [open, setOpen, handleMinimizeChange]
+  );
+
+  const handleToggle = () => {
+    if (open) {
+      if (resolvedMinimized) {
+        handleMinimizeChange(false);
+        return;
+      }
+      chatbotUtils.setRef(null);
+      handleMinimizeChange(false);
+      setOpen(false);
+    } else {
+      openDialog({ minimized: false });
     }
   };
 
@@ -92,21 +125,42 @@ export const Ltpa120 = ({
 
   const [isFullscreen, setIsFullscreen] = React.useState(false);
 
+  // 전역 chatbotUtils 컨트롤러 등록 (다른 화면의 'AI 질문하기' 버튼 등에서 최소화 해제/열기 제어 가능)
+  React.useEffect(() => {
+    if (!shouldRegisterGlobal) return;
+
+    return chatbotUtils.registerController({
+      open: (options) => {
+        openDialog(options);
+      },
+      close: () => {
+        chatbotUtils.setRef(null);
+        setIsFullscreen(false);
+        handleMinimizeChange(false);
+        setOpen(false);
+      },
+      setMinimized: (nextMinimized) => {
+        handleMinimizeChange(nextMinimized);
+      },
+    });
+  }, [shouldRegisterGlobal, openDialog, handleMinimizeChange, setOpen]);
+
   return (
     <Dialog
       open={open}
       onOpenChange={(nextOpen) => {
-        chatbotUtils.setRef(null);
         if (!nextOpen) {
+          chatbotUtils.setRef(null);
           setIsFullscreen(false);
+          handleMinimizeChange(false);
         }
         setOpen(nextOpen);
       }}
       modal={false}
       fullscreen={isFullscreen}
       onFullscreenChange={setIsFullscreen}
-      minimized={minimized}
-      onMinimizeChange={onMinimizeChange}
+      minimized={resolvedMinimized}
+      onMinimizeChange={handleMinimizeChange}
     >
       {isButton && (
         <button

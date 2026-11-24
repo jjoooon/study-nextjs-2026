@@ -9,12 +9,58 @@ import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { ErrorMsg } from '@common/ErrorMsg';
 
+type RadioErrorMsgPosition = 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
+
+/**
+ * 개별 라디오 아이템에 매핑할 에러 설정 타입
+ * - 문자열/JSX를 직접 전달하거나 `{ message, position, portal }` 객체로 세부 위치 지정 가능
+ */
+export type RadioItemErrorConfig =
+  | React.ReactNode
+  | {
+      message: React.ReactNode;
+      position?: RadioErrorMsgPosition;
+      portal?: boolean;
+    };
+
+type ResolvedRadioItemError = {
+  message: React.ReactNode;
+  position?: RadioErrorMsgPosition;
+  portal?: boolean;
+};
+
+function resolveRadioItemError(entry: RadioItemErrorConfig | undefined): ResolvedRadioItemError | null {
+  if (entry === undefined || entry === null || entry === false) {
+    return null;
+  }
+  if (typeof entry === 'object' && !React.isValidElement(entry) && 'message' in entry) {
+    return {
+      message: entry.message,
+      position: entry.position,
+      portal: entry.portal,
+    };
+  }
+  return { message: entry };
+}
+
 /**
  * RadioGroup 내부 아이템들에 에러 및 필수 상태를 전파하기 위한 컨텍스트입니다.
  */
 const RadioGroupContext = React.createContext<{
-  /** 에러 상태 여부 */
+  /** 그룹 전체 에러 상태 여부 (특정 아이템 타겟팅 시 false) */
   error?: boolean;
+  /** 원본 그룹 에러 플래그 */
+  rawError?: boolean;
+  /** 그룹 레벨 에러 메시지 */
+  errorMsg?: React.ReactNode;
+  /** 그룹 레벨 에러 메시지 위치 */
+  errorPs?: RadioErrorMsgPosition;
+  /** 그룹 레벨 에러 포탈 여부 */
+  errorPortal?: boolean;
+  /** 그룹 에러를 특정 아이템 value 위치에 표시할 대상 value */
+  errorValue?: string;
+  /** 아이템 value별 개별 에러 매핑 */
+  itemErrors?: Record<string, RadioItemErrorConfig>;
   /** 필수 선택 여부 */
   required?: boolean;
   /** 비활성화 여부 */
@@ -33,6 +79,12 @@ const RadioGroupContext = React.createContext<{
   color?: 'primary' | 'info';
 }>({
   error: false,
+  rawError: false,
+  errorMsg: undefined,
+  errorPs: 'bl',
+  errorPortal: undefined,
+  errorValue: undefined,
+  itemErrors: undefined,
   required: false,
   disabled: false,
   selectedValue: undefined,
@@ -292,12 +344,22 @@ interface RadioGroupExtraProps {
    * - `br`: Bottom Right (하단 우측)
    * @default 'bl'
    */
-  errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
+  errorPs?: RadioErrorMsgPosition;
   /**
    * 에러 메시지 포탈 렌더링 여부 (부모의 overflow: hidden을 벗어나 렌더링)
    * @default false
    */
   errorPortal?: boolean;
+  /**
+   * 그룹 에러(`error={true}`)를 특정 아이템 위치에만 표시할 대상 `value`
+   * - 지정 시 해당 `value`의 `RadioGroupItem`에만 에러 스타일 및 `errorMsg`가 표시됩니다.
+   */
+  errorValue?: string;
+  /**
+   * 아이템 `value`별로 개별 에러 메시지를 매핑하는 객체
+   * - 예: `{ opt2: '선택 불가한 옵션입니다.' }` 또는 `{ opt2: { message: '오류', position: 'tr' } }`
+   */
+  itemErrors?: Record<string, RadioItemErrorConfig>;
   /**
    * 라디오 그룹의 기본 변형 스타일
    */
@@ -350,6 +412,8 @@ const RadioGroup = React.forwardRef<
       width = 'auto',
       errorPs = 'bl',
       errorPortal,
+      errorValue,
+      itemErrors,
       value,
       defaultValue,
       onValueChange,
@@ -370,7 +434,9 @@ const RadioGroup = React.forwardRef<
     const [internalValue, setInternalValue] = React.useState<string | undefined>(defaultValue);
     const isControlled = value !== undefined;
     const selectedValue = isControlled ? value : internalValue;
-    const groupError = Boolean(error);
+    const rawGroupError = Boolean(error);
+    const isTargetedGroupError = Boolean(rawGroupError && errorValue !== undefined && errorValue !== '');
+    const groupWideError = rawGroupError && !isTargetedGroupError;
 
     const handleValueChange = React.useCallback(
       (nextValue: string) => {
@@ -385,7 +451,13 @@ const RadioGroup = React.forwardRef<
     return (
       <RadioGroupContext.Provider
         value={{
-          error: groupError,
+          error: groupWideError,
+          rawError: rawGroupError,
+          errorMsg,
+          errorPs,
+          errorPortal,
+          errorValue,
+          itemErrors,
           required: groupRequired,
           disabled: groupDisabled,
           selectedValue: selectedValue ?? undefined,
@@ -409,10 +481,12 @@ const RadioGroup = React.forwardRef<
             onValueChange={handleValueChange}
             required={required}
             disabled={disabled}
+            aria-invalid={groupWideError ? true : undefined}
+            aria-describedby={groupWideError ? errorId : undefined}
             {...props}
             ref={ref}
           />
-          {groupError && (
+          {groupWideError && (
             <ErrorMsg aria-live="polite" show={true} position={errorPs} portal={errorPortal} id={errorId}>
               {errorMsg}
             </ErrorMsg>
@@ -445,7 +519,17 @@ interface RadioGroupItemExtraProps extends VariantProps<typeof radioGroupItemVar
    * 에러 메시지 표시 위치
    * @default 'bl'
    */
-  errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
+  errorPs?: RadioErrorMsgPosition;
+  /**
+   * 에러 메시지 포탈 렌더링 여부
+   * @default false
+   */
+  errorPortal?: boolean;
+  /**
+   * 개별 에러 메시지 노출 여부
+   * @default true
+   */
+  showErrorMsg?: boolean;
 }
 
 /**
@@ -465,14 +549,22 @@ const RadioGroupItem = React.forwardRef<
       width,
       children,
       error = false,
-      errorMsg: _errorMsg = '선택은 필수입니다.',
-      errorPs: _errorPs = 'bl',
+      errorMsg,
+      errorPs,
+      errorPortal,
+      showErrorMsg = true,
       ...props
     },
     ref
   ) => {
     const {
-      error: groupError,
+      error: groupWideError,
+      rawError: rawGroupError,
+      errorMsg: groupErrorMsg,
+      errorPs: groupErrorPs,
+      errorPortal: groupErrorPortal,
+      errorValue,
+      itemErrors,
       required: groupRequired,
       disabled: groupDisabled,
       selectedValue,
@@ -493,8 +585,24 @@ const RadioGroupItem = React.forwardRef<
     const isTab = resolvedVariant === 'tab' || resolvedVariant === 'folderTab';
     const isTabBadge = resolvedVariant === 'tabBadge';
     const generatedId = React.useId();
+    const itemErrorId = React.useId();
     const radioId = props.id || generatedId;
-    const isError = error || groupError;
+
+    const mappedItemError = resolveRadioItemError(itemErrors?.[props.value]);
+    const isTargetedByErrorValue = Boolean(
+      rawGroupError && errorValue !== undefined && errorValue !== '' && errorValue === props.value
+    );
+    const hasItemSpecificError = Boolean(error) || Boolean(mappedItemError) || isTargetedByErrorValue;
+    const isError = hasItemSpecificError || Boolean(groupWideError);
+    const shouldShowItemErrorMsg = hasItemSpecificError && showErrorMsg;
+
+    const resolvedItemErrorMsg =
+      errorMsg !== undefined
+        ? errorMsg
+        : (mappedItemError?.message ?? (isTargetedByErrorValue ? groupErrorMsg : undefined) ?? '선택은 필수입니다.');
+    const resolvedItemErrorPs = errorPs ?? mappedItemError?.position ?? groupErrorPs ?? 'bl';
+    const resolvedItemErrorPortal = errorPortal ?? mappedItemError?.portal ?? groupErrorPortal;
+
     const isRequired = Boolean(props.required || groupRequired);
     const isDisabled = Boolean(props.disabled || groupDisabled);
     const indicatorSize = resolvedSize === 'sm' ? 'md' : resolvedSize === 'xl' ? 'lg' : resolvedSize;
@@ -536,6 +644,7 @@ const RadioGroupItem = React.forwardRef<
           data-required={isRequired}
           data-invalid={isError ? '' : undefined}
           aria-invalid={isError ? true : undefined}
+          aria-describedby={shouldShowItemErrorMsg ? itemErrorId : props['aria-describedby']}
           {...props}
           {...(isChipBox || isTab || isTabBadge || resolvedVariant === 'none' ? {} : { size: undefined })}
         >
@@ -588,6 +697,17 @@ const RadioGroupItem = React.forwardRef<
           >
             {children}
           </label>
+        )}
+        {shouldShowItemErrorMsg && (
+          <ErrorMsg
+            aria-live="polite"
+            show={true}
+            position={resolvedItemErrorPs}
+            portal={resolvedItemErrorPortal}
+            id={itemErrorId}
+          >
+            {resolvedItemErrorMsg}
+          </ErrorMsg>
         )}
       </div>
     );
