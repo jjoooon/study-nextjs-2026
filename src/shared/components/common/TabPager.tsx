@@ -43,6 +43,11 @@ interface TabPagerProps<T> {
    */
   removable?: boolean;
   /**
+   * 삭제(X) 버튼을 활성 탭 여부와 관계없이 항상 노출할지 여부 (removable이 true일 때 작동)
+   * @default false
+   */
+  alwaysShowRemove?: boolean;
+  /**
    * 탭 버튼 영역에 에러(경고) 상태를 표시할지 여부
    * @default false
    */
@@ -124,6 +129,7 @@ export function TabPager<T>({
   setActive,
   hasTableBelow = false,
   removable,
+  alwaysShowRemove = false,
   onRemove,
   visibleCount = 6,
   children,
@@ -254,6 +260,7 @@ export function TabPager<T>({
     variant: tabsVariant,
     value: active ?? '',
     removable,
+    alwaysShowRemove,
     onValueChange: setActive,
     className: cn('w-full h-full grid grid-rows-[auto_minmax(0,1fr)] content-start', className),
     ...(removable && onRemove ? { onRemove } : {}),

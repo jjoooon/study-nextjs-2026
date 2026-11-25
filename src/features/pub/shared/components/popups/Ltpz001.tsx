@@ -40,6 +40,7 @@ import { Textarea } from '@uiux/Textarea';
 type DummyDataType = {
   id: number;
   filePath: string[];
+  field0: string;
   field1: string;
   field2: string;
   field3: string;
@@ -56,6 +57,7 @@ const DummyData: DummyDataType[] = [
   {
     id: 1,
     filePath: ['folderA'],
+    field0: 'LA123456789012',
     field1:
       '가입제안서 가입제안서가입제안서 가입제안서가입제안서 가입제안서가입제안서 가입제안서가입제안서 가입제안서가입제안서 가입제안서가입제안서 가입제안서가입제안서 가입제안서가입제안서 가입제안서가입제안서 가입제안서가입제안서 가입제안서',
     field2: '미리보기',
@@ -72,6 +74,7 @@ const DummyData: DummyDataType[] = [
   {
     id: 2,
     filePath: ['folderA', 'folderA-1'],
+    field0: 'LA123456789012',
     field1:
       '가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa',
     field2: '미리보기',
@@ -88,6 +91,7 @@ const DummyData: DummyDataType[] = [
   {
     id: 3,
     filePath: ['folderB'],
+    field0: 'LA123456789012',
     field1: '장기보험 가입설계서',
     field2: '미리보기',
     field3: '고객용',
@@ -103,6 +107,7 @@ const DummyData: DummyDataType[] = [
   {
     id: 4,
     filePath: ['folderB', 'folderB-1'],
+    field0: 'LA123456789012',
     field1: '장기보험 가입설계서 - 234234',
     field2: '미리보기',
     field3: '고객용',
@@ -118,6 +123,7 @@ const DummyData: DummyDataType[] = [
   {
     id: 5,
     filePath: ['folderC'],
+    field0: 'LA123456789012',
     field1: '장기보험 가입설계서 - 234234',
     field2: '미리보기',
     field3: '고객용',
@@ -133,6 +139,7 @@ const DummyData: DummyDataType[] = [
   {
     id: 6,
     filePath: ['folderD'],
+    field0: 'LA123456789012',
     field1: '장기보험 가입설계서 - 234234',
     field2: '미리보기',
     field3: '고객용',
@@ -148,6 +155,7 @@ const DummyData: DummyDataType[] = [
   {
     id: 7,
     filePath: ['folderD', 'folderD-1'],
+    field0: 'LA123456789012',
     field1: '장기보험 가입설계서 - 234234',
     field2: '미리보기',
     field3: '고객용',
@@ -170,6 +178,14 @@ const Ltpz001 = () => {
   // 화면 배율에 따른 동적 컬럼 너비 계산 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: ColDef<DummyDataType>[] = [
+    {
+      headerName: '설계번호',
+      field: 'field0',
+      minWidth: attributeColumnWidth(110),
+      flex: 2,
+      lockPosition: 'left',
+      valueFormatter: (params) => (params.node && params.node.level > 0 ? '' : String(params.value ?? '')),
+    },
     {
       headerName: '미리보기',
       field: 'field2',
@@ -323,83 +339,82 @@ const Ltpz001 = () => {
                   <Gcol gap={5} placement={'ss'} className="absolute">
                     {/* 설계 정보 요약 영역 (예시로 2회 반복 렌더링) */}
                     {[0, 1].map((idx) => (
-                      <Gcol gap={2} placement={'ss'} key={idx}>
-                        <Grow variant={'box-info-line'} className="w-full">
-                          <FormTable variant={'head'} className="w-full">
-                            <FormRow>
-                              <FormCell title={'설계번호'}>
-                                <Input value={'LA123456789012'} variant="info" readOnly />
-                              </FormCell>
-                              <FormCell title={'계약자명'}>
-                                <Input value={'김한화'} readOnly variant="info" />
-                              </FormCell>
-                              <FormCell title={'상품명'}>
-                                <Input value={'한화시그니처여성 건강 보험 3.0 무배당'} readOnly variant="info" />
-                              </FormCell>
-                            </FormRow>
-                          </FormTable>
-                        </Grow>
-
-                        <div className="ag-theme-alpine">
-                          <AgGridReact<DummyDataType>
-                            // 필수 props
-                            noRowsOverlayComponent={AgGridEmptyComponent}
-                            getRowId={(params) => String(params.data.id)}
-                            rowData={rowData}
-                            columnDefs={columnDefs}
-                            defaultColDef={{
-                              cellClass: 'text-center',
-                            }}
-                            domLayout="autoHeight"
-                            // 트리 데이터 설정: filePath 배열을 기준으로 계층 구조 형성
-                            treeData={true}
-                            getDataPath={(row) => row.filePath}
-                            groupDefaultExpanded={-1}
-                            // 그룹 컬럼(출력물 명칭) 정의
-                            autoGroupColumnDef={{
-                              headerName: '출력물',
-                              field: 'field1',
-                              flex: 11,
-                              cellClass: 'text-left',
-                              tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
-                            }}
-                            // selection 설정
-                            rowSelection={{
-                              mode: 'multiRow',
-                              groupSelects: 'descendants',
-                              headerCheckbox: true,
-                              checkboxes: true,
-                              enableClickSelection: false,
-                              isRowSelectable: (params) => !params.data?.disabled && !params.data?.allDisabled,
-                            }}
-                            selectionColumnDef={{
-                              width: 30,
-                              cellClass: 'text-center editable-cell',
-                            }}
-                            onGridReady={(params) => {
-                              params.api.forEachNode((node) => {
-                                if (node.data?.isCheck) {
-                                  node.setSelected(true);
-                                }
-                              });
-                            }}
-                            onRowDataUpdated={(event) => {
-                              // rowData 업데이트가 완료된 직후 isCheck 상태를 노드 선택 상태로 즉시 반영
-                              event.api.forEachNode((node) => {
-                                if (node.data?.isCheck) {
-                                  node.setSelected(true);
-                                } else if (node.data) {
-                                  node.setSelected(false);
-                                }
-                              });
-                              const selectedRows = event.api.getSelectedRows();
-                              console.log('데이터 갱신 후 선택된 행:', selectedRows);
-                            }}
-                            tooltipShowMode="whenTruncated"
-                            tooltipShowDelay={0}
-                          />
-                        </div>
-                      </Gcol>
+                      <div className="ag-theme-alpine" key={idx}>
+                        <AgGridReact<DummyDataType>
+                          // 필수 props
+                          noRowsOverlayComponent={AgGridEmptyComponent}
+                          getRowId={(params) => String(params.data.id)}
+                          rowData={rowData}
+                          columnDefs={columnDefs}
+                          defaultColDef={{
+                            cellClass: 'text-center',
+                          }}
+                          domLayout="autoHeight"
+                          // 트리 데이터 설정: filePath 배열을 기준으로 계층 구조 형성
+                          treeData={true}
+                          getDataPath={(row) => row.filePath}
+                          groupDefaultExpanded={-1}
+                          // 그룹 컬럼(출력물 명칭) 정의
+                          autoGroupColumnDef={{
+                            headerName: '출력물',
+                            field: 'field1',
+                            flex: 11,
+                            cellClass: 'text-left',
+                            tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
+                          }}
+                          // selection 설정
+                          rowSelection={{
+                            mode: 'multiRow',
+                            groupSelects: 'descendants',
+                            headerCheckbox: true,
+                            checkboxes: true,
+                            enableClickSelection: false,
+                            isRowSelectable: (params) => !params.data?.disabled && !params.data?.allDisabled,
+                          }}
+                          selectionColumnDef={{
+                            width: 30,
+                            cellClass: 'text-center editable-cell',
+                            lockPosition: false,
+                          }}
+                          initialState={{
+                            columnOrder: {
+                              orderedColIds: [
+                                'field0',
+                                'ag-Grid-SelectionColumn',
+                                'ag-Grid-AutoColumn',
+                                'field2',
+                                'field3',
+                                'field4',
+                                'field5',
+                                'field6',
+                                'field7',
+                                'field8',
+                              ],
+                            },
+                          }}
+                          onGridReady={(params) => {
+                            params.api.forEachNode((node) => {
+                              if (node.data?.isCheck) {
+                                node.setSelected(true);
+                              }
+                            });
+                          }}
+                          onRowDataUpdated={(event) => {
+                            // rowData 업데이트가 완료된 직후 isCheck 상태를 노드 선택 상태로 즉시 반영
+                            event.api.forEachNode((node) => {
+                              if (node.data?.isCheck) {
+                                node.setSelected(true);
+                              } else if (node.data) {
+                                node.setSelected(false);
+                              }
+                            });
+                            const selectedRows = event.api.getSelectedRows();
+                            console.log('데이터 갱신 후 선택된 행:', selectedRows);
+                          }}
+                          tooltipShowMode="whenTruncated"
+                          tooltipShowDelay={0}
+                        />
+                      </div>
                     ))}
                   </Gcol>
                 </Gcol>

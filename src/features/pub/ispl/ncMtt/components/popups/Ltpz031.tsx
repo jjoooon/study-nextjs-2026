@@ -975,6 +975,7 @@ const Ltpz031 = () => {
                       setActive={setActive}
                       removable={true}
                       onRemove={handleRemove}
+                      alwaysShowRemove
                       getValue={(tab) => tab.value}
                       renderTab={(tab) => {
                         const isTruncated = tab.label.length > 6;

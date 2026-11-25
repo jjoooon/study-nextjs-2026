@@ -36,7 +36,8 @@
 }
 
 /* shardcn tab 상태 추가 */
-.isRemovable[role='tab'][data-state='active'] + button {
+.isRemovable[role='tab'][data-state='active'] + button,
+.isRemovable.isRemovableAlways[role='tab'] + button {
   display: block;
 }
 
@@ -44,7 +45,8 @@
   display: none;
 }
 
-.isRemovable[role='tab'][data-state='active'] {
+.isRemovable[role='tab'][data-state='active'],
+.isRemovable.isRemovableAlways[role='tab'] {
   padding-right: 2.8rem;
 }
 

@@ -14,6 +14,7 @@ import { CloseIcon, SelectArrowIcon } from '@icons';
 interface TabsContextProps {
   variant?: string;
   removable?: boolean;
+  alwaysShowRemove?: boolean;
   onRemove?: (value: string) => void;
   // [key: string]: any;
   // 필요한 명확한 속성을 여기에 추가하세요. 인덱스 시그니처([key: string]: any)는 타입 안정성을 위해 제거되었습니다.
@@ -25,12 +26,13 @@ export const useTabsContext = (): TabsContextProps => React.useContext(TabsConte
 interface TabsProps extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root> {
   variant?: string;
   removable?: boolean;
+  alwaysShowRemove?: boolean;
   onRemove?: (value: string) => void;
   // [key: string]: any;
 }
 const Tabs = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Root>, TabsProps>(
-  ({ children, variant, removable, onRemove, className, ...props }, ref) => (
-    <TabsContext.Provider value={{ variant, removable, onRemove }}>
+  ({ children, variant, removable, alwaysShowRemove, onRemove, className, ...props }, ref) => (
+    <TabsContext.Provider value={{ variant, removable, alwaysShowRemove, onRemove }}>
       <TabsPrimitive.Root ref={ref} className={cn('cp-tabs', className)} {...props}>
         {children}
       </TabsPrimitive.Root>
@@ -75,6 +77,7 @@ export interface TabsListProps
 
 type InternalTriggerProps = {
   removable?: boolean;
+  alwaysShowRemove?: boolean;
   onRemove?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   value: string;
   activeValue?: string;
@@ -83,13 +86,16 @@ type InternalTriggerProps = {
 
 export interface TabsTriggerProps
   extends
-    Omit<React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>, 'removable' | 'onRemove' | 'activeValue'>,
+    Omit<
+      React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>,
+      'removable' | 'alwaysShowRemove' | 'onRemove' | 'activeValue'
+    >,
     VariantProps<typeof tabsTriggerVariants>,
     InternalTriggerProps {}
 
 const TabsList = React.forwardRef<HTMLDivElement, TabsListProps>(
   ({ className, variant: _variant, children, ...props }, ref) => {
-    const { variant, removable, onRemove }: TabsContextProps = useTabsContext();
+    const { variant, removable, alwaysShowRemove, onRemove }: TabsContextProps = useTabsContext();
     const totalTabs = React.Children.count(children);
     return (
       <TabsPrimitive.List
@@ -103,12 +109,14 @@ const TabsList = React.forwardRef<HTMLDivElement, TabsListProps>(
         {...props}
       >
         {React.Children.map(children, (child: React.ReactNode) => {
-          if (React.isValidElement<{ value: string; removable?: boolean }>(child)) {
+          if (React.isValidElement<{ value: string; removable?: boolean; alwaysShowRemove?: boolean }>(child)) {
             const value = child.props.value;
             const itemRemovable = child.props.removable ?? removable;
+            const itemAlwaysShowRemove = child.props.alwaysShowRemove ?? alwaysShowRemove;
             return React.cloneElement(child as React.ReactElement<TabsTriggerProps>, {
               totalTabs,
               removable: itemRemovable,
+              alwaysShowRemove: itemAlwaysShowRemove,
               onRemove: itemRemovable && onRemove ? () => onRemove(value) : undefined,
             });
           }
@@ -127,6 +135,7 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
       variant: _variant,
       children,
       removable,
+      alwaysShowRemove,
       onRemove,
       activeValue: _activeValue,
       totalTabs: _totalTabs,
@@ -147,6 +156,7 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
             'cp-tabs-trigger',
             tabsTriggerVariants({ variant: variant as 'default' | 'box' | 'vertical' | undefined }),
             removable ? 'isRemovable' : '',
+            removable && alwaysShowRemove ? 'isRemovableAlways' : '',
             '[&[data-tab-error=true]:not([data-state=active])]:text-[var(--color-danger-50)]!',
             '[&[data-tab-error=true]:not([data-state=active])]:border-[var(--color-danger-50)]!',
             '[&[data-tab-error=true]:not([data-state=active])]:border!',

@@ -283,36 +283,47 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
             cellClass: 'editable-cell text-center',
             sortable: false,
           },
-          // 전화번호 (3개 필드 분할)
+          // 전화번호 (3개 필드 분할 - 2단 헤더 병합 표시 + 각 셀 AG Grid 기본 입력)
           {
-            headerGroupComponent: () => (
-              <Grow placement="cc" className="w-full">
-                <span className="font-bold text-[1.3rem]">전화번호(휴대폰)</span>
-              </Grow>
+            headerName: '',
+            headerClass: 'phone-merged-left',
+            field: 'field3',
+            flex: 1,
+            minWidth: attributeColumnWidth(30),
+            editable: true,
+            sortable: false,
+            resizable: false,
+            suppressMovable: true,
+            cellClass: 'editable-cell text-center',
+          },
+          {
+            headerName: '전화번호(휴대폰)',
+            headerClass: 'phone-merged-center',
+            headerComponent: () => (
+              <div className="w-full flex items-center justify-center whitespace-nowrap overflow-visible">
+                <span>전화번호(휴대폰)</span>
+              </div>
             ),
-            children: [
-              {
-                field: 'field3',
-                flex: 1,
-                minWidth: attributeColumnWidth(30),
-                editable: true,
-                cellClass: 'editable-cell text-center',
-              },
-              {
-                field: 'field4',
-                flex: 1,
-                minWidth: attributeColumnWidth(40),
-                editable: true,
-                cellClass: 'editable-cell text-center',
-              },
-              {
-                field: 'field5',
-                flex: 1,
-                minWidth: attributeColumnWidth(40),
-                editable: true,
-                cellClass: 'editable-cell text-center',
-              },
-            ],
+            field: 'field4',
+            flex: 1,
+            minWidth: attributeColumnWidth(40),
+            editable: true,
+            sortable: false,
+            resizable: false,
+            suppressMovable: true,
+            cellClass: 'editable-cell text-center',
+          },
+          {
+            headerName: '',
+            headerClass: 'phone-merged-right',
+            field: 'field5',
+            flex: 1,
+            minWidth: attributeColumnWidth(40),
+            editable: true,
+            sortable: false,
+            resizable: false,
+            suppressMovable: true,
+            cellClass: 'editable-cell text-center',
           },
         ],
       } as ColDef<DummyDataType>,
@@ -555,7 +566,10 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
                 </Grow>
               </TableFoldHead>
               <TableFoldBody>
-                <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
+                <div
+                  className="ag-theme-alpine inner-scroll [&_.phone-merged-left]:border-r-0! [&_.phone-merged-left]:after:hidden! [&_.phone-merged-center]:border-r-0! [&_.phone-merged-center]:after:hidden! [&_.phone-merged-center]:overflow-visible! [&_.phone-merged-center]:z-10! [&_.phone-merged-center_.ag-header-cell-comp-wrapper]:overflow-visible! [&_.phone-merged-right]:border-l-0!"
+                  data-row={rowData.length}
+                >
                   <AgGridReact<DummyDataType>
                     onGridReady={(event) => {
                       gridApiRef.current = event.api;
@@ -587,7 +601,7 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
                       minWidth: attributeColumnWidth(30),
                     }}
                     groupHeaderHeight={30}
-                    headerHeight={0}
+                    headerHeight={30}
                   />
                 </div>
               </TableFoldBody>

@@ -489,30 +489,48 @@ export const isExternalOrCustomIframe = (popupId?: string): boolean => {
 };
 
 /**
- * 1차 iframe(직접 부모)의 도메인(document.referrer)에 'hwsfa'가 포함되어 있는지 판별합니다.
- * 도메인이 다른 Cross-Origin 환경에서도 브라우저의 document.referrer는 안전하게 읽을 수 있습니다.
+ * 2차 상위 프레임(부모 iframe의 부모 iframe, 즉 `window.parent.parent`)의 주소/도메인에
+ * 'hwsfa'가 포함되어 있는지 판별합니다. (현재 창 및 직계 부모는 검사 대상에서 제외)
  */
 export const checkIsHwsfa = (): boolean => {
   if (typeof window === 'undefined') return false;
 
-  // 1. 1차 iframe 부모의 도메인/주소 검사 (Cross-Origin 차단 없음)
-  const referrer = document.referrer;
-  if (referrer && /hwsfa/i.test(referrer)) {
+  const parentWindow = window.parent;
+  // 직계 부모가 없거나, 부모의 부모(조부모 프레임)가 존재하지 않으면 false
+  if (!parentWindow || parentWindow === window) {
+    return false;
+  }
+
+  const grandParentWindow = parentWindow.parent;
+  if (!grandParentWindow || grandParentWindow === parentWindow) {
+    return false;
+  }
+
+  // 1. ancestorOrigins[1]: Cross-Origin 환경에서도 2단계 위(부모의 부모)의 origin을 안전하게 조회 (Chrome/Edge/Safari 지원)
+  //    (index 0 = 직계 부모, index 1 = 부모의 부모)
+  const ancestorOrigins = window.location.ancestorOrigins;
+  if (ancestorOrigins && ancestorOrigins.length >= 2 && /hwsfa/i.test(ancestorOrigins[1])) {
     return true;
   }
 
-  // 2. 현재 창 URL 및 파라미터 검사
-  if (/hwsfa/i.test(window.location.href)) {
-    return true;
-  }
-
-  // 3. Same-Origin일 때 보조 검사
+  // 2. 나와 직계 부모가 Same-Origin인 경우, 직계 부모의 document.referrer(부모의 부모 주소) 검사
+  //    (부모의 부모가 Cross-Origin이어도 안전하게 읽을 수 있음)
   try {
-    if (window.parent && window.parent !== window && /hwsfa/i.test(window.parent.location.href)) {
+    const parentReferrer = parentWindow.document.referrer;
+    if (parentReferrer && /hwsfa/i.test(parentReferrer)) {
       return true;
     }
   } catch {
-    // Cross-origin 에러 무시
+    // 직계 부모가 Cross-Origin인 경우 무시
+  }
+
+  // 3. 부모의 부모까지 Same-Origin인 경우, 전체 URL 직접 검사
+  try {
+    if (/hwsfa/i.test(grandParentWindow.location.href)) {
+      return true;
+    }
+  } catch {
+    // 부모의 부모가 Cross-Origin인 경우 무시
   }
 
   return false;
