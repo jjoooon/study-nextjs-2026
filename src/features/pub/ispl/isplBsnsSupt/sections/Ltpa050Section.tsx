@@ -1306,10 +1306,7 @@ export default function Ltpa050Section() {
                     data={tabsA}
                     active={activeA}
                     hasTableBelow={true}
-                    setActive={(val) => {
-                      setActiveA(val);
-                      setActiveB(val);
-                    }}
+                    setActive={setActiveA}
                     onRemove={handleRemoveA}
                     showPagination={false}
                     error={false}
@@ -1499,10 +1496,7 @@ export default function Ltpa050Section() {
                     data={tabsB}
                     active={activeB}
                     hasTableBelow={true}
-                    setActive={(val) => {
-                      setActiveA(val);
-                      setActiveB(val);
-                    }}
+                    setActive={setActiveB}
                     onRemove={handleRemoveB}
                     showPagination={false}
                     error={false}

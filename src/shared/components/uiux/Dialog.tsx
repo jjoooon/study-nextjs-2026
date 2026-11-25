@@ -1573,6 +1573,15 @@ function DialogContent({
   const [isDragging, setIsDragging] = React.useState(false);
   const [isResizing, setIsResizing] = React.useState<string | null>(null);
   const [dragStart, setDragStart] = React.useState({ x: 0, y: 0 });
+  // 1. 상태 변수에 초기값을 저장할 변수 추가 (isResizing과 함께 관리)
+  const [initialCapture, setInitialCapture] = React.useState<{
+    width: number;
+    height: number;
+    x: number;
+    y: number;
+    mouseX: number;
+    mouseY: number;
+  } | null>(null);
   const contentRef = React.useRef<HTMLDivElement | null>(null);
   const [containerNode, setContainerNode] = React.useState<HTMLDivElement | null>(null);
   const handleContentRef = React.useCallback((node: HTMLDivElement | null) => {
@@ -1627,6 +1636,9 @@ function DialogContent({
     setPosition(defaultPosition ?? { x: 0, y: 0 });
     setIsInitialized(false);
     setResizedSize({ width: 0, height: 0 });
+    setIsDragging(false);
+    setIsResizing(null);
+    setInitialCapture(null);
     prevPositionBeforeMinimizeRef.current = null;
     prevIsInitializedBeforeMinimizeRef.current = false;
   }
@@ -1777,6 +1789,7 @@ function DialogContent({
       top: isFullSize ? '50%' : isInitialized ? '0px' : initialTop,
       transform: isFullSize ? `translate(-50%, -50%)` : transformValue,
       cursor: isDragging ? 'grabbing' : isResizing ? 'auto' : undefined,
+      userSelect: isDragging || isResizing ? 'none' : undefined,
       width: isFullWidth ? DIALOG_FULL_WIDTH : resizedSize.width > 0 ? `${resizedSize.width}px` : resolvedSize.width,
       height: isFullSize
         ? DIALOG_FULL_HEIGHT
@@ -1812,16 +1825,6 @@ function DialogContent({
     resolvedAllowOverflowDrag,
   ]);
 
-  // 1. 상태 변수에 초기값을 저장할 변수 추가 (isResizing과 함께 관리)
-  const [initialCapture, setInitialCapture] = React.useState<{
-    width: number;
-    height: number;
-    x: number;
-    y: number;
-    mouseX: number;
-    mouseY: number;
-  } | null>(null);
-
   const handleMouseDown = React.useCallback(
     (e: React.MouseEvent) => {
       if (isFullSize || isFullscreen || isSplit || isIframeState) return;
@@ -1844,6 +1847,7 @@ function DialogContent({
 
       // 브라우저의 기본 텍스트 선택 및 드래그 중 창 오토스크롤 방지
       e.preventDefault();
+      window.getSelection()?.removeAllRanges();
 
       const scrollX = window.scrollX || document.documentElement.scrollLeft || document.body.scrollLeft || 0;
       const scrollY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
@@ -1873,7 +1877,6 @@ function DialogContent({
         return;
       }
 
-      document.body.style.userSelect = 'none';
       setIsDragging(true);
       setDragStart({
         x: e.clientX + scrollX - currentPos.x,
@@ -1882,6 +1885,39 @@ function DialogContent({
     },
     [position, isInitialized, isFullSize, isFullscreen, isSplit, isIframeState]
   );
+
+  // 드래그/리사이즈 중 바닥(문서 전체)과 모달 내 텍스트 선택 차단, 종료 시 원상 복구
+  useIsomorphicLayoutEffect(() => {
+    if (!isDragging && !isResizing) return;
+
+    const htmlStyle = document.documentElement.style;
+    const bodyStyle = document.body.style;
+
+    const prevHtmlUserSelect = htmlStyle.userSelect;
+    const prevHtmlWebkitUserSelect = htmlStyle.webkitUserSelect;
+    const prevBodyUserSelect = bodyStyle.userSelect;
+    const prevBodyWebkitUserSelect = bodyStyle.webkitUserSelect;
+
+    window.getSelection()?.removeAllRanges();
+    htmlStyle.userSelect = 'none';
+    htmlStyle.webkitUserSelect = 'none';
+    bodyStyle.userSelect = 'none';
+    bodyStyle.webkitUserSelect = 'none';
+
+    const preventSelectStart = (e: Event) => {
+      e.preventDefault();
+    };
+
+    document.addEventListener('selectstart', preventSelectStart, true);
+
+    return () => {
+      document.removeEventListener('selectstart', preventSelectStart, true);
+      htmlStyle.userSelect = prevHtmlUserSelect;
+      htmlStyle.webkitUserSelect = prevHtmlWebkitUserSelect;
+      bodyStyle.userSelect = prevBodyUserSelect;
+      bodyStyle.webkitUserSelect = prevBodyWebkitUserSelect;
+    };
+  }, [isDragging, isResizing]);
 
   React.useEffect(() => {
     // 드래그 또는 리사이즈 중 가로 스크롤이 자동으로 이동하지 않도록 시작 위치로 고정
@@ -1987,17 +2023,18 @@ function DialogContent({
       setIsDragging(false);
       setIsResizing(null);
       setInitialCapture(null); // 캡처 데이터 초기화
-      document.body.style.userSelect = 'auto';
     };
 
     if (isDragging || isResizing) {
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
+      window.addEventListener('blur', handleMouseUp);
       window.addEventListener('scroll', handleScroll, { passive: false });
 
       return () => {
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
+        window.removeEventListener('blur', handleMouseUp);
         window.removeEventListener('scroll', handleScroll);
       };
     }
@@ -2046,6 +2083,7 @@ function DialogContent({
               disableMotion || isDragging || !!isResizing || isSplit || isFullscreen || isIframeState
                 ? 'transition-none'
                 : 'dialog-bounce-transition',
+              (isDragging || !!isResizing) && 'select-none [&_*]:select-none',
               isIframeState && 'is-iframe',
               isHwsfaState && 'is-hwsfa',
               className

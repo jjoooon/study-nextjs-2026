@@ -656,6 +656,23 @@
   height: 2.4rem !important;
 }
 
+/* headerHeight={0}으로 숨긴 빈 헤더 행이 .small 강제 높이에 의해 노출되는 현상 방지 */
+.ag-theme-alpine.small .ag-header-row[style*='height: 0'],
+.ag-theme-alpine.small .ag-header-row[style*='height:0'],
+.ag-theme-alpine .ag-header-row[style*='height: 0'],
+.ag-theme-alpine .ag-header-row[style*='height:0'] {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  border: 0 !important;
+}
+
+.ag-theme-alpine.small .ag-header-row[style*='height: 0'] .ag-header-cell,
+.ag-theme-alpine.small .ag-header-row[style*='height:0'] .ag-header-cell {
+  display: none !important;
+  height: 0 !important;
+}
+
 .ag-theme-alpine.small .ag-cell {
   min-height: 2.3rem; /* 2.4rem 행 높이 내부 보더(1px) 고려 */
   line-height: 2.3rem;
@@ -1098,6 +1115,19 @@ html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked
 
 .ag-tooltip:not(:last-of-type) {
   display: none !important;
+}
+
+/* tooltip-hidden-toggle 적용 시 AG Grid 기본 툴팁 숨김 */
+.tooltip-hidden-toggle .ag-tooltip,
+.tooltip-hidden-toggle .ag-theme-alpine .ag-tooltip,
+.tooltip-hidden-toggle .cp-aggrid .ag-tooltip,
+.ag-theme-alpine.tooltip-hidden-toggle .ag-tooltip,
+.cp-aggrid.tooltip-hidden-toggle .ag-tooltip,
+.ag-tooltip.tooltip-hidden-toggle {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 .link-cell .ag-cell-value {
