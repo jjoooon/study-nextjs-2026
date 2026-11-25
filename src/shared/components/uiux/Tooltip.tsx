@@ -278,15 +278,10 @@ const TooltipContent = React.forwardRef<React.ElementRef<typeof TooltipPrimitive
       }
 
       // 2. side가 'top' 또는 'bottom'인 경우:
-      // align이 지정되지 않았거나, center이거나, 우측 공간이 부족한데 start로 되어 있는 경우 (또는 그 반대)
-      // 공간이 많은 쪽으로 툴팁이 펼쳐지도록 end 또는 start로 자동 보정
+      // align이 지정되지 않았거나, 우측 공간이 부족한데 start로 되어 있는 경우 (또는 그 반대)
+      // 공간이 많은 쪽으로 툴팁이 펼쳐지도록 end 또는 start로 자동 보정 (align='center' 명시 시 유지)
       if (nextSide === 'top' || nextSide === 'bottom') {
-        if (
-          !align ||
-          align === 'center' ||
-          (align === 'start' && hasMoreSpaceOnLeft) ||
-          (align === 'end' && !hasMoreSpaceOnLeft)
-        ) {
+        if (!align || (align === 'start' && hasMoreSpaceOnLeft) || (align === 'end' && !hasMoreSpaceOnLeft)) {
           nextAlign = hasMoreSpaceOnLeft ? 'end' : 'start';
         }
       }

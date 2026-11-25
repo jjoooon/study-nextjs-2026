@@ -2731,9 +2731,10 @@ export function InputWithSearchCellRenderer<T = unknown>(params: ICellRendererPa
   };
 
   return (
-    <Grow className="w-full h-full gap-1" placement="bwc">
-      <span className="truncate">{params.value || ''}</span>
+    <Grow className="w-full h-full min-w-0 overflow-hidden gap-1" placement="bwc">
+      <span className="min-w-0 flex-1 truncate text-left">{params.value || ''}</span>
       <Button
+        className="shrink-0"
         aria-label="검색"
         variant="outlined"
         only="icon"

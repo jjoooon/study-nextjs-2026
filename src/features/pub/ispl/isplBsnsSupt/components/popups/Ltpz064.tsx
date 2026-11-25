@@ -72,7 +72,7 @@ const DummyData: DummyDataType[] = [
     field7: 'text',
     field8: 'text',
     field9: 'text',
-    field10: '신용추심원',
+    field10: '정보통신관련 사무직',
     field11: 'text',
     field12: 'text',
     field13: 'text',
@@ -337,7 +337,7 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
         ),
         field: 'field6',
         flex: 1,
-        minWidth: attributeColumnWidth(60),
+        minWidth: attributeColumnWidth(70),
         editable: false,
         cellClass: 'text-center',
         sortable: false,
@@ -388,7 +388,7 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
             headerName: '직업',
             field: 'field10',
             flex: 2,
-            minWidth: attributeColumnWidth(100),
+            minWidth: attributeColumnWidth(160),
             editable: false,
             cellClass: 'text-center',
             sortable: false,
@@ -400,7 +400,7 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
             headerName: '직장명',
             field: 'field11',
             flex: 1,
-            minWidth: attributeColumnWidth(80),
+            minWidth: attributeColumnWidth(100),
             editable: true,
             cellClass: 'editable-cell text-center',
             sortable: false,
@@ -503,10 +503,10 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
           {/* 상단: 설계번호 및 피보험자 조회 조건 영역 */}
           <Grow className="w-full items-center" variant="box-round" placement={'bwe'}>
             <FormTable
-              variant={'none'}
+              variant={'head'}
               lineTop={false}
               caption="정액담보점검목록 조회"
-              cols={['w-[6rem]', 'w-[12rem]', 'w-[8rem]', 'w-[auto]', 'w-[8rem]', 'w-[22rem]']}
+              cols={['w-[6rem]', 'w-[auto]', 'w-[9rem]', 'w-[auto]', 'w-[8rem]', 'w-[auto]']}
             >
               <FormRow>
                 <FormCell title={'설계번호'}>
@@ -522,11 +522,11 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
                   <Input aria-label="발행후변경순번 입력" value={'1'} onChange={() => {}} variant="info" readOnly />
                 </FormCell>
 
-                <FormCell className="whitespace-nowrap" title={'피보험자찾기'}>
-                  <NativeSelect aria-label="점검방법 선택" value={''} width={80} onChange={() => {}}>
+                <FormCell className="whitespace-nowrap" title={'피보험자찾기'} wrapClass="flex-1 justify-end">
+                  <NativeSelect aria-label="점검방법 선택" value={''} width={'auto'} onChange={() => {}}>
                     {[
                       { value: 'selection', id: 'type1', label: '이름' },
-                      { value: 'selection2', id: 'type2', label: '이름1' },
+                      { value: 'selection2', id: 'type2', label: '이름이름이름' },
                     ].map((option) => (
                       <NativeSelectOption key={option.id} value={option.value}>
                         {option.label}

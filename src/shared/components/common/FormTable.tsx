@@ -64,6 +64,7 @@ interface FormCellProps extends VariantProps<typeof FormCellVariants> {
   vertical?: boolean;
   /** 내용 셀(td)에 적용할 추가 CSS 클래스명 */
   tdClassName?: string;
+  wrapClass?: string;
   /** true일 경우 내용 셀(td)을 렌더링하지 않음 (제목 셀만 렌더링할 때 사용) */
   tdNone?: boolean;
   /** true일 경우 제목 셀(th)을 렌더링하지 않음 (내용 셀만 렌더링할 때 사용) */
@@ -204,6 +205,7 @@ export const FormCell = ({
   titleRowSpan,
   style,
   tdClassName,
+  wrapClass,
   tdStyle,
   tdNone = false,
   thNone = false,
@@ -236,7 +238,7 @@ export const FormCell = ({
 
   if (contextVariant === 'head' || usedVariant === 'head') {
     return (
-      <div className="flex items-center gap-2">
+      <div className={cn('flex items-center gap-2', wrapClass)}>
         {!thNone && title !== null && (
           <dt
             className={cn(

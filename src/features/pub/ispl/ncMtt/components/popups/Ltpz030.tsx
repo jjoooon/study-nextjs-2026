@@ -24,6 +24,7 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import { Popover, PopoverTrigger } from '@uiux/Popover';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 import '@/shared/lib/agGridPub';
 
@@ -267,8 +268,6 @@ const CONVENIENCE_ROWS: HealthUnderwritingRow[] = [
 
 // ===== 컴포넌트 시작 =====
 const Ltpz030 = () => {
-  const [isOpenLtpz110, setIsOpenLtpz110] = React.useState(false);
-
   // 일반/건강고지 데이터 가공: 각 고지유형 셀에 식별자 ID를 동적 부여하고 checked를 false로 매핑
   const healthRows = React.useMemo<HealthUnderwritingRow[]>(
     () =>
@@ -305,8 +304,7 @@ const Ltpz030 = () => {
 
   // ===== 다이얼로그 렌더링 =====
   return (
-    <>
-      <Dialog open>
+    <Dialog open>
         <DialogContent showCloseButton resizable={true} className="w-[110rem]">
           <DialogHeader>
             <DialogTitle>
@@ -443,9 +441,19 @@ const Ltpz030 = () => {
                       고지유형 찾기
                     </Typo>
                     <Grow gap={2}>
-                      <Button color="gray" variant="outlined" size={'lg'} onClick={() => setIsOpenLtpz110(true)}>
-                        정보변경
-                      </Button>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button color="gray" variant="outlined" size={'lg'}>
+                            정보변경
+                          </Button>
+                        </PopoverTrigger>
+                        <Ltpz110
+                          side="bottom"
+                          align="end"
+                          isID={true}
+                          defaultValues={['0', '1', '2', '3', '4', '5', '6']}
+                        />
+                      </Popover>
                       <Grow gap={2} className="items-center">
                         <span className="flex items-center gap-1 text-[1.2rem]">
                           <RefuseIcon size={16} />
@@ -572,15 +580,6 @@ const Ltpz030 = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      {isOpenLtpz110 && (
-        <Ltpz110
-          open={isOpenLtpz110}
-          onOpenChange={setIsOpenLtpz110}
-          isID={true}
-          defaultValues={['0', '1', '2', '3', '4', '5', '6']}
-        />
-      )}
-    </>
   );
 };
 
