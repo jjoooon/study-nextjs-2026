@@ -375,37 +375,45 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
         sortable: false,
         pinned: 'left', // 좌측 스크롤 고정
       },
+      // 전화번호(휴대폰) 3개 컬럼 1단 헤더 가로 병합 표시 (국/앞/뒤)
       {
-        headerGroupComponent: () => (
-          <Grow placement="cc" className="w-full">
-            <span className="font-bold text-[1.3rem]">전화번호(휴대폰)</span>
-          </Grow>
+        headerName: '',
+        headerClass: 'header-merge-left',
+        field: 'field4',
+        flex: 1,
+        minWidth: attributeColumnWidth(50),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        sortable: false,
+        resizable: false,
+      },
+      {
+        headerName: '전화번호(휴대폰)',
+        headerClass: 'header-merge-center',
+        headerComponent: () => (
+          <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 flex items-center justify-center whitespace-nowrap pointer-events-none">
+            <span>전화번호(휴대폰)</span>
+          </div>
         ),
-        // 하위 컬럼을 국/앞/뒤 구조로 3단 분할 구성
-        children: [
-          {
-            field: 'field4',
-            flex: 1,
-            minWidth: attributeColumnWidth(50),
-            editable: true,
-            cellClass: 'editable-cell text-center',
-          },
-          {
-            field: 'field5',
-            flex: 1,
-            minWidth: attributeColumnWidth(50),
-            editable: true,
-            cellClass: 'editable-cell text-center',
-          },
-          {
-            field: 'field6',
-            flex: 1,
-            minWidth: attributeColumnWidth(50),
-            editable: true,
-            cellClass: 'editable-cell text-center',
-          },
-        ],
-      } as ColDef<DummyDataTypeB>,
+        field: 'field5',
+        flex: 1,
+        minWidth: attributeColumnWidth(50),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        sortable: false,
+        resizable: false,
+      },
+      {
+        headerName: '',
+        headerClass: 'header-merge-right',
+        field: 'field6',
+        flex: 1,
+        minWidth: attributeColumnWidth(50),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        sortable: false,
+        resizable: false,
+      },
       {
         headerName: '동의',
         field: 'field7',
@@ -741,8 +749,6 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
                       cellClass: 'editable-cell !p-0 flex justify-center items-center',
                       cellStyle: { display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 0 },
                     }}
-                    groupHeaderHeight={30}
-                    headerHeight={0}
                   />
                 </div>
               </TableFoldBody>

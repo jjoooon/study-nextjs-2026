@@ -3,7 +3,7 @@
  */
 'use client';
 
-import type { CellValueChangedEvent, ColDef, ColGroupDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import type { CellValueChangedEvent, ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useRef, useState } from 'react';
 import * as React from 'react';
@@ -223,7 +223,7 @@ const Ltpz01602 = () => {
   ];
 
   // 2. 시설소유(관리)자배상책임 ag-grid renderer & defs
-  const facilityColumnDefs: (ColDef<FacilityLiabilityDataType> | ColGroupDef<FacilityLiabilityDataType>)[] = [
+  const facilityColumnDefs: ColDef<FacilityLiabilityDataType>[] = [
     {
       headerName: '업종구분',
       field: 'field01',
@@ -238,42 +238,53 @@ const Ltpz01602 = () => {
       },
       cellRenderer: expiryCellRenderer('center'),
     },
+    // 규모 4개 컬럼 1단 헤더 가로 병합 표시
+    {
+      headerName: '',
+      headerClass: 'header-merge-left',
+      field: 'field02',
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
+      cellClass: 'text-right editable-cell',
+      editable: true,
+      sortable: false,
+      resizable: false,
+    },
     {
       headerName: '규모',
+      headerClass: 'header-merge-center',
+      headerComponent: () => (
+        <div className="absolute inset-y-0 right-0 translate-x-1/2 flex items-center justify-center whitespace-nowrap pointer-events-none">
+          <span>규모</span>
+        </div>
+      ),
+      field: 'field03',
       flex: 1,
+      minWidth: attributeColumnWidth(40),
       cellClass: 'text-center',
-      children: [
-        {
-          headerName: '규모',
-          field: 'field02',
-          flex: 1,
-          minWidth: attributeColumnWidth(90),
-          cellClass: 'text-right editable-cell',
-          editable: true,
-        },
-        {
-          headerName: '규모단위',
-          field: 'field03',
-          flex: 1,
-          minWidth: attributeColumnWidth(40),
-          cellClass: 'text-center',
-        },
-        {
-          headerName: '보조규모',
-          field: 'field04',
-          flex: 1,
-          minWidth: attributeColumnWidth(90),
-          cellClass: 'text-right editable-cell',
-          editable: true,
-        },
-        {
-          headerName: '보조규모단위',
-          field: 'field05',
-          flex: 1,
-          minWidth: attributeColumnWidth(40),
-          cellClass: 'text-center',
-        },
-      ],
+      sortable: false,
+      resizable: false,
+    },
+    {
+      headerName: '',
+      headerClass: 'header-merge-center',
+      field: 'field04',
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
+      cellClass: 'text-right editable-cell',
+      editable: true,
+      sortable: false,
+      resizable: false,
+    },
+    {
+      headerName: '',
+      headerClass: 'header-merge-right',
+      field: 'field05',
+      flex: 1,
+      minWidth: attributeColumnWidth(40),
+      cellClass: 'text-center',
+      sortable: false,
+      resizable: false,
     },
     {
       headerName: '보상한도',
@@ -427,8 +438,6 @@ const Ltpz01602 = () => {
                 checkboxes: true,
                 enableClickSelection: false,
               }}
-              groupHeaderHeight={30}
-              headerHeight={0}
               selectionColumnDef={{
                 headerName: '선택',
                 width: 30,
