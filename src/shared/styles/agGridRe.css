@@ -2301,3 +2301,26 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 .ag-theme-alpine .ag-cell.ag-cell-last-left-pinned.ag-column-last {
   border-right: 1px solid var(--color-warning-30) !important;
 }
+
+/* ===== 병합 헤더 셀 (여러 컬럼의 헤더를 1칸처럼 가로 병합 표시) ===== */
+.ag-theme-alpine .ag-header-cell.header-merge-left,
+.ag-theme-alpine .ag-header-cell.header-merge-center {
+  border-right: none !important;
+  overflow: visible !important;
+  z-index: 10 !important;
+}
+
+.ag-theme-alpine .ag-header-cell.header-merge-left::after,
+.ag-theme-alpine .ag-header-cell.header-merge-center::after {
+  display: none !important;
+}
+
+.ag-theme-alpine .ag-header-cell.header-merge-left .ag-header-cell-comp-wrapper,
+.ag-theme-alpine .ag-header-cell.header-merge-center .ag-header-cell-comp-wrapper {
+  overflow: visible !important;
+  position: static !important;
+}
+
+.ag-theme-alpine .ag-header-cell.header-merge-right {
+  border-left: none !important;
+}

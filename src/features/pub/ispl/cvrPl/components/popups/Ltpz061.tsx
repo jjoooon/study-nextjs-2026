@@ -277,7 +277,7 @@ const Ltpz061 = () => {
         minWidth: attributeColumnWidth(55),
         singleClickEdit: false,
         headerName: '부담보기간',
-        headerClass: 'period-merged-left',
+        headerClass: 'header-merge-left',
         headerComponent: () => (
           <div className="absolute inset-y-0 left-0 w-[200%] flex items-center justify-center whitespace-nowrap pointer-events-none">
             <span>부담보기간</span>
@@ -307,7 +307,7 @@ const Ltpz061 = () => {
         editable: (params: EditableCallbackParams<DummyDataType1>) => params.data?.isRowSelected === true,
         singleClickEdit: false,
         headerName: '',
-        headerClass: 'period-merged-right',
+        headerClass: 'header-merge-right',
         sortable: false,
         resizable: false,
         cellRenderer: getExpiryRenderer('center'),
@@ -395,7 +395,7 @@ const Ltpz061 = () => {
         editable: (params: EditableCallbackParams<DummyDataType2>) => params.data?.isRowSelected === true,
         singleClickEdit: false,
         headerName: '부담보기간',
-        headerClass: 'period-merged-left',
+        headerClass: 'header-merge-left',
         headerComponent: () => (
           <div className="absolute inset-y-0 left-0 w-[200%] flex items-center justify-center whitespace-nowrap pointer-events-none">
             <span>부담보기간</span>
@@ -423,7 +423,7 @@ const Ltpz061 = () => {
         editable: (params: EditableCallbackParams<DummyDataType2>) => params.data?.isRowSelected === true,
         singleClickEdit: false,
         headerName: '',
-        headerClass: 'period-merged-right',
+        headerClass: 'header-merge-right',
         sortable: false,
         resizable: false,
         cellRenderer: getExpiryRenderer2('center'),
