@@ -1514,6 +1514,12 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
           try {
             api.ensureIndexVisible(nextIdx);
             api.setFocusedCell(nextIdx, colKey);
+            api.clearCellSelection?.();
+            api.addCellRange?.({
+              rowStartIndex: nextIdx,
+              rowEndIndex: nextIdx,
+              columns: [colKey],
+            });
             api.startEditingCell({
               rowIndex: nextIdx,
               colKey: colKey,
