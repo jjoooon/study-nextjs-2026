@@ -249,12 +249,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
   //예상고지형 선택여부 체크하여 뱃지생성
   const [isExpectedNoticeType, setIsExpectedNoticeType] = useState<boolean>(false);
 
-  const [medicalHistoryList, setMedicalHistoryList] = useState<Array<{ disease: string; period: string }>>([
-    { disease: '', period: '' },
-    { disease: '', period: '' },
-    { disease: '', period: '' },
-    { disease: '', period: '' },
-  ]);
+  const [medicalHistoryList, setMedicalHistoryList] = useState<Array<{ disease: string; period: string }> | null>(null);
 
   // 2-4. 애니메이션 제어 관련 상태
   const [animateCardPhase, setAnimateCardPhase] = useState<'idle' | 'appear' | 'fall'>('idle');
@@ -417,7 +412,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
         tags.push('보장분석');
       }
     } else {
-      const hasMedicalHistory = medicalHistoryList.some((item) => item.disease.trim() !== '');
+      const hasMedicalHistory = medicalHistoryList?.some((item) => item.disease.trim() !== '') ?? false;
       if (hasMedicalHistory) {
         tags.push('병력사항');
       }
@@ -815,7 +810,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
               </Gcol>
 
               {/* 희망담보 */}
-              <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3 w-full" gap={5}>
+              <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-4 w-full" gap={5}>
                 <Gcol placement="ss">
                   <Typo tag="h4" variant={'heading-md'}>
                     희망담보
@@ -966,7 +961,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
 
               {/* 설계유형 or 보장패키지 */}
               <Grid className="w-full grid-rows-[auto_1fr] h-full" gap={2}>
-                <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3 w-full" gap={2}>
+                <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-4 w-full" gap={2}>
                   {customerType === 'recent' ? (
                     <Gcol placement="ss" gap={4}>
                       <Gcol placement="ss">
@@ -987,7 +982,6 @@ export function Ltpa02002({ userType }: { userType: string }) {
                               value={opt.value}
                               variant="button"
                               size={'xl'}
-                              disabled={!lastInquiryDate}
                               className="!w-full !text-left whitespace-normal h-auto items-center break-keep rounded-[0.6rem]"
                             >
                               {opt.label}
@@ -1031,67 +1025,56 @@ export function Ltpa02002({ userType }: { userType: string }) {
                       </Gcol>
                     </Gcol>
                   ) : (
-                    <Gcol placement="ss" gap={4}>
+                    <Gcol placement="ss" gap={5}>
                       <Gcol placement="ss">
                         <Typo tag="h4" variant={'heading-md'}>
                           병력사항
                         </Typo>
                         <Typo variant={'body-sm'} color="blueGray" className="tracking-[-0.1rem] break-keep">
-                          질병정보를 이용해 <b className="text-[var(--color-information-50)] underline">예상고지유형</b>
+                          질병정보를 이용해{' '}
+                          <Button
+                            size={'sm'}
+                            variant={'text'}
+                            className="text-[var(--color-information-50)] underline font-bold"
+                            onClick={() =>
+                              setMedicalHistoryList([
+                                { disease: '척추관협착증척추관협착증척추관협착증척추관협착증', period: '기간 무관' },
+                                { disease: '척추관협착증', period: '10년내' },
+                                { disease: '척추관협착증', period: '10년내' },
+                                { disease: '척추관협착증', period: '10년내' },
+                              ])
+                            }
+                          >
+                            예상고지유형
+                          </Button>
                           을 확인합니다.
                         </Typo>
                       </Gcol>
-                      <ul className="w-full">
-                        {medicalHistoryList.map((item, idx) => (
-                          <li
-                            key={idx}
-                            className="grid grid-cols-[1fr_auto] items-center gap-2 w-full border-b border-dashed border-[#D8D8D8] last:border-b-0 h-[3.2rem]"
-                          >
-                            <Typo tag="b" variant="heading-sm" color="secondary" tooltip="1">
-                              {item.disease}
-                            </Typo>
-                            <span className="text-[1.2rem] shrink-0">{item.period}</span>
-                          </li>
-                        ))}
-                      </ul>
-                      <Grow gap={1} placement="ec" className="w-full">
-                        <Button
-                          size={'md'}
-                          color={'secondary'}
-                          className="font-[700]!"
-                          onClick={() =>
-                            setMedicalHistoryList([
-                              { disease: '척추관협착증척추관협착증척추관협착증척추관협착증', period: '기간 무관' },
-                              { disease: '척추관협착증', period: '10년내' },
-                              { disease: '척추관협착증', period: '10년내' },
-                              { disease: '척추관협착증', period: '10년내' },
-                            ])
-                          }
-                        >
-                          입력/수정
-                        </Button>
-                        <Button
-                          variant={'outlined'}
-                          color={'gray-light'}
-                          size={'md'}
-                          className="font-normal"
-                          onClick={() =>
-                            setMedicalHistoryList([
-                              { disease: '', period: '' },
-                              { disease: '', period: '' },
-                              { disease: '', period: '' },
-                              { disease: '', period: '' },
-                            ])
-                          }
-                        >
-                          <ResetIcon size={16} color={'var(--color-gray-60)'} />
-                          초기화
-                        </Button>
-                      </Grow>
+                      {medicalHistoryList && medicalHistoryList.length > 0 ? (
+                        <>
+                          <ul className="w-full mb-[0.1rem]">
+                            {medicalHistoryList.map((item, idx) => (
+                              <li
+                                key={idx}
+                                className="grid grid-cols-[1fr_auto] items-center gap-2 w-full border-b border-dashed border-[#D8D8D8] last:border-b-0 h-[4rem]"
+                              >
+                                <Typo tag="b" variant="heading-sm" color="secondary" tooltip="1">
+                                  {item.disease}
+                                </Typo>
+                                <span className="text-[1.2rem] shrink-0">{item.period}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </>
+                      ) : (
+                        <Gcol placement="cc" className="h-[16.1rem]">
+                          <img src="/images/Ltpa020/ltpa02002_pmh.png" alt="" style={{ width: '10.4rem' }} />
+                        </Gcol>
+                      )}
                     </Gcol>
                   )}
                 </Gcol>
-                <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3 w-full" gap={5}>
+                <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-4 w-full" gap={5}>
                   <Gcol placement="ss">
                     <Typo tag="h4" variant={'heading-md'}>
                       테마담보군
@@ -1130,12 +1113,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                   setIsHypertensionChecked(false);
                   setIsDiabetesChecked(false);
                   setIsExpectedNoticeType(false);
-                  setMedicalHistoryList([
-                    { disease: '', period: '' },
-                    { disease: '', period: '' },
-                    { disease: '', period: '' },
-                    { disease: '', period: '' },
-                  ]);
+                  setMedicalHistoryList(null);
                   setSelectedAnalysisValue('');
                   setIsCoveragePackage(false);
                   setSelectedCoverageValues([]);
@@ -1505,7 +1483,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                       </Typo>
                       <AiSpinner size={'9rem'} className="w-auto translate-x-[2rem]" />
                     </Grow>
-                    <ol className="flex flex-col gap-[2.4rem] py-[2.4rem]">
+                    <ol className="flex flex-col gap-[1.4rem] py-[2.4rem]">
                       <li className="relative z-1 flex items-start gap-3 w-full">
                         <div className="shrink-0 flex items-center justify-center font-bold text-[2rem] leading-none">
                           01.
@@ -1690,7 +1668,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
             </Gcol>
 
             {/* 가이드 스텝 목록 */}
-            <ol className="flex flex-col gap-[2.4rem]">
+            <ol className="flex flex-col gap-[1.2rem]">
               <li className="relative z-1 flex items-start gap-3 w-full">
                 <div className="shrink-0 flex items-center justify-center font-bold text-[2rem] leading-none">01.</div>
                 <div className="flex flex-col gap-1 w-full">

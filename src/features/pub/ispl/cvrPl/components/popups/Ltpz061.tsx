@@ -270,67 +270,71 @@ const Ltpz061 = () => {
           </div>
         ),
       },
-      // 2026-05-27 select 전체 수정
+      // 2026-05-27 select 전체 수정 - 부담보기간(년/월) 1단 헤더 병합 표시
       {
+        field: 'field03',
+        flex: 1,
+        minWidth: attributeColumnWidth(55),
+        singleClickEdit: false,
         headerName: '부담보기간',
-        headerGroupComponent: () => <span className="font-bold! text-center w-full text-[1.3rem]">부담보기간</span>,
-        marryChildren: true,
-        children: [
-          {
-            field: 'field03',
-            flex: 1,
-            minWidth: attributeColumnWidth(55),
-            singleClickEdit: false,
-            headerName: '',
-            cellClass: (params: CellClassParams<DummyDataType1>) => {
-              const base = 'text-center flex [&>div>span]:h-auto! !px-0 editable-cell';
-              return params.data?.isRowSelected === true ? base : `${base} no-edited`;
-            },
-            editable: (params: EditableCallbackParams<DummyDataType1>) => {
-              return params.data?.isRowSelected === true;
-            },
-            cellEditor: 'agRichSelectCellEditor',
-            cellEditorParams: {
-              values: ['0년', '1년', '2년', '3년', '4년', '5년', '전기간'],
-              valueListMaxHeight: 120,
-            },
-            cellRenderer: getExpiryRenderer('center'),
-            autoHeight: true,
-          },
-          {
-            field: 'field04',
-            flex: 1,
-            minWidth: attributeColumnWidth(65),
-            editable: (params: EditableCallbackParams<DummyDataType1>) => params.data?.isRowSelected === true,
-            singleClickEdit: false,
-            headerName: '',
-            cellRenderer: getExpiryRenderer('center'),
-            cellEditor: 'agRichSelectCellEditor',
-            cellEditorParams: {
-              values: [
-                '0개월',
-                '1개월',
-                '2개월',
-                '3개월',
-                '4개월',
-                '5개월',
-                '6개월',
-                '7개월',
-                '8개월',
-                '9개월',
-                '10개월',
-                '11개월',
-                '12개월',
-              ],
-              valueListMaxHeight: 90,
-            },
-            cellClass: (params: CellClassParams<DummyDataType1>) => {
-              const base = 'text-center flex [&>div>span]:h-auto! !px-0 editable-cell';
-              return params.data?.isRowSelected === true ? base : `${base} no-edited`;
-            },
-            autoHeight: true,
-          },
-        ],
+        headerClass: 'period-merged-left',
+        headerComponent: () => (
+          <div className="absolute inset-y-0 left-0 w-[200%] flex items-center justify-center whitespace-nowrap pointer-events-none">
+            <span>부담보기간</span>
+          </div>
+        ),
+        sortable: false,
+        resizable: false,
+        cellClass: (params: CellClassParams<DummyDataType1>) => {
+          const base = 'text-center flex [&>div>span]:h-auto! !px-0 editable-cell';
+          return params.data?.isRowSelected === true ? base : `${base} no-edited`;
+        },
+        editable: (params: EditableCallbackParams<DummyDataType1>) => {
+          return params.data?.isRowSelected === true;
+        },
+        cellEditor: 'agRichSelectCellEditor',
+        cellEditorParams: {
+          values: ['0년', '1년', '2년', '3년', '4년', '5년', '전기간'],
+          valueListMaxHeight: 120,
+        },
+        cellRenderer: getExpiryRenderer('center'),
+        autoHeight: true,
+      },
+      {
+        field: 'field04',
+        flex: 1,
+        minWidth: attributeColumnWidth(65),
+        editable: (params: EditableCallbackParams<DummyDataType1>) => params.data?.isRowSelected === true,
+        singleClickEdit: false,
+        headerName: '',
+        headerClass: 'period-merged-right',
+        sortable: false,
+        resizable: false,
+        cellRenderer: getExpiryRenderer('center'),
+        cellEditor: 'agRichSelectCellEditor',
+        cellEditorParams: {
+          values: [
+            '0개월',
+            '1개월',
+            '2개월',
+            '3개월',
+            '4개월',
+            '5개월',
+            '6개월',
+            '7개월',
+            '8개월',
+            '9개월',
+            '10개월',
+            '11개월',
+            '12개월',
+          ],
+          valueListMaxHeight: 90,
+        },
+        cellClass: (params: CellClassParams<DummyDataType1>) => {
+          const base = 'text-center flex [&>div>span]:h-auto! !px-0 editable-cell';
+          return params.data?.isRowSelected === true ? base : `${base} no-edited`;
+        },
+        autoHeight: true,
       },
       {
         headerName: '부담보사유',
@@ -346,8 +350,8 @@ const Ltpz061 = () => {
         headerName: '수정',
         field: 'isCheck',
         flex: 1,
-        minWidth: attributeColumnWidth(30),
-        cellClass: 'editable-cell',
+        minWidth: attributeColumnWidth(40),
+        cellClass: 'editable-cell text-center',
         cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
         cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
         editable: true,
@@ -383,66 +387,70 @@ const Ltpz061 = () => {
           );
         },
       },
-      // 2026-05-27 select 전체 수정
+      // 2026-05-27 select 전체 수정 - 부담보기간(년/월) 1단 헤더 병합 표시
       {
+        field: 'field03',
+        flex: 1,
+        minWidth: attributeColumnWidth(55),
+        editable: (params: EditableCallbackParams<DummyDataType2>) => params.data?.isRowSelected === true,
+        singleClickEdit: false,
         headerName: '부담보기간',
-        headerGroupComponent: () => <span className="font-bold! text-center w-full text-[1.3rem]">부담보기간</span>,
-        marryChildren: true,
-        children: [
-          {
-            field: 'field03',
-            flex: 1,
-            minWidth: attributeColumnWidth(55),
-            editable: (params: EditableCallbackParams<DummyDataType2>) => params.data?.isRowSelected === true,
-            singleClickEdit: false,
-            headerName: '',
-            // cellRenderer: selectCellRenderer,
-            cellEditor: 'agRichSelectCellEditor',
-            cellEditorParams: {
-              values: ['0년', '1년', '2년', '3년', '4년', '5년', '전기간'],
-              valueListMaxHeight: 120,
-            },
-            cellClass: (params: CellClassParams<DummyDataType2>) => {
-              const base = 'text-center flex [&>div>span]:h-auto! !px-0 editable-cell';
-              return params.data?.isRowSelected === true ? base : `${base} no-edited`;
-            },
-            autoHeight: true,
-            cellRenderer: getExpiryRenderer2('center'),
-          },
-          {
-            field: 'field04',
-            flex: 1,
-            minWidth: attributeColumnWidth(65),
-            editable: (params: EditableCallbackParams<DummyDataType2>) => params.data?.isRowSelected === true,
-            singleClickEdit: false,
-            headerName: '',
-            cellRenderer: getExpiryRenderer2('center'),
-            cellEditor: 'agRichSelectCellEditor',
-            cellEditorParams: {
-              values: [
-                '0개월',
-                '1개월',
-                '2개월',
-                '3개월',
-                '4개월',
-                '5개월',
-                '6개월',
-                '7개월',
-                '8개월',
-                '9개월',
-                '10개월',
-                '11개월',
-                '12개월',
-              ],
-              valueListMaxHeight: 90,
-            },
-            cellClass: (params: CellClassParams<DummyDataType2>) => {
-              const base = 'text-center flex [&>div>span]:h-auto! !px-0 editable-cell';
-              return params.data?.isRowSelected === true ? base : `${base} no-edited`;
-            },
-            autoHeight: true,
-          },
-        ],
+        headerClass: 'period-merged-left',
+        headerComponent: () => (
+          <div className="absolute inset-y-0 left-0 w-[200%] flex items-center justify-center whitespace-nowrap pointer-events-none">
+            <span>부담보기간</span>
+          </div>
+        ),
+        sortable: false,
+        resizable: false,
+        // cellRenderer: selectCellRenderer,
+        cellEditor: 'agRichSelectCellEditor',
+        cellEditorParams: {
+          values: ['0년', '1년', '2년', '3년', '4년', '5년', '전기간'],
+          valueListMaxHeight: 120,
+        },
+        cellClass: (params: CellClassParams<DummyDataType2>) => {
+          const base = 'text-center flex [&>div>span]:h-auto! !px-0 editable-cell';
+          return params.data?.isRowSelected === true ? base : `${base} no-edited`;
+        },
+        autoHeight: true,
+        cellRenderer: getExpiryRenderer2('center'),
+      },
+      {
+        field: 'field04',
+        flex: 1,
+        minWidth: attributeColumnWidth(65),
+        editable: (params: EditableCallbackParams<DummyDataType2>) => params.data?.isRowSelected === true,
+        singleClickEdit: false,
+        headerName: '',
+        headerClass: 'period-merged-right',
+        sortable: false,
+        resizable: false,
+        cellRenderer: getExpiryRenderer2('center'),
+        cellEditor: 'agRichSelectCellEditor',
+        cellEditorParams: {
+          values: [
+            '0개월',
+            '1개월',
+            '2개월',
+            '3개월',
+            '4개월',
+            '5개월',
+            '6개월',
+            '7개월',
+            '8개월',
+            '9개월',
+            '10개월',
+            '11개월',
+            '12개월',
+          ],
+          valueListMaxHeight: 90,
+        },
+        cellClass: (params: CellClassParams<DummyDataType2>) => {
+          const base = 'text-center flex [&>div>span]:h-auto! !px-0 editable-cell';
+          return params.data?.isRowSelected === true ? base : `${base} no-edited`;
+        },
+        autoHeight: true,
       },
       {
         headerName: '부담보사유',
@@ -458,8 +466,8 @@ const Ltpz061 = () => {
         headerName: '수정',
         field: 'isCheck',
         flex: 1,
-        minWidth: attributeColumnWidth(30),
-        cellClass: 'editable-cell',
+        minWidth: attributeColumnWidth(40),
+        cellClass: 'editable-cell text-center',
         cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
         cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
         editable: true,
@@ -502,14 +510,12 @@ const Ltpz061 = () => {
           <TableFold variant={'accordion'}>
             <TableFoldHead title="특정부위" />
             <TableFoldBody>
-              <div className="ag-theme-alpine inner-scroll" data-row={rowData1.length}>
+              <div className="ag-theme-alpine inner-scroll inner-min-scroll" data-row={10}>
                 <AgGridReact<DummyDataType1>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   columnDefs={columnDefs}
                   rowData={rowData1}
-                  headerHeight={0}
-                  groupHeaderHeight={30}
                   singleClickEdit={true}
                   defaultColDef={{
                     suppressMovable: true,
@@ -531,7 +537,6 @@ const Ltpz061 = () => {
                   tooltipShowMode="whenTruncated"
                   tooltipShowDelay={0}
                   animateRows={false}
-                  suppressHorizontalScroll={true}
                 />
               </div>
             </TableFoldBody>
@@ -539,14 +544,13 @@ const Ltpz061 = () => {
           <TableFold variant={'accordion'}>
             <TableFoldHead title="특정질병" />
             <TableFoldBody>
-              <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
+              <div className="ag-theme-alpine inner-scroll inner-min-scroll" data-row={5}>
                 <AgGridReact<DummyDataType2>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   columnDefs={columnDefs2}
                   rowData={rowData2}
-                  headerHeight={0}
-                  groupHeaderHeight={30}
+                  headerHeight={30}
                   singleClickEdit={true}
                   defaultColDef={{
                     suppressMovable: true,
@@ -565,7 +569,7 @@ const Ltpz061 = () => {
                   }}
                   onSelectionChanged={handleSelectionChanged2}
                   domLayout="normal"
-                  suppressHorizontalScroll={true}
+                  alwaysShowVerticalScroll={true}
                 />
               </div>
             </TableFoldBody>

@@ -201,7 +201,7 @@ export default function Ltpa650Section() {
         field: 'field1',
         flex: 2,
         minWidth: attributeColumnWidth(120),
-        cellClass: 'text-center editable-cell',
+        cellClass: 'text-center',
         autoHeight: true,
         spanRows: true,
       },

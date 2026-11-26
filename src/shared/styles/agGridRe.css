@@ -586,6 +586,9 @@
 .editable-cell {
   background: var(--color-information-5);
 }
+.editable-cell.text-center {
+  justify-content: center;
+}
 /* 텍스트 인풋 포커스 라인 */
 .ag-theme-alpine .ag-input-field-input:focus {
   border-color: #000000 !important; /* 원하는 색상 */
@@ -1688,7 +1691,7 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 }
 
 /* 15. Ltpz019 및 data-row/data-page 기반 높이 제어 */
-.ltpz019-product-grid.inner-scroll .ag-root-wrapper-body .ag-body.ag-layout-normal,
+.ltpz019-product-grid.inner-scroll .ag-root-wrapper.ag-layout-normal,
 .ltpz019-product-grid.inner-scroll .ag-body-viewport {
   height: 39rem !important;
   min-height: 39rem !important;
@@ -1704,44 +1707,44 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   bottom: 0;
   top: auto;
 }
-.ag-theme-alpine[data-row] .ag-root-wrapper-body .ag-body.ag-layout-normal {
+.ag-theme-alpine[data-row] .ag-root-wrapper.ag-layout-normal {
   height: 15rem !important;
   max-height: 100% !important;
   min-height: 15rem !important;
   overflow-y: auto !important;
 }
-.ag-theme-alpine[data-row='0'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
+.ag-theme-alpine[data-row='0'] .ag-root-wrapper.ag-layout-normal {
   height: 0 !important;
   max-height: 100% !important;
   min-height: 0 !important;
   overflow-y: auto !important;
 }
 .ag-theme-alpine[data-row='1'] .ag-root-wrapper-body .ag-overlay,
-.ag-theme-alpine[data-row='1'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
+.ag-theme-alpine[data-row='1'] .ag-root-wrapper.ag-layout-normal {
   height: 3rem !important;
   min-height: 3rem !important;
   max-height: 3rem !important;
 }
 .ag-theme-alpine[data-row='2'] .ag-root-wrapper-body .ag-overlay,
-.ag-theme-alpine[data-row='2'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
+.ag-theme-alpine[data-row='2'] .ag-root-wrapper.ag-layout-normal {
   height: 6rem !important;
   min-height: 6rem !important;
   max-height: 6rem !important;
 }
 .ag-theme-alpine[data-row='3'] .ag-root-wrapper-body .ag-overlay,
-.ag-theme-alpine[data-row='3'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
+.ag-theme-alpine[data-row='3'] .ag-root-wrapper.ag-layout-normal {
   height: 9rem !important;
   min-height: 9rem !important;
   max-height: 9rem !important;
 }
 .ag-theme-alpine[data-row='4'] .ag-root-wrapper-body .ag-overlay,
-.ag-theme-alpine[data-row='4'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
+.ag-theme-alpine[data-row='4'] .ag-root-wrapper.ag-layout-normal {
   height: 12rem !important;
   min-height: 12rem !important;
   max-height: 12rem !important;
 }
 .ag-theme-alpine[data-row='5'] .ag-root-wrapper-body .ag-overlay,
-.ag-theme-alpine[data-row='5'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
+.ag-theme-alpine[data-row='5'] .ag-root-wrapper.ag-layout-normal {
   height: 15rem !important;
   min-height: 15rem !important;
   max-height: 15rem !important;
@@ -1751,22 +1754,28 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   width: 100% !important;
 }
 
-.ag-theme-alpine.inner-min-scroll .ag-root-wrapper-body .ag-body.ag-layout-normal {
+.ag-theme-alpine.inner-min-scroll .ag-root-wrapper.ag-layout-normal {
   height: 3rem !important;
   min-height: 3rem !important;
   max-height: 100% !important;
   overflow-y: auto !important;
 }
 
-.ag-theme-alpine.inner-scroll.inner-min-scroll[data-row='2'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 6rem !important;
-  min-height: 6rem !important;
+.ag-theme-alpine.inner-scroll.inner-min-scroll[data-row='2'] .ag-root-wrapper.ag-layout-normal {
+  height: 9rem !important;
+  min-height: 9rem !important;
   max-height: 100% !important;
   overflow-y: auto !important;
 }
-.ag-theme-alpine.inner-scroll.inner-min-scroll[data-row='5'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  height: 15rem !important;
-  min-height: 15rem !important;
+.ag-theme-alpine.inner-scroll.inner-min-scroll[data-row='5'] .ag-root-wrapper.ag-layout-normal {
+  height: 18rem !important;
+  min-height: 18rem !important;
+  max-height: 100% !important;
+  overflow-y: auto !important;
+}
+.ag-theme-alpine.inner-scroll.inner-min-scroll[data-row='10'] .ag-root-wrapper.ag-layout-normal {
+  height: 33rem !important;
+  min-height: 33rem !important;
   max-height: 100% !important;
   overflow-y: auto !important;
 }
