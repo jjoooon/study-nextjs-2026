@@ -3,7 +3,7 @@
  */
 'use client';
 
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { SearchIcon } from '@/shared/components/icons/CommonIcons';
@@ -111,7 +111,7 @@ const Ltpz058 = () => {
       cellClass: 'text-center',
     },
   ];
-  const columnDefsAll: (ColDef<DummyDataTypeAll> | ColGroupDef<DummyDataTypeAll>)[] = [
+  const columnDefsAll: ColDef<DummyDataTypeAll>[] = [
     {
       headerName: '대분류',
       field: 'field1',
@@ -128,25 +128,20 @@ const Ltpz058 = () => {
     },
     {
       headerName: '영위업종',
-      headerGroupComponent: createGroupHeaderWithSort('field4'),
+      field: 'field4',
       flex: 10,
-      cellClass: 'text-center',
-      children: [
-        {
-          headerName: '',
-          field: 'field3',
-          flex: 1,
-          minWidth: attributeColumnWidth(60),
-          cellClass: 'text-center justify-center',
-        },
-        {
-          headerName: '',
-          field: 'field4',
-          flex: 10,
-          cellClass: 'text-left',
-          sortable: true,
-        },
-      ],
+      sortable: true,
+      cellClass: '!p-0',
+      cellRenderer: (params: ICellRendererParams<DummyDataTypeAll>) => {
+        const data = params.data;
+        if (!data) return null;
+        return (
+          <div className="grid grid-cols-[6rem_1fr] w-full h-full divide-x divide-[var(--color-gray-10)]">
+            <span className="flex items-center justify-center px-1 text-center">{data.field3}</span>
+            <span className="flex items-center justify-start px-2 text-left truncate">{data.field4}</span>
+          </div>
+        );
+      },
     },
   ];
 
@@ -294,8 +289,7 @@ const Ltpz058 = () => {
                   singleClickEdit={true}
                   rowClassRules={{}}
                   domLayout="normal"
-                  groupHeaderHeight={30}
-                  headerHeight={0}
+                  suppressMovableColumns={true}
                 />
               </div>
             </Grid>

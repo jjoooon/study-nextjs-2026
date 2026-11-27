@@ -1441,10 +1441,10 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
     [props]
   );
 
-  // Tab 키 누를 때 다음(또는 Shift+Tab 시 이전) 행의 가입금액 셀로 즉시 이동하여 편집 세션을 여는 핸들러
-  const handleTabNavigation = useCallback(
+  // 상하 방향키(ArrowUp / ArrowDown) 누를 때 이전/다음 행의 가입금액 셀로 이동하며 셀 선택 및 편집 세션을 함께 이동하는 핸들러
+  const handleArrowNavigation = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key !== 'Tab') return;
+      if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
 
       e.preventDefault();
       e.stopPropagation();
@@ -1459,7 +1459,7 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
 
       const colKey = column.getColId();
       const currentRowIndex = props.node?.rowIndex ?? props.rowIndex ?? 0;
-      const direction = e.shiftKey ? -1 : 1;
+      const direction = e.key === 'ArrowUp' ? -1 : 1;
       const totalRows = api.getDisplayedRowCount?.() ?? 0;
 
       let targetRowIndex: number | null = null;
@@ -1507,22 +1507,40 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
       // 현재 편집 모드 종료
       props.stopEditing?.(false);
 
-      // 대상 행으로 이동 및 편집 모드 오픈
+      // 대상 행으로 이동, 셀 선택(Range Selection) 동기화 및 편집 모드 오픈
       if (targetRowIndex !== null) {
         const nextIdx = targetRowIndex;
+        const selectTargetCell = () => {
+          api.clearCellSelection?.();
+          api.addCellRange?.({
+            rowStartIndex: nextIdx,
+            rowEndIndex: nextIdx,
+            rowStartPinned: null,
+            rowEndPinned: null,
+            columnStart: colKey,
+            columnEnd: colKey,
+          });
+        };
+
         setTimeout(() => {
           try {
             api.ensureIndexVisible(nextIdx);
             api.setFocusedCell(nextIdx, colKey);
-            api.clearCellSelection?.();
-            api.addCellRange?.({
-              rowStartIndex: nextIdx,
-              rowEndIndex: nextIdx,
-              columns: [colKey],
-            });
+            selectTargetCell();
             api.startEditingCell({
               rowIndex: nextIdx,
               colKey: colKey,
+            });
+            selectTargetCell();
+            requestAnimationFrame(() => {
+              try {
+                const focused = api.getFocusedCell?.();
+                if (!focused || (focused.rowIndex === nextIdx && focused.column.getColId() === colKey)) {
+                  selectTargetCell();
+                }
+              } catch {
+                // 셀 선택 동기화 실패 시 무시
+              }
             });
           } catch {
             // 네비게이션 실패 시 무시
@@ -1558,8 +1576,8 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
               e.stopPropagation();
             }}
             onKeyDown={(e) => {
-              if (e.key === 'Tab') {
-                handleTabNavigation(e);
+              if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                handleArrowNavigation(e);
                 return;
               }
               if (e.key === 'Enter') {

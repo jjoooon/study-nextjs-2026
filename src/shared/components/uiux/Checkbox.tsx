@@ -28,6 +28,10 @@ interface UICheckboxProps extends React.ComponentPropsWithoutRef<typeof Checkbox
    */
   errorPortal?: boolean;
   showErrorMsg?: boolean;
+  /**
+   * `<label>` 요소에 적용할 추가 클래스명
+   */
+  labelClassName?: string;
 }
 
 type ErrorMsgPosition = 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
@@ -88,6 +92,7 @@ type CheckboxGroupContextValue = {
   size: UICheckboxProps['size'];
   color: UICheckboxProps['color'];
   icon: boolean;
+  labelClassName?: string;
   isItemChecked: (value: string, selectAll?: boolean) => boolean;
   toggleValue: (value: string, checked: boolean | 'indeterminate', selectAll?: boolean) => void;
   registerItem: (value: string, options?: { disabled?: boolean; selectAll?: boolean }) => () => void;
@@ -100,6 +105,7 @@ const CheckboxGroupContext = React.createContext<CheckboxGroupContextValue | nul
 // - variant에 따라 체크박스, 버튼형, 텍스트형, 칩형, 즐겨찾기형으로 렌더링 분기
 function Checkbox({
   className,
+  labelClassName,
   children,
   icon = true,
   variant = 'default',
@@ -248,7 +254,7 @@ function Checkbox({
       <div className="relative w-fit">
         <label
           htmlFor={checkboxId}
-          className={cn(labelClass, hasErrorState && 'text-[var(--color-text-danger)]', className)}
+          className={cn(labelClass, hasErrorState && 'text-[var(--color-text-danger)]', className, labelClassName)}
         >
           <CheckboxPrimitive.Root
             data-slot="checkbox"
@@ -384,7 +390,8 @@ function Checkbox({
           htmlFor={checkboxId}
           className={cn(
             'text-[1.3rem] font-normal cursor-pointer select-none tracking-[-0.05rem]',
-            hasErrorState && 'text-[var(--color-text-danger)]'
+            hasErrorState && 'text-[var(--color-text-danger)]',
+            labelClassName
           )}
         >
           {children}
@@ -436,6 +443,10 @@ interface CheckboxGroupProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 
   size?: 'lg' | 'md';
   color?: 'primary' | 'info' | 'secondary';
   icon?: boolean;
+  /**
+   * 그룹 내 모든 아이템의 `<label>` 요소에 공통 적용할 추가 클래스명
+   */
+  labelClassName?: string;
 }
 
 type CheckboxGroupItemRegistration = {
@@ -481,6 +492,7 @@ function CheckboxGroup({
   size = 'lg',
   color = 'primary',
   icon = true,
+  labelClassName,
   ...props
 }: CheckboxGroupProps) {
   const [internalValues, setInternalValues] = React.useState<string[]>(defaultValue);
@@ -661,6 +673,7 @@ function CheckboxGroup({
       size,
       color,
       icon,
+      labelClassName,
       isItemChecked,
       toggleValue,
       registerItem,
@@ -676,6 +689,7 @@ function CheckboxGroup({
       isGroupWideError,
       isItemChecked,
       itemErrors,
+      labelClassName,
       registerItem,
       required,
       resolvedErrorMsg,
@@ -758,6 +772,7 @@ function CheckboxGroupItem({ value, selectAll = false, ...props }: CheckboxGroup
       size={props.size ?? context.size}
       color={props.color ?? context.color}
       icon={props.icon ?? context.icon}
+      labelClassName={cn(context.labelClassName, props.labelClassName)}
       required={context.required || props.required}
       disabled={context.disabled || props.disabled}
       error={resolvedError}

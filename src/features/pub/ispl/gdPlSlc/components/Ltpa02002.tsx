@@ -684,6 +684,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                           width={'full'}
                           value={simpleType}
                           onValueChange={handleOnChangeNcMttTpcd}
+                          labelClassName="text-[2rem]"
                           className="w-full flex flex-col items-start py-4 gap-2 border-b border-dashed border-[#D8D8D8]"
                         >
                           {[

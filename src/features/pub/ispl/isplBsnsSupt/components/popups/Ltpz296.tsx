@@ -676,7 +676,9 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
                     defaultColDef={{
                       sortable: true,
                       resizable: true,
+                      suppressMovable: true,
                     }}
+                    suppressMovableColumns={true}
                     singleClickEdit={true}
                     rowClassRules={{}}
                     domLayout="normal"
@@ -734,7 +736,9 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
                     defaultColDef={{
                       sortable: true,
                       resizable: true,
+                      suppressMovable: true,
                     }}
+                    suppressMovableColumns={true}
                     singleClickEdit={true}
                     rowClassRules={{}}
                     domLayout="normal"

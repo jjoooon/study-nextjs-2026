@@ -426,7 +426,8 @@ const Ltpz01602 = () => {
               noRowsOverlayComponent={AgGridEmptyComponent}
               rowData={facilityLiabilityDummyData}
               columnDefs={facilityColumnDefs}
-              defaultColDef={{ sortable: false }}
+              defaultColDef={{ sortable: false, suppressMovable: true }}
+              suppressMovableColumns={true}
               enableCellSpan={true}
               tooltipShowMode="whenTruncated"
               tooltipShowDelay={0}

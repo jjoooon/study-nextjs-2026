@@ -77,6 +77,8 @@ const RadioGroupContext = React.createContext<{
   size?: 'xl' | 'lg' | 'md' | 'sm';
   /** 아이템 색상 */
   color?: 'primary' | 'info';
+  /** 라벨 커스텀 클래스 */
+  labelClassName?: string;
 }>({
   error: false,
   rawError: false,
@@ -93,6 +95,7 @@ const RadioGroupContext = React.createContext<{
   variant: undefined,
   size: undefined,
   color: undefined,
+  labelClassName: undefined,
 });
 
 const radioGroupItemVariants = cva(
@@ -391,6 +394,10 @@ interface RadioGroupExtraProps {
    * @default false
    */
   clearable?: boolean;
+  /**
+   * 그룹 내 모든 아이템의 `<label>` 요소에 공통 적용할 추가 클래스명
+   */
+  labelClassName?: string;
 }
 
 /**
@@ -421,6 +428,7 @@ const RadioGroup = React.forwardRef<
       disabled,
       allowDeselect = false,
       clearable,
+      labelClassName,
       ...props
     },
     ref
@@ -466,6 +474,7 @@ const RadioGroup = React.forwardRef<
           variant,
           size,
           color,
+          labelClassName,
         }}
       >
         <div className={cn('relative', width === 'full' ? 'w-full' : 'w-auto')}>
@@ -530,6 +539,10 @@ interface RadioGroupItemExtraProps extends VariantProps<typeof radioGroupItemVar
    * @default true
    */
   showErrorMsg?: boolean;
+  /**
+   * `<label>` 요소에 적용할 추가 클래스명
+   */
+  labelClassName?: string;
 }
 
 /**
@@ -543,6 +556,7 @@ const RadioGroupItem = React.forwardRef<
   (
     {
       className,
+      labelClassName,
       variant,
       size,
       color,
@@ -573,6 +587,7 @@ const RadioGroupItem = React.forwardRef<
       variant: groupVariant,
       size: groupSize,
       color: groupColor,
+      labelClassName: groupLabelClassName,
     } = React.useContext(RadioGroupContext);
 
     const resolvedVariant = variant ?? groupVariant ?? 'default';
@@ -692,7 +707,9 @@ const RadioGroupItem = React.forwardRef<
             htmlFor={radioId}
             className={cn(
               'text-[1.3rem] font-normal cursor-pointer select-none tracking-[-0.05rem]',
-              isError && 'text-[var(--color-text-danger)]'
+              isError && 'text-[var(--color-text-danger)]',
+              groupLabelClassName,
+              labelClassName
             )}
           >
             {children}
